@@ -1,0 +1,5 @@
+- Reorganizar DER
+- Gerar MER
+- Revalidar atributos e tabelas (conferir e corrigir o que for necessário)
+- Opcional: deixar tudo em português
+- Renomear e rever relacionamentos
