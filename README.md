@@ -151,7 +151,7 @@
   <summary><h3><u>Como Utilizar</u></h3></summary>
 
 Antes de tudo, você precisa ter instalado em sua máquina as seguintes ferramentas:
-[Git](https://git-scm.com), [Java](https://www.java.com/pt-BR/), [Node.js](https://nodejs.org/en/). 
+[Git](https://git-scm.com), [Java](https://www.java.com/pt-BR/).
 
 Além disso, é bom ter um editor para trabalhar com o código, como [VSCode](https://code.visualstudio.com/) ou [IntelliJ](https://www.jetbrains.com/pt-br/idea/).
 
@@ -160,59 +160,40 @@ O projeto é divido em duas partes:
 - 🎲 Backend (Servidor)
 - 📱 Mobile (Aplicativo)
 
-```bash
-# Clone o repositório
-$ git clone https://github.com/gustavo-sorrilha/Challenge2023
-```
-
 ##### 👉 **_Backend:_**
 
-```bash
-$ cd backend
-```
-
-Instale as dependências:
+Navegue até o projeto maven:
 
 ```bash
-# Pode usar o npm se quiser
-$ yarn install
+$ cd Entregas/Sprint\ 1/Enterprise\ Application\ Development
 ```
-
-Rode o servidor:
+ou 
 
 ```bash
-# Você precisa do Xampp rodando a partir de agora
-$ yarn dev
+$ cd Entregas/Sprint\ 1/Digital\ Business\ Enablement
 ```
+
+Abra o projeto maven em seu editor e execute o arquivo main: BuyitApplicattion.java
 
 ##### 👉 **_Mobile:_**
 
-```bash
-$ cd ..
-$ cd mobile
-# Pode usar npm se quiser
-$ yarn install
-```
-
-Rode o aplicativo:
+Navegue até o projeto mobile:
 
 ```bash
-$ yarn android
+$ cd Entregas/Sprint\ 1/Hybrid\ Mobile\ APP\ Development
 ```
 
-##### 👉 **_Web:_**
-
+Instale as dependências
 ```bash
-$ cd ..
-$ cd web
-# Pode usar npm se quiser
-$ yarn install
+$ npm install
 ```
 
-Rode o website:
-
+Abra o projeto mobile em seu editor e execute o seguinte comando:
 ```bash
-$ yarn start
+$ npm android
 ```
+</details>
 
-<br>
+<details>
+  <summary><h3><u>Diagramas</u></h3></summary>
+</details>
