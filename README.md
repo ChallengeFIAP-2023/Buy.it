@@ -151,7 +151,7 @@
   <summary><h3><u>Como Utilizar</u></h3></summary>
 
 Antes de tudo, você precisa ter instalado em sua máquina as seguintes ferramentas:
-[Git](https://git-scm.com), [Java](https://www.java.com/pt-BR/), [Node.js](https://nodejs.org/en/). 
+[Git](https://git-scm.com), [Java](https://www.java.com/pt-BR/).
 
 Além disso, é bom ter um editor para trabalhar com o código, como [VSCode](https://code.visualstudio.com/) ou [IntelliJ](https://www.jetbrains.com/pt-br/idea/).
 
@@ -159,60 +159,3 @@ O projeto é divido em duas partes:
 
 - 🎲 Backend (Servidor)
 - 📱 Mobile (Aplicativo)
-
-```bash
-# Clone o repositório
-$ git clone https://github.com/gustavo-sorrilha/Challenge2023
-```
-
-##### 👉 **_Backend:_**
-
-```bash
-$ cd backend
-```
-
-Instale as dependências:
-
-```bash
-# Pode usar o npm se quiser
-$ yarn install
-```
-
-Rode o servidor:
-
-```bash
-# Você precisa do Xampp rodando a partir de agora
-$ yarn dev
-```
-
-##### 👉 **_Mobile:_**
-
-```bash
-$ cd ..
-$ cd mobile
-# Pode usar npm se quiser
-$ yarn install
-```
-
-Rode o aplicativo:
-
-```bash
-$ yarn android
-```
-
-##### 👉 **_Web:_**
-
-```bash
-$ cd ..
-$ cd web
-# Pode usar npm se quiser
-$ yarn install
-```
-
-Rode o website:
-
-```bash
-$ yarn start
-```
-
-<br>
