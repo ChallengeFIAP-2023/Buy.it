@@ -159,3 +159,36 @@ O projeto é divido em duas partes:
 
 - 🎲 Backend (Servidor)
 - 📱 Mobile (Aplicativo)
+
+##### 👉 **_Backend:_**
+
+Navegue até o projeto maven:
+
+```bash
+$ cd Entregas/Sprint\ 1/Enterprise\ Application\ Development
+```
+ou 
+
+```bash
+$ cd Entregas/Sprint\ 1/Digital\ Business\ Enablement
+```
+
+Abra o projeto maven em seu editor e execute o arquivo main: BuyitApplicattion.java
+
+##### 👉 **_Mobile:_**
+
+Navegue até o projeto mobile:
+
+```bash
+$ cd Entregas/Sprint\ 1/Hybrid\ Mobile\ APP\ Development
+```
+
+Instale as dependências
+```bash
+$ npm install
+```
+
+Abra o projeto mobile em seu editor e execute o seguinte comando:
+```bash
+$ npm android
+```
