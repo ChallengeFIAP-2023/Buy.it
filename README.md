@@ -192,6 +192,7 @@ Abra o projeto mobile em seu editor e execute o seguinte comando:
 ```bash
 $ npm android
 ```
+</details>
 
 <details>
   <summary><h3><u>Diagramas</u></h3></summary>
