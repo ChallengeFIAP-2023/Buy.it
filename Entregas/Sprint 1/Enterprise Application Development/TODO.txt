@@ -1,0 +1,6 @@
+- Ajustar Escopo com Apresetanção da Equipe, Impacto Financeiro, Link do Git Hub e Código Fonte
+- Criação de Classes Mapeadas
+
+- READ ME:
+Diagramas
+Pitch
