@@ -1,6 +1,10 @@
-- Ajustar Escopo com Apresetanção da Equipe, Impacto Financeiro, Link do Git Hub e Código Fonte
+- Ajustar Escopo com Impacto Financeiro e Código Fonte (Perguntar para o Bene)
+- Diagrama de Classes
+- Explicar DER
 - Criação de Classes Mapeadas
 
 - READ ME:
+Instrução de Como rodar
 Diagramas
 Pitch
+Postman / Insomnia
