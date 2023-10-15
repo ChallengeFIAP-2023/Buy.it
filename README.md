@@ -197,3 +197,21 @@ $ npm android
 <details>
   <summary><h3><u>Diagramas</u></h3></summary>
 </details>
+
+  <details>
+  <summary><h3><u>Diagrama Entidade Relacionamento</u></h3></summary>
+  <br />
+  <p align="center">
+    <img src="Documentação/DER.png" alt="DER">
+  </p>
+  <br />
+  </details>
+
+  <details>
+  <summary><h3><u>Modelo Entidade Relacionamento</u></h3></summary>
+  <br />
+  <p align="center">
+    <img src="Documentação/MER.png" alt="MER">
+  </p>
+  <br />
+  </details>
