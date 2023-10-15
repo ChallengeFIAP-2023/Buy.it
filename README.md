@@ -202,6 +202,20 @@ $ npm android
   <p align="center">
     <img src="Documentação/DER.png" alt="DER">
   </p>
+    <p>No DER podemos ver 12 entidades, além de 1 entidade que será uma tabela ManyToMany.</p>
+    <p>- Produto se relaciona com Categoria, onde 1 Categoria contem N Produtos, sendo que o id_categoria é uma Foreign Key na entidade Produto.</p>
+    <p>- Produto se relaciona com Estoque, onde N Estoques alocam 1 Produto, sendo que o id_produto é uma Foreign Key na entidade Estoque.</p>
+    <p>- Estoque se relaciona com Desconto, onde 1 Estoque possui N Descontos, sendo que o id_estoque é uma Foreign Key na entidade Desconto.</p>
+    <p>- Estoque se relaciona com Opcao_Variacao, onde N Estoques possuem 1 Opcao_Variacao.</p>
+    <p>- Opcao_Variacao se relaciona com Variacao, onde N Opcoes_Variacao possuem 1 Variacao.</p>
+    <p>- Estoque possui vinculo com Variacao, onde 1 Estoque contém 1 Variacao, sendo que o id_variacao_produto é uma Foreign Key na entidade Estoque.</p>
+    <p>- Usuario se relaciona com Estoque, onde 1 Usuario detém N Estoques, sendo que o id_usuario é uma Foreign Key na entidade Estoque.</p>
+    <p>- Usuario se relaciona com Tag, onde N Usuarios possuem N Tags, gerando uma nova entidade chamada Usuario_Tag, a qual possui Foreign Keys de ID de ambas as tabelas.</p>
+    <p>- Usuario se relaciona com Avaliacao onde 1 Usuario realiza N Avaliacoes, sendo que id_usuario é uma Foreign Key na entidade Avaliacao.</p>
+    <p>- Usuario se relaciona com pedido, onde 1 Usuario efetua N Pedidos, sendo que id_usuario é uma Foreign Key na entidade Pedido.</p>
+    <p>- Pedido se relaciona com Avaliacao, onde 1 Pedido gera 1 Avaliacao, sendo que id_pedido é uma Foreign Key na entidade Avaliacao.</p>
+    <p>- Pedido se relaciona com Item_Pedido, onde N Pedido contém N Itens_Pedido, gerando uma nova entidade chamada Pedido_Itens a qual possui Foreign Keys de ID de ambas as tabelas.</p>
+    <p>- Pedido se relaciona com Log, onde 1 Pedido gera N Logs, sendo que id_pedido é uma foreign Key na entidade Log.</p>
   <br />
   </details>
 
@@ -213,4 +227,14 @@ $ npm android
   </p>
   <br />
   </details>
+
+  <details>
+  <summary><h4><u>Diagrama de Classes (UML)</u></h4></summary>
+  <br />
+  <p align="center">
+    <img src="Documentação/Diagrama de Classes UML.png" alt="MER">
+  </p>
+  <br />
+  </details>
+  
 </details>
