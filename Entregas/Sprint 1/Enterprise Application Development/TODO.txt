@@ -1,5 +1,4 @@
 - Ajustar Escopo com Código Fonte (Perguntar para o Bene)
-- Explicar DER
 - Criação de Classes Mapeadas
 
 - READ ME:
