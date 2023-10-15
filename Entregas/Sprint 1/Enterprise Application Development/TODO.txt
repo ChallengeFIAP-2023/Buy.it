@@ -1,10 +1,8 @@
-- Ajustar Escopo com Impacto Financeiro e Código Fonte (Perguntar para o Bene)
-- Diagrama de Classes
+- Ajustar Escopo com Código Fonte (Perguntar para o Bene)
 - Explicar DER
 - Criação de Classes Mapeadas
 
 - READ ME:
 Instrução de Como rodar
-Diagramas
 Pitch
 Postman / Insomnia
