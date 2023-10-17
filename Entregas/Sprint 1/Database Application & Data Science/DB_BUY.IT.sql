@@ -14,6 +14,10 @@ INSERT INTO Categoria (id_categoria, nome_categoria, icone_categoria)
 VALUES (2, 'Moda', 'icone-moda.png');
 INSERT INTO Categoria (id_categoria, nome_categoria, icone_categoria)
 VALUES (3, 'Móveis', 'icone-moveis.png');
+INSERT INTO Categoria (id_categoria, nome_categoria, icone_categoria)
+VALUES (4, 'Eletrodomésticos', 'icone-eletrodomesticos.png');
+INSERT INTO Categoria (id_categoria, nome_categoria, icone_categoria)
+VALUES (5, 'Livros', 'icone-livros.png');
 
 -- Tabela Produto OK
 DROP TABLE Produto CASCADE CONSTRAINTS;
@@ -32,6 +36,11 @@ INSERT INTO Produto (id_produto, nome_produto, descricao_produto, imagem_url_pro
 VALUES (2, 'Camiseta', 'Camiseta de algodão', 'imagem-camiseta.png', 2, 19.99);
 INSERT INTO Produto (id_produto, nome_produto, descricao_produto, imagem_url_produto, id_categoria, menor_preco_produto)
 VALUES (3, 'Sofá', 'Sofá confortável para sala de estar', 'imagem-sofa.png', 3, 499.99);
+INSERT INTO Produto (id_produto, nome_produto, descricao_produto, imagem_url_produto, id_categoria, menor_preco_produto)
+VALUES (4, 'Geladeira', 'Geladeira de última geração', 'imagem-geladeira.png', 4, 999.99);
+INSERT INTO Produto (id_produto, nome_produto, descricao_produto, imagem_url_produto, id_categoria, menor_preco_produto)
+VALUES (5, 'Livro de Ficção', 'Um ótimo livro de ficção', 'imagem-livro.png', 5, 24.99);
+
 
 -- Tabela Variacao OK
 DROP TABLE Variacao CASCADE CONSTRAINTS;
@@ -46,6 +55,10 @@ INSERT INTO Variacao (id_variacao, nome_variacao)
 VALUES (2, 'Tamanho');
 INSERT INTO Variacao (id_variacao, nome_variacao)
 VALUES (3, 'Acordeão');
+INSERT INTO Variacao (id_variacao, nome_variacao)
+VALUES (4, 'Peso');
+INSERT INTO Variacao (id_variacao, nome_variacao)
+VALUES (5, 'Edição');
 
 -- Tabela Opcao_Variacao OK
 DROP TABLE Opcao_Variacao CASCADE CONSTRAINTS;
@@ -61,6 +74,10 @@ INSERT INTO Opcao_Variacao (id_opcao_variacao, nome_opcao_variacao, id_variacao)
 VALUES (2, 'Branco', 1);
 INSERT INTO Opcao_Variacao (id_opcao_variacao, nome_opcao_variacao, id_variacao)
 VALUES (3, 'Vermelho', 1);
+INSERT INTO Opcao_Variacao (id_opcao_variacao, nome_opcao_variacao, id_variacao)
+VALUES (4, '5 kg', 4);
+INSERT INTO Opcao_Variacao (id_opcao_variacao, nome_opcao_variacao, id_variacao)
+VALUES (5, 'Edição de Luxo', 5);
 
 -- Tabela Usuario OK
 DROP TABLE Usuario CASCADE CONSTRAINTS;
@@ -85,6 +102,10 @@ INSERT INTO Usuario (id_usuario, cnpj_usuario, nome_usuario, cep_usuario, lograd
 VALUES (2, '98765432109876', 'Maria Santos', '54321-876', 'Rua B', 'Casa 102', 456, 'maria@example.com', 'senha456', '(987) 654-3210', 1, 'maria.png');
 INSERT INTO Usuario (id_usuario, cnpj_usuario, nome_usuario, cep_usuario, logradouro_usuario, complemento_usuario, numero_endereco_usuario, email_usuario, senha_usuario, telefone_usuario, e_fornecedor, imagem_url_usuario)
 VALUES (3, '11122233344455', 'Carlos Oliveira', '54321-654', 'Rua C', 'Apto 202', 789, 'carlos@example.com', 'senha789', '(555) 123-4567', 0, 'carlos.png');
+INSERT INTO Usuario (id_usuario, cnpj_usuario, nome_usuario, cep_usuario, logradouro_usuario, complemento_usuario, numero_endereco_usuario, email_usuario, senha_usuario, telefone_usuario, e_fornecedor, imagem_url_usuario)
+VALUES (4, '22233344455566', 'Ana Sousa', '67890-123', 'Rua D', 'Apto 303', 456, 'ana@example.com', 'senha456', '(555) 987-6543', 1, 'ana.png');
+INSERT INTO Usuario (id_usuario, cnpj_usuario, nome_usuario, cep_usuario, logradouro_usuario, complemento_usuario, numero_endereco_usuario, email_usuario, senha_usuario, telefone_usuario, e_fornecedor, imagem_url_usuario)
+VALUES (5, '77788899900011', 'Mariano Rodrigues', '12345-678', 'Rua E', 'Casa 404', 789, 'mariano@example.com', 'senha789', '(555) 234-5678', 0, 'mariano.png');
 
 -- Tabela Estoque OK
 DROP TABLE Estoque CASCADE CONSTRAINTS;
@@ -104,6 +125,10 @@ INSERT INTO Estoque (id_estoque, id_produto, id_variacao_produto, quantidade_est
 VALUES (2, 2, 2, 30, 29.99, 'estoque2.png', 2);
 INSERT INTO Estoque (id_estoque, id_produto, id_variacao_produto, quantidade_estoque, preco, imagem_url_estoque, id_usuario)
 VALUES (3, 3, 1, 25, 599.99, 'estoque3.png', 1);
+INSERT INTO Estoque (id_estoque, id_produto, id_variacao_produto, quantidade_estoque, preco, imagem_url_estoque, id_usuario)
+VALUES (4, 2, 1, 40, 24.99, 'estoque4.png', 1);
+INSERT INTO Estoque (id_estoque, id_produto, id_variacao_produto, quantidade_estoque, preco, imagem_url_estoque, id_usuario)
+VALUES (5, 3, 2, 15, 549.99, 'estoque5.png', 2);
 
 -- Tabela Desconto OK
 DROP TABLE Desconto CASCADE CONSTRAINTS;
@@ -120,6 +145,10 @@ INSERT INTO Desconto (id_desconto, quantidade_minima_produto, desconto, id_estoq
 VALUES (2, 10, 20.00, 2);
 INSERT INTO Desconto (id_desconto, quantidade_minima_produto, desconto, id_estoque)
 VALUES (3, 15, 15.00, 3);
+INSERT INTO Desconto (id_desconto, quantidade_minima_produto, desconto, id_estoque)
+VALUES (4, 8, 15.00, 1);
+INSERT INTO Desconto (id_desconto, quantidade_minima_produto, desconto, id_estoque)
+VALUES (5, 12, 25.00, 3);
 
 
 -- Tabela Tag OK
@@ -135,6 +164,10 @@ INSERT INTO Tag (id_tag, nome_tag)
 VALUES (2, 'Roupas');
 INSERT INTO Tag (id_tag, nome_tag)
 VALUES (3, 'Móveis');
+INSERT INTO Tag (id_tag, nome_tag)
+VALUES (4, 'Acessórios');
+INSERT INTO Tag (id_tag, nome_tag)
+VALUES (5, 'Decoração');
 
 -- Tabela Possui OK
 DROP TABLE Possui CASCADE CONSTRAINTS;
@@ -149,6 +182,10 @@ INSERT INTO Possui (id_tag, id_usuario)
 VALUES (2, 1);
 INSERT INTO Possui (id_tag, id_usuario)
 VALUES (3, 2);
+INSERT INTO Possui (id_tag, id_usuario)
+VALUES (4, 1);
+INSERT INTO Possui (id_tag, id_usuario)
+VALUES (5, 3);
 
 -- Tabela Pedido OK
 DROP TABLE Pedido CASCADE CONSTRAINTS;
@@ -166,6 +203,10 @@ INSERT INTO Pedido (id_pedido, id_usuario, status_pedido, data_pedido, valor_ped
 VALUES (2, 2, 'Concluído', TO_DATE('2023-10-15', 'YYYY-MM-DD'), 250.00);
 INSERT INTO Pedido (id_pedido, id_usuario, status_pedido, data_pedido, valor_pedido)
 VALUES (3, 1, 'Em andamento', TO_DATE('2023-10-14', 'YYYY-MM-DD'), 200.00);
+INSERT INTO Pedido (id_pedido, id_usuario, status_pedido, data_pedido, valor_pedido)
+VALUES (4, 2, 'Concluído', TO_DATE('2023-10-13', 'YYYY-MM-DD'), 120.00);
+INSERT INTO Pedido (id_pedido, id_usuario, status_pedido, data_pedido, valor_pedido)
+VALUES (5, 1, 'Em andamento', TO_DATE('2023-10-12', 'YYYY-MM-DD'), 75.00);
 
 -- Tabela Contem OK
 DROP TABLE Contem CASCADE CONSTRAINTS;
@@ -179,6 +220,10 @@ INSERT INTO Contem (id_pedido)
 VALUES (2);
 INSERT INTO Contem (id_pedido)
 VALUES (3);
+INSERT INTO Contem (id_pedido)
+VALUES (4);
+INSERT INTO Contem (id_pedido)
+VALUES (5);
 
 -- Tabela Item Pedido OK
 DROP TABLE Item_Pedido CASCADE CONSTRAINTS;
@@ -195,6 +240,10 @@ INSERT INTO Item_Pedido (id_pedido, id_variacao, quantidade_item_pedido, valor)
 VALUES (2, 2, 3, 75.00);
 INSERT INTO Item_Pedido (id_pedido, id_variacao, quantidade_item_pedido, valor)
 VALUES (3, 3, 1, 30.00);
+INSERT INTO Item_Pedido (id_pedido, id_variacao, quantidade_item_pedido, valor)
+VALUES (4, 3, 2, 60.00);
+INSERT INTO Item_Pedido (id_pedido, id_variacao, quantidade_item_pedido, valor)
+VALUES (5, 2, 4, 120.00);
 
 -- Tabela Log OK
 DROP TABLE Log CASCADE CONSTRAINTS;
@@ -206,12 +255,16 @@ CREATE TABLE Log (
     descricao_log VARCHAR2(255) CONSTRAINT log_descricao_log_nn NOT NULL
 );
 
-INSERT INTO Item_Pedido (id_pedido, id_variacao, quantidade_item_pedido, valor)
-VALUES (1, 1, 2, 50.00);
-INSERT INTO Item_Pedido (id_pedido, id_variacao, quantidade_item_pedido, valor)
-VALUES (2, 2, 3, 75.00);
-INSERT INTO Item_Pedido (id_pedido, id_variacao, quantidade_item_pedido, valor)
-VALUES (3, 3, 1, 30.00);
+INSERT INTO Log (id_log, id_pedido, timestamp_log, nome_log, descricao_log)
+VALUES (1, 1, '2023-10-16 10:30:00', 'Pedido Entregue', 'O pedido foi entregue com sucesso.');
+INSERT INTO Log (id_log, id_pedido, timestamp_log, nome_log, descricao_log)
+VALUES (2, 2, '2023-10-15 11:45:00', 'Pagamento Confirmado', 'O pagamento do pedido foi confirmado.');
+INSERT INTO Log (id_log, id_pedido, timestamp_log, nome_log, descricao_log)
+VALUES (3, 3, '2023-10-14 09:15:00', 'Pedido Enviado', 'O pedido foi enviado para entrega.');
+INSERT INTO Log (id_log, id_pedido, timestamp_log, nome_log, descricao_log)
+VALUES (4, 4, '2023-10-16 10:30:00', 'Pedido Entregue', 'O pedido foi entregue com sucesso.');
+INSERT INTO Log (id_log, id_pedido, timestamp_log, nome_log, descricao_log)
+VALUES (5, 5, '2023-10-15 11:45:00', 'Pagamento Confirmado', 'O pagamento do pedido foi confirmado.');
 
 -- Tabela Avaliacao OK
 DROP TABLE Avaliacao CASCADE CONSTRAINTS;
@@ -231,6 +284,10 @@ INSERT INTO Avaliacao (id_avaliacao, id_usuario, id_pedido, nota_preco_avaliacao
 VALUES (2, 2, 2, 3, 4, 'Bom serviço', 5);
 INSERT INTO Avaliacao (id_avaliacao, id_usuario, id_pedido, nota_preco_avaliacao, nota_qualidade_avaliacao, descricao_avaliacao, nota_entrega_avaliacao)
 VALUES (3, 1, 3, 5, 4, 'Produto de alta qualidade', 5);
+INSERT INTO Avaliacao (id_avaliacao, id_usuario, id_pedido, nota_preco_avaliacao, nota_qualidade_avaliacao, descricao_avaliacao, nota_entrega_avaliacao)
+VALUES (4, 3, 4, 5, 5, 'Produto incrível!', 5);
+INSERT INTO Avaliacao (id_avaliacao, id_usuario, id_pedido, nota_preco_avaliacao, nota_qualidade_avaliacao, descricao_avaliacao, nota_entrega_avaliacao)
+VALUES (5, 2, 5, 4, 4, 'Bom atendimento', 4);
 
 -- Tabela Gera OK
 DROP TABLE Gera CASCADE CONSTRAINTS;
@@ -245,6 +302,10 @@ INSERT INTO Gera (id_pedido, id_avaliacao)
 VALUES (2, 2);
 INSERT INTO Gera (id_pedido, id_avaliacao)
 VALUES (3, 3);
+INSERT INTO Gera (id_pedido, id_avaliacao)
+VALUES (4, 4);
+INSERT INTO Gera (id_pedido, id_avaliacao)
+VALUES (5, 5);
 
 -- Inner Joins
 
