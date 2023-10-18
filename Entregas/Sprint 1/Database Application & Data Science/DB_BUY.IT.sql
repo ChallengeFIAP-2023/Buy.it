@@ -4,7 +4,7 @@
 DROP TABLE Categoria CASCADE CONSTRAINTS;
 CREATE TABLE Categoria (
     id_categoria NUMBER(8) CONSTRAINT categoria_id_categoria_pk PRIMARY KEY,
-    nome_categoria VARCHAR2(255) CONSTRAINT categoria_nome_categoria_nn NOT NULL,
+    nome_categoria VARCHAR2(255) CONSTRAINT categoria_nome_categoria_uk_nn UNIQUE NOT NULL,
     icone_categoria VARCHAR2(255) CONSTRAINT categoria_icone_categoria_nn NOT NULL
 );
 
@@ -46,7 +46,7 @@ VALUES (5, 'Livro de Ficção', 'Um ótimo livro de ficção', 'imagem-livro.png', 5,
 DROP TABLE Variacao CASCADE CONSTRAINTS;
 CREATE TABLE Variacao (
     id_variacao NUMBER(8) CONSTRAINT variacao_id_variacao_pk PRIMARY KEY,
-    nome_variacao VARCHAR2(255) CONSTRAINT variacao_nome_variacao_nn NOT NULL
+    nome_variacao VARCHAR2(255) CONSTRAINT variacao_nome_variacao_uk_nn UNIQUE NOT NULL
 );
 
 INSERT INTO Variacao (id_variacao, nome_variacao)
@@ -64,7 +64,7 @@ VALUES (5, 'Edição');
 DROP TABLE Opcao_Variacao CASCADE CONSTRAINTS;
 CREATE TABLE Opcao_Variacao (
     id_opcao_variacao NUMBER(8) CONSTRAINT opcao_variacao_id_opcao_variacao_pk PRIMARY KEY,
-    nome_opcao_variacao VARCHAR2(255) CONSTRAINT opcao_variacao_nome_opcao_variacao_nn NOT NULL,
+    nome_opcao_variacao VARCHAR2(255) CONSTRAINT opcao_variacao_nome_opcao_variacao_uk_nn UNIQUE NOT NULL,
     id_variacao NUMBER(8) CONSTRAINT opcao_variacao_id_variacao_fk REFERENCES Variacao
 );
 
@@ -83,13 +83,13 @@ VALUES (5, 'Edição de Luxo', 5);
 DROP TABLE Usuario CASCADE CONSTRAINTS;
 CREATE TABLE Usuario (
     id_usuario NUMBER(8) CONSTRAINT usuario_id_usuario_pk PRIMARY KEY,
-    cnpj_usuario CHAR(18) CONSTRAINT usuario_cnpj_usuario_nn NOT NULL,
+    cnpj_usuario CHAR(18) CONSTRAINT usuario_cnpj_usuario_uk_nn UNIQUE NOT NULL,
     nome_usuario VARCHAR2(255) CONSTRAINT usuario_nome_usuario_nn NOT NULL,
     cep_usuario CHAR(9) CONSTRAINT usuario_cep_usuario_nn NOT NULL,
     logradouro_usuario VARCHAR2(255) CONSTRAINT usuario_logradouro_usuario_nn NOT NULL,
     complemento_usuario VARCHAR2(50) CONSTRAINT usuario_complemento_usuario_nn NOT NULL,
     numero_endereco_usuario NUMBER(8) CONSTRAINT usuario_numero_endereco_nn NOT NULL,
-    email_usuario VARCHAR2(255) CONSTRAINT usuario_email_usuario_nn NOT NULL,
+    email_usuario VARCHAR2(255) CONSTRAINT usuario_email_usuario_uk_nn UNIQUE NOT NULL,
     senha_usuario VARCHAR2(20) CONSTRAINT usuario_senha_usuario_nn NOT NULL,
     telefone_usuario VARCHAR2(15) CONSTRAINT usuario_tel_usuario_nn NOT NULL,
     e_fornecedor NUMBER(1) CONSTRAINT usuario_e_fornecedor_nn NOT NULL,
@@ -155,7 +155,7 @@ VALUES (5, 12, 25.00, 3);
 DROP TABLE Tag CASCADE CONSTRAINTS;
 CREATE TABLE Tag (
     id_tag NUMBER(8) CONSTRAINT tag_id_tag_pk PRIMARY KEY,
-    nome_tag VARCHAR2(255) CONSTRAINT tag_nome_tag_nn NOT NULL
+    nome_tag VARCHAR2(255) CONSTRAINT tag_nome_tag_uk_nn UNIQUE NOT NULL
 );
 
 INSERT INTO Tag (id_tag, nome_tag)
