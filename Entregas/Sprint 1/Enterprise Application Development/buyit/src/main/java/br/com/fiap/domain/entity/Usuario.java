@@ -13,7 +13,7 @@ import java.util.Objects;
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_USUARIO")
-    @SequenceGenerator(name = "SQ_USUARIO", sequenceName = "SQ_USUARIO", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "SQ_USUARIO", sequenceName = "SQ_USUARIO", allocationSize = 1)
     @Column(name = "ID_USUARIO")
     private Long id_usuario;
 

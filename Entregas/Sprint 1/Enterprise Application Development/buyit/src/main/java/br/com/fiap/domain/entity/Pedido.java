@@ -10,7 +10,7 @@ import java.time.LocalDate;
 public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_PEDIDO")
-    @SequenceGenerator(name = "SQ_PEDIDO", sequenceName = "SQ_PEDIDO", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "SQ_PEDIDO", sequenceName = "SQ_PEDIDO", allocationSize = 1)
     @Column(name = "ID_PEDIDO")
     private Long id_pedido;
 

@@ -10,7 +10,7 @@ import java.util.Objects;
 public class Estoque {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_ESTOQUE")
-    @SequenceGenerator(name = "SQ_ESTOQUE", sequenceName = "SQ_ESTOQUE", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "SQ_ESTOQUE", sequenceName = "SQ_ESTOQUE", allocationSize = 1)
     @Column(name = "ID_ESTOQUE")
     private Long id_estoque;
 

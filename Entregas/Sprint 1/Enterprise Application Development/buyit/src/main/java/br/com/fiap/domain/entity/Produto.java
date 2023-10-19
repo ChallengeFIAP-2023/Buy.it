@@ -12,7 +12,7 @@ import java.util.Objects;
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_PRODUTO")
-    @SequenceGenerator(name = "SQ_PRODUTO", sequenceName = "SQ_PRODUTO", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "SQ_PRODUTO", sequenceName = "SQ_PRODUTO", allocationSize = 1)
     @Column(name = "ID_PRODUTO")
     private Long id_produto;
 

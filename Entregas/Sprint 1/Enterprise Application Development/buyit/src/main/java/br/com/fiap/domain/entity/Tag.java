@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TAG")
-    @SequenceGenerator(name = "SQ_TAG", sequenceName = "SQ_TAG", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "SQ_TAG", sequenceName = "SQ_TAG", allocationSize = 1)
     @Column(name = "ID_TAG")
     private Long id_tag;
 

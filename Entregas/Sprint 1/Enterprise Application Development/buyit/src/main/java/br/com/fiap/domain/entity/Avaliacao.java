@@ -11,7 +11,7 @@ import java.util.Objects;
 public class Avaliacao {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_AVALIACAO")
-    @SequenceGenerator(name = "SQ_AVALIACAO", sequenceName = "SQ_AVALIACAO", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "SQ_AVALIACAO", sequenceName = "SQ_AVALIACAO", allocationSize = 1)
     @Column(name = "ID_AVALIACAO")
     private Long id_avaliacao;
 

@@ -11,7 +11,7 @@ import java.math.BigDecimal;
 public class Desconto {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_DESCONTO")
-    @SequenceGenerator(name = "SQ_DESCONTO", sequenceName = "SQ_DESCONTO", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "SQ_DESCONTO", sequenceName = "SQ_DESCONTO", allocationSize = 1)
     @Column(name = "ID_DESCONTO")
     private Long id_desconto;
 

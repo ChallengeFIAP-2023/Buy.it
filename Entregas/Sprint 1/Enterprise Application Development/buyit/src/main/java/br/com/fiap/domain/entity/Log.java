@@ -7,7 +7,7 @@ import jakarta.persistence.*;
 public class Log {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_LOG")
-    @SequenceGenerator(name = "SQ_LOG", sequenceName = "SQ_LOG", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "SQ_LOG", sequenceName = "SQ_LOG", allocationSize = 1)
     @Column(name = "ID_LOG")
     private Long id_log;
 

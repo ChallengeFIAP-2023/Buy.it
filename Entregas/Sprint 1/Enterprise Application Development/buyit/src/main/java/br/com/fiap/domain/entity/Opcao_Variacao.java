@@ -9,7 +9,7 @@ import jakarta.persistence.*;
 public class Opcao_Variacao {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_OPCAO_VARIACAO")
-    @SequenceGenerator(name = "SQ_OPCAO_VARIACAO", sequenceName = "SQ_OPCAO_VARIACAO", initialValue = 1, allocationSize = 1)
+    @SequenceGenerator(name = "SQ_OPCAO_VARIACAO", sequenceName = "SQ_OPCAO_VARIACAO", allocationSize = 1)
     @Column(name = "ID_OPCAO_VARIACAO")
     private Long id_opcao_variacao;
 
