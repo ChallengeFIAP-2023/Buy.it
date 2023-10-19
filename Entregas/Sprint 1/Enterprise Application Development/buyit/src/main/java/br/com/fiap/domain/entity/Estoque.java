@@ -14,7 +14,7 @@ public class Estoque {
     @Column(name = "ID_ESTOQUE")
     private Long id_estoque;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_PRODUTO",
             referencedColumnName = "ID_PRODUTO",
@@ -23,7 +23,7 @@ public class Estoque {
     )
     private Produto id_produto;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_VARIACAO",
             referencedColumnName = "ID_VARIACAO",
@@ -41,7 +41,7 @@ public class Estoque {
     @Column(name = "IMG_URL_ESTOQUE")
     private String img_url_estoque;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_USUARIO",
             referencedColumnName = "ID_USUARIO",

@@ -25,7 +25,7 @@ public class Produto {
     @Column(name = "IMG_URL_PRODUTO")
     private String img_url_produto;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_CATEGORIA",
             referencedColumnName = "ID_CATEGORIA",

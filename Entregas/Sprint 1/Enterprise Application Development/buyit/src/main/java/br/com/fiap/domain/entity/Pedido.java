@@ -14,7 +14,7 @@ public class Pedido {
     @Column(name = "ID_PEDIDO")
     private Long id_pedido;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_USUARIO",
             referencedColumnName = "ID_USUARIO",

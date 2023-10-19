@@ -16,7 +16,7 @@ public class Opcao_Variacao {
     @Column(name = "NM_OPCAO_VARIACAO", nullable = false)
     private String nm_opcao_variacao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_VARIACAO",
             referencedColumnName = "ID_VARIACAO",

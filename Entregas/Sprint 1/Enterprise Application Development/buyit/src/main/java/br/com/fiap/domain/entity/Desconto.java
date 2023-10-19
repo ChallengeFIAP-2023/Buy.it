@@ -21,7 +21,7 @@ public class Desconto {
     @Column(name = "DESCONTO", nullable = false)
     private BigDecimal desconto;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_ESTOQUE",
             referencedColumnName = "ID_ESTOQUE",

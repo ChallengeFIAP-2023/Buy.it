@@ -11,7 +11,7 @@ public class Log {
     @Column(name = "ID_LOG")
     private Long id_log;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_PEDIDO",
             referencedColumnName = "ID_PEDIDO",

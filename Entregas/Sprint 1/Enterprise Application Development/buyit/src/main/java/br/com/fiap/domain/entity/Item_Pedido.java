@@ -7,7 +7,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "ITEM_PEDIDO")
 public class Item_Pedido {
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_PEDIDO",
             referencedColumnName = "ID_PEDIDO",
@@ -16,7 +16,7 @@ public class Item_Pedido {
     )
     private Pedido id_pedido;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_VARIACAO",
             referencedColumnName = "ID_VARIACAO",

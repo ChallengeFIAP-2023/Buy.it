@@ -15,7 +15,7 @@ public class Avaliacao {
     @Column(name = "ID_AVALIACAO")
     private Long id_avaliacao;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_USUARIO",
             referencedColumnName = "ID_USUARIO",
@@ -24,7 +24,7 @@ public class Avaliacao {
     )
     private Usuario id_usuario;
 
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_PEDIDO",
             referencedColumnName = "ID_PEDIDO",
