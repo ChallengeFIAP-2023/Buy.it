@@ -1,1 +1,1 @@
-- Revalidar atributos e tabelas (conferir e corrigir o que for necessário)
+- Refatorar criação de tabelas, inserts, etc... (GUSTAVO)
