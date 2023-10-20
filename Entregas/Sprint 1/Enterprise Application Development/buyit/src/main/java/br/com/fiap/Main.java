@@ -16,7 +16,7 @@ import java.net.URI;
 
 public class Main {
 
-    public static final String BASE_URI = "http://localhost/";
+    public static final String BASE_URI = "http://localhost:8080";
 
     public static final String PERSISTENCE_UNIT = "oracle";
 
