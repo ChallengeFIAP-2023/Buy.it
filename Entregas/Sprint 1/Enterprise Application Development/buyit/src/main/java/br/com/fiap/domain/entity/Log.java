@@ -2,6 +2,8 @@ package br.com.fiap.domain.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Objects;
+
 @Entity
 @Table(name = "LOG")
 public class Log {
@@ -89,22 +91,12 @@ public class Log {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Log log)) return false;
-
-        if (!id_log.equals(log.id_log)) return false;
-        if (!id_pedido.equals(log.id_pedido)) return false;
-        if (!timestamp_log.equals(log.timestamp_log)) return false;
-        if (!nm_log.equals(log.nm_log)) return false;
-        return ds_log.equals(log.ds_log);
+        return Objects.equals(id_log, log.id_log) && Objects.equals(id_pedido, log.id_pedido) && Objects.equals(timestamp_log, log.timestamp_log) && Objects.equals(nm_log, log.nm_log) && Objects.equals(ds_log, log.ds_log);
     }
 
     @Override
     public int hashCode() {
-        int result = id_log.hashCode();
-        result = 31 * result + id_pedido.hashCode();
-        result = 31 * result + timestamp_log.hashCode();
-        result = 31 * result + nm_log.hashCode();
-        result = 31 * result + ds_log.hashCode();
-        return result;
+        return Objects.hash(id_log, id_pedido, timestamp_log, nm_log, ds_log);
     }
 
     @Override

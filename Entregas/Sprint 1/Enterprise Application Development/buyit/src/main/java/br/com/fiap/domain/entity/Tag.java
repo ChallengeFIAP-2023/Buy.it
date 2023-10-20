@@ -2,6 +2,12 @@ package br.com.fiap.domain.entity;
 
 import jakarta.persistence.*;
 
+
+import java.util.Collections;
+import java.util.LinkedHashSet;
+import java.util.Objects;
+import java.util.Set;
+
 @Entity
 @Table(name = "TAG", uniqueConstraints = {
         @UniqueConstraint(name = "UK_NM_TAG", columnNames = "NM_TAG")
@@ -16,12 +22,33 @@ public class Tag {
     @Column(name = "NM_TAG", nullable = false)
     private String nm_tag;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "USUARIO_TAG",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "ID_TAG",
+                            referencedColumnName = "ID_TAG",
+                            foreignKey = @ForeignKey(name = "FK_TAG_USUARIO")
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "ID_USUARIO",
+                            referencedColumnName = "ID_USUARIO",
+                            foreignKey = @ForeignKey(name = "FK_USUARIO_TAG")
+                    )
+            }
+    )
+    private Set<Usuario> usuarios;
+
     public Tag() {
     }
 
-    public Tag(Long id_tag, String nm_tag) {
+    public Tag(Long id_tag, String nm_tag, Set<Usuario> usuarios) {
         this.id_tag = id_tag;
         this.nm_tag = nm_tag;
+        this.usuarios = Objects.nonNull( usuarios ) ? usuarios : new LinkedHashSet<>();
     }
 
     public Long getId_tag() {
@@ -42,20 +69,32 @@ public class Tag {
         return this;
     }
 
+    public Tag addUsuario(Usuario usuario) {
+        this.usuarios.add( usuario );
+        usuario.addTag( this );
+        return this;
+    }
+
+    public Tag removeUsuario(Usuario usuario) {
+        this.usuarios.remove( usuario );
+        if (usuario.getTags().equals( this )) usuario.removeTag( this );
+        return this;
+    }
+
+    public Set<Usuario> getUsuarios() {
+        return Collections.unmodifiableSet( usuarios );
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Tag tag)) return false;
-
-        if (!id_tag.equals(tag.id_tag)) return false;
-        return nm_tag.equals(tag.nm_tag);
+        return Objects.equals(id_tag, tag.id_tag) && Objects.equals(nm_tag, tag.nm_tag) && Objects.equals(usuarios, tag.usuarios);
     }
 
     @Override
     public int hashCode() {
-        int result = id_tag.hashCode();
-        result = 31 * result + nm_tag.hashCode();
-        return result;
+        return Objects.hash(id_tag, nm_tag, usuarios);
     }
 
     @Override

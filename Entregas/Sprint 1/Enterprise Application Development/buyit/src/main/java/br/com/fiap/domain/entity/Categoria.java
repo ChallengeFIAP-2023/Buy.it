@@ -61,18 +61,12 @@ public class Categoria {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Categoria categoria)) return false;
-
-        if (!id_categoria.equals(categoria.id_categoria)) return false;
-        if (!nm_categoria.equals(categoria.nm_categoria)) return false;
-        return Objects.equals(icone_categoria, categoria.icone_categoria);
+        return Objects.equals(id_categoria, categoria.id_categoria) && Objects.equals(nm_categoria, categoria.nm_categoria) && Objects.equals(icone_categoria, categoria.icone_categoria);
     }
 
     @Override
     public int hashCode() {
-        int result = id_categoria.hashCode();
-        result = 31 * result + nm_categoria.hashCode();
-        result = 31 * result + (icone_categoria != null ? icone_categoria.hashCode() : 0);
-        return result;
+        return Objects.hash(id_categoria, nm_categoria, icone_categoria);
     }
 
     @Override

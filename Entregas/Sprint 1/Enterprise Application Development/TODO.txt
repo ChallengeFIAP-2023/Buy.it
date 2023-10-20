@@ -1,8 +1,5 @@
-- Ajustar Escopo com Código Fonte (Perguntar para o Bene)
-- Verificar Todos os Entitys e Relacionamentos (Não tem Nenhum ManytoMany)
+- Rever Classes Mapeadas
 - Criar Métodos, Repository, Resources, Service
-- Ajustar Imagem do UML
-- Corrigir UML no README
 
 - READ ME:
 Instrução de Como rodar

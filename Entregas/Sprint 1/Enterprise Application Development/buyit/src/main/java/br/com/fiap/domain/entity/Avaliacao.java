@@ -125,29 +125,12 @@ public class Avaliacao {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Avaliacao avaliacao)) return false;
-
-        if (!id_avaliacao.equals(avaliacao.id_avaliacao)) return false;
-        if (!id_usuario.equals(avaliacao.id_usuario)) return false;
-        if (!id_pedido.equals(avaliacao.id_pedido)) return false;
-        if (!Objects.equals(nota_preco_avaliacao, avaliacao.nota_preco_avaliacao))
-            return false;
-        if (!Objects.equals(nota_qualidade_avaliacao, avaliacao.nota_qualidade_avaliacao))
-            return false;
-        if (!Objects.equals(nota_entrega_avaliacao, avaliacao.nota_entrega_avaliacao))
-            return false;
-        return Objects.equals(ds_avaliacao, avaliacao.ds_avaliacao);
+        return Objects.equals(id_avaliacao, avaliacao.id_avaliacao) && Objects.equals(id_usuario, avaliacao.id_usuario) && Objects.equals(id_pedido, avaliacao.id_pedido) && Objects.equals(nota_preco_avaliacao, avaliacao.nota_preco_avaliacao) && Objects.equals(nota_qualidade_avaliacao, avaliacao.nota_qualidade_avaliacao) && Objects.equals(nota_entrega_avaliacao, avaliacao.nota_entrega_avaliacao) && Objects.equals(ds_avaliacao, avaliacao.ds_avaliacao);
     }
 
     @Override
     public int hashCode() {
-        int result = id_avaliacao.hashCode();
-        result = 31 * result + id_usuario.hashCode();
-        result = 31 * result + id_pedido.hashCode();
-        result = 31 * result + (nota_preco_avaliacao != null ? nota_preco_avaliacao.hashCode() : 0);
-        result = 31 * result + (nota_qualidade_avaliacao != null ? nota_qualidade_avaliacao.hashCode() : 0);
-        result = 31 * result + (nota_entrega_avaliacao != null ? nota_entrega_avaliacao.hashCode() : 0);
-        result = 31 * result + (ds_avaliacao != null ? ds_avaliacao.hashCode() : 0);
-        return result;
+        return Objects.hash(id_avaliacao, id_usuario, id_pedido, nota_preco_avaliacao, nota_qualidade_avaliacao, nota_entrega_avaliacao, ds_avaliacao);
     }
 
     @Override

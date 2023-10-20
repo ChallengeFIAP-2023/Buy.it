@@ -2,7 +2,9 @@ package br.com.fiap.domain.entity;
 
 import jakarta.persistence.*;
 
+import java.util.Collections;
 import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Table(name = "USUARIO", uniqueConstraints = {
@@ -50,10 +52,30 @@ public class Usuario {
     @Column(name = "IMG_URL_USUARIO")
     private String img_url_usuario;
 
+    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinTable(
+            name = "USUARIO_TAG",
+            joinColumns = {
+                    @JoinColumn(
+                            name = "ID_USUARIO",
+                            referencedColumnName = "ID_USUARIO",
+                            foreignKey = @ForeignKey(name = "FK_USUARIO_TAG")
+                    )
+            },
+            inverseJoinColumns = {
+                    @JoinColumn(
+                            name = "ID_TAG",
+                            referencedColumnName = "ID_TAG",
+                            foreignKey = @ForeignKey(name = "FK_TAG_USUARIO")
+                    )
+            }
+    )
+    private Set<Tag> tags;
+
     public Usuario() {
     }
 
-    public Usuario(Long id_usuario, String cnpj_usuario, String nm_usuario, String cep_usuario, String logradouro_usuario, String complemento_usuario, Long num_endereco_usuario, String email_usuario, String senha_usuario, String tel_usuario, Long e_fornecedor, String img_url_usuario) {
+    public Usuario(Long id_usuario, String cnpj_usuario, String nm_usuario, String cep_usuario, String logradouro_usuario, String complemento_usuario, Long num_endereco_usuario, String email_usuario, String senha_usuario, String tel_usuario, Long e_fornecedor, String img_url_usuario, Set<Tag> tags) {
         this.id_usuario = id_usuario;
         this.cnpj_usuario = cnpj_usuario;
         this.nm_usuario = nm_usuario;
@@ -66,6 +88,7 @@ public class Usuario {
         this.tel_usuario = tel_usuario;
         this.e_fornecedor = e_fornecedor;
         this.img_url_usuario = img_url_usuario;
+        this.tags = tags;
     }
 
     public Long getId_usuario() {
@@ -176,41 +199,32 @@ public class Usuario {
         return this;
     }
 
+    public Usuario addTag(Tag tag) {
+        this.tags.add( tag );
+        tag.addUsuario( this );
+        return this;
+    }
+
+    public Usuario removeTag(Tag tag) {
+        this.tags.remove( tag );
+        if (tag.getUsuarios().equals( this )) tag.removeUsuario( this );
+        return this;
+    }
+
+    public Set<Tag> getTags() {
+        return Collections.unmodifiableSet( tags );
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Usuario usuario)) return false;
-
-        if (!id_usuario.equals(usuario.id_usuario)) return false;
-        if (!cnpj_usuario.equals(usuario.cnpj_usuario)) return false;
-        if (!nm_usuario.equals(usuario.nm_usuario)) return false;
-        if (!cep_usuario.equals(usuario.cep_usuario)) return false;
-        if (!logradouro_usuario.equals(usuario.logradouro_usuario)) return false;
-        if (!Objects.equals(complemento_usuario, usuario.complemento_usuario))
-            return false;
-        if (!num_endereco_usuario.equals(usuario.num_endereco_usuario)) return false;
-        if (!email_usuario.equals(usuario.email_usuario)) return false;
-        if (!senha_usuario.equals(usuario.senha_usuario)) return false;
-        if (!tel_usuario.equals(usuario.tel_usuario)) return false;
-        if (!e_fornecedor.equals(usuario.e_fornecedor)) return false;
-        return Objects.equals(img_url_usuario, usuario.img_url_usuario);
+        return Objects.equals(id_usuario, usuario.id_usuario) && Objects.equals(cnpj_usuario, usuario.cnpj_usuario) && Objects.equals(nm_usuario, usuario.nm_usuario) && Objects.equals(cep_usuario, usuario.cep_usuario) && Objects.equals(logradouro_usuario, usuario.logradouro_usuario) && Objects.equals(complemento_usuario, usuario.complemento_usuario) && Objects.equals(num_endereco_usuario, usuario.num_endereco_usuario) && Objects.equals(email_usuario, usuario.email_usuario) && Objects.equals(senha_usuario, usuario.senha_usuario) && Objects.equals(tel_usuario, usuario.tel_usuario) && Objects.equals(e_fornecedor, usuario.e_fornecedor) && Objects.equals(img_url_usuario, usuario.img_url_usuario) && Objects.equals(tags, usuario.tags);
     }
 
     @Override
     public int hashCode() {
-        int result = id_usuario.hashCode();
-        result = 31 * result + cnpj_usuario.hashCode();
-        result = 31 * result + nm_usuario.hashCode();
-        result = 31 * result + cep_usuario.hashCode();
-        result = 31 * result + logradouro_usuario.hashCode();
-        result = 31 * result + (complemento_usuario != null ? complemento_usuario.hashCode() : 0);
-        result = 31 * result + num_endereco_usuario.hashCode();
-        result = 31 * result + email_usuario.hashCode();
-        result = 31 * result + senha_usuario.hashCode();
-        result = 31 * result + tel_usuario.hashCode();
-        result = 31 * result + e_fornecedor.hashCode();
-        result = 31 * result + (img_url_usuario != null ? img_url_usuario.hashCode() : 0);
-        return result;
+        return Objects.hash(id_usuario, cnpj_usuario, nm_usuario, cep_usuario, logradouro_usuario, complemento_usuario, num_endereco_usuario, email_usuario, senha_usuario, tel_usuario, e_fornecedor, img_url_usuario, tags);
     }
 
     @Override

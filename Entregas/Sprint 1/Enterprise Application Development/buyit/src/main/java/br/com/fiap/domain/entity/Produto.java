@@ -33,18 +33,22 @@ public class Produto {
     )
     private Categoria id_categoria;
 
+    @Column(name = "MARCA_PRODUTO", nullable = false)
+    private String marca_produto;
+
     @Column(name = "MENOR_PRECO_PRODUTO", nullable = false)
     private BigDecimal menor_preco_produto;
 
     public Produto() {
     }
 
-    public Produto(Long id_produto, String nm_produto, String ds_produto, String img_url_produto, Categoria id_categoria, BigDecimal menor_preco_produto) {
+    public Produto(Long id_produto, String nm_produto, String ds_produto, String img_url_produto, Categoria id_categoria, String marca_produto, BigDecimal menor_preco_produto) {
         this.id_produto = id_produto;
         this.nm_produto = nm_produto;
         this.ds_produto = ds_produto;
         this.img_url_produto = img_url_produto;
         this.id_categoria = id_categoria;
+        this.marca_produto = marca_produto;
         this.menor_preco_produto = menor_preco_produto;
     }
 
@@ -93,6 +97,15 @@ public class Produto {
         return this;
     }
 
+    public String getMarca_produto() {
+        return marca_produto;
+    }
+
+    public Produto setMarca_produto(String marca_produto) {
+        this.marca_produto = marca_produto;
+        return this;
+    }
+
     public BigDecimal getMenor_preco_produto() {
         return menor_preco_produto;
     }
@@ -106,26 +119,12 @@ public class Produto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Produto produto)) return false;
-
-        if (!id_produto.equals(produto.id_produto)) return false;
-        if (!nm_produto.equals(produto.nm_produto)) return false;
-        if (!Objects.equals(ds_produto, produto.ds_produto)) return false;
-        if (!Objects.equals(img_url_produto, produto.img_url_produto))
-            return false;
-        if (!Objects.equals(id_categoria, produto.id_categoria))
-            return false;
-        return menor_preco_produto.equals(produto.menor_preco_produto);
+        return Objects.equals(id_produto, produto.id_produto) && Objects.equals(nm_produto, produto.nm_produto) && Objects.equals(ds_produto, produto.ds_produto) && Objects.equals(img_url_produto, produto.img_url_produto) && Objects.equals(id_categoria, produto.id_categoria) && Objects.equals(marca_produto, produto.marca_produto) && Objects.equals(menor_preco_produto, produto.menor_preco_produto);
     }
 
     @Override
     public int hashCode() {
-        int result = id_produto.hashCode();
-        result = 31 * result + nm_produto.hashCode();
-        result = 31 * result + (ds_produto != null ? ds_produto.hashCode() : 0);
-        result = 31 * result + (img_url_produto != null ? img_url_produto.hashCode() : 0);
-        result = 31 * result + (id_categoria != null ? id_categoria.hashCode() : 0);
-        result = 31 * result + menor_preco_produto.hashCode();
-        return result;
+        return Objects.hash(id_produto, nm_produto, ds_produto, img_url_produto, id_categoria, marca_produto, menor_preco_produto);
     }
 
     @Override
@@ -136,6 +135,7 @@ public class Produto {
                 ", ds_produto='" + ds_produto + '\'' +
                 ", img_url_produto='" + img_url_produto + '\'' +
                 ", id_categoria=" + id_categoria +
+                ", marca_produto='" + marca_produto + '\'' +
                 ", menor_preco_produto=" + menor_preco_produto +
                 '}';
     }

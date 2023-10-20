@@ -3,6 +3,7 @@ package br.com.fiap.domain.entity;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 
 @Entity
 @Table(name = "DESCONTO", uniqueConstraints = {
@@ -80,20 +81,12 @@ public class Desconto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Desconto desconto1)) return false;
-
-        if (!id_desconto.equals(desconto1.id_desconto)) return false;
-        if (!qtd_min_produto.equals(desconto1.qtd_min_produto)) return false;
-        if (!desconto.equals(desconto1.desconto)) return false;
-        return id_estoque.equals(desconto1.id_estoque);
+        return Objects.equals(id_desconto, desconto1.id_desconto) && Objects.equals(qtd_min_produto, desconto1.qtd_min_produto) && Objects.equals(desconto, desconto1.desconto) && Objects.equals(id_estoque, desconto1.id_estoque);
     }
 
     @Override
     public int hashCode() {
-        int result = id_desconto.hashCode();
-        result = 31 * result + qtd_min_produto.hashCode();
-        result = 31 * result + desconto.hashCode();
-        result = 31 * result + id_estoque.hashCode();
-        return result;
+        return Objects.hash(id_desconto, qtd_min_produto, desconto, id_estoque);
     }
 
     @Override
