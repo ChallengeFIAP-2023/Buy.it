@@ -10,18 +10,23 @@ import java.util.Objects;
 
 public class CategoriaRepository implements Repository<Categoria, Long> {
 
-    private static CategoriaRepository instance;
+    private static volatile CategoriaRepository instance;
     private final EntityManager manager;
 
     private CategoriaRepository(EntityManager manager) {
         this.manager = manager;
     }
 
-    public static synchronized CategoriaRepository getInstance(EntityManager manager) {
-        if (instance == null) {
-            instance = new CategoriaRepository(manager);
+    public static CategoriaRepository build(EntityManager manager) {
+        CategoriaRepository result = instance;
+        if (Objects.nonNull(result)) return result;
+
+        synchronized (CategoriaRepository.class) {
+            if (Objects.isNull(instance)) {
+                instance = new CategoriaRepository(manager);
+            }
+            return instance;
         }
-        return instance;
     }
 
     @Override

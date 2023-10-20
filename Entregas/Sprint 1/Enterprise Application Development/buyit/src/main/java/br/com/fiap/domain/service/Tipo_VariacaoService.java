@@ -1,8 +1,10 @@
 package br.com.fiap.domain.service;
 
+import br.com.fiap.Main;
 import br.com.fiap.domain.entity.Tipo_Variacao;
 import br.com.fiap.domain.repository.Tipo_VariacaoRepository;
-import jakarta.persistence.EntityManager;
+import br.com.fiap.infra.EntityManagerFactoryProvider;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,20 +12,23 @@ import java.util.Objects;
 public class Tipo_VariacaoService implements Service<Tipo_Variacao, Long> {
 
     private static volatile Tipo_VariacaoService instance;
+
     private final Tipo_VariacaoRepository repo;
 
     private Tipo_VariacaoService(Tipo_VariacaoRepository repo) {
         this.repo = repo;
     }
 
-    public static Tipo_VariacaoService build(EntityManager manager) {
+    public static Tipo_VariacaoService build() {
+        String persistenceUnit = Main.PERSISTENCE_UNIT;
         Tipo_VariacaoService result = instance;
         if (Objects.nonNull(result)) return result;
 
         synchronized (Tipo_VariacaoService.class) {
             if (Objects.isNull(instance)) {
-                Tipo_VariacaoRepository tipoVariacaoRepository = Tipo_VariacaoRepository.getInstance(manager);
-                instance = new Tipo_VariacaoService(tipoVariacaoRepository);
+                EntityManagerFactory factory = EntityManagerFactoryProvider.build(persistenceUnit).provide();
+                Tipo_VariacaoRepository avaliacaoRepository = Tipo_VariacaoRepository.build(factory.createEntityManager());
+                instance = new Tipo_VariacaoService(avaliacaoRepository);
             }
             return instance;
         }

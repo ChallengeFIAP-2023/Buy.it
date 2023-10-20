@@ -1,9 +1,12 @@
 package br.com.fiap.domain.service;
 
+import br.com.fiap.Main;
 import br.com.fiap.domain.entity.Log;
 import br.com.fiap.domain.entity.Pedido;
 import br.com.fiap.domain.repository.LogRepository;
-import jakarta.persistence.EntityManager;
+import br.com.fiap.infra.EntityManagerFactoryProvider;
+import jakarta.persistence.EntityManagerFactory;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -17,14 +20,16 @@ public class LogService implements Service<Log, Long> {
         this.repo = repo;
     }
 
-    public static LogService build(EntityManager manager) {
+    public static LogService build() {
+        String persistenceUnit = Main.PERSISTENCE_UNIT;
         LogService result = instance;
         if (Objects.nonNull(result)) return result;
 
         synchronized (LogService.class) {
             if (Objects.isNull(instance)) {
-                LogRepository logRepository = LogRepository.getInstance(manager);
-                instance = new LogService(logRepository);
+                EntityManagerFactory factory = EntityManagerFactoryProvider.build(persistenceUnit).provide();
+                LogRepository avaliacaoRepository = LogRepository.build(factory.createEntityManager());
+                instance = new LogService(avaliacaoRepository);
             }
             return instance;
         }

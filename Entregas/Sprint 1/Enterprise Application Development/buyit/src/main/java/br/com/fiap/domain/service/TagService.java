@@ -1,8 +1,10 @@
 package br.com.fiap.domain.service;
 
+import br.com.fiap.Main;
 import br.com.fiap.domain.entity.Tag;
 import br.com.fiap.domain.repository.TagRepository;
-import jakarta.persistence.EntityManager;
+import br.com.fiap.infra.EntityManagerFactoryProvider;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,20 +12,23 @@ import java.util.Objects;
 public class TagService implements Service<Tag, Long> {
 
     private static volatile TagService instance;
+
     private final TagRepository repo;
 
     private TagService(TagRepository repo) {
         this.repo = repo;
     }
 
-    public static TagService build(EntityManager manager) {
+    public static TagService build() {
+        String persistenceUnit = Main.PERSISTENCE_UNIT;
         TagService result = instance;
         if (Objects.nonNull(result)) return result;
 
         synchronized (TagService.class) {
             if (Objects.isNull(instance)) {
-                TagRepository tagRepository = TagRepository.getInstance(manager);
-                instance = new TagService(tagRepository);
+                EntityManagerFactory factory = EntityManagerFactoryProvider.build(persistenceUnit).provide();
+                TagRepository avaliacaoRepository = TagRepository.build(factory.createEntityManager());
+                instance = new TagService(avaliacaoRepository);
             }
             return instance;
         }

@@ -10,18 +10,23 @@ import java.util.Objects;
 
 public class PedidoRepository implements Repository<Pedido, Long> {
 
-    private static PedidoRepository instance;
+    private static volatile PedidoRepository instance;
     private final EntityManager manager;
 
     private PedidoRepository(EntityManager manager) {
         this.manager = manager;
     }
 
-    public static synchronized PedidoRepository getInstance(EntityManager manager) {
-        if (instance == null) {
-            instance = new PedidoRepository(manager);
+    public static PedidoRepository build(EntityManager manager) {
+        PedidoRepository result = instance;
+        if (Objects.nonNull(result)) return result;
+
+        synchronized (PedidoRepository.class) {
+            if (Objects.isNull(instance)) {
+                instance = new PedidoRepository(manager);
+            }
+            return instance;
         }
-        return instance;
     }
 
     @Override

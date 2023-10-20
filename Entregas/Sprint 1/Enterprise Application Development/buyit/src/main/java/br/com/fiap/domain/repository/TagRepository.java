@@ -10,18 +10,23 @@ import java.util.Objects;
 
 public class TagRepository implements Repository<Tag, Long> {
 
-    private static TagRepository instance;
+    private static volatile TagRepository instance;
     private final EntityManager manager;
 
     private TagRepository(EntityManager manager) {
         this.manager = manager;
     }
 
-    public static synchronized TagRepository getInstance(EntityManager manager) {
-        if (instance == null) {
-            instance = new TagRepository(manager);
+    public static TagRepository build(EntityManager manager) {
+        TagRepository result = instance;
+        if (Objects.nonNull(result)) return result;
+
+        synchronized (TagRepository.class) {
+            if (Objects.isNull(instance)) {
+                instance = new TagRepository(manager);
+            }
+            return instance;
         }
-        return instance;
     }
 
     @Override

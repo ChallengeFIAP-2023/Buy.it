@@ -10,18 +10,23 @@ import java.util.Objects;
 
 public class Tipo_VariacaoRepository implements Repository<Tipo_Variacao, Long> {
 
-    private static Tipo_VariacaoRepository instance;
+    private static volatile Tipo_VariacaoRepository instance;
     private final EntityManager manager;
 
     private Tipo_VariacaoRepository(EntityManager manager) {
         this.manager = manager;
     }
 
-    public static synchronized Tipo_VariacaoRepository getInstance(EntityManager manager) {
-        if (instance == null) {
-            instance = new Tipo_VariacaoRepository(manager);
+    public static Tipo_VariacaoRepository build(EntityManager manager) {
+        Tipo_VariacaoRepository result = instance;
+        if (Objects.nonNull(result)) return result;
+
+        synchronized (Tipo_VariacaoRepository.class) {
+            if (Objects.isNull(instance)) {
+                instance = new Tipo_VariacaoRepository(manager);
+            }
+            return instance;
         }
-        return instance;
     }
 
     @Override

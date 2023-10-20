@@ -11,18 +11,23 @@ import java.util.Objects;
 
 public class LogRepository implements Repository<Log, Long> {
 
-    private static LogRepository instance;
+    private static volatile LogRepository instance;
     private final EntityManager manager;
 
     private LogRepository(EntityManager manager) {
         this.manager = manager;
     }
 
-    public static synchronized LogRepository getInstance(EntityManager manager) {
-        if (instance == null) {
-            instance = new LogRepository(manager);
+    public static LogRepository build(EntityManager manager) {
+        LogRepository result = instance;
+        if (Objects.nonNull(result)) return result;
+
+        synchronized (LogRepository.class) {
+            if (Objects.isNull(instance)) {
+                instance = new LogRepository(manager);
+            }
+            return instance;
         }
-        return instance;
     }
 
     @Override

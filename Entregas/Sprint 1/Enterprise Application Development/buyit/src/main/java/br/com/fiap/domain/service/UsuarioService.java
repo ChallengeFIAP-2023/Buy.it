@@ -1,8 +1,10 @@
 package br.com.fiap.domain.service;
 
+import br.com.fiap.Main;
 import br.com.fiap.domain.entity.Usuario;
 import br.com.fiap.domain.repository.UsuarioRepository;
-import jakarta.persistence.EntityManager;
+import br.com.fiap.infra.EntityManagerFactoryProvider;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -10,20 +12,23 @@ import java.util.Objects;
 public class UsuarioService implements Service<Usuario, Long> {
 
     private static volatile UsuarioService instance;
+
     private final UsuarioRepository repo;
 
     private UsuarioService(UsuarioRepository repo) {
         this.repo = repo;
     }
 
-    public static UsuarioService build(EntityManager manager) {
+    public static UsuarioService build() {
+        String persistenceUnit = Main.PERSISTENCE_UNIT;
         UsuarioService result = instance;
         if (Objects.nonNull(result)) return result;
 
         synchronized (UsuarioService.class) {
             if (Objects.isNull(instance)) {
-                UsuarioRepository usuarioRepository = UsuarioRepository.getInstance(manager);
-                instance = new UsuarioService(usuarioRepository);
+                EntityManagerFactory factory = EntityManagerFactoryProvider.build(persistenceUnit).provide();
+                UsuarioRepository avaliacaoRepository = UsuarioRepository.build(factory.createEntityManager());
+                instance = new UsuarioService(avaliacaoRepository);
             }
             return instance;
         }

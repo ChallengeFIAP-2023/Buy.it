@@ -1,9 +1,11 @@
 package br.com.fiap.domain.service;
 
+import br.com.fiap.Main;
 import br.com.fiap.domain.entity.Desconto;
 import br.com.fiap.domain.entity.Estoque;
 import br.com.fiap.domain.repository.DescontoRepository;
-import jakarta.persistence.EntityManager;
+import br.com.fiap.infra.EntityManagerFactoryProvider;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -18,14 +20,16 @@ public class DescontoService implements Service<Desconto, Long> {
         this.repo = repo;
     }
 
-    public static DescontoService build(EntityManager manager) {
+    public static DescontoService build() {
+        String persistenceUnit = Main.PERSISTENCE_UNIT;
         DescontoService result = instance;
         if (Objects.nonNull(result)) return result;
 
         synchronized (DescontoService.class) {
             if (Objects.isNull(instance)) {
-                DescontoRepository descontoRepository = DescontoRepository.getInstance(manager);
-                instance = new DescontoService(descontoRepository);
+                EntityManagerFactory factory = EntityManagerFactoryProvider.build(persistenceUnit).provide();
+                DescontoRepository avaliacaoRepository = DescontoRepository.build(factory.createEntityManager());
+                instance = new DescontoService(avaliacaoRepository);
             }
             return instance;
         }

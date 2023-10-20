@@ -11,18 +11,23 @@ import java.util.Objects;
 
 public class ProdutoRepository implements Repository<Produto, Long> {
 
-    private static ProdutoRepository instance;
+    private static volatile ProdutoRepository instance;
     private final EntityManager manager;
 
     private ProdutoRepository(EntityManager manager) {
         this.manager = manager;
     }
 
-    public static synchronized ProdutoRepository getInstance(EntityManager manager) {
-        if (instance == null) {
-            instance = new ProdutoRepository(manager);
+    public static ProdutoRepository build(EntityManager manager) {
+        ProdutoRepository result = instance;
+        if (Objects.nonNull(result)) return result;
+
+        synchronized (ProdutoRepository.class) {
+            if (Objects.isNull(instance)) {
+                instance = new ProdutoRepository(manager);
+            }
+            return instance;
         }
-        return instance;
     }
 
     @Override

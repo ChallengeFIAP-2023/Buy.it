@@ -1,9 +1,11 @@
 package br.com.fiap.domain.service;
 
+import br.com.fiap.Main;
 import br.com.fiap.domain.entity.Pedido;
 import br.com.fiap.domain.entity.Usuario;
 import br.com.fiap.domain.repository.PedidoRepository;
-import jakarta.persistence.EntityManager;
+import br.com.fiap.infra.EntityManagerFactoryProvider;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -11,20 +13,23 @@ import java.util.Objects;
 public class PedidoService implements Service<Pedido, Long> {
 
     private static volatile PedidoService instance;
+
     private final PedidoRepository repo;
 
     private PedidoService(PedidoRepository repo) {
         this.repo = repo;
     }
 
-    public static PedidoService build(EntityManager manager) {
+    public static PedidoService build() {
+        String persistenceUnit = Main.PERSISTENCE_UNIT;
         PedidoService result = instance;
         if (Objects.nonNull(result)) return result;
 
         synchronized (PedidoService.class) {
             if (Objects.isNull(instance)) {
-                PedidoRepository pedidoRepository = PedidoRepository.getInstance(manager);
-                instance = new PedidoService(pedidoRepository);
+                EntityManagerFactory factory = EntityManagerFactoryProvider.build(persistenceUnit).provide();
+                PedidoRepository avaliacaoRepository = PedidoRepository.build(factory.createEntityManager());
+                instance = new PedidoService(avaliacaoRepository);
             }
             return instance;
         }

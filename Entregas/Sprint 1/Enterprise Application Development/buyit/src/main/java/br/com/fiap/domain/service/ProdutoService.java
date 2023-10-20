@@ -1,9 +1,11 @@
 package br.com.fiap.domain.service;
 
+import br.com.fiap.Main;
 import br.com.fiap.domain.entity.Categoria;
 import br.com.fiap.domain.entity.Produto;
 import br.com.fiap.domain.repository.ProdutoRepository;
-import jakarta.persistence.EntityManager;
+import br.com.fiap.infra.EntityManagerFactoryProvider;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -11,20 +13,23 @@ import java.util.Objects;
 public class ProdutoService implements Service<Produto, Long> {
 
     private static volatile ProdutoService instance;
+
     private final ProdutoRepository repo;
 
     private ProdutoService(ProdutoRepository repo) {
         this.repo = repo;
     }
 
-    public static ProdutoService build(EntityManager manager) {
+    public static ProdutoService build() {
+        String persistenceUnit = Main.PERSISTENCE_UNIT;
         ProdutoService result = instance;
         if (Objects.nonNull(result)) return result;
 
         synchronized (ProdutoService.class) {
             if (Objects.isNull(instance)) {
-                ProdutoRepository produtoRepository = ProdutoRepository.getInstance(manager);
-                instance = new ProdutoService(produtoRepository);
+                EntityManagerFactory factory = EntityManagerFactoryProvider.build(persistenceUnit).provide();
+                ProdutoRepository avaliacaoRepository = ProdutoRepository.build(factory.createEntityManager());
+                instance = new ProdutoService(avaliacaoRepository);
             }
             return instance;
         }

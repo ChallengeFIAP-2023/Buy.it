@@ -1,8 +1,11 @@
 package br.com.fiap.domain.service;
 
+import br.com.fiap.Main;
 import br.com.fiap.domain.entity.Categoria;
 import br.com.fiap.domain.repository.CategoriaRepository;
-import jakarta.persistence.EntityManager;
+import br.com.fiap.infra.EntityManagerFactoryProvider;
+import jakarta.persistence.EntityManagerFactory;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -16,14 +19,16 @@ public class CategoriaService implements Service<Categoria, Long> {
         this.repo = repo;
     }
 
-    public static CategoriaService build(EntityManager manager) {
+    public static CategoriaService build() {
+        String persistenceUnit = Main.PERSISTENCE_UNIT;
         CategoriaService result = instance;
         if (Objects.nonNull(result)) return result;
 
         synchronized (CategoriaService.class) {
             if (Objects.isNull(instance)) {
-                CategoriaRepository categoriaRepository = CategoriaRepository.getInstance(manager);
-                instance = new CategoriaService(categoriaRepository);
+                EntityManagerFactory factory = EntityManagerFactoryProvider.build(persistenceUnit).provide();
+                CategoriaRepository avaliacaoRepository = CategoriaRepository.build(factory.createEntityManager());
+                instance = new CategoriaService(avaliacaoRepository);
             }
             return instance;
         }

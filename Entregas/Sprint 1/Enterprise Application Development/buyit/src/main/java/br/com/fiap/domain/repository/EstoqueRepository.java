@@ -12,18 +12,23 @@ import java.util.Objects;
 
 public class EstoqueRepository implements Repository<Estoque, Long> {
 
-    private static EstoqueRepository instance;
+    private static volatile EstoqueRepository instance;
     private final EntityManager manager;
 
     private EstoqueRepository(EntityManager manager) {
         this.manager = manager;
     }
 
-    public static synchronized EstoqueRepository getInstance(EntityManager manager) {
-        if (instance == null) {
-            instance = new EstoqueRepository(manager);
+    public static EstoqueRepository build(EntityManager manager) {
+        EstoqueRepository result = instance;
+        if (Objects.nonNull(result)) return result;
+
+        synchronized (EstoqueRepository.class) {
+            if (Objects.isNull(instance)) {
+                instance = new EstoqueRepository(manager);
+            }
+            return instance;
         }
-        return instance;
     }
 
     @Override

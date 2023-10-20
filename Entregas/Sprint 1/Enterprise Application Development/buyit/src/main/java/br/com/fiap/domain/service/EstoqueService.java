@@ -1,11 +1,13 @@
 package br.com.fiap.domain.service;
 
+import br.com.fiap.Main;
 import br.com.fiap.domain.entity.Estoque;
 import br.com.fiap.domain.entity.Produto;
 import br.com.fiap.domain.entity.Usuario;
 import br.com.fiap.domain.entity.Valor_Variacao;
 import br.com.fiap.domain.repository.EstoqueRepository;
-import jakarta.persistence.EntityManager;
+import br.com.fiap.infra.EntityManagerFactoryProvider;
+import jakarta.persistence.EntityManagerFactory;
 
 import java.util.List;
 import java.util.Objects;
@@ -20,14 +22,16 @@ public class EstoqueService implements Service<Estoque, Long> {
         this.repo = repo;
     }
 
-    public static EstoqueService build(EntityManager manager) {
+    public static EstoqueService build() {
+        String persistenceUnit = Main.PERSISTENCE_UNIT;
         EstoqueService result = instance;
         if (Objects.nonNull(result)) return result;
 
         synchronized (EstoqueService.class) {
             if (Objects.isNull(instance)) {
-                EstoqueRepository estoqueRepository = EstoqueRepository.getInstance(manager);
-                instance = new EstoqueService(estoqueRepository);
+                EntityManagerFactory factory = EntityManagerFactoryProvider.build(persistenceUnit).provide();
+                EstoqueRepository avaliacaoRepository = EstoqueRepository.build(factory.createEntityManager());
+                instance = new EstoqueService(avaliacaoRepository);
             }
             return instance;
         }

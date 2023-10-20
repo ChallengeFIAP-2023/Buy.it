@@ -10,18 +10,23 @@ import java.util.Objects;
 
 public class DescontoRepository implements Repository<Desconto, Long> {
 
-    private static DescontoRepository instance;
+    private static volatile DescontoRepository instance;
     private final EntityManager manager;
 
     private DescontoRepository(EntityManager manager) {
         this.manager = manager;
     }
 
-    public static synchronized DescontoRepository getInstance(EntityManager manager) {
-        if (instance == null) {
-            instance = new DescontoRepository(manager);
+    public static DescontoRepository build(EntityManager manager) {
+        DescontoRepository result = instance;
+        if (Objects.nonNull(result)) return result;
+
+        synchronized (DescontoRepository.class) {
+            if (Objects.isNull(instance)) {
+                instance = new DescontoRepository(manager);
+            }
+            return instance;
         }
-        return instance;
     }
 
     @Override

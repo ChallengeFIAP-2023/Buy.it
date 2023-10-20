@@ -10,18 +10,23 @@ import java.util.Objects;
 
 public class UsuarioRepository implements Repository<Usuario, Long> {
 
-    private static UsuarioRepository instance;
+    private static volatile UsuarioRepository instance;
     private final EntityManager manager;
 
     private UsuarioRepository(EntityManager manager) {
         this.manager = manager;
     }
 
-    public static synchronized UsuarioRepository getInstance(EntityManager manager) {
-        if (instance == null) {
-            instance = new UsuarioRepository(manager);
+    public static UsuarioRepository build(EntityManager manager) {
+        UsuarioRepository result = instance;
+        if (Objects.nonNull(result)) return result;
+
+        synchronized (UsuarioRepository.class) {
+            if (Objects.isNull(instance)) {
+                instance = new UsuarioRepository(manager);
+            }
+            return instance;
         }
-        return instance;
     }
 
     @Override
