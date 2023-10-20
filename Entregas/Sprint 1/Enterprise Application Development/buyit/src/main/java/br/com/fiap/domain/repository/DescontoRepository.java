@@ -42,6 +42,7 @@ public class DescontoRepository implements Repository<Desconto, Long> {
     public Desconto persist(Desconto desconto) {
         EntityTransaction transaction = manager.getTransaction();
         try {
+            desconto.setId_desconto(null);
             transaction.begin();
             desconto.setId_desconto(null);
             Estoque estoque = findByIdEstoque(desconto.getId_estoque().getId_estoque());

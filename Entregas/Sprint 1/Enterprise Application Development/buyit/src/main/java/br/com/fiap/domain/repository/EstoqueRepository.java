@@ -52,8 +52,9 @@ public class EstoqueRepository implements Repository<Estoque, Long> {
     public Estoque persist(Estoque estoque) {
         EntityTransaction transaction = manager.getTransaction();
         try {
+            estoque.setId_estoque(null);
             transaction.begin();
-            Produto produto = findByIdProduto(estoque.getId_usuario().getId_usuario());
+            Produto produto = findByIdProduto(estoque.getId_produto().getId_produto());
             Valor_Variacao valor_variacao = findByIdValorVariacao(estoque.getId_valor_variacao().getId_valor_variacao());
             estoque.setId_produto(produto);
             estoque.setId_valor_variacao(valor_variacao);

@@ -45,6 +45,7 @@ public class CategoriaRepository implements Repository<Categoria, Long> {
     public Categoria persist(Categoria categoria) {
         EntityTransaction transaction = manager.getTransaction();
         try {
+            categoria.setId_categoria(null);
             transaction.begin();
             categoria.setId_categoria(null);
             manager.persist(categoria);

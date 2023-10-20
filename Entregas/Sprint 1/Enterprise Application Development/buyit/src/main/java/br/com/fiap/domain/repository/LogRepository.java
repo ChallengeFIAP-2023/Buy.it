@@ -41,8 +41,8 @@ public class LogRepository implements Repository<Log, Long> {
     public Log persist(Log log) {
         EntityTransaction transaction = manager.getTransaction();
         try {
-            transaction.begin();
             log.setId_log(null);
+            transaction.begin();
             Pedido pedido = findByIdPedido(log.getId_pedido().getId_pedido());
             log.setId_pedido(pedido);
             manager.persist(log);

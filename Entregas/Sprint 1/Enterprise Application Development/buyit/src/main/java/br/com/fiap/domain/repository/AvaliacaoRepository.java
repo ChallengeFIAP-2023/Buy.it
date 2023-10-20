@@ -48,6 +48,7 @@ public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
         EntityTransaction transaction = manager.getTransaction();
         try {
             transaction.begin();
+            avaliacao.setId_avaliacao(null);
             Usuario usuario = findByIdUsuario(avaliacao.getId_usuario().getId_usuario());
             Pedido pedido = findByIdPedido(avaliacao.getId_pedido().getId_pedido());
             avaliacao.setId_usuario(usuario);
