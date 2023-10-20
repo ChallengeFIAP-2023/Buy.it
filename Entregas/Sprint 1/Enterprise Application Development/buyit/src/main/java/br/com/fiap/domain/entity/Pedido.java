@@ -23,7 +23,7 @@ public class Pedido {
             name = "ID_USUARIO",
             columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_USUARIO",
-            foreignKey = @ForeignKey(name = "FK_USUARIO_AVALIACAO"),
+            foreignKey = @ForeignKey(name = "FK_USUARIO_PEDIDO"),
             nullable = false
     )
     private Usuario id_usuario;
@@ -39,7 +39,7 @@ public class Pedido {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "PEDIDO_ESTOQUE",
+            name = "BUYIT_PEDIDO_ESTOQUE",
             joinColumns = {
                     @JoinColumn(
                             name = "ID_PEDIDO",

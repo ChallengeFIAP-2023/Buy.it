@@ -2,7 +2,6 @@ package br.com.fiap.domain.entity;
 
 import jakarta.persistence.*;
 
-
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Objects;
@@ -24,7 +23,7 @@ public class Tag {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "USUARIO_TAG",
+            name = "BUYIT_USUARIO_TAG",
             joinColumns = {
                     @JoinColumn(
                             name = "ID_TAG",
@@ -50,7 +49,7 @@ public class Tag {
     public Tag(Long id_tag, String nm_tag, Set<Usuario> usuarios) {
         this.id_tag = id_tag;
         this.nm_tag = nm_tag;
-        this.usuarios = Objects.nonNull( usuarios ) ? usuarios : new LinkedHashSet<>();
+        this.usuarios = Objects.nonNull(usuarios) ? usuarios : new LinkedHashSet<>();
     }
 
     public Long getId_tag() {
@@ -72,19 +71,19 @@ public class Tag {
     }
 
     public Tag addUsuario(Usuario usuario) {
-        this.usuarios.add( usuario );
-        usuario.addTag( this );
+        this.usuarios.add(usuario);
+        usuario.addTag(this);
         return this;
     }
 
     public Tag removeUsuario(Usuario usuario) {
-        this.usuarios.remove( usuario );
-        if (usuario.getTags().equals( this )) usuario.removeTag( this );
+        this.usuarios.remove(usuario);
+        if (usuario.getTags().equals(this)) usuario.removeTag(this);
         return this;
     }
 
     public Set<Usuario> getUsuarios() {
-        return Collections.unmodifiableSet( usuarios );
+        return Collections.unmodifiableSet(usuarios);
     }
 
     @Override

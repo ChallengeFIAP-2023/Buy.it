@@ -58,7 +58,7 @@ public class Estoque {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "PEDIDO_ESTOQUE",
+            name = "BUYIT_PEDIDO_ESTOQUE",
             joinColumns = {
                     @JoinColumn(
                             name = "ID_ESTOQUE",
@@ -89,7 +89,7 @@ public class Estoque {
         this.preco_unitario = preco_unitario;
         this.img_url_estoque = img_url_estoque;
         this.id_usuario = id_usuario;
-        this.pedidos = Objects.nonNull( pedidos ) ? pedidos : new LinkedHashSet<>();
+        this.pedidos = Objects.nonNull(pedidos) ? pedidos : new LinkedHashSet<>();
     }
 
     public Long getId_estoque() {
@@ -156,14 +156,14 @@ public class Estoque {
     }
 
     public Estoque addPedido(Pedido pedido) {
-        this.pedidos.add( pedido );
-        pedido.addEstoque( this );
+        this.pedidos.add(pedido);
+        pedido.addEstoque(this);
         return this;
     }
 
     public Estoque removePedido(Pedido pedido) {
-        this.pedidos.remove( pedido );
-        if (pedido.getEstoques().equals( this )) pedido.removeEstoque( this );
+        this.pedidos.remove(pedido);
+        if (pedido.getEstoques().equals(this)) pedido.removeEstoque(this);
         return this;
     }
 

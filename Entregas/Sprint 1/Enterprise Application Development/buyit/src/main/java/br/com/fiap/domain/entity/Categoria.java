@@ -12,13 +12,13 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_CATEGORIA")
     @SequenceGenerator(name = "SQ_CATEGORIA", sequenceName = "SQ_CATEGORIA", allocationSize = 1)
-    @Column(name = "ID_CATEGORIA")
+    @Column(name = "ID_CATEGORIA", columnDefinition = "NUMBER(8)")
     private Long id_categoria;
 
-    @Column(name = "NM_CATEGORIA", nullable = false)
+    @Column(name = "NM_CATEGORIA", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String nm_categoria;
 
-    @Column(name = "ICONE_CATEGORIA")
+    @Column(name = "ICONE_CATEGORIA", columnDefinition = "VARCHAR2(255)")
     private String icone_categoria;
 
     public Categoria() {

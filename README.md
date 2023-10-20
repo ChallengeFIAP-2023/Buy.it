@@ -197,7 +197,7 @@ $ npm android
 <details>
   <summary><h3><u>Diagramas</u></h3></summary>
   <details>
-  <summary><h4><u>Diagrama Entidade Relacionamento</u></h4></summary>
+  <summary><h4><u>Diagrama Entidade Relacionamento (DER)</u></h4></summary>
   <br />
   <p align="center">
     <img src="Documentação/DER.png" alt="DER">
@@ -219,7 +219,7 @@ $ npm android
   </details>
 
   <details>
-  <summary><h4><u>Modelo Entidade Relacionamento</u></h4></summary>
+  <summary><h4><u>Modelo Entidade Relacionamento (MER)</u></h4></summary>
   <br />
   <p align="center">
     <img src="Documentação/MER.png" alt="MER">
@@ -231,7 +231,7 @@ $ npm android
   <summary><h4><u>Diagrama de Classes (UML)</u></h4></summary>
   <br />
   <p align="center">
-    <img src="Documentação/Diagrama de Classes UML.png" alt="MER">
+    <img src="Documentação/UML.png" alt="MER">
   </p>
   <br />
   </details>

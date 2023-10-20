@@ -54,7 +54,7 @@ public class Usuario {
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "USUARIO_TAG",
+            name = "BUYIT_USUARIO_TAG",
             joinColumns = {
                     @JoinColumn(
                             name = "ID_USUARIO",
@@ -202,19 +202,19 @@ public class Usuario {
     }
 
     public Usuario addTag(Tag tag) {
-        this.tags.add( tag );
-        tag.addUsuario( this );
+        this.tags.add(tag);
+        tag.addUsuario(this);
         return this;
     }
 
     public Usuario removeTag(Tag tag) {
-        this.tags.remove( tag );
-        if (tag.getUsuarios().equals( this )) tag.removeUsuario( this );
+        this.tags.remove(tag);
+        if (tag.getUsuarios().equals(this)) tag.removeUsuario(this);
         return this;
     }
 
     public Set<Tag> getTags() {
-        return Collections.unmodifiableSet( tags );
+        return Collections.unmodifiableSet(tags);
     }
 
     @Override
