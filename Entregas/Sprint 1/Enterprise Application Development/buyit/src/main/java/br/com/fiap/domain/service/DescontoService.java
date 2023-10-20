@@ -1,6 +1,6 @@
 package br.com.fiap.domain.service;
 
-import br.com.fiap.Main;
+import br.com.fiap.BuyitApplicattion;
 import br.com.fiap.domain.entity.Desconto;
 import br.com.fiap.domain.entity.Estoque;
 import br.com.fiap.domain.repository.DescontoRepository;
@@ -21,7 +21,7 @@ public class DescontoService implements Service<Desconto, Long> {
     }
 
     public static DescontoService build() {
-        String persistenceUnit = Main.PERSISTENCE_UNIT;
+        String persistenceUnit = BuyitApplicattion.PERSISTENCE_UNIT;
         DescontoService result = instance;
         if (Objects.nonNull(result)) return result;
 

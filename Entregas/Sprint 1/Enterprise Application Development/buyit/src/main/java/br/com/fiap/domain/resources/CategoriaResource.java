@@ -22,8 +22,8 @@ public class CategoriaResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        List<Categoria> avaliacoes = service.findAll();
-        return Response.ok(avaliacoes).build();
+        List<Categoria> categorias = service.findAll();
+        return Response.ok(categorias).build();
     }
 
     @GET

@@ -22,8 +22,8 @@ public class DescontoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        List<Desconto> avaliacoes = service.findAll();
-        return Response.ok(avaliacoes).build();
+        List<Desconto> descontos = service.findAll();
+        return Response.ok(descontos).build();
     }
 
     @GET

@@ -1,6 +1,6 @@
 package br.com.fiap.domain.service;
 
-import br.com.fiap.Main;
+import br.com.fiap.BuyitApplicattion;
 import br.com.fiap.domain.entity.Pedido;
 import br.com.fiap.domain.entity.Usuario;
 import br.com.fiap.domain.repository.PedidoRepository;
@@ -21,7 +21,7 @@ public class PedidoService implements Service<Pedido, Long> {
     }
 
     public static PedidoService build() {
-        String persistenceUnit = Main.PERSISTENCE_UNIT;
+        String persistenceUnit = BuyitApplicattion.PERSISTENCE_UNIT;
         PedidoService result = instance;
         if (Objects.nonNull(result)) return result;
 

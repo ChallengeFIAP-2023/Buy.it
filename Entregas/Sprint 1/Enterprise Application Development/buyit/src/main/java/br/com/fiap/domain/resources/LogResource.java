@@ -22,8 +22,8 @@ public class LogResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        List<Log> avaliacoes = service.findAll();
-        return Response.ok(avaliacoes).build();
+        List<Log> logs = service.findAll();
+        return Response.ok(logs).build();
     }
 
     @GET

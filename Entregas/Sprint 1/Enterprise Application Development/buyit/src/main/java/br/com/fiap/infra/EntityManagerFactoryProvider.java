@@ -1,6 +1,6 @@
 package br.com.fiap.infra;
 
-import br.com.fiap.Main;
+import br.com.fiap.BuyitApplicattion;
 import jakarta.persistence.EntityManagerFactory;
 import jakarta.persistence.Persistence;
 import org.glassfish.hk2.api.Factory;
@@ -65,7 +65,7 @@ public class EntityManagerFactoryProvider implements Factory<EntityManagerFactor
 
         for (String chave : env.keySet()) {
 
-            if (Main.PERSISTENCE_UNIT.equals("oracle")) {
+            if (BuyitApplicattion.PERSISTENCE_UNIT.equals("oracle")) {
 
                 if (chave.contains("USER_FIAP")) {
                     properties.put("jakarta.persistence.jdbc.user", env.get(chave));

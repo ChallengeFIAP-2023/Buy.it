@@ -22,8 +22,8 @@ public class TagResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        List<Tag> avaliacoes = service.findAll();
-        return Response.ok(avaliacoes).build();
+        List<Tag> tags = service.findAll();
+        return Response.ok(tags).build();
     }
 
     @GET

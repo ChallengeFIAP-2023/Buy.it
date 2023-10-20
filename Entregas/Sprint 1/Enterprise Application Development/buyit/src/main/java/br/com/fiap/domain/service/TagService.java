@@ -1,6 +1,6 @@
 package br.com.fiap.domain.service;
 
-import br.com.fiap.Main;
+import br.com.fiap.BuyitApplicattion;
 import br.com.fiap.domain.entity.Tag;
 import br.com.fiap.domain.repository.TagRepository;
 import br.com.fiap.infra.EntityManagerFactoryProvider;
@@ -20,7 +20,7 @@ public class TagService implements Service<Tag, Long> {
     }
 
     public static TagService build() {
-        String persistenceUnit = Main.PERSISTENCE_UNIT;
+        String persistenceUnit = BuyitApplicattion.PERSISTENCE_UNIT;
         TagService result = instance;
         if (Objects.nonNull(result)) return result;
 

@@ -22,8 +22,8 @@ public class UsuarioResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        List<Usuario> avaliacoes = service.findAll();
-        return Response.ok(avaliacoes).build();
+        List<Usuario> usuarios = service.findAll();
+        return Response.ok(usuarios).build();
     }
 
     @GET

@@ -1,6 +1,6 @@
 package br.com.fiap.domain.service;
 
-import br.com.fiap.Main;
+import br.com.fiap.BuyitApplicattion;
 import br.com.fiap.domain.entity.Avaliacao;
 import br.com.fiap.domain.entity.Usuario;
 import br.com.fiap.domain.repository.AvaliacaoRepository;
@@ -21,7 +21,7 @@ public class AvaliacaoService implements Service<Avaliacao, Long> {
     }
 
     public static AvaliacaoService build() {
-        String persistenceUnit = Main.PERSISTENCE_UNIT;
+        String persistenceUnit = BuyitApplicattion.PERSISTENCE_UNIT;
         AvaliacaoService result = instance;
         if (Objects.nonNull(result)) return result;
 

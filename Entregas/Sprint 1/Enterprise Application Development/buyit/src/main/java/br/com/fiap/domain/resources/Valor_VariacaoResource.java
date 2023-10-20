@@ -22,8 +22,8 @@ public class Valor_VariacaoResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        List<Valor_Variacao> avaliacoes = service.findAll();
-        return Response.ok(avaliacoes).build();
+        List<Valor_Variacao> valor_variacoes = service.findAll();
+        return Response.ok(valor_variacoes).build();
     }
 
     @GET

@@ -22,8 +22,8 @@ public class EstoqueResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        List<Estoque> avaliacoes = service.findAll();
-        return Response.ok(avaliacoes).build();
+        List<Estoque> estoques = service.findAll();
+        return Response.ok(estoques).build();
     }
 
     @GET

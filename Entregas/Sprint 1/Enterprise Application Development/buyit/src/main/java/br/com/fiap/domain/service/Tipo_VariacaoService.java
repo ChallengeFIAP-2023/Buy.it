@@ -1,6 +1,6 @@
 package br.com.fiap.domain.service;
 
-import br.com.fiap.Main;
+import br.com.fiap.BuyitApplicattion;
 import br.com.fiap.domain.entity.Tipo_Variacao;
 import br.com.fiap.domain.repository.Tipo_VariacaoRepository;
 import br.com.fiap.infra.EntityManagerFactoryProvider;
@@ -20,7 +20,7 @@ public class Tipo_VariacaoService implements Service<Tipo_Variacao, Long> {
     }
 
     public static Tipo_VariacaoService build() {
-        String persistenceUnit = Main.PERSISTENCE_UNIT;
+        String persistenceUnit = BuyitApplicattion.PERSISTENCE_UNIT;
         Tipo_VariacaoService result = instance;
         if (Objects.nonNull(result)) return result;
 
