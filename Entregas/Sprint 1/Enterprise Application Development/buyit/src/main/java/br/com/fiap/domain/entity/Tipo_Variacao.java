@@ -5,18 +5,18 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "TIPO_VARIACAO", uniqueConstraints = {
-        @UniqueConstraint(name = "UK_NM_TIPO_VARIACAO", columnNames = "NM_TIPO_VARIACAO")
+@Table(name = "BUYIT_TIPO_VARIACAO", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_BUYIT_NM_TIPO_VARIACAO", columnNames = "NM_TIPO_VARIACAO")
 })
 public class Tipo_Variacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TIPO_VARIACAO")
     @SequenceGenerator(name = "SQ_TIPO_VARIACAO", sequenceName = "SQ_TIPO_VARIACAO", allocationSize = 1)
-    @Column(name = "ID_TIPO_VARIACAO")
+    @Column(name = "ID_TIPO_VARIACAO", columnDefinition = "NUMBER(8)")
     private Long id_tipo_variacao;
 
-    @Column(name = "NM_TIPO_VARIACAO", nullable = false)
+    @Column(name = "NM_TIPO_VARIACAO", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String nm_tipo_variacao;
 
     public Tipo_Variacao() {

@@ -7,49 +7,49 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "USUARIO", uniqueConstraints = {
-        @UniqueConstraint(name = "UK_CNPJ_USUARIO", columnNames = "CNPJ_USUARIO"),
-        @UniqueConstraint(name = "EMAIL_USUARIO", columnNames = "EMAIL_USUARIO"),
-        @UniqueConstraint(name = "TEL_USUARIO", columnNames = "TEL_USUARIO")
+@Table(name = "BUYIT_USUARIO", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_BUYIT_CNPJ_USUARIO", columnNames = "CNPJ_USUARIO"),
+        @UniqueConstraint(name = "UK_BUYIT_EMAIL_USUARIO", columnNames = "EMAIL_USUARIO"),
+        @UniqueConstraint(name = "UK_BUYIT_TEL_USUARIO", columnNames = "TEL_USUARIO")
 })
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_USUARIO")
     @SequenceGenerator(name = "SQ_USUARIO", sequenceName = "SQ_USUARIO", allocationSize = 1)
-    @Column(name = "ID_USUARIO")
+    @Column(name = "ID_USUARIO", columnDefinition = "NUMBER(8)")
     private Long id_usuario;
 
-    @Column(name = "CNPJ_USUARIO", nullable = false)
+    @Column(name = "CNPJ_USUARIO", nullable = false, columnDefinition = "CHAR(18)")
     private String cnpj_usuario;
 
-    @Column(name = "NM_USUARIO", nullable = false)
+    @Column(name = "NM_USUARIO", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String nm_usuario;
 
-    @Column(name = "CEP_USUARIO", nullable = false)
+    @Column(name = "CEP_USUARIO", nullable = false, columnDefinition = "CHAR(9)")
     private String cep_usuario;
 
-    @Column(name = "LOGRADOURO_USUARIO", nullable = false)
+    @Column(name = "LOGRADOURO_USUARIO", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String logradouro_usuario;
 
-    @Column(name = "COMPLEMENTO_USUARIO")
+    @Column(name = "COMPLEMENTO_USUARIO", columnDefinition = "VARCHAR2(50)")
     private String complemento_usuario;
 
-    @Column(name = "NUM_ENDERECO_USUARIO", nullable = false)
-    private Long num_endereco_usuario;
+    @Column(name = "NUM_ENDERECO_USUARIO", nullable = false, columnDefinition = "VARCHAR2(50)")
+    private String num_endereco_usuario;
 
-    @Column(name = "EMAIL_USUARIO", nullable = false)
+    @Column(name = "EMAIL_USUARIO", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String email_usuario;
 
-    @Column(name = "SENHA_USUARIO", nullable = false)
+    @Column(name = "SENHA_USUARIO", nullable = false, columnDefinition = "VARCHAR2(20)")
     private String senha_usuario;
 
-    @Column(name = "TEL_USUARIO", nullable = false)
+    @Column(name = "TEL_USUARIO", nullable = false, columnDefinition = "VARCHAR2(15)")
     private String tel_usuario;
 
-    @Column(name = "E_FORNECEDOR", nullable = false)
+    @Column(name = "E_FORNECEDOR", nullable = false, columnDefinition = "NUMBER(1)")
     private Long e_fornecedor;
 
-    @Column(name = "IMG_URL_USUARIO")
+    @Column(name = "IMG_URL_USUARIO", columnDefinition = "VARCHAR2(255)")
     private String img_url_usuario;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -58,6 +58,7 @@ public class Usuario {
             joinColumns = {
                     @JoinColumn(
                             name = "ID_USUARIO",
+                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_USUARIO",
                             foreignKey = @ForeignKey(name = "FK_USUARIO_TAG")
                     )
@@ -65,6 +66,7 @@ public class Usuario {
             inverseJoinColumns = {
                     @JoinColumn(
                             name = "ID_TAG",
+                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_TAG",
                             foreignKey = @ForeignKey(name = "FK_TAG_USUARIO")
                     )
@@ -75,7 +77,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long id_usuario, String cnpj_usuario, String nm_usuario, String cep_usuario, String logradouro_usuario, String complemento_usuario, Long num_endereco_usuario, String email_usuario, String senha_usuario, String tel_usuario, Long e_fornecedor, String img_url_usuario, Set<Tag> tags) {
+    public Usuario(Long id_usuario, String cnpj_usuario, String nm_usuario, String cep_usuario, String logradouro_usuario, String complemento_usuario, String num_endereco_usuario, String email_usuario, String senha_usuario, String tel_usuario, Long e_fornecedor, String img_url_usuario, Set<Tag> tags) {
         this.id_usuario = id_usuario;
         this.cnpj_usuario = cnpj_usuario;
         this.nm_usuario = nm_usuario;
@@ -145,11 +147,11 @@ public class Usuario {
         return this;
     }
 
-    public Long getNum_endereco_usuario() {
+    public String getNum_endereco_usuario() {
         return num_endereco_usuario;
     }
 
-    public Usuario setNum_endereco_usuario(Long num_endereco_usuario) {
+    public Usuario setNum_endereco_usuario(String num_endereco_usuario) {
         this.num_endereco_usuario = num_endereco_usuario;
         return this;
     }

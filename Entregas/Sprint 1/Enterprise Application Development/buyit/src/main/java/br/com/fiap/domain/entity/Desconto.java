@@ -6,25 +6,26 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@Table(name = "DESCONTO", uniqueConstraints = {
-        @UniqueConstraint(name = "UK_ID_ESTOQUE", columnNames = "ID_ESTOQUE")
+@Table(name = "BUYIT_DESCONTO", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_BUYIT_ID_ESTOQUE", columnNames = "ID_ESTOQUE")
 })
 public class Desconto {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_DESCONTO")
     @SequenceGenerator(name = "SQ_DESCONTO", sequenceName = "SQ_DESCONTO", allocationSize = 1)
-    @Column(name = "ID_DESCONTO")
+    @Column(name = "ID_DESCONTO", columnDefinition = "NUMBER(8)")
     private Long id_desconto;
 
-    @Column(name = "QTD_MIN_PRODUTO", nullable = false)
+    @Column(name = "QTD_MIN_PRODUTO", nullable = false, columnDefinition = "NUMBER(8)")
     private Long qtd_min_produto;
 
-    @Column(name = "DESCONTO", nullable = false)
+    @Column(name = "DESCONTO", nullable = false, columnDefinition = "NUMBER(5,2)")
     private BigDecimal desconto;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_ESTOQUE",
+            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_ESTOQUE",
             foreignKey = @ForeignKey(name = "FK_ESTOQUE_DESCONTO"),
             nullable = false

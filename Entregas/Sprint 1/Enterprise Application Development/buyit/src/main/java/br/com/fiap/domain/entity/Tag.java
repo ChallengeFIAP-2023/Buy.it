@@ -9,17 +9,17 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "TAG", uniqueConstraints = {
-        @UniqueConstraint(name = "UK_NM_TAG", columnNames = "NM_TAG")
+@Table(name = "BUYIT_TAG", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_BUYIT_NM_TAG", columnNames = "NM_TAG")
 })
 public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TAG")
     @SequenceGenerator(name = "SQ_TAG", sequenceName = "SQ_TAG", allocationSize = 1)
-    @Column(name = "ID_TAG")
+    @Column(name = "ID_TAG", columnDefinition = "NUMBER(8)")
     private Long id_tag;
 
-    @Column(name = "NM_TAG", nullable = false)
+    @Column(name = "NM_TAG", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String nm_tag;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -28,6 +28,7 @@ public class Tag {
             joinColumns = {
                     @JoinColumn(
                             name = "ID_TAG",
+                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_TAG",
                             foreignKey = @ForeignKey(name = "FK_TAG_USUARIO")
                     )
@@ -35,6 +36,7 @@ public class Tag {
             inverseJoinColumns = {
                     @JoinColumn(
                             name = "ID_USUARIO",
+                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_USUARIO",
                             foreignKey = @ForeignKey(name = "FK_USUARIO_TAG")
                     )

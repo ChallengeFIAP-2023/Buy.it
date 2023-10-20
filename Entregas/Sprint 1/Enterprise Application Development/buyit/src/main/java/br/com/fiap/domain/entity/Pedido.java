@@ -10,30 +10,31 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "PEDIDO")
+@Table(name = "BUYIT_PEDIDO")
 public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_PEDIDO")
     @SequenceGenerator(name = "SQ_PEDIDO", sequenceName = "SQ_PEDIDO", allocationSize = 1)
-    @Column(name = "ID_PEDIDO")
+    @Column(name = "ID_PEDIDO", columnDefinition = "NUMBER(8)")
     private Long id_pedido;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_USUARIO",
+            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_USUARIO",
             foreignKey = @ForeignKey(name = "FK_USUARIO_AVALIACAO"),
             nullable = false
     )
     private Usuario id_usuario;
 
-    @Column(name = "STATUS_PEDIDO", nullable = false)
+    @Column(name = "STATUS_PEDIDO", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String status_pedido;
 
-    @Column(name = "DATA_PEDIDO", nullable = false)
+    @Column(name = "DATA_PEDIDO", nullable = false, columnDefinition = "DATE")
     private LocalDate data_pedido;
 
-    @Column(name = "VALOR_PEDIDO", nullable = false)
+    @Column(name = "VALOR_PEDIDO", nullable = false, columnDefinition = "NUMBER(10,2)")
     private BigDecimal valor_pedido;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -42,6 +43,7 @@ public class Pedido {
             joinColumns = {
                     @JoinColumn(
                             name = "ID_PEDIDO",
+                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_PEDIDO",
                             foreignKey = @ForeignKey(name = "FK_PEDIDO_ESTOQUE")
                     )
@@ -49,6 +51,7 @@ public class Pedido {
             inverseJoinColumns = {
                     @JoinColumn(
                             name = "ID_ESTOQUE",
+                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_ESTOQUE",
                             foreignKey = @ForeignKey(name = "FK_ESTOQUE_PEDIDO")
                     )

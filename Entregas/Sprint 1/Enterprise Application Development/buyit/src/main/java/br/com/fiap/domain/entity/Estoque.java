@@ -9,17 +9,18 @@ import java.util.Objects;
 import java.util.Set;
 
 @Entity
-@Table(name = "ESTOQUE")
+@Table(name = "BUYIT_ESTOQUE")
 public class Estoque {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_ESTOQUE")
     @SequenceGenerator(name = "SQ_ESTOQUE", sequenceName = "SQ_ESTOQUE", allocationSize = 1)
-    @Column(name = "ID_ESTOQUE")
+    @Column(name = "ID_ESTOQUE", columnDefinition = "NUMBER(8)")
     private Long id_estoque;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_PRODUTO",
+            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_PRODUTO",
             foreignKey = @ForeignKey(name = "FK_PRODUTO_ESTOQUE"),
             nullable = false
@@ -29,24 +30,26 @@ public class Estoque {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_VALOR_VARIACAO",
+            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_VALOR_VARIACAO",
             foreignKey = @ForeignKey(name = "FK_VALOR_VARIACAO_ESTOQUE"),
             nullable = false
     )
     private Valor_Variacao id_valor_variacao;
 
-    @Column(name = "QTD_ESTOQUE", nullable = false)
+    @Column(name = "QTD_ESTOQUE", nullable = false, columnDefinition = "NUMBER(8)")
     private Long qtd_estoque;
 
-    @Column(name = "PRECO_UNITARIO", nullable = false)
+    @Column(name = "PRECO_UNITARIO", nullable = false, columnDefinition = "NUMBER(10,2)")
     private BigDecimal preco_unitario;
 
-    @Column(name = "IMG_URL_ESTOQUE")
+    @Column(name = "IMG_URL_ESTOQUE", columnDefinition = "VARCHAR2(255)")
     private String img_url_estoque;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_USUARIO",
+            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_USUARIO",
             foreignKey = @ForeignKey(name = "FK_USUARIO_ESTOQUE"),
             nullable = false
@@ -59,6 +62,7 @@ public class Estoque {
             joinColumns = {
                     @JoinColumn(
                             name = "ID_ESTOQUE",
+                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_ESTOQUE",
                             foreignKey = @ForeignKey(name = "FK_ESTOQUE_PEDIDO")
                     )
@@ -66,6 +70,7 @@ public class Estoque {
             inverseJoinColumns = {
                     @JoinColumn(
                             name = "ID_PEDIDO",
+                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_PEDIDO",
                             foreignKey = @ForeignKey(name = "FK_PEDIDO_ESTOQUE")
                     )

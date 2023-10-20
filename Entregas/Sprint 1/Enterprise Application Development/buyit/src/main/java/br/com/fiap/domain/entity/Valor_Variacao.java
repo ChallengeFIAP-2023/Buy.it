@@ -5,23 +5,24 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "VALOR_VARIACAO", uniqueConstraints = {
-        @UniqueConstraint(name = "UK_NM_VALOR_VARIACAO", columnNames = "NM_VALOR_VARIACAO")
+@Table(name = "BUYIT_VALOR_VARIACAO", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_BUYIT_NM_VALOR_VARIACAO", columnNames = "NM_VALOR_VARIACAO")
 })
 public class Valor_Variacao {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_VALOR_VARIACAO")
     @SequenceGenerator(name = "SQ_VALOR_VARIACAO", sequenceName = "SQ_VALOR_VARIACAO", allocationSize = 1)
-    @Column(name = "ID_VALOR_VARIACAO")
+    @Column(name = "ID_VALOR_VARIACAO", columnDefinition = "NUMBER(8)")
     private Long id_valor_variacao;
 
-    @Column(name = "NM_VALOR_VARIACAO", nullable = false)
+    @Column(name = "NM_VALOR_VARIACAO", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String nm_valor_variacao;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_TIPO_VARIACAO",
+            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_TIPO_VARIACAO",
             foreignKey = @ForeignKey(name = "FK_TIPO_VARIACAO_VALOR_VARIACAO"),
             nullable = false

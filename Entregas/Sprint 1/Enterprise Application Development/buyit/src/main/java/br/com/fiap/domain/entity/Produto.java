@@ -6,37 +6,38 @@ import java.math.BigDecimal;
 import java.util.Objects;
 
 @Entity
-@Table(name = "PRODUTO", uniqueConstraints = {
-        @UniqueConstraint(name = "UK_NM_PRODUTO", columnNames = "NM_PRODUTO")
+@Table(name = "BUYIT_PRODUTO", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_BUYIT_NM_PRODUTO", columnNames = "NM_PRODUTO")
 })
 public class Produto {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_PRODUTO")
     @SequenceGenerator(name = "SQ_PRODUTO", sequenceName = "SQ_PRODUTO", allocationSize = 1)
-    @Column(name = "ID_PRODUTO")
+    @Column(name = "ID_PRODUTO", columnDefinition = "NUMBER(8)")
     private Long id_produto;
 
-    @Column(name = "NM_PRODUTO", nullable = false)
+    @Column(name = "NM_PRODUTO", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String nm_produto;
 
-    @Column(name = "DS_PRODUTO")
+    @Column(name = "DS_PRODUTO", columnDefinition = "VARCHAR2(255)")
     private String ds_produto;
 
-    @Column(name = "IMG_URL_PRODUTO")
+    @Column(name = "IMG_URL_PRODUTO", columnDefinition = "VARCHAR2(255)")
     private String img_url_produto;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_CATEGORIA",
+            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_CATEGORIA",
             foreignKey = @ForeignKey(name = "FK_CATEGORIA_PRODUTO")
     )
     private Categoria id_categoria;
 
-    @Column(name = "MARCA_PRODUTO", nullable = false)
+    @Column(name = "MARCA_PRODUTO", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String marca_produto;
 
-    @Column(name = "MENOR_PRECO_PRODUTO", nullable = false)
+    @Column(name = "MENOR_PRECO_PRODUTO", nullable = false, columnDefinition = "NUMBER(10,2)")
     private BigDecimal menor_preco_produto;
 
     public Produto() {

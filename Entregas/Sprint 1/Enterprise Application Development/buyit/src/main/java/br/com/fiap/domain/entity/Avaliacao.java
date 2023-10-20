@@ -5,19 +5,20 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "AVALIACAO", uniqueConstraints = {
-        @UniqueConstraint(name = "UK_ID_PEDIDO", columnNames = "ID_PEDIDO")
+@Table(name = "BUYIT_AVALIACAO", uniqueConstraints = {
+        @UniqueConstraint(name = "UK_BUYIT_ID_PEDIDO", columnNames = "ID_PEDIDO")
 })
 public class Avaliacao {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_AVALIACAO")
     @SequenceGenerator(name = "SQ_AVALIACAO", sequenceName = "SQ_AVALIACAO", allocationSize = 1)
-    @Column(name = "ID_AVALIACAO")
+    @Column(name = "ID_AVALIACAO", columnDefinition = "NUMBER(8)")
     private Long id_avaliacao;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_USUARIO",
+            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_USUARIO",
             foreignKey = @ForeignKey(name = "FK_USUARIO_AVALIACAO"),
             nullable = false
@@ -27,22 +28,23 @@ public class Avaliacao {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_PEDIDO",
+            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_PEDIDO",
             foreignKey = @ForeignKey(name = "FK_PEDIDO_AVALIACAO"),
             nullable = false
     )
     private Pedido id_pedido;
 
-    @Column(name = "NOTA_PRECO_AVALIACAO")
+    @Column(name = "NOTA_PRECO_AVALIACAO", columnDefinition = "NUMBER(1)")
     private Long nota_preco_avaliacao;
 
-    @Column(name = "NOTA_QUALIDADE_AVALIACAO")
+    @Column(name = "NOTA_QUALIDADE_AVALIACAO", columnDefinition = "NUMBER(1)")
     private Long nota_qualidade_avaliacao;
 
-    @Column(name = "NOTA_ENTREGA_AVALIACAO")
+    @Column(name = "NOTA_ENTREGA_AVALIACAO", columnDefinition = "NUMBER(1)")
     private Long nota_entrega_avaliacao;
 
-    @Column(name = "DS_AVALIACAO")
+    @Column(name = "DS_AVALIACAO", columnDefinition = "VARCHAR2(255)")
     private String ds_avaliacao;
 
     public Avaliacao() {

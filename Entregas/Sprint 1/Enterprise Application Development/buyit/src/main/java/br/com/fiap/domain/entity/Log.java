@@ -5,30 +5,31 @@ import jakarta.persistence.*;
 import java.util.Objects;
 
 @Entity
-@Table(name = "LOG")
+@Table(name = "BUYIT_LOG")
 public class Log {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_LOG")
     @SequenceGenerator(name = "SQ_LOG", sequenceName = "SQ_LOG", allocationSize = 1)
-    @Column(name = "ID_LOG")
+    @Column(name = "ID_LOG", columnDefinition = "NUMBER(8)")
     private Long id_log;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_PEDIDO",
+            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_PEDIDO",
             foreignKey = @ForeignKey(name = "FK_PEDIDO_LOG"),
             nullable = false
     )
     private Pedido id_pedido;
 
-    @Column(name = "TIMESTAMP_LOG", nullable = false)
+    @Column(name = "TIMESTAMP_LOG", nullable = false, columnDefinition = "VARCHAR2(20)")
     private String timestamp_log;
 
-    @Column(name = "NM_LOG", nullable = false)
+    @Column(name = "NM_LOG", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String nm_log;
 
-    @Column(name = "DS_LOG", nullable = false)
+    @Column(name = "DS_LOG", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String ds_log;
 
     public Log() {
