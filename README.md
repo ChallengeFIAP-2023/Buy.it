@@ -165,12 +165,7 @@ O projeto é divido em duas partes:
 Navegue até o projeto maven:
 
 ```bash
-$ cd Entregas/Sprint\ 1/Enterprise\ Application\ Development
-```
-ou 
-
-```bash
-$ cd Entregas/Sprint\ 1/Digital\ Business\ Enablement
+$ cd Entregas/Sprint\ 1/Enterprise\ Application\ Development\buyit
 ```
 
 Abra o projeto maven em seu editor e execute o arquivo main: BuyitApplicattion.java
