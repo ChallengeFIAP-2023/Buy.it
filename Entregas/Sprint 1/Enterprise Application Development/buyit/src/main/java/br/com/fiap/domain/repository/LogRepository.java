@@ -4,6 +4,8 @@ import br.com.fiap.domain.entity.Log;
 import br.com.fiap.domain.entity.Pedido;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
+
 import java.util.List;
 import java.util.Objects;
 
@@ -30,6 +32,13 @@ public class LogRepository implements Repository<Log, Long> {
 
     public Pedido findByIdPedido(Long id) {
         return manager.find(Pedido.class, id);
+    }
+
+    public List<Log> findByName(String name) {
+        String jpql = "SELECT log FROM Log log  where upper(log.nm_log) LIKE CONCAT('%',upper(:nm_log),'%')";
+        TypedQuery<Log> query = manager.createQuery(jpql, Log.class);
+        query.setParameter("nm_log", name);
+        return query.getResultList();
     }
 
     @Override

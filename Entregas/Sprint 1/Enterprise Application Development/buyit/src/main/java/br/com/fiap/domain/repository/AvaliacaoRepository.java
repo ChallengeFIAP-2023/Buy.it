@@ -11,18 +11,23 @@ import java.util.Objects;
 
 public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
 
-    private static AvaliacaoRepository instance;
+    private static volatile AvaliacaoRepository instance;
     private final EntityManager manager;
 
     private AvaliacaoRepository(EntityManager manager) {
         this.manager = manager;
     }
 
-    public static synchronized AvaliacaoRepository getInstance(EntityManager manager) {
-        if (instance == null) {
-            instance = new AvaliacaoRepository(manager);
+    public static AvaliacaoRepository build(EntityManager manager) {
+        AvaliacaoRepository result = instance;
+        if (Objects.nonNull(result)) return result;
+
+        synchronized (AvaliacaoRepository.class) {
+            if (Objects.isNull(instance)) {
+                instance = new AvaliacaoRepository(manager);
+            }
+            return instance;
         }
-        return instance;
     }
 
     @Override
