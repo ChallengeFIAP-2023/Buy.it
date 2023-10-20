@@ -15,10 +15,9 @@ import java.util.Objects;
 @Path("/avaliacao")
 public class AvaliacaoResource {
 
+    private final AvaliacaoService service = AvaliacaoService.build();
     @Context
     UriInfo uriInfo;
-
-    private final AvaliacaoService service = AvaliacaoService.build();
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)

@@ -1,7 +1,7 @@
 package br.com.fiap.domain.resources;
 
-import br.com.fiap.domain.entity.Categoria;
-import br.com.fiap.domain.service.CategoriaService;
+import br.com.fiap.domain.entity.Estoque;
+import br.com.fiap.domain.service.EstoqueService;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -12,17 +12,17 @@ import java.net.URI;
 import java.util.List;
 import java.util.Objects;
 
-@Path("/categoria")
-public class CategoriaResource {
+@Path("/estoque")
+public class EstoqueResource {
 
-    private final CategoriaService service = CategoriaService.build();
+    private final EstoqueService service = EstoqueService.build();
     @Context
     UriInfo uriInfo;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response findAll() {
-        List<Categoria> avaliacoes = service.findAll();
+        List<Estoque> avaliacoes = service.findAll();
         return Response.ok(avaliacoes).build();
     }
 
@@ -30,48 +30,48 @@ public class CategoriaResource {
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findById(@PathParam("id") Long id) {
-        Categoria categoria = service.findById(id);
-        if (Objects.isNull(categoria)) {
+        Estoque estoque = service.findById(id);
+        if (Objects.isNull(estoque)) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        return Response.ok(categoria).build();
+        return Response.ok(estoque).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Categoria categoria) {
-        if (categoria == null) {
+    public Response create(Estoque estoque) {
+        if (estoque == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }
-        Categoria persistedCategoria = service.persist(categoria);
-        URI location = URI.create("/categoria/" + persistedCategoria.getId_categoria());
-        return Response.created(location).entity(persistedCategoria).build();
+        Estoque persistedEstoque = service.persist(estoque);
+        URI location = URI.create("/estoque/" + persistedEstoque.getId_estoque());
+        return Response.created(location).entity(persistedEstoque).build();
     }
 
     @PUT
     @Path("/{id}")
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response update(@PathParam("id") Long id, Categoria categoria) {
-        Categoria existingCategoria = service.findById(id);
-        if (existingCategoria == null) {
+    public Response update(@PathParam("id") Long id, Estoque estoque) {
+        Estoque existingEstoque = service.findById(id);
+        if (existingEstoque == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        categoria.setId_categoria(existingCategoria.getId_categoria());
-        Categoria updatedCategoria = service.update(categoria);
-        return Response.ok(updatedCategoria).build();
+        estoque.setId_estoque(existingEstoque.getId_estoque());
+        Estoque updatedEstoque = service.update(estoque);
+        return Response.ok(updatedEstoque).build();
     }
 
     @DELETE
     @Path("/{id}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response delete(@PathParam("id") Long id) {
-        Categoria categoria = service.findById(id);
-        if (categoria == null) {
+        Estoque estoque = service.findById(id);
+        if (estoque == null) {
             return Response.status(Response.Status.NOT_FOUND).build();
         }
-        service.delete(categoria);
+        service.delete(estoque);
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 }

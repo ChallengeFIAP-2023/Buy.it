@@ -2,7 +2,7 @@ package br.com.fiap.domain.service;
 
 import java.util.List;
 
-public interface Service<T,U> {
+public interface Service<T, U> {
 
     List<T> findAll();
 

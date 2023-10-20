@@ -1,5 +1,4 @@
-- Rever Classes Mapeadas
-- Criar Métodos, Repository, Resources, Service
+- Criar Resources de Fins Específicos
 
 - READ ME:
 Instrução de Como rodar
