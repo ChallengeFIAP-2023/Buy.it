@@ -99,7 +99,7 @@ public class UsuarioRepository implements Repository<Usuario, Long> {
                 }
 
                 // COMPLEMENTO_USUARIO
-                usuario_buscado.setLogradouro_usuario(usuario.getLogradouro_usuario());
+                usuario_buscado.setComplemento_usuario(usuario.getComplemento_usuario());
 
                 // NUM_ENDERECO_USUARIO
                 if (Objects.nonNull(usuario.getNum_endereco_usuario())) {
@@ -128,6 +128,16 @@ public class UsuarioRepository implements Repository<Usuario, Long> {
 
                 // IMG_URL_USUARIO
                 usuario_buscado.setImg_url_usuario(usuario.getImg_url_usuario());
+
+                // REGIME_TRIBUTARIO_USUARIO
+                if (Objects.nonNull(usuario.getRegime_tributario_usuario())) {
+                    usuario_buscado.setRegime_tributario_usuario(usuario.getRegime_tributario_usuario());
+                }
+
+                // VALOR_MAX_AUTOMATICO_USUARIO
+                if (Objects.nonNull(usuario.getValor_max_automatico_usuario())) {
+                    usuario_buscado.setValor_max_automatico_usuario(usuario.getValor_max_automatico_usuario());
+                }
 
                 usuario = manager.merge(usuario_buscado);
                 transaction.commit();

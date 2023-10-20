@@ -2,7 +2,9 @@ package br.com.fiap.domain.entity;
 
 import jakarta.persistence.*;
 
+import java.math.BigDecimal;
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
@@ -52,6 +54,12 @@ public class Usuario {
     @Column(name = "IMG_URL_USUARIO", columnDefinition = "VARCHAR2(255)")
     private String img_url_usuario;
 
+    @Column(name = "REGIME_TRIBUTARIO_USUARIO", columnDefinition = "VARCHAR2(255)")
+    private String regime_tributario_usuario;
+
+    @Column(name = "VALOR_MAX_AUTOMATICO_USUARIO", columnDefinition = "NUMBER(10,2)")
+    private BigDecimal valor_max_automatico_usuario;
+
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "BUYIT_USUARIO_TAG",
@@ -77,7 +85,7 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long id_usuario, String cnpj_usuario, String nm_usuario, String cep_usuario, String logradouro_usuario, String complemento_usuario, String num_endereco_usuario, String email_usuario, String senha_usuario, String tel_usuario, Long e_fornecedor, String img_url_usuario, Set<Tag> tags) {
+    public Usuario(Long id_usuario, String cnpj_usuario, String nm_usuario, String cep_usuario, String logradouro_usuario, String complemento_usuario, String num_endereco_usuario, String email_usuario, String senha_usuario, String tel_usuario, Long e_fornecedor, String img_url_usuario, Set<Tag> tags, String regime_tributario_usuario, BigDecimal valor_max_automatico_usuario) {
         this.id_usuario = id_usuario;
         this.cnpj_usuario = cnpj_usuario;
         this.nm_usuario = nm_usuario;
@@ -90,7 +98,9 @@ public class Usuario {
         this.tel_usuario = tel_usuario;
         this.e_fornecedor = e_fornecedor;
         this.img_url_usuario = img_url_usuario;
-        this.tags = tags;
+        this.regime_tributario_usuario = regime_tributario_usuario;
+        this.valor_max_automatico_usuario = valor_max_automatico_usuario;
+        this.tags = Objects.nonNull(tags) ? tags : new LinkedHashSet<>();
     }
 
     public Long getId_usuario() {
@@ -201,6 +211,24 @@ public class Usuario {
         return this;
     }
 
+    public String getRegime_tributario_usuario() {
+        return regime_tributario_usuario;
+    }
+
+    public Usuario setRegime_tributario_usuario(String regime_tributario_usuario) {
+        this.regime_tributario_usuario = regime_tributario_usuario;
+        return this;
+    }
+
+    public BigDecimal getValor_max_automatico_usuario() {
+        return valor_max_automatico_usuario;
+    }
+
+    public Usuario setValor_max_automatico_usuario(BigDecimal valor_max_automatico_usuario) {
+        this.valor_max_automatico_usuario = valor_max_automatico_usuario;
+        return this;
+    }
+
     public Usuario addTag(Tag tag) {
         this.tags.add(tag);
         tag.addUsuario(this);
@@ -221,12 +249,12 @@ public class Usuario {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Usuario usuario)) return false;
-        return Objects.equals(id_usuario, usuario.id_usuario) && Objects.equals(cnpj_usuario, usuario.cnpj_usuario) && Objects.equals(nm_usuario, usuario.nm_usuario) && Objects.equals(cep_usuario, usuario.cep_usuario) && Objects.equals(logradouro_usuario, usuario.logradouro_usuario) && Objects.equals(complemento_usuario, usuario.complemento_usuario) && Objects.equals(num_endereco_usuario, usuario.num_endereco_usuario) && Objects.equals(email_usuario, usuario.email_usuario) && Objects.equals(senha_usuario, usuario.senha_usuario) && Objects.equals(tel_usuario, usuario.tel_usuario) && Objects.equals(e_fornecedor, usuario.e_fornecedor) && Objects.equals(img_url_usuario, usuario.img_url_usuario) && Objects.equals(tags, usuario.tags);
+        return Objects.equals(id_usuario, usuario.id_usuario) && Objects.equals(cnpj_usuario, usuario.cnpj_usuario) && Objects.equals(nm_usuario, usuario.nm_usuario) && Objects.equals(cep_usuario, usuario.cep_usuario) && Objects.equals(logradouro_usuario, usuario.logradouro_usuario) && Objects.equals(complemento_usuario, usuario.complemento_usuario) && Objects.equals(num_endereco_usuario, usuario.num_endereco_usuario) && Objects.equals(email_usuario, usuario.email_usuario) && Objects.equals(senha_usuario, usuario.senha_usuario) && Objects.equals(tel_usuario, usuario.tel_usuario) && Objects.equals(e_fornecedor, usuario.e_fornecedor) && Objects.equals(img_url_usuario, usuario.img_url_usuario) && Objects.equals(regime_tributario_usuario, usuario.regime_tributario_usuario) && Objects.equals(valor_max_automatico_usuario, usuario.valor_max_automatico_usuario) && Objects.equals(tags, usuario.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_usuario, cnpj_usuario, nm_usuario, cep_usuario, logradouro_usuario, complemento_usuario, num_endereco_usuario, email_usuario, senha_usuario, tel_usuario, e_fornecedor, img_url_usuario, tags);
+        return Objects.hash(id_usuario, cnpj_usuario, nm_usuario, cep_usuario, logradouro_usuario, complemento_usuario, num_endereco_usuario, email_usuario, senha_usuario, tel_usuario, e_fornecedor, img_url_usuario, regime_tributario_usuario, valor_max_automatico_usuario, tags);
     }
 
     @Override
@@ -238,12 +266,14 @@ public class Usuario {
                 ", cep_usuario='" + cep_usuario + '\'' +
                 ", logradouro_usuario='" + logradouro_usuario + '\'' +
                 ", complemento_usuario='" + complemento_usuario + '\'' +
-                ", num_endereco_usuario=" + num_endereco_usuario +
+                ", num_endereco_usuario='" + num_endereco_usuario + '\'' +
                 ", email_usuario='" + email_usuario + '\'' +
                 ", senha_usuario='" + senha_usuario + '\'' +
                 ", tel_usuario='" + tel_usuario + '\'' +
                 ", e_fornecedor=" + e_fornecedor +
                 ", img_url_usuario='" + img_url_usuario + '\'' +
+                ", regime_tributario_usuario='" + regime_tributario_usuario + '\'' +
+                ", valor_max_automatico_usuario=" + valor_max_automatico_usuario +
                 '}';
     }
 }
