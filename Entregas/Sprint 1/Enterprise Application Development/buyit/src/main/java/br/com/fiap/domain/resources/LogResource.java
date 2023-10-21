@@ -1,7 +1,9 @@
 package br.com.fiap.domain.resources;
 
-import br.com.fiap.domain.entity.Log;
+import br.com.fiap.domain.entity.*;
 import br.com.fiap.domain.service.LogService;
+import br.com.fiap.domain.service.PedidoService;
+import br.com.fiap.infra.CustomErrorResponse;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -16,6 +18,45 @@ import java.util.Objects;
 public class LogResource {
 
     private final LogService service = LogService.build();
+
+    private final PedidoService servicePedido = PedidoService.build();
+
+    CustomErrorResponse errorResponse = new CustomErrorResponse();
+
+    private Response validateLog(Log log) {
+
+        // AVALIACAO
+        if (log == null) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Log não pode ser NULL");
+        }
+
+        // ID_PEDIDO
+        if (log.getId_pedido() == null) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Pedido do Log não pode ser NULL");
+        }
+        Pedido existingPedido = servicePedido.findById(log.getId_pedido().getId_pedido());
+        if (existingPedido == null) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + log.getId_pedido().getId_pedido() + " não encontrado");
+        }
+
+        // TIMESTAMP_LOG
+        if (log.getTimestamp_log() == null || log.getTimestamp_log().isEmpty() || log.getTimestamp_log().isBlank()) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O TimeStamp do Log não pode ser NULL ou vazio");
+        }
+
+        // NM_LOG
+        if (log.getNm_log() == null || log.getNm_log().isEmpty() || log.getNm_log().isBlank()) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome do Log não pode ser NULL ou vazio");
+        }
+
+        // DS_LOG
+        if (log.getDs_log() == null || log.getDs_log().isEmpty() || log.getDs_log().isBlank()) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Descricao do Log não pode ser NULL ou vazio");
+        }
+
+        return null;
+    }
+
     @Context
     UriInfo uriInfo;
 
@@ -32,19 +73,28 @@ public class LogResource {
     public Response findById(@PathParam("id") Long id) {
         Log log = service.findById(id);
         if (Objects.isNull(log)) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Log de ID: " + id + " não encontrado");
         }
         return Response.ok(log).build();
+    }
+
+    @GET
+    @Path("/name/{nm_log}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByName(@PathParam("nm_log") String nm_log) {
+        List<Log> logs = service.findByName(nm_log);
+        return Response.ok(logs).build();
     }
 
     @GET
     @Path("/pedido/{id_pedido}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findByIdPedido(@PathParam("id_pedido") Long id_pedido) {
-        List<Log> logs = service.findByIdPedido(id_pedido);
-        if (Objects.isNull(logs)) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        Pedido existingPedido = servicePedido.findById(id_pedido);
+        if (existingPedido == null) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + id_pedido + " não encontrado");
         }
+        List<Log> logs = service.findByIdPedido(id_pedido);
         return Response.ok(logs).build();
     }
 
@@ -52,8 +102,9 @@ public class LogResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Log log) {
-        if (log == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+        Response validationResponse = validateLog(log);
+        if (validationResponse != null) {
+            return validationResponse;
         }
         Log persistedLog = service.persist(log);
         URI location = URI.create("/log/" + persistedLog.getId_log());
@@ -67,7 +118,11 @@ public class LogResource {
     public Response update(@PathParam("id") Long id, Log log) {
         Log existingLog = service.findById(id);
         if (existingLog == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Log de ID: " + id + " não encontrado");
+        }
+        Response validationResponse = validateLog(log);
+        if (validationResponse != null) {
+            return validationResponse;
         }
         log.setId_log(existingLog.getId_log());
         Log updatedLog = service.update(log);
@@ -80,7 +135,7 @@ public class LogResource {
     public Response delete(@PathParam("id") Long id) {
         Log log = service.findById(id);
         if (log == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Log de ID: " + id + " não encontrado");
         }
         service.delete(log);
         return Response.status(Response.Status.NO_CONTENT).build();

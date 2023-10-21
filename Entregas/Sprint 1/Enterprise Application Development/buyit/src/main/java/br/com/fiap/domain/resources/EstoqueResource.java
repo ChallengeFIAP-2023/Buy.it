@@ -109,10 +109,11 @@ public class EstoqueResource {
     @Path("/valor_variacao/{id_valor_variacao}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findByIdValor_Variacao(@PathParam("id_valor_variacao") Long id_valor_variacao) {
-        List<Estoque> estoques = service.findByIdValor_Variacao(id_valor_variacao);
-        if (Objects.isNull(estoques)) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        Valor_Variacao existingValor_Variacao = serviceValor_Variacao.findById(id_valor_variacao);
+        if (existingValor_Variacao == null) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Valor_Variacao de ID: " + id_valor_variacao + " não encontrado");
         }
+        List<Estoque> estoques = service.findByIdValor_Variacao(id_valor_variacao);
         return Response.ok(estoques).build();
     }
 
@@ -120,10 +121,11 @@ public class EstoqueResource {
     @Path("/usuario/{id_usuario}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findByIdUsuario(@PathParam("id_usuario") Long id_usuario) {
-        List<Estoque> estoques = service.findByIdUsuario(id_usuario);
-        if (Objects.isNull(estoques)) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+        Usuario existingUsuario = serviceUsuario.findById(id_usuario);
+        if (existingUsuario == null) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Usuario de ID: " + id_usuario + " não encontrado");
         }
+        List<Estoque> estoques = service.findByIdUsuario(id_usuario);
         return Response.ok(estoques).build();
     }
 

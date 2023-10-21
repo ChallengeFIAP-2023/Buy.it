@@ -49,6 +49,10 @@ public class AvaliacaoService implements Service<Avaliacao, Long> {
         return repo.findByIdUsuario(id_usuario);
     }
 
+    public Avaliacao findByIdPedido(Long id_pedido) {
+        return repo.findByIdPedido(id_pedido);
+    }
+
     @Override
     public Avaliacao persist(Avaliacao avaliacao) {
         if (Objects.isNull(avaliacao)) return null;

@@ -43,8 +43,8 @@ public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
         return query.getResultList();
     }
 
-    public Pedido findByIdPedido(Long id) {
-        return manager.find(Pedido.class, id);
+    public Avaliacao findByIdPedido(Long id) {
+        return manager.find(Avaliacao.class, id);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
             avaliacao.setId_avaliacao(null);
             transaction.begin();
             Usuario usuario = manager.find(Usuario.class, avaliacao.getId_usuario().getId_usuario());
-            Pedido pedido = findByIdPedido(avaliacao.getId_pedido().getId_pedido());
+            Pedido pedido = manager.find(Pedido.class, avaliacao.getId_pedido().getId_pedido());
             avaliacao.setId_usuario(usuario);
             avaliacao.setId_pedido(pedido);
             manager.persist(avaliacao);
@@ -88,7 +88,7 @@ public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
 
                 // ID_PEDIDO
                 if (Objects.nonNull(avaliacao.getId_pedido())) {
-                    Pedido pedido = findByIdPedido(avaliacao.getId_pedido().getId_pedido());
+                    Pedido pedido = manager.find(Pedido.class, avaliacao.getId_pedido().getId_pedido());
                     avaliacao_buscada.setId_pedido(pedido);
                 }
 

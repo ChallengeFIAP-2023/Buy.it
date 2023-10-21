@@ -78,6 +78,17 @@ public class AvaliacaoResource {
     }
 
     @GET
+    @Path("/pedido/{id_pedido}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByIdPedido(@PathParam("id_pedido") Long id_pedido) {
+        Avaliacao avaliacao = service.findByIdPedido(id_pedido);
+        if (Objects.isNull(avaliacao)) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + id_pedido + " não encontrado");
+        }
+        return Response.ok(avaliacao).build();
+    }
+
+    @GET
     @Path("/usuario/{id_usuario}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findByIdUsuario(@PathParam("id_usuario") Long id_usuario) {
