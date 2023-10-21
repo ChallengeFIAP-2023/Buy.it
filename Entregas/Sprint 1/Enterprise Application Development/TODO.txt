@@ -1,3 +1,6 @@
+- Validar todos os métodos pelo Insomnia
+- Metódo Cadastrar não está funcionando, além de retornar 500 quando da erro (alterar)
+
 - READ ME:
 Pitch
 Postman / Insomnia
