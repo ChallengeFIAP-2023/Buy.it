@@ -170,6 +170,15 @@ $ cd Entregas/Sprint\ 1/Enterprise\ Application\ Development\buyit
 
 Abra o projeto maven em seu editor e execute o arquivo main: BuyitApplicattion.java
 
+Aguarde a inicialização do servidor até a exibição da mensagem: 
+
+```bash
+Buy.it app started with endpoints available as http://localhost:8080
+Hit Ctrl-C to stop it....
+```
+
+Abra o seu navegador e navegue até [http://localhost:8080](http://localhost:8080)
+
 ##### 👉 **_Mobile:_**
 
 Navegue até o projeto mobile:
