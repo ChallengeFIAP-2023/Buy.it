@@ -25,7 +25,7 @@ public class LogResource {
 
     private Response validateLog(Log log) {
 
-        // AVALIACAO
+        // LOG
         if (log == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Log não pode ser NULL");
         }
