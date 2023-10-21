@@ -1,0 +1,3 @@
+TODO:
+Validar todas as telas e o fluxo de compras
+Adicionar o link do FIGMA no documento.
