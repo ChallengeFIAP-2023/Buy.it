@@ -54,7 +54,6 @@ public class DescontoRepository implements Repository<Desconto, Long> {
         try {
             desconto.setId_desconto(null);
             transaction.begin();
-            desconto.setId_desconto(null);
             Estoque estoque = manager.find(Estoque.class, desconto.getId_estoque().getId_estoque());
             desconto.setId_estoque(estoque);
             manager.persist(desconto);

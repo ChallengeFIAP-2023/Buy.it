@@ -59,7 +59,6 @@ public class UsuarioRepository implements Repository<Usuario, Long> {
         try {
             usuario.setId_usuario(null);
             transaction.begin();
-            usuario.setId_usuario(null);
             manager.persist(usuario);
             transaction.commit();
         } catch (Exception e) {

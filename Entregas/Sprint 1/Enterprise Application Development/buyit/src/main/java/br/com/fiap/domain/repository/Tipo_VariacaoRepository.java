@@ -52,7 +52,6 @@ public class Tipo_VariacaoRepository implements Repository<Tipo_Variacao, Long> 
         try {
             tipo_variacao.setId_tipo_variacao(null);
             transaction.begin();
-            tipo_variacao.setId_tipo_variacao(null);
             manager.persist(tipo_variacao);
             transaction.commit();
         } catch (Exception e) {
