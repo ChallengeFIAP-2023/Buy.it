@@ -16,7 +16,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Path("/desconto")
-public class DescontoResource {
+public class DescontoResource implements Resource<Desconto, Long> {
 
     private final DescontoService service = DescontoService.build();
 
@@ -83,7 +83,7 @@ public class DescontoResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Desconto desconto) {
+    public Response persist(Desconto desconto) {
         Response validationResponse = validateDesconto(desconto);
         if (validationResponse != null) {
             return validationResponse;

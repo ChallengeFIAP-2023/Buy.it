@@ -1,5 +1,6 @@
 package br.com.fiap.domain.resources;
 
+import br.com.fiap.domain.entity.Avaliacao;
 import br.com.fiap.domain.entity.Usuario;
 import br.com.fiap.domain.service.UsuarioService;
 import jakarta.ws.rs.*;
@@ -13,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Path("/usuario")
-public class UsuarioResource {
+public class UsuarioResource implements Resource<Usuario, Long> {
 
     private final UsuarioService service = UsuarioService.build();
     @Context
@@ -51,7 +52,7 @@ public class UsuarioResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Usuario usuario) {
+    public Response persist(Usuario usuario) {
         if (usuario == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

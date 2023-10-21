@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Path("/avaliacao")
-public class AvaliacaoResource {
+public class AvaliacaoResource implements Resource<Avaliacao, Long> {
 
     private final AvaliacaoService service = AvaliacaoService.build();
 
@@ -103,7 +103,7 @@ public class AvaliacaoResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Avaliacao avaliacao) {
+    public Response persist(Avaliacao avaliacao) {
         Response validationResponse = validateAvaliacao(avaliacao);
         if (validationResponse != null) {
             return validationResponse;

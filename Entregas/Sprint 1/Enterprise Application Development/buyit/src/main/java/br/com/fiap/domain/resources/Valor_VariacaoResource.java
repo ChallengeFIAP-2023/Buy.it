@@ -13,7 +13,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Path("/valor_variacao")
-public class Valor_VariacaoResource {
+public class Valor_VariacaoResource implements Resource<Valor_Variacao, Long> {
 
     private final Valor_VariacaoService service = Valor_VariacaoService.build();
     @Context
@@ -51,7 +51,7 @@ public class Valor_VariacaoResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Valor_Variacao valor_variacao) {
+    public Response persist(Valor_Variacao valor_variacao) {
         if (valor_variacao == null) {
             return Response.status(Response.Status.BAD_REQUEST).build();
         }

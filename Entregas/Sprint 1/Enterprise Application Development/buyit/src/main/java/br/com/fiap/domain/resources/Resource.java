@@ -10,7 +10,7 @@ public interface Resource<T, U> {
 
     Response persist(T t);
 
-    Response update(T t);
+    Response update(U id, T t);
 
-    Response delete(T t);
+    Response delete(U id);
 }

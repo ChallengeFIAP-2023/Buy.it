@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Path("/pedido")
-public class PedidoResource {
+public class PedidoResource implements Resource<Pedido, Long> {
 
     private final PedidoService service = PedidoService.build();
 
@@ -92,7 +92,7 @@ public class PedidoResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Pedido pedido) {
+    public Response persist(Pedido pedido) {
         Response validationResponse = validatePedido(pedido);
         if (validationResponse != null) {
             return validationResponse;

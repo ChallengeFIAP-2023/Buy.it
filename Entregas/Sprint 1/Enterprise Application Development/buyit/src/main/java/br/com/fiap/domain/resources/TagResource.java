@@ -2,7 +2,6 @@ package br.com.fiap.domain.resources;
 
 import br.com.fiap.domain.entity.*;
 import br.com.fiap.domain.service.TagService;
-import br.com.fiap.domain.service.UsuarioService;
 import br.com.fiap.infra.CustomErrorResponse;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
@@ -15,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Path("/tag")
-public class TagResource {
+public class TagResource implements Resource<Tag, Long> {
 
     private final TagService service = TagService.build();
 
@@ -67,7 +66,7 @@ public class TagResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Tag tag) {
+    public Response persist(Tag tag) {
         Response validationResponse = validateTag(tag);
         if (validationResponse != null) {
             return validationResponse;

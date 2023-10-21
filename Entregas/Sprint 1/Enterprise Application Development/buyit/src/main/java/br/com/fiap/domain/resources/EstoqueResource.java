@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Path("/estoque")
-public class EstoqueResource {
+public class EstoqueResource implements Resource<Estoque, Long> {
 
     private final EstoqueService service = EstoqueService.build();
 
@@ -132,7 +132,7 @@ public class EstoqueResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Estoque estoque) {
+    public Response persist(Estoque estoque) {
         Response validationResponse = validateEstoque(estoque);
         if (validationResponse != null) {
             return validationResponse;

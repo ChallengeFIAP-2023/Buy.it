@@ -15,7 +15,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Path("/log")
-public class LogResource {
+public class LogResource implements Resource<Log, Long> {
 
     private final LogService service = LogService.build();
 
@@ -101,7 +101,7 @@ public class LogResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Log log) {
+    public Response persist(Log log) {
         Response validationResponse = validateLog(log);
         if (validationResponse != null) {
             return validationResponse;

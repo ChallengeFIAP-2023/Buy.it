@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.Objects;
 
 @Path("/categoria")
-public class CategoriaResource {
+public class CategoriaResource implements Resource<Categoria, Long> {
 
     private final CategoriaService service = CategoriaService.build();
 
@@ -67,7 +67,7 @@ public class CategoriaResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Categoria categoria) {
+    public Response persist(Categoria categoria) {
         Response validationResponse = validateCategoria(categoria);
         if (validationResponse != null) {
             return validationResponse;
