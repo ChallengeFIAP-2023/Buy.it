@@ -2,6 +2,7 @@ package br.com.fiap.domain.resources;
 
 import br.com.fiap.domain.entity.Categoria;
 import br.com.fiap.domain.service.CategoriaService;
+import br.com.fiap.infra.CustomErrorResponse;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -16,6 +17,20 @@ import java.util.Objects;
 public class CategoriaResource {
 
     private final CategoriaService service = CategoriaService.build();
+
+    CustomErrorResponse errorResponse = new CustomErrorResponse();
+
+    private Response validateCategoria(Categoria categoria) {
+        if (categoria == null) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Avaliacao não pode ser NULL");
+        }
+        if (categoria.getNm_categoria() == null || categoria.getNm_categoria().isEmpty() || categoria.getNm_categoria().isBlank()) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome da Categoria não pode ser NULL ou vazio");
+        }
+
+        return null;
+    }
+
     @Context
     UriInfo uriInfo;
 
@@ -32,7 +47,7 @@ public class CategoriaResource {
     public Response findById(@PathParam("id") Long id) {
         Categoria categoria = service.findById(id);
         if (Objects.isNull(categoria)) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Categoria de ID: " + id + " não encontrada");
         }
         return Response.ok(categoria).build();
     }
@@ -42,7 +57,11 @@ public class CategoriaResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Categoria categoria) {
         if (categoria == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Categoria não pode ser NULL");
+        }
+        Response validationResponse = validateCategoria(categoria);
+        if (validationResponse != null) {
+            return validationResponse;
         }
         Categoria persistedCategoria = service.persist(categoria);
         URI location = URI.create("/categoria/" + persistedCategoria.getId_categoria());
@@ -56,7 +75,11 @@ public class CategoriaResource {
     public Response update(@PathParam("id") Long id, Categoria categoria) {
         Categoria existingCategoria = service.findById(id);
         if (existingCategoria == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Categoria de ID: " + id + " não encontrada");
+        }
+        Response validationResponse = validateCategoria(categoria);
+        if (validationResponse != null) {
+            return validationResponse;
         }
         categoria.setId_categoria(existingCategoria.getId_categoria());
         Categoria updatedCategoria = service.update(categoria);
@@ -69,7 +92,7 @@ public class CategoriaResource {
     public Response delete(@PathParam("id") Long id) {
         Categoria categoria = service.findById(id);
         if (categoria == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Categoria de ID: " + id + " não encontrada");
         }
         service.delete(categoria);
         return Response.status(Response.Status.NO_CONTENT).build();

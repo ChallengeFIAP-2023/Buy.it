@@ -27,29 +27,29 @@ public class BuyitApplicattion {
                         new AbstractBinder() {
                             @Override
                             protected void configure() {
-                                bindFactory( EntityManagerFactoryProvider.class )
-                                        .to( EntityManagerFactory.class )
-                                        .in( Singleton.class );
+                                bindFactory(EntityManagerFactoryProvider.class)
+                                        .to(EntityManagerFactory.class)
+                                        .in(Singleton.class);
 
-                                bindFactory( EntityManagerProvider.class )
-                                        .to( EntityManager.class )
-                                        .in( RequestScoped.class );
+                                bindFactory(EntityManagerProvider.class)
+                                        .to(EntityManager.class)
+                                        .in(RequestScoped.class);
                             }
                         }
                 )
-                .register( EntityManagerFactoryProvider.build( PERSISTENCE_UNIT ).provide() )
-                .packages( "br.com.fiap.domain.resources" );
-        return GrizzlyHttpServerFactory.createHttpServer( URI.create( BASE_URI ), rc );
+                .register(EntityManagerFactoryProvider.build(PERSISTENCE_UNIT).provide())
+                .packages("br.com.fiap.domain.resources");
+        return GrizzlyHttpServerFactory.createHttpServer(URI.create(BASE_URI), rc);
     }
 
     public static void main(String[] args) {
         final HttpServer server = startServer();
-        System.out.printf( "Buy.it app started with endpoints available " +
-                "as %s%nHit Ctrl-C to stop it....%n", BASE_URI );
+        System.out.printf("Buy.it app started with endpoints available " +
+                "as %s%nHit Ctrl-C to stop it....%n", BASE_URI);
         try {
             System.in.read();
         } catch (IOException e) {
-            throw new RuntimeException( e );
+            throw new RuntimeException(e);
         }
     }
 }
