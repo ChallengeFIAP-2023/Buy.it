@@ -17,22 +17,23 @@ Representa um produto no sistema.
 - `descricao_produto`  (String): Descrição do produto.
 - `imagem_url_produto` (String): URL da imagem do produto.
 - `id_categoria` (int): ID da categoria à qual o produto pertence.
-- `menor_preco_produto` (float): Menor preço do produto.
+- `marca_produto` (String): Marca do produto
+- `menor_preco_unitario_produto` (float): Menor preço do produto.
 
-## Classe `Variacao`
+## Classe `Tipo_Variacao`
 
-Representa uma variação de produto.
+Representa um tipo de variação de produto.
 
 **Atributos:**
 - `nome_variacao ` (String): Nome da variação.
 
-## Classe `Opcao_Variacao`
+## Classe `Valor_Variacao`
 
-Representa uma opção de variação de produto.
+Representa um valor de variação de produto.
 
 **Atributos:**
-- `nome_opcao_variacao `  (String): Nome da opção de variação.
-- `id_variacao ` (int): ID da variação à qual a opção pertence.
+- `nome_valor_variacao `  (String): Nome do valor de variação.
+- `id_valor_variacao ` (int): ID do tipo de variação à qual a opção pertence.
 
 ## Classe `Usuario`
 
@@ -49,7 +50,9 @@ Representa um usuário no sistema.
 - `telefone_usuario  ` (String): Número de telefone do usuário.
 - `e_fornecedor  ` (int): Indica se o usuário é um fornecedor (0 para não, 1 para sim).
 - `senha_usuario   ` (String): Senha do usuário.
-- `timagem_url_usuario elefone_usuario  ` (String): URL da imagem do usuário.
+- `imagem_url_usuario elefone_usuario  ` (String): URL da imagem do usuário.
+- `regime_tributario_usuario   ` (String): Regime tributário do usuário.
+- `valor_max_automatico_usuario   ` (float): Valor máximo automático do usuário.
 
 ## Classe `Estoque`
 
@@ -57,9 +60,9 @@ Representa o estoque de um produto.
 
 **Atributos:**
 - `id_produto ` (int): ID do produto no estoque.
-- `id_variacao_produto ` (int): ID da variação de produto no estoque.
+- `id_valor_variacao ` (int): ID da variação de produto no estoque.
 - `quantidade_estoque ` (int): Quantidade em estoque.
-- `preco `  (String): URL da imagem do estoque.
+- `preco_unitario `  (String): URL da imagem do estoque.
 - `imagem_url_estoque ` (Time): Time ao qual o jogador pertence.
 - `id_usuario  ` (int): ID do usuário responsável pelo estoque.
 
@@ -99,20 +102,11 @@ Representa um pedido feito por um usuário.
 
 ## Classe `Contem`
 
-Representa a relação entre pedidos e produtos.
+Representa a relação entre pedidos e estoque.
 
 **Atributos:**
 - `id_pedido` (int): ID do pedido.
-
-## Classe `Item_Pedido`
-
-Representa um item dentro de um pedido.
-
-**Atributos:**
-- `id_pedido` (int): ID do pedido ao qual o item pertence.
-- `id_variacao` (int): ID da variação do produto no item.
-- `quantidade_item_pedido` (int): Quantidade do item no pedido.
-- `valor` (float): Valor do item.
+- `id_estoque` (int): ID do estoque.
 
 ## Classe `Log`
 
@@ -131,21 +125,10 @@ Representa uma avaliação feita por um usuário a um pedido.
 **Atributos:**
 - `id_usuario` (int): ID do usuário que fez a avaliação.
 - `id_pedido` (int): ID do pedido avaliado.
-- `nota_preco_avaliacao` (int): Nota de preço na avaliação.
+- `nota_preco_unitario_avaliacao` (int): Nota de preço na avaliação.
 - `nota_qualidade_avaliacao` (int): Nota de qualidade na avaliação.
 - `descricao_avaliacao` (String): Descrição da avaliação.
 - `nota_entrega_avaliacao` (int): Nota de entrega na avaliação.
-
-## Classe `Gera`
-
-Representa a relação entre pedidos e avaliações.
-
-**Atributos:**
-- `id_pedido` (int): ID do pedido.
-- `id_avaliacao` (int): ID da avaliação.
-
-
-
 
 ---
 
@@ -222,14 +205,16 @@ Lista todos os produtos.
         "descricao_produto": "Descrição do Produto 1",
         "imagem_url_produto": "https://imagem1.png",
         "id_categoria": 1,
-        "menor_preco_produto": 19.99
+        "marca_produto": "Marca3",
+        "menor_preco_unitario_produto": 19.99
     },
     {
         "nome_produto": "Produto2",
         "descricao_produto": "Descrição do Produto 2",
         "imagem_url_produto": "https://imagem2.png",
         "id_categoria": 2,
-        "menor_preco_produto": 29.99
+        "marca_produto": "Marca2",
+        "menor_preco_unitario_produto": 29.99
     }
 ]
 
@@ -248,7 +233,8 @@ Cadastra um produto.
     "descricao_produto": "Descrição do Novo Produto",
     "imagem_url_produto": "https://novoproduto.png",
     "id_categoria": 1,
-    "menor_preco_produto": 39.99
+    "marca_produto": "MarcaNova",
+    "menor_preco_unitario_produto": 39.99
 }
 ```
 
@@ -263,7 +249,8 @@ Atualiza um produto.
     "descricao_produto": "Descrição do Produto Atualizada",
     "imagem_url_produto": "https://produtoatualizado.png",
     "id_categoria": 2,
-    "menor_preco_produto": 49.99
+    "marca_produto": "MarcaAtualizada",
+    "menor_preco_unitario_produto": 49.99
 }
 ```
 
@@ -274,12 +261,12 @@ Deleta um produto.
 ---
 
 ---
-## Endpoint **Variação**
+## Endpoint **Tipo_Variacao**
 
 
-#### `GET /variacoes`
+#### `GET /tipo_variacoes`
 
-Lista todas as variações.
+Lista todas os tipos de variações.
 
 **Exemplo de retorno:**
 ```json
@@ -294,9 +281,9 @@ Lista todas as variações.
 ```
 
 
-#### `POST /variacao`
+#### `POST /tipo_variacao`
 
-Cadastra uma variação.
+Cadastra um tipo de variação.
 
 **Exemplo do body da requisição:**
 ```json
@@ -305,9 +292,9 @@ Cadastra uma variação.
 }
 ```
 
-#### `UPDATE /variacao/{id}`
+#### `UPDATE /tipo_variacao/{id}`
 
-Atualiza uma variação.
+Atualiza um tipo de variação.
 
 **Exemplo do body da requisição:**
 ```json
@@ -316,60 +303,60 @@ Atualiza uma variação.
 }
 ```
 
-#### `DELETE /variacao/{id}`
+#### `DELETE /tipo_variacao/{id}`
 
-Deleta uma variação.
+Deleta um tipo de variação.
 
 ---
 
-## Endpoint **Opção_Variação**
+## Endpoint **Valor_Variacao**
 
 
-#### `GET /opcoes_variacao`
+#### `GET /valor_variacaoes`
 
-Lista todos as opções de variação.
+Lista todos os valores de variação.
 
 **Exemplo de retorno:**
 ```json
 [
     {
-        "nome_opcao_variacao": "Opcao1",
-        "id_variacao": 1
+        "nome_valor_variacao": "Opcao1",
+        "id_valor_variacao ": 1
     },
     {
-        "nome_opcao_variacao": "Opcao2",
-        "id_variacao": 2
+        "nome_valor_variacao": "Opcao2",
+        "id_valor_variacao ": 2
     }
 ]
 ```
 
-#### `POST /opcao_variacao`
+#### `POST /valor_variacao`
 
-Cadastra uma opção de variação.
-
-**Exemplo do body da requisição:**
-```json
-{ 
-    "nome_opcao_variacao": "NovaOpcao",
-    "id_variacao": 1
-}
-```
-
-#### `UPDATE /opcao_variacao/{id}`
-
-Atualiza uma opção de variação.
+Cadastra um valor de variação.
 
 **Exemplo do body da requisição:**
 ```json
 { 
-    "nome_opcao_variacao": "OpcaoAtualizada",
-    "id_variacao": 2
+    "nome_valor_variacao": "NovaOpcao",
+    "id_valor_variacao ": 1
 }
 ```
 
-#### `DELETE /opcao_variacao/{id}`
+#### `UPDATE /valor_variacao/{id}`
 
-Deleta uma opção de variação.
+Atualiza um valor de variação.
+
+**Exemplo do body da requisição:**
+```json
+{ 
+    "nome_valor_variacao": "OpcaoAtualizada",
+    "id_valor_variacao ": 2
+}
+```
+
+#### `DELETE /valor_variacao/{id}`
+
+Deleta um valor de variação.
 
 ---
 
@@ -386,31 +373,38 @@ Lista todos os usuários.
 ```json
 [
     {
-        "cnpj_usuario": "1234567890",
-        "nome_usuario": "Usuario1",
+        "id_usuario": 1,
+        "cnpj_usuario": "12345678901234",
+        "nome_usuario": "João Silva",
         "cep_usuario": "12345-678",
         "logradouro_usuario": "Rua A",
         "complemento_usuario": "Apto 101",
         "numero_endereco_usuario": 123,
-        "email_usuario": "usuario1@email.com",
-        "telefone_usuario": "123-456-7890",
-        "e_fornecedor": 1,
-        "senha_usuario": "senha123",
-        "imagem_url_usuario": "https://usuario1.png"
+        "email_usuario": "joao@example.com",
+        "senha_usuario": "*****",
+        "telefone_usuario": "(123) 456-7890",
+        "e_fornecedor": 0,
+        "imagem_url_usuario": "joao.png",
+        "regime_tributario_usuario": "Simples Nacional",
+        "valor_max_automatico_usuario": 1000.00
     },
     {
-        "cnpj_usuario": "0987654321",
-        "nome_usuario": "Usuario2",
-        "cep_usuario": "98765-432",
-        "logradouro_usuario": "Rua B",
-        "complemento_usuario": "Casa",
-        "numero_endereco_usuario": 456,
-        "email_usuario": "usuario2@email.com",
-        "telefone_usuario": "987-654-3210",
+        "id_usuario": 2,
+        "cnpj_usuario": "11122233344455",
+        "nome_usuario": "Carlos Oliveira",
+        "cep_usuario": "54321-654",
+        "logradouro_usuario": "Rua C, Bloco D",
+        "complemento_usuario": "Apto 302",
+        "numero_endereco_usuario": 789,
+        "email_usuario": "carlos@example.com",
+        "senha_usuario": "*****",
+        "telefone_usuario": "(555) 123-4567",
         "e_fornecedor": 0,
-        "senha_usuario": "senha456",
-        "imagem_url_usuario": "https://usuario2.png"
+        "imagem_url_usuario": "carlos.png",
+        "regime_tributario_usuario": "Lucro Real",
+        "valor_max_automatico_usuario": 2500.00
     }
+
 ]
 ```
 
@@ -422,17 +416,19 @@ Cadastra um novo usuário.
 **Exemplo do body da requisição:**
 ```json
 { 
-    "cnpj_usuario": "1357924680",
-    "nome_usuario": "NovoUsuario",
-    "cep_usuario": "54321-987",
-    "logradouro_usuario": "Rua C",
-    "complemento_usuario": "Loja 3",
-    "numero_endereco_usuario": 789,
-    "email_usuario": "novousuario@email.com",
-    "telefone_usuario": "987-654-3210",
+    "cnpj_usuario": "98765432109876",
+    "nome_usuario": "Maria Santos",
+    "cep_usuario": "54321-876",
+    "logradouro_usuario": "Rua B",
+    "complemento_usuario": "Casa 102",
+    "numero_endereco_usuario": 456,
+    "email_usuario": "maria@example.com",
+    "senha_usuario": "*****",
+    "telefone_usuario": "(987) 654-3210",
     "e_fornecedor": 1,
-    "senha_usuario": "novasenha",
-    "imagem_url_usuario": "https://novousuario.png"
+    "imagem_url_usuario": "maria.png",
+    "regime_tributario_usuario": "Lucro Real",
+    "valor_max_automatico_usuario": 5000.00
 }
 ```
 
@@ -443,17 +439,19 @@ Atualiza um usuário.
 **Exemplo do body da requisição:**
 ```json
 { 
-    "cnpj_usuario": "2468013579",
-    "nome_usuario": "UsuarioAtualizado",
-    "cep_usuario": "98765-4321",
-    "logradouro_usuario": "Rua D",
-    "complemento_usuario": "Sala 5",
-    "numero_endereco_usuario": 654,
-    "email_usuario": "usuarioatualizado@email.com",
-    "telefone_usuario": "123-987-6543",
+    "cnpj_usuario": "12345678901234",
+    "nome_usuario": "João Silva",
+    "cep_usuario": "12345-678",
+    "logradouro_usuario": "Rua A, Bloco B",
+    "complemento_usuario": "Apto 201",
+    "numero_endereco_usuario": 123,
+    "email_usuario": "joao@example.com",
+    "senha_usuario": "*****",
+    "telefone_usuario": "(123) 456-7890",
     "e_fornecedor": 0,
-    "senha_usuario": "senhaatualizada",
-    "imagem_url_usuario": "https://usuarioatualizado.png"
+    "imagem_url_usuario": "joao_novo.png",
+    "regime_tributario_usuario": "Simples Nacional",
+    "valor_max_automatico_usuario": 1500.00
 }
 ```
 
@@ -477,17 +475,17 @@ Lista todos os estoques.
 [
     {
         "id_produto": 1,
-        "id_variacao_produto": 1,
+        "id_valor_variacao": 1,
         "quantidade_estoque": 100,
-        "preco": "49.99",
+        "preco_unitario": "49.99",
         "imagem_url_estoque": "https://estoque1.png",
         "id_usuario": 1
     },
     {
         "id_produto": 2,
-        "id_variacao_produto": 2,
+        "id_valor_variacao": 2,
         "quantidade_estoque": 50,
-        "preco": "39.99",
+        "preco_unitario": "39.99",
         "imagem_url_estoque": "https://estoque2.png",
         "id_usuario": 2
     }
@@ -503,9 +501,9 @@ Cadastra um novo estoque.
 ```json
 { 
     "id_produto": 3,
-    "id_variacao_produto": 3,
+    "id_valor_variacao": 3,
     "quantidade_estoque": 75,
-    "preco": "59.99",
+    "preco_unitario": "59.99",
     "imagem_url_estoque": "https://estoque3.png",
     "id_usuario": 1
 }
@@ -519,9 +517,9 @@ Atualiza um estoque.
 ```json
 { 
     "id_produto": 2,
-    "id_variacao_produto": 2,
+    "id_valor_variacao": 2,
     "quantidade_estoque": 60,
-    "preco": "44.99",
+    "preco_unitario": "44.99",
     "imagem_url_estoque": "https://estoque2-atualizado.png",
     "id_usuario": 2
 }
@@ -637,7 +635,6 @@ Deleta uma tag.
 ---
 
 ## Endpoint **Possui**
-(ESSE EU ACHO QUE SAÍ)
 
 #### `GET /possuem`
 
@@ -749,7 +746,6 @@ Deleta um pedido.
 ---
 
 ## Endpoint **Contem**
-(ESSE EU ACHO QUE SAÍ)
 
 
 #### `GET /contem`
@@ -760,10 +756,12 @@ Lista todos os contem.
 ```json
 [
     {
-        "id_pedido": 1
+        "id_pedido": 1,
+        "id_estoque": 1
     },
     {
-        "id_pedido": 2
+        "id_pedido": 2,
+        "id_estoque": 2
     }
 ]
 ```
@@ -776,7 +774,8 @@ Cadastra um novo contem.
 **Exemplo do body da requisição:**
 ```json
 { 
-    "id_pedido": 3
+    "id_pedido": 3,
+    "id_estoque": 4
 }
 ```
 
@@ -787,73 +786,14 @@ Atualiza um contem.
 **Exemplo do body da requisição:**
 ```json
 { 
-    "id_pedido": 2
+    "id_pedido": 2,
+    "id_estoque": 3
 }
 ```
 
 #### `DELETE /contem/{id}`
 
 Deleta um contem.
-
----
-
-## Endpoint **Item_Pedido**
-
-
-#### `GET /itens_pedido`
-
-Lista todos os itens do pedido.
-
-**Exemplo de retorno:**
-```json
-[
-    {
-        "id_pedido": 1,
-        "id_variacao": 1,
-        "quantidade_item_pedido": 5,
-        "valor": 50.00
-    },
-    {
-        "id_pedido": 2,
-        "id_variacao": 2,
-        "quantidade_item_pedido": 3,
-        "valor": 30.00
-    }
-]
-```
-
-
-#### `POST /item_pedido`
-
-Cadastra um novo item do pedido.
-
-**Exemplo do body da requisição:**
-```json
-{ 
-    "id_pedido": 1,
-    "id_variacao": 3,
-    "quantidade_item_pedido": 4,
-    "valor": 40.00
-}
-```
-
-#### `UPDATE /item_pedido/{id}`
-
-Atualiza um item do pedido.
-
-**Exemplo do body da requisição:**
-```json
-{ 
-    "id_pedido": 2,
-    "id_variacao": 2,
-    "quantidade_item_pedido": 4,
-    "valor": 35.00
-}
-```
-
-#### `DELETE /item_pedido/{id}`
-
-Deleta um item do pedido.
 
 ---
 
@@ -930,7 +870,7 @@ Lista todas as avaliações.
     {
         "id_usuario": 1,
         "id_pedido": 1,
-        "nota_preco_avaliacao": 4,
+        "nota_preco_unitario_avaliacao": 4,
         "nota_qualidade_avaliacao": 5,
         "descricao_avaliacao": "Boa compra!",
         "nota_entrega_avaliacao": 5
@@ -938,7 +878,7 @@ Lista todas as avaliações.
     {
         "id_usuario": 2,
         "id_pedido": 2,
-        "nota_preco_avaliacao": 3,
+        "nota_preco_unitario_avaliacao": 3,
         "nota_qualidade_avaliacao": 4,
         "descricao_avaliacao": "Produto OK",
         "nota_entrega_avaliacao": 4
@@ -956,7 +896,7 @@ Cadastra uma nova avaliação.
 { 
     "id_usuario": 1,
     "id_pedido": 3,
-    "nota_preco_avaliacao": 4,
+    "nota_preco_unitario_avaliacao": 4,
     "nota_qualidade_avaliacao": 5,
     "descricao_avaliacao": "Excelente serviço!",
     "nota_entrega_avaliacao": 5
@@ -972,7 +912,7 @@ Atualiza uma avaliação.
 { 
     "id_usuario": 2,
     "id_pedido": 2,
-    "nota_preco_avaliacao": 4,
+    "nota_preco_unitario_avaliacao": 4,
     "nota_qualidade_avaliacao": 4,
     "descricao_avaliacao": "Boa qualidade",
     "nota_entrega_avaliacao": 3
@@ -982,59 +922,6 @@ Atualiza uma avaliação.
 #### `DELETE /avaliacao/{id}`
 
 Deleta uma avaliação.
-
----
-
-## Endpoint **Gera**
-(ESSE EU ACHO QUE SAÍ)
-
-
-#### `GET /gera`
-
-Lista todos os gera.
-
-**Exemplo de retorno:**
-```json
-[
-    {
-        "id_pedido": 1,
-        "id_avaliacao": 1
-    },
-    {
-        "id_pedido": 2,
-        "id_avaliacao": 2
-    }
-]
-```
-
-
-#### `POST /gera`
-
-Cadastra um novo gera.
-
-**Exemplo do body da requisição:**
-```json
-{ 
-    "id_pedido": 3,
-    "id_avaliacao": 3
-}
-```
-
-#### `UPDATE /gera/{id}`
-
-Atualiza um gera.
-
-**Exemplo do body da requisição:**
-```json
-{ 
-    "id_pedido": 2,
-    "id_avaliacao": 2
-}
-```
-
-#### `DELETE /gera/{id}`
-
-Deleta um gera.
 
 ---
 

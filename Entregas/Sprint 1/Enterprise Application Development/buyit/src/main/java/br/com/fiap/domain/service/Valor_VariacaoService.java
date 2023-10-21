@@ -44,7 +44,7 @@ public class Valor_VariacaoService implements Service<Valor_Variacao, Long> {
         return repo.findById(id);
     }
 
-    public List<Valor_Variacao> findByIdTipoVariacao(Long id) {
+    public List<Valor_Variacao> findByIdTipo_Variacao(Long id) {
         if (Objects.isNull(id)) return null;
         return repo.findByIdTipoVariacao(id);
     }

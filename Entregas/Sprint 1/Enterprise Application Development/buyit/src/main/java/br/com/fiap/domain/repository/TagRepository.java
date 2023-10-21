@@ -52,7 +52,6 @@ public class TagRepository implements Repository<Tag, Long> {
         try {
             tag.setId_tag(null);
             transaction.begin();
-            tag.setId_tag(null);
             manager.persist(tag);
             transaction.commit();
         } catch (Exception e) {

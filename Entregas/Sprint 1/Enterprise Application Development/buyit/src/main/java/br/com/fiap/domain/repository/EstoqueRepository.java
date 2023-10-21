@@ -41,7 +41,7 @@ public class EstoqueRepository implements Repository<Estoque, Long> {
         return query.getResultList();
     }
 
-    public List<Estoque> findByIdValorVariacao(Long id_valor_variacao) {
+    public List<Estoque> findByIdValor_Variacao(Long id_valor_variacao) {
         String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.id_valor_variacao = :id_valor_variacao";
         TypedQuery<Estoque> query = manager.createQuery(jpql, Estoque.class);
         query.setParameter("id_valor_variacao", id_valor_variacao);

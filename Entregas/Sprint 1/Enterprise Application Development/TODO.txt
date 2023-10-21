@@ -1,6 +1,11 @@
-- Validar todos os métodos pelo Insomnia
-- Metódo Cadastrar não está funcionando, além de retornar 500 quando da erro (alterar)
+- Tratar Response de Retorno para restrições de Constraints em todos os resources
+- TagResource - findAll e findByName dando erros.
+- Usuario - findbyCnpj dando erro
+
+- Log - Formatar TimeStamp
+- Pedido - Formatar Data e Status(ENUM)
+- Usuario - Formatar CNPJ, CEP, TEL e Regime Tributário(ENUM)
+
 
 - READ ME:
-Pitch
-Postman / Insomnia
+Colocar o Pitch

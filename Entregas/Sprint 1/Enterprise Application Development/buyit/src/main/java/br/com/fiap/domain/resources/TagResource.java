@@ -1,7 +1,8 @@
 package br.com.fiap.domain.resources;
 
-import br.com.fiap.domain.entity.Tag;
+import br.com.fiap.domain.entity.*;
 import br.com.fiap.domain.service.TagService;
+import br.com.fiap.infra.CustomErrorResponse;
 import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.Context;
 import jakarta.ws.rs.core.MediaType;
@@ -13,9 +14,26 @@ import java.util.List;
 import java.util.Objects;
 
 @Path("/tag")
-public class TagResource {
+public class TagResource implements Resource<Tag, Long> {
 
     private final TagService service = TagService.build();
+
+    CustomErrorResponse errorResponse = new CustomErrorResponse();
+
+    private Response validateTag(Tag tag) {
+        // TAG
+        if (tag == null) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Tag não pode ser NULL");
+        }
+
+        // NM_TAG
+        if (tag.getNm_tag() == null || tag.getNm_tag().isEmpty() || tag.getNm_tag().isBlank()) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome da Tag não pode ser NULL ou vazio");
+        }
+
+        return null;
+    }
+
     @Context
     UriInfo uriInfo;
 
@@ -32,17 +50,26 @@ public class TagResource {
     public Response findById(@PathParam("id") Long id) {
         Tag tag = service.findById(id);
         if (Objects.isNull(tag)) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Tag de ID: " + id + " não encontrada");
         }
         return Response.ok(tag).build();
+    }
+
+    @GET
+    @Path("/name/{nm_tag}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByName(@PathParam("nm_tag") String nm_tag) {
+        List<Tag> tags = service.findByName(nm_tag);
+        return Response.ok(tags).build();
     }
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response create(Tag tag) {
-        if (tag == null) {
-            return Response.status(Response.Status.BAD_REQUEST).build();
+    public Response persist(Tag tag) {
+        Response validationResponse = validateTag(tag);
+        if (validationResponse != null) {
+            return validationResponse;
         }
         Tag persistedTag = service.persist(tag);
         URI location = URI.create("/tag/" + persistedTag.getId_tag());
@@ -56,7 +83,11 @@ public class TagResource {
     public Response update(@PathParam("id") Long id, Tag tag) {
         Tag existingTag = service.findById(id);
         if (existingTag == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Tag de ID: " + id + " não encontrada");
+        }
+        Response validationResponse = validateTag(tag);
+        if (validationResponse != null) {
+            return validationResponse;
         }
         tag.setId_tag(existingTag.getId_tag());
         Tag updatedTag = service.update(tag);
@@ -69,7 +100,7 @@ public class TagResource {
     public Response delete(@PathParam("id") Long id) {
         Tag tag = service.findById(id);
         if (tag == null) {
-            return Response.status(Response.Status.NOT_FOUND).build();
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Tag de ID: " + id + " não encontrada");
         }
         service.delete(tag);
         return Response.status(Response.Status.NO_CONTENT).build();

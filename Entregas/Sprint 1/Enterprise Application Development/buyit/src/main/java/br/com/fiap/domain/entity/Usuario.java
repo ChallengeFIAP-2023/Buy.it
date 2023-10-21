@@ -54,10 +54,10 @@ public class Usuario {
     @Column(name = "IMG_URL_USUARIO", columnDefinition = "VARCHAR2(255)")
     private String img_url_usuario;
 
-    @Column(name = "REGIME_TRIBUTARIO_USUARIO", columnDefinition = "VARCHAR2(255)")
+    @Column(name = "REGIME_TRIBUTARIO_USUARIO", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String regime_tributario_usuario;
 
-    @Column(name = "VALOR_MAX_AUTOMATICO_USUARIO", columnDefinition = "NUMBER(10,2)")
+    @Column(name = "VALOR_MAX_AUTOMATICO_USUARIO", nullable = false, columnDefinition = "NUMBER(10,2)")
     private BigDecimal valor_max_automatico_usuario;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})

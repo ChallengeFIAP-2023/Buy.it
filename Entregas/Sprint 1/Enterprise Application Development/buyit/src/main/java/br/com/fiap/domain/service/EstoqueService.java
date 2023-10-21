@@ -51,7 +51,7 @@ public class EstoqueService implements Service<Estoque, Long> {
 
     public List<Estoque> findByIdValor_Variacao(Long id_estoque) {
         if (Objects.isNull(id_estoque)) return null;
-        return repo.findByIdValorVariacao(id_estoque);
+        return repo.findByIdValor_Variacao(id_estoque);
     }
 
     public List<Estoque> findByIdUsuario(Long id_usuario) {

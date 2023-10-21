@@ -52,7 +52,6 @@ public class CategoriaRepository implements Repository<Categoria, Long> {
         try {
             categoria.setId_categoria(null);
             transaction.begin();
-            categoria.setId_categoria(null);
             manager.persist(categoria);
             transaction.commit();
         } catch (Exception e) {
