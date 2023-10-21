@@ -1,6 +1,5 @@
 package br.com.fiap.domain.resources;
 
-import br.com.fiap.domain.entity.Avaliacao;
 import br.com.fiap.domain.entity.Tipo_Variacao;
 import br.com.fiap.domain.service.Tipo_VariacaoService;
 import br.com.fiap.infra.CustomErrorResponse;
