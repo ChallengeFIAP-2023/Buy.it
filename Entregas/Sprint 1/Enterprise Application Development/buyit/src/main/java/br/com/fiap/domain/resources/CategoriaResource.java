@@ -21,9 +21,13 @@ public class CategoriaResource {
     CustomErrorResponse errorResponse = new CustomErrorResponse();
 
     private Response validateCategoria(Categoria categoria) {
+
+        // CATEGORIA
         if (categoria == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Avaliacao não pode ser NULL");
         }
+
+        // NM_CATEGORIA
         if (categoria.getNm_categoria() == null || categoria.getNm_categoria().isEmpty() || categoria.getNm_categoria().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome da Categoria não pode ser NULL ou vazio");
         }
@@ -50,6 +54,14 @@ public class CategoriaResource {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Categoria de ID: " + id + " não encontrada");
         }
         return Response.ok(categoria).build();
+    }
+
+    @GET
+    @Path("/name/{nm_usuario}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByName(@PathParam("nm_usuario") String nm_usuario) {
+        List<Categoria> categorias = service.findByName(nm_usuario);
+        return Response.ok(categorias).build();
     }
 
     @POST

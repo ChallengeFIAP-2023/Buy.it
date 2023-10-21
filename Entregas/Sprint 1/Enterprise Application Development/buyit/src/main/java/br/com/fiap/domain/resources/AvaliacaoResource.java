@@ -29,9 +29,13 @@ public class AvaliacaoResource {
     CustomErrorResponse errorResponse = new CustomErrorResponse();
 
     private Response validateAvaliacao(Avaliacao avaliacao) {
+
+        // AVALIACAO
         if (avaliacao == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Avaliacao não pode ser NULL");
         }
+
+        // ID_USUARIO
         if (avaliacao.getId_usuario() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Usuario da Avaliacao não pode ser NULL");
         }
@@ -39,6 +43,8 @@ public class AvaliacaoResource {
         if (existingUsuario == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Usuario de ID: " + avaliacao.getId_usuario().getId_usuario() + " não encontrado");
         }
+
+        // ID_PEDIDO
         if (avaliacao.getId_pedido() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Pedido da Avaliacao não pode ser NULL");
         }
@@ -46,6 +52,7 @@ public class AvaliacaoResource {
         if (existingPedido == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + avaliacao.getId_pedido().getId_pedido() + " não encontrado");
         }
+
         return null;
     }
 

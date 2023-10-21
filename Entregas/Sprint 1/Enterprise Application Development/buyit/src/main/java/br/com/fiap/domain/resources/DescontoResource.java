@@ -25,15 +25,22 @@ public class DescontoResource {
     CustomErrorResponse errorResponse = new CustomErrorResponse();
 
     private Response validateDesconto(Desconto desconto) {
+        // DESCONTO (ENTIDADE)
         if (desconto == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Desconto não pode ser NULL");
         }
+
+        // QTD_MIN_PRODUTO
         if (desconto.getQtd_min_produto() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Quantidade Mínima do Produto não pode ser NULL");
         }
+
+        // DESCONTO (ATRIBUTO)
         if (desconto.getDesconto() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Desconto não pode ser NULL");
         }
+
+        // ID_ESTOQUE
         if (desconto.getId_estoque() == null || serviceEstoque.findById(desconto.getId_estoque().getId_estoque()) == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Estoque de ID: " + desconto.getId_estoque().getId_estoque() + " não encontrado");
         }
