@@ -38,7 +38,7 @@ public class UsuarioResource {
     }
 
     @GET
-    @Path("/{cnpj}")
+    @Path("/cnpj/{cnpj}")
     @Produces(MediaType.APPLICATION_JSON)
     public Response findByCnpj(@PathParam("cnpj") String cnpj_usuario) {
         Usuario usuario = service.findByCnpj(cnpj_usuario);
