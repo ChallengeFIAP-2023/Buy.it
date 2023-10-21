@@ -1,11 +1,9 @@
 package br.com.fiap.domain.repository;
 
-import br.com.fiap.domain.entity.Estoque;
-import br.com.fiap.domain.entity.Produto;
-import br.com.fiap.domain.entity.Usuario;
-import br.com.fiap.domain.entity.Valor_Variacao;
+import br.com.fiap.domain.entity.*;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 import java.util.Objects;
@@ -36,16 +34,25 @@ public class EstoqueRepository implements Repository<Estoque, Long> {
         return manager.find(Estoque.class, id);
     }
 
-    public Produto findByIdProduto(Long id) {
-        return manager.find(Produto.class, id);
+    public List<Estoque> findByIdProduto(Long id_produto) {
+        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.id_produto = :id_produto";
+        TypedQuery<Estoque> query = manager.createQuery(jpql, Estoque.class);
+        query.setParameter("id_produto", id_produto);
+        return query.getResultList();
     }
 
-    public Valor_Variacao findByIdValorVariacao(Long id) {
-        return manager.find(Valor_Variacao.class, id);
+    public List<Estoque> findByIdValorVariacao(Long id_valor_variacao) {
+        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.id_valor_variacao = :id_valor_variacao";
+        TypedQuery<Estoque> query = manager.createQuery(jpql, Estoque.class);
+        query.setParameter("id_valor_variacao", id_valor_variacao);
+        return query.getResultList();
     }
 
-    public Usuario findByIdUsuario(Long id) {
-        return manager.find(Usuario.class, id);
+    public List<Estoque> findByIdUsuario(Long id_usuario) {
+        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.id_usuario = :id_usuario";
+        TypedQuery<Estoque> query = manager.createQuery(jpql, Estoque.class);
+        query.setParameter("id_usuario", id_usuario);
+        return query.getResultList();
     }
 
     @Override
@@ -59,10 +66,12 @@ public class EstoqueRepository implements Repository<Estoque, Long> {
         try {
             estoque.setId_estoque(null);
             transaction.begin();
-            Produto produto = findByIdProduto(estoque.getId_produto().getId_produto());
-            Valor_Variacao valor_variacao = findByIdValorVariacao(estoque.getId_valor_variacao().getId_valor_variacao());
+            Produto produto = manager.find(Produto.class, estoque.getId_produto().getId_produto());
+            Valor_Variacao valor_variacao = manager.find(Valor_Variacao.class, estoque.getId_valor_variacao().getId_valor_variacao());
+            Usuario usuario = manager.find(Usuario.class, estoque.getId_usuario().getId_usuario());
             estoque.setId_produto(produto);
             estoque.setId_valor_variacao(valor_variacao);
+            estoque.setId_usuario(usuario);
             manager.persist(estoque);
             transaction.commit();
         } catch (Exception e) {
@@ -83,19 +92,19 @@ public class EstoqueRepository implements Repository<Estoque, Long> {
 
                 // ID_PRODUTO
                 if (Objects.nonNull(estoque.getId_produto())) {
-                    Produto produto = findByIdProduto(estoque.getId_produto().getId_produto());
+                    Produto produto = manager.find(Produto.class, estoque.getId_produto().getId_produto());
                     estoque_buscado.setId_produto(produto);
                 }
 
                 // ID_VALOR_VARIACAO
                 if (Objects.nonNull(estoque.getId_valor_variacao())) {
-                    Valor_Variacao valor_variacao = findByIdValorVariacao(estoque.getId_valor_variacao().getId_valor_variacao());
+                    Valor_Variacao valor_variacao = manager.find(Valor_Variacao.class, estoque.getId_valor_variacao().getId_valor_variacao());
                     estoque_buscado.setId_valor_variacao(valor_variacao);
                 }
 
                 // ID_USUARIO
                 if (Objects.nonNull(estoque.getId_usuario())) {
-                    Usuario usuario = findByIdUsuario(estoque.getId_usuario().getId_usuario());
+                    Usuario usuario = manager.find(Usuario.class, estoque.getId_usuario().getId_usuario());
                     estoque_buscado.setId_usuario(usuario);
                 }
 

@@ -35,8 +35,11 @@ public class LogRepository implements Repository<Log, Long> {
         return manager.find(Log.class, id);
     }
 
-    public Pedido findByIdPedido(Long id) {
-        return manager.find(Pedido.class, id);
+    public List<Log> findByIdPedido(Long id_pedido) {
+        String jpql = "SELECT log FROM Log log WHERE log.id_pedido = :id_pedido";
+        TypedQuery<Log> query = manager.createQuery(jpql, Log.class);
+        query.setParameter("id_pedido", id_pedido);
+        return query.getResultList();
     }
 
     public List<Log> findByName(String name) {
@@ -57,7 +60,7 @@ public class LogRepository implements Repository<Log, Long> {
         try {
             log.setId_log(null);
             transaction.begin();
-            Pedido pedido = findByIdPedido(log.getId_pedido().getId_pedido());
+            Pedido pedido = manager.find(Pedido.class, log.getId_pedido().getId_pedido());
             log.setId_pedido(pedido);
             manager.persist(log);
             transaction.commit();
@@ -79,7 +82,7 @@ public class LogRepository implements Repository<Log, Long> {
 
                 // ID_PEDIDO
                 if (Objects.nonNull(log.getId_pedido())) {
-                    Pedido pedido = findByIdPedido(log.getId_pedido().getId_pedido());
+                    Pedido pedido = manager.find(Pedido.class, log.getId_pedido().getId_pedido());
                     log_buscado.setId_pedido(pedido);
                 }
 

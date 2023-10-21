@@ -1,7 +1,6 @@
 package br.com.fiap.domain.service;
 
 import br.com.fiap.BuyitApplicattion;
-import br.com.fiap.domain.entity.Tipo_Variacao;
 import br.com.fiap.domain.entity.Valor_Variacao;
 import br.com.fiap.domain.repository.Valor_VariacaoRepository;
 import br.com.fiap.infra.EntityManagerFactoryProvider;
@@ -45,14 +44,14 @@ public class Valor_VariacaoService implements Service<Valor_Variacao, Long> {
         return repo.findById(id);
     }
 
+    public List<Valor_Variacao> findByIdTipoVariacao(Long id) {
+        if (Objects.isNull(id)) return null;
+        return repo.findByIdTipoVariacao(id);
+    }
+
     public List<Valor_Variacao> findByName(String name) {
         if (Objects.isNull(name)) return null;
         return repo.findByName(name);
-    }
-
-    public Tipo_Variacao findByIdTipoVariacao(Long id) {
-        if (Objects.isNull(id)) return null;
-        return repo.findByIdTipoVariacao(id);
     }
 
     @Override

@@ -35,8 +35,11 @@ public class Valor_VariacaoRepository implements Repository<Valor_Variacao, Long
         return manager.find(Valor_Variacao.class, id);
     }
 
-    public Tipo_Variacao findByIdTipoVariacao(Long id) {
-        return manager.find(Tipo_Variacao.class, id);
+    public List<Valor_Variacao> findByIdTipoVariacao(Long id_tipo_variacao) {
+        String jpql = "SELECT valor_variacao FROM Valor_Variacao valor_variacao WHERE valor_variacao.id_tipo_variacao = :id_tipo_variacao";
+        TypedQuery<Valor_Variacao> query = manager.createQuery(jpql, Valor_Variacao.class);
+        query.setParameter("id_tipo_variacao", id_tipo_variacao);
+        return query.getResultList();
     }
 
     public List<Valor_Variacao> findByName(String name) {
@@ -57,7 +60,7 @@ public class Valor_VariacaoRepository implements Repository<Valor_Variacao, Long
         try {
             valor_variacao.setId_valor_variacao(null);
             transaction.begin();
-            Tipo_Variacao tipo_variacao = findByIdTipoVariacao(valor_variacao.getId_tipo_variacao().getId_tipo_variacao());
+            Tipo_Variacao tipo_variacao = manager.find(Tipo_Variacao.class, valor_variacao.getId_tipo_variacao().getId_tipo_variacao());
             valor_variacao.setId_tipo_variacao(tipo_variacao);
             manager.persist(valor_variacao);
             transaction.commit();
@@ -79,7 +82,7 @@ public class Valor_VariacaoRepository implements Repository<Valor_Variacao, Long
 
                 // ID_TIPO_VARIACAO
                 if (Objects.nonNull(valor_variacao.getId_tipo_variacao())) {
-                    Tipo_Variacao tipo_variacao = findByIdTipoVariacao(valor_variacao.getId_tipo_variacao().getId_tipo_variacao());
+                    Tipo_Variacao tipo_variacao = manager.find(Tipo_Variacao.class, valor_variacao.getId_tipo_variacao().getId_tipo_variacao());
                     valor_variacao_buscado.setId_tipo_variacao(tipo_variacao);
                 }
 

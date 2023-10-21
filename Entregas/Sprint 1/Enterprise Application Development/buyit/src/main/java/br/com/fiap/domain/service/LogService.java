@@ -2,7 +2,6 @@ package br.com.fiap.domain.service;
 
 import br.com.fiap.BuyitApplicattion;
 import br.com.fiap.domain.entity.Log;
-import br.com.fiap.domain.entity.Pedido;
 import br.com.fiap.domain.repository.LogRepository;
 import br.com.fiap.infra.EntityManagerFactoryProvider;
 import jakarta.persistence.EntityManagerFactory;
@@ -45,7 +44,7 @@ public class LogService implements Service<Log, Long> {
         return repo.findById(id);
     }
 
-    public Pedido findByIdPedido(Long id_pedido) {
+    public List<Log> findByIdPedido(Long id_pedido) {
         if (Objects.isNull(id_pedido)) return null;
         return repo.findByIdPedido(id_pedido);
     }

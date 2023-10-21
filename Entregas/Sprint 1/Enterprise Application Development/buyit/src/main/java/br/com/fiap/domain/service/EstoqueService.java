@@ -2,9 +2,6 @@ package br.com.fiap.domain.service;
 
 import br.com.fiap.BuyitApplicattion;
 import br.com.fiap.domain.entity.Estoque;
-import br.com.fiap.domain.entity.Produto;
-import br.com.fiap.domain.entity.Usuario;
-import br.com.fiap.domain.entity.Valor_Variacao;
 import br.com.fiap.domain.repository.EstoqueRepository;
 import br.com.fiap.infra.EntityManagerFactoryProvider;
 import jakarta.persistence.EntityManagerFactory;
@@ -47,17 +44,17 @@ public class EstoqueService implements Service<Estoque, Long> {
         return repo.findById(id);
     }
 
-    public Produto findByIdProduto(Long id_produto) {
+    public List<Estoque> findByIdProduto(Long id_produto) {
         if (Objects.isNull(id_produto)) return null;
         return repo.findByIdProduto(id_produto);
     }
 
-    public Valor_Variacao findByIdValor_Variacao(Long id_estoque) {
+    public List<Estoque> findByIdValor_Variacao(Long id_estoque) {
         if (Objects.isNull(id_estoque)) return null;
         return repo.findByIdValorVariacao(id_estoque);
     }
 
-    public Usuario findByIdUsuario(Long id_usuario) {
+    public List<Estoque> findByIdUsuario(Long id_usuario) {
         if (Objects.isNull(id_usuario)) return null;
         return repo.findByIdUsuario(id_usuario);
     }

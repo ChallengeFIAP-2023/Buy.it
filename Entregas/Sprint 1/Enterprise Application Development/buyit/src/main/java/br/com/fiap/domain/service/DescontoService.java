@@ -2,7 +2,6 @@ package br.com.fiap.domain.service;
 
 import br.com.fiap.BuyitApplicattion;
 import br.com.fiap.domain.entity.Desconto;
-import br.com.fiap.domain.entity.Estoque;
 import br.com.fiap.domain.repository.DescontoRepository;
 import br.com.fiap.infra.EntityManagerFactoryProvider;
 import jakarta.persistence.EntityManagerFactory;
@@ -45,7 +44,7 @@ public class DescontoService implements Service<Desconto, Long> {
         return repo.findById(id);
     }
 
-    public Estoque findByIdEstoque(Long id_estoque) {
+    public List<Desconto> findByIdEstoque(Long id_estoque) {
         if (Objects.isNull(id_estoque)) return null;
         return repo.findByIdEstoque(id_estoque);
     }

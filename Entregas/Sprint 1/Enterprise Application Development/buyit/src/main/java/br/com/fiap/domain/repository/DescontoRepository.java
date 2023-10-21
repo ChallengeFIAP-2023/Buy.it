@@ -4,6 +4,7 @@ import br.com.fiap.domain.entity.Desconto;
 import br.com.fiap.domain.entity.Estoque;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,8 +35,12 @@ public class DescontoRepository implements Repository<Desconto, Long> {
         return manager.find(Desconto.class, id);
     }
 
-    public Estoque findByIdEstoque(Long id) {
-        return manager.find(Estoque.class, id);
+
+    public List<Desconto> findByIdEstoque(Long id_estoque) {
+        String jpql = "SELECT desconto FROM Desconto desconto WHERE desconto.id_estoque = :id_estoque";
+        TypedQuery<Desconto> query = manager.createQuery(jpql, Desconto.class);
+        query.setParameter("id_estoque", id_estoque);
+        return query.getResultList();
     }
 
     @Override
@@ -50,7 +55,7 @@ public class DescontoRepository implements Repository<Desconto, Long> {
             desconto.setId_desconto(null);
             transaction.begin();
             desconto.setId_desconto(null);
-            Estoque estoque = findByIdEstoque(desconto.getId_estoque().getId_estoque());
+            Estoque estoque = manager.find(Estoque.class, desconto.getId_estoque().getId_estoque());
             desconto.setId_estoque(estoque);
             manager.persist(desconto);
             transaction.commit();
@@ -72,7 +77,7 @@ public class DescontoRepository implements Repository<Desconto, Long> {
 
                 // ID_ESTOQUE
                 if (Objects.nonNull(desconto.getId_estoque())) {
-                    Estoque estoque = findByIdEstoque(desconto.getId_estoque().getId_estoque());
+                    Estoque estoque = manager.find(Estoque.class, desconto.getId_estoque().getId_estoque());
                     desconto_buscado.setId_estoque(estoque);
                 }
 

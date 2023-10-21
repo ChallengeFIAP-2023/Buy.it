@@ -4,6 +4,7 @@ import br.com.fiap.domain.entity.Pedido;
 import br.com.fiap.domain.entity.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 import java.util.Objects;
@@ -34,8 +35,11 @@ public class PedidoRepository implements Repository<Pedido, Long> {
         return manager.find(Pedido.class, id);
     }
 
-    public Usuario findByIdUsuario(Long id) {
-        return manager.find(Usuario.class, id);
+    public List<Pedido> findByIdUsuario(Long id_usuario) {
+        String jpql = "SELECT pedido FROM Pedido pedido WHERE pedido.id_usuario = :id_usuario";
+        TypedQuery<Pedido> query = manager.createQuery(jpql, Pedido.class);
+        query.setParameter("id_usuario", id_usuario);
+        return query.getResultList();
     }
 
     @Override
@@ -49,7 +53,7 @@ public class PedidoRepository implements Repository<Pedido, Long> {
         try {
             pedido.setId_pedido(null);
             transaction.begin();
-            Usuario usuario = findByIdUsuario(pedido.getId_usuario().getId_usuario());
+            Usuario usuario = manager.find(Usuario.class, pedido.getId_usuario().getId_usuario());
             pedido.setId_usuario(usuario);
             manager.persist(pedido);
             transaction.commit();
@@ -71,7 +75,7 @@ public class PedidoRepository implements Repository<Pedido, Long> {
 
                 // ID_USUARIO
                 if (Objects.nonNull(pedido.getId_usuario())) {
-                    Usuario usuario = findByIdUsuario(pedido.getId_usuario().getId_usuario());
+                    Usuario usuario = manager.find(Usuario.class, pedido.getId_usuario().getId_usuario());
                     pedido_buscado.setId_usuario(usuario);
                 }
 

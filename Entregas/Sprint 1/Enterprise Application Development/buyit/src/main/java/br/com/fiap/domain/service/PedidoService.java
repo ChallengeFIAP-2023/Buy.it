@@ -2,7 +2,6 @@ package br.com.fiap.domain.service;
 
 import br.com.fiap.BuyitApplicattion;
 import br.com.fiap.domain.entity.Pedido;
-import br.com.fiap.domain.entity.Usuario;
 import br.com.fiap.domain.repository.PedidoRepository;
 import br.com.fiap.infra.EntityManagerFactoryProvider;
 import jakarta.persistence.EntityManagerFactory;
@@ -45,7 +44,7 @@ public class PedidoService implements Service<Pedido, Long> {
         return repo.findById(id);
     }
 
-    public Usuario findByIdUsuario(Long id_usuario) {
+    public List<Pedido> findByIdUsuario(Long id_usuario) {
         if (Objects.isNull(id_usuario)) return null;
         return repo.findByIdUsuario(id_usuario);
     }

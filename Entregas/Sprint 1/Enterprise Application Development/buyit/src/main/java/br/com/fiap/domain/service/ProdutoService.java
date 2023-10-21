@@ -1,7 +1,6 @@
 package br.com.fiap.domain.service;
 
 import br.com.fiap.BuyitApplicattion;
-import br.com.fiap.domain.entity.Categoria;
 import br.com.fiap.domain.entity.Produto;
 import br.com.fiap.domain.repository.ProdutoRepository;
 import br.com.fiap.infra.EntityManagerFactoryProvider;
@@ -45,7 +44,7 @@ public class ProdutoService implements Service<Produto, Long> {
         return repo.findById(id);
     }
 
-    public Categoria findByIdCategoria(Long id_categoria) {
+    public List<Produto> findByIdCategoria(Long id_categoria) {
         if (Objects.isNull(id_categoria)) return null;
         return repo.findByIdCategoria(id_categoria);
     }

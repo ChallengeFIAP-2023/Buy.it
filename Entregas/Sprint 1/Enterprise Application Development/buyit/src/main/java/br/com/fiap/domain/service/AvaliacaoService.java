@@ -2,7 +2,6 @@ package br.com.fiap.domain.service;
 
 import br.com.fiap.BuyitApplicattion;
 import br.com.fiap.domain.entity.Avaliacao;
-import br.com.fiap.domain.entity.Usuario;
 import br.com.fiap.domain.repository.AvaliacaoRepository;
 import br.com.fiap.infra.EntityManagerFactoryProvider;
 import jakarta.persistence.EntityManagerFactory;
@@ -45,7 +44,7 @@ public class AvaliacaoService implements Service<Avaliacao, Long> {
         return repo.findById(id);
     }
 
-    public Usuario findByIdUsuario(Long id_usuario) {
+    public List<Avaliacao> findByIdUsuario(Long id_usuario) {
         if (Objects.isNull(id_usuario)) return null;
         return repo.findByIdUsuario(id_usuario);
     }

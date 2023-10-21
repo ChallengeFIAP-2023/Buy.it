@@ -5,6 +5,7 @@ import br.com.fiap.domain.entity.Pedido;
 import br.com.fiap.domain.entity.Usuario;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
+import jakarta.persistence.TypedQuery;
 
 import java.util.List;
 import java.util.Objects;
@@ -35,8 +36,11 @@ public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
         return manager.find(Avaliacao.class, id);
     }
 
-    public Usuario findByIdUsuario(Long id) {
-        return manager.find(Usuario.class, id);
+    public List<Avaliacao> findByIdUsuario(Long id_usuario) {
+        String jpql = "SELECT avaliacao FROM Avaliacao avaliacao WHERE avaliacao.id_usuario = :id_usuario";
+        TypedQuery<Avaliacao> query = manager.createQuery(jpql, Avaliacao.class);
+        query.setParameter("id_usuario", id_usuario);
+        return query.getResultList();
     }
 
     public Pedido findByIdPedido(Long id) {
@@ -54,7 +58,7 @@ public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
         try {
             transaction.begin();
             avaliacao.setId_avaliacao(null);
-            Usuario usuario = findByIdUsuario(avaliacao.getId_usuario().getId_usuario());
+            Usuario usuario = manager.find(Usuario.class, avaliacao.getId_usuario().getId_usuario());
             Pedido pedido = findByIdPedido(avaliacao.getId_pedido().getId_pedido());
             avaliacao.setId_usuario(usuario);
             avaliacao.setId_pedido(pedido);
@@ -78,7 +82,7 @@ public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
 
                 // ID_USUARIO
                 if (Objects.nonNull(avaliacao.getId_usuario())) {
-                    Usuario usuario = findByIdUsuario(avaliacao.getId_usuario().getId_usuario());
+                    Usuario usuario = manager.find(Usuario.class, avaliacao.getId_usuario().getId_usuario());
                     avaliacao_buscada.setId_usuario(usuario);
                 }
 

@@ -35,8 +35,11 @@ public class ProdutoRepository implements Repository<Produto, Long> {
         return manager.find(Produto.class, id);
     }
 
-    public Categoria findByIdCategoria(Long id) {
-        return manager.find(Categoria.class, id);
+    public List<Produto> findByIdCategoria(Long id_categoria) {
+        String jpql = "SELECT produto FROM Produto produto WHERE produto.id_categoria = :id_categoria";
+        TypedQuery<Produto> query = manager.createQuery(jpql, Produto.class);
+        query.setParameter("id_categoria", id_categoria);
+        return query.getResultList();
     }
 
     public List<Produto> findByName(String name) {
@@ -57,7 +60,7 @@ public class ProdutoRepository implements Repository<Produto, Long> {
         try {
             produto.setId_produto(null);
             transaction.begin();
-            Categoria categoria = findByIdCategoria(produto.getId_categoria().getId_categoria());
+            Categoria categoria = manager.find(Categoria.class, produto.getId_categoria().getId_categoria());
             produto.setId_categoria(categoria);
             manager.persist(produto);
             transaction.commit();
@@ -78,7 +81,7 @@ public class ProdutoRepository implements Repository<Produto, Long> {
             if (Objects.nonNull(produto_buscado)) {
 
                 // ID_CATEGORIA
-                Categoria categoria = findByIdCategoria(produto.getId_categoria().getId_categoria());
+                Categoria categoria = manager.find(Categoria.class, produto.getId_categoria().getId_categoria());
                 produto_buscado.setId_categoria(categoria);
 
                 // NM_PRODUTO
