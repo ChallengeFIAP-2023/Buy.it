@@ -57,10 +57,10 @@ public class CategoriaResource {
     }
 
     @GET
-    @Path("/name/{nm_usuario}")
+    @Path("/name/{nm_categoria}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByName(@PathParam("nm_usuario") String nm_usuario) {
-        List<Categoria> categorias = service.findByName(nm_usuario);
+    public Response findByName(@PathParam("nm_categoria") String nm_categoria) {
+        List<Categoria> categorias = service.findByName(nm_categoria);
         return Response.ok(categorias).build();
     }
 
