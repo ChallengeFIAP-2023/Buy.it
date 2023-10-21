@@ -35,6 +35,7 @@ export function Login() {
           <Input
             label="Senha"
             placeholder="Johndoe@example.com"
+            secureTextEntry
           />
         </Fieldset>
 
