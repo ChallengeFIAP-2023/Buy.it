@@ -37,6 +37,17 @@ public class PedidoResource {
         return Response.ok(pedido).build();
     }
 
+    @GET
+    @Path("/usuario/{id_usuario}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByIdUsuario(@PathParam("id_usuario") Long id_usuario) {
+        List<Pedido> pedidos = service.findByIdUsuario(id_usuario);
+        if (Objects.isNull(pedidos)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(pedidos).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

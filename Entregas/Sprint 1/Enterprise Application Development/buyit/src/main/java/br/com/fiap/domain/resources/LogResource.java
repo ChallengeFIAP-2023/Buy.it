@@ -37,6 +37,17 @@ public class LogResource {
         return Response.ok(log).build();
     }
 
+    @GET
+    @Path("/pedido/{id_pedido}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByIdPedido(@PathParam("id_pedido") Long id_pedido) {
+        List<Log> logs = service.findByIdPedido(id_pedido);
+        if (Objects.isNull(logs)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(logs).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

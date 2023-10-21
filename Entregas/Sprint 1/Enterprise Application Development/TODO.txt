@@ -1,6 +1,3 @@
-- Criar Resources de Fins Específicos
-
 - READ ME:
-Instrução de Como rodar
 Pitch
 Postman / Insomnia

@@ -37,6 +37,17 @@ public class ProdutoResource {
         return Response.ok(produto).build();
     }
 
+    @GET
+    @Path("/categoria/{id_categoria}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByIdCategoria(@PathParam("id_categoria") Long id_categoria) {
+        List<Produto> produtos = service.findByIdCategoria(id_categoria);
+        if (Objects.isNull(produtos)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(produtos).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

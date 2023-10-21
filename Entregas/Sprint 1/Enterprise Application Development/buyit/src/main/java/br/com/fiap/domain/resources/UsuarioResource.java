@@ -37,6 +37,17 @@ public class UsuarioResource {
         return Response.ok(usuario).build();
     }
 
+    @GET
+    @Path("/{cnpj}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByCnpj(@PathParam("cnpj") String cnpj_usuario) {
+        Usuario usuario = service.findByCnpj(cnpj_usuario);
+        if (Objects.isNull(usuario)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(usuario).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

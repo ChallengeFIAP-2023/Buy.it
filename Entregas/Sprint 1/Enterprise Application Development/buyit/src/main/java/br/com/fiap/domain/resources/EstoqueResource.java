@@ -37,6 +37,39 @@ public class EstoqueResource {
         return Response.ok(estoque).build();
     }
 
+    @GET
+    @Path("/produto/{id_produto}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByIdProduto(@PathParam("id_produto") Long id_produto) {
+        List<Estoque> estoques = service.findByIdProduto(id_produto);
+        if (Objects.isNull(estoques)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(estoques).build();
+    }
+
+    @GET
+    @Path("/valor_variacao/{id_valor_variacao}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByIdValor_Variacao(@PathParam("id_valor_variacao") Long id_valor_variacao) {
+        List<Estoque> estoques = service.findByIdValor_Variacao(id_valor_variacao);
+        if (Objects.isNull(estoques)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(estoques).build();
+    }
+
+    @GET
+    @Path("/usuario/{id_usuario}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByIdUsuario(@PathParam("id_usuario") Long id_usuario) {
+        List<Estoque> estoques = service.findByIdUsuario(id_usuario);
+        if (Objects.isNull(estoques)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(estoques).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

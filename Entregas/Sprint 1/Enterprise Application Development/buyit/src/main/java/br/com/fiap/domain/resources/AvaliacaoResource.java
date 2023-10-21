@@ -37,6 +37,17 @@ public class AvaliacaoResource {
         return Response.ok(avaliacao).build();
     }
 
+    @GET
+    @Path("/usuario/{id_usuario}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByIdUsuario(@PathParam("id_usuario") Long id_usuario) {
+        List<Avaliacao> avaliacoes = service.findByIdUsuario(id_usuario);
+        if (Objects.isNull(avaliacoes)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(avaliacoes).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

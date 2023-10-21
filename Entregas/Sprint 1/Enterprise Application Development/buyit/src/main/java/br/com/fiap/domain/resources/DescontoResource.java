@@ -37,6 +37,17 @@ public class DescontoResource {
         return Response.ok(desconto).build();
     }
 
+    @GET
+    @Path("/estoque/{id_estoque}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByIdEstoque(@PathParam("id_estoque") Long id_estoque) {
+        List<Desconto> descontos = service.findByIdEstoque(id_estoque);
+        if (Objects.isNull(descontos)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(descontos).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)

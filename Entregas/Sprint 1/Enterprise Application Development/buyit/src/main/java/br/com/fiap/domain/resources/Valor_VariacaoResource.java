@@ -37,6 +37,17 @@ public class Valor_VariacaoResource {
         return Response.ok(valor_variacao).build();
     }
 
+    @GET
+    @Path("/tipo_variacao/{id_tipo_variacao}")
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response findByIdTipo_Variacao(@PathParam("id_tipo_variacao") Long id_tipo_variacao) {
+        List<Valor_Variacao> valor_variacoes = service.findByIdTipoVariacao(id_tipo_variacao);
+        if (Objects.isNull(valor_variacoes)) {
+            return Response.status(Response.Status.NOT_FOUND).build();
+        }
+        return Response.ok(valor_variacoes).build();
+    }
+
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
