@@ -63,7 +63,7 @@ public class DescontoResource {
     public Response findById(@PathParam("id") Long id) {
         Desconto desconto = service.findById(id);
         if (Objects.isNull(desconto)) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Desconto de ID: " + id + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Desconto de ID: " + id + " não encontrado");
         }
         return Response.ok(desconto).build();
     }
@@ -74,7 +74,7 @@ public class DescontoResource {
     public Response findByIdEstoque(@PathParam("id_estoque") Long id_estoque) {
         Estoque existingEstoque = serviceEstoque.findById(id_estoque);
         if (existingEstoque == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Estoque de ID: " + id_estoque + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Estoque de ID: " + id_estoque + " não encontrado");
         }
         List<Desconto> descontos = service.findByIdEstoque(id_estoque);
         return Response.ok(descontos).build();
@@ -117,7 +117,7 @@ public class DescontoResource {
     public Response delete(@PathParam("id") Long id) {
         Desconto desconto = service.findById(id);
         if (desconto == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Desconto de ID: " + id + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Desconto de ID: " + id + " não encontrado");
         }
         service.delete(desconto);
         return Response.status(Response.Status.NO_CONTENT).build();

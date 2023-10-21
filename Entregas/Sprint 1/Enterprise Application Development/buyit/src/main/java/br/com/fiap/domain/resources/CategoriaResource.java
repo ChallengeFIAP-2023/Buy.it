@@ -68,9 +68,6 @@ public class CategoriaResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
     public Response create(Categoria categoria) {
-        if (categoria == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Categoria não pode ser NULL");
-        }
         Response validationResponse = validateCategoria(categoria);
         if (validationResponse != null) {
             return validationResponse;

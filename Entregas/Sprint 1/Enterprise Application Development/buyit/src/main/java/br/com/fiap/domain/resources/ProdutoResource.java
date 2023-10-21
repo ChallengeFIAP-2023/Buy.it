@@ -64,7 +64,7 @@ public class ProdutoResource {
     public Response findById(@PathParam("id") Long id) {
         Produto produto = service.findById(id);
         if (Objects.isNull(produto)) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Produto de ID: " + id + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Produto de ID: " + id + " não encontrado");
         }
         return Response.ok(produto).build();
     }
@@ -83,7 +83,7 @@ public class ProdutoResource {
     public Response findByIdCategoria(@PathParam("id_categoria") Long id_categoria) {
         Categoria existingCategoria = serviceCategoria.findById(id_categoria);
         if (existingCategoria == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Categoria de ID: " + id_categoria + " não encontrada");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Categoria de ID: " + id_categoria + " não encontrada");
         }
         List<Produto> produtos = service.findByIdCategoria(id_categoria);
         return Response.ok(produtos).build();
@@ -109,7 +109,7 @@ public class ProdutoResource {
     public Response update(@PathParam("id") Long id, Produto produto) {
         Produto existingProduto = service.findById(id);
         if (existingProduto == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Produto de ID: " + id + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Produto de ID: " + id + " não encontrado");
         }
         Response validationResponse = validateProduto(produto);
         if (validationResponse != null) {
@@ -126,7 +126,7 @@ public class ProdutoResource {
     public Response delete(@PathParam("id") Long id) {
         Produto produto = service.findById(id);
         if (produto == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Produto de ID: " + id + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Produto de ID: " + id + " não encontrado");
         }
         service.delete(produto);
         return Response.status(Response.Status.NO_CONTENT).build();

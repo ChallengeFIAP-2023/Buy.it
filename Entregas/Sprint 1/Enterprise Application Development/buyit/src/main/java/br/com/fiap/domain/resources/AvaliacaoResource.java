@@ -72,7 +72,7 @@ public class AvaliacaoResource {
     public Response findById(@PathParam("id") Long id) {
         Avaliacao avaliacao = service.findById(id);
         if (Objects.isNull(avaliacao)) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Avaliacao de ID: " + id + " não encontrada");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Avaliacao de ID: " + id + " não encontrada");
         }
         return Response.ok(avaliacao).build();
     }
@@ -120,7 +120,7 @@ public class AvaliacaoResource {
     public Response update(@PathParam("id") Long id, Avaliacao avaliacao) {
         Avaliacao existingAvaliacao = service.findById(id);
         if (existingAvaliacao == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Avaliacao de ID: " + id + " não encontrada");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Avaliacao de ID: " + id + " não encontrada");
         }
         Response validationResponse = validateAvaliacao(avaliacao);
         if (validationResponse != null) {
@@ -137,7 +137,7 @@ public class AvaliacaoResource {
     public Response delete(@PathParam("id") Long id) {
         Avaliacao avaliacao = service.findById(id);
         if (avaliacao == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Avaliacao de ID: " + id + " não encontrada");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Avaliacao de ID: " + id + " não encontrada");
         }
         service.delete(avaliacao);
         return Response.status(Response.Status.NO_CONTENT).build();

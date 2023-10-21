@@ -72,7 +72,7 @@ public class PedidoResource {
     public Response findById(@PathParam("id") Long id) {
         Pedido pedido = service.findById(id);
         if (Objects.isNull(pedido)) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + id + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Pedido de ID: " + id + " não encontrado");
         }
         return Response.ok(pedido).build();
     }
@@ -83,7 +83,7 @@ public class PedidoResource {
     public Response findByIdUsuario(@PathParam("id_usuario") Long id_usuario) {
         Usuario existingUsuario = serviceUsuario.findById(id_usuario);
         if (existingUsuario == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Usuario de ID: " + id_usuario + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Usuario de ID: " + id_usuario + " não encontrado");
         }
         List<Pedido> pedidos = service.findByIdUsuario(id_usuario);
         return Response.ok(pedidos).build();
@@ -109,7 +109,7 @@ public class PedidoResource {
     public Response update(@PathParam("id") Long id, Pedido pedido) {
         Pedido existingPedido = service.findById(id);
         if (existingPedido == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + id + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Pedido de ID: " + id + " não encontrado");
         }
         Response validationResponse = validatePedido(pedido);
         if (validationResponse != null) {
@@ -126,7 +126,7 @@ public class PedidoResource {
     public Response delete(@PathParam("id") Long id) {
         Pedido pedido = service.findById(id);
         if (pedido == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + id + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Pedido de ID: " + id + " não encontrado");
         }
         service.delete(pedido);
         return Response.status(Response.Status.NO_CONTENT).build();

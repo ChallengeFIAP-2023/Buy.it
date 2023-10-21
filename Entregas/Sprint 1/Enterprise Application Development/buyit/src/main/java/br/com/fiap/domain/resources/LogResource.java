@@ -73,7 +73,7 @@ public class LogResource {
     public Response findById(@PathParam("id") Long id) {
         Log log = service.findById(id);
         if (Objects.isNull(log)) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Log de ID: " + id + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Log de ID: " + id + " não encontrado");
         }
         return Response.ok(log).build();
     }
@@ -92,7 +92,7 @@ public class LogResource {
     public Response findByIdPedido(@PathParam("id_pedido") Long id_pedido) {
         Pedido existingPedido = servicePedido.findById(id_pedido);
         if (existingPedido == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + id_pedido + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Pedido de ID: " + id_pedido + " não encontrado");
         }
         List<Log> logs = service.findByIdPedido(id_pedido);
         return Response.ok(logs).build();
@@ -118,7 +118,7 @@ public class LogResource {
     public Response update(@PathParam("id") Long id, Log log) {
         Log existingLog = service.findById(id);
         if (existingLog == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Log de ID: " + id + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Log de ID: " + id + " não encontrado");
         }
         Response validationResponse = validateLog(log);
         if (validationResponse != null) {
@@ -135,7 +135,7 @@ public class LogResource {
     public Response delete(@PathParam("id") Long id) {
         Log log = service.findById(id);
         if (log == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Log de ID: " + id + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Log de ID: " + id + " não encontrado");
         }
         service.delete(log);
         return Response.status(Response.Status.NO_CONTENT).build();
