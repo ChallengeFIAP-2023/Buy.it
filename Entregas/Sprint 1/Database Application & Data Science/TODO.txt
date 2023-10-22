@@ -1,1 +1,3 @@
-- Refatorar criação de tabelas, inserts, etc... (GUSTAVO)
+- Criar Documento explicando o banco
+
+(GUSTAVO)

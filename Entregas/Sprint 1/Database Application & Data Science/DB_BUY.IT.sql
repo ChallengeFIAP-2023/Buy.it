@@ -98,7 +98,7 @@ CREATE TABLE Usuario (
     telefone_usuario VARCHAR2(15) CONSTRAINT usuario_tel_usuario_nn NOT NULL,
     e_fornecedor NUMBER(1) CONSTRAINT usuario_e_fornecedor_nn NOT NULL,
     imagem_url_usuario VARCHAR2(255) CONSTRAINT usuario_img_url_usuario_nn NOT NULL,
-     regime_tributario_usuario VARCHAR2(255) CONSTRAINT usuario_regime_tributario_nn NOT NULL,
+    regime_tributario_usuario VARCHAR2(255) CONSTRAINT usuario_regime_tributario_nn NOT NULL,
     valor_max_automatico_usuario NUMBER(10,2) CONSTRAINT usuario_valor_max_automatico_nn NOT NULL
 );
 
@@ -181,21 +181,21 @@ VALUES (5, 'Saúde');
 
 
 -- Tabela usuario_tag_possui OK
-DROP TABLE usuario_tag_possui CASCADE CONSTRAINTS;
-CREATE TABLE usuario_tag_possui (
+DROP TABLE usuario_tag CASCADE CONSTRAINTS;
+CREATE TABLE usuario_tag (
     id_tag NUMBER(8) CONSTRAINT possui_tag_id_fk REFERENCES Tag,
     id_usuario NUMBER(8) CONSTRAINT possui_usuario_id_fk REFERENCES Usuario
 );
 
-INSERT INTO usuario_tag_possui (id_tag, id_usuario)
+INSERT INTO usuario_tag (id_tag, id_usuario)
 VALUES (1, 3);
-INSERT INTO usuario_tag_possui (id_tag, id_usuario)
+INSERT INTO usuario_tag (id_tag, id_usuario)
 VALUES (2, 1);
-INSERT INTO usuario_tag_possui (id_tag, id_usuario)
+INSERT INTO usuario_tag (id_tag, id_usuario)
 VALUES (3, 2);
-INSERT INTO usuario_tag_possui (id_tag, id_usuario)
+INSERT INTO usuario_tag (id_tag, id_usuario)
 VALUES (4, 5);
-INSERT INTO usuario_tag_possui (id_tag, id_usuario)
+INSERT INTO usuario_tag (id_tag, id_usuario)
 VALUES (5, 4);
 
 
@@ -222,21 +222,21 @@ VALUES (5, 4, 'Em andamento', TO_DATE('2023-10-12', 'YYYY-MM-DD'), 300.00);
 
 
 -- Tabela pedido_estoque_contem OK
-DROP TABLE pedido_estoque_contem CASCADE CONSTRAINTS;
-CREATE TABLE pedido_estoque_contem (
+DROP TABLE pedido_estoque CASCADE CONSTRAINTS;
+CREATE TABLE pedido_estoque (
     id_pedido NUMBER(8) CONSTRAINT contem_pedido_id_fk REFERENCES Pedido,
     id_estoque NUMBER(8) CONSTRAINT contem_estoque_id_fk REFERENCES Estoque
 );
 
-INSERT INTO pedido_estoque_contem (id_pedido, id_estoque)
+INSERT INTO pedido_estoque (id_pedido, id_estoque)
 VALUES (1, 1);
-INSERT INTO pedido_estoque_contem (id_pedido, id_estoque)
+INSERT INTO pedido_estoque (id_pedido, id_estoque)
 VALUES (2, 2);
-INSERT INTO pedido_estoque_contem (id_pedido, id_estoque)
+INSERT INTO pedido_estoque (id_pedido, id_estoque)
 VALUES (3, 3);
-INSERT INTO pedido_estoque_contem (id_pedido, id_estoque)
+INSERT INTO pedido_estoque (id_pedido, id_estoque)
 VALUES (4, 4);
-INSERT INTO pedido_estoque_contem (id_pedido, id_estoque)
+INSERT INTO pedido_estoque (id_pedido, id_estoque)
 VALUES (5, 5);
 
 -- Tabela Log OK
@@ -299,8 +299,19 @@ SELECT
     E.preco_unitario
 FROM Pedido P
 JOIN Usuario U ON P.id_usuario = U.id_usuario
-JOIN pedido_estoque_contem PC ON P.id_pedido = PC.id_pedido
+JOIN pedido_estoque PC ON P.id_pedido = PC.id_pedido
 JOIN Estoque E ON PC.id_estoque = E.id_estoque
 JOIN Produto PR ON E.id_produto = PR.id_produto;
+
+SELECT
+    P.nome_produto AS produto,
+    C.nome_categoria AS categoria,
+    V.nome_valor_variacao AS variacao_valor,
+    E.quantidade_estoque AS quantidade_em_estoque,
+    E.preco_unitario AS preco_unitario
+FROM Produto P
+JOIN Categoria C ON P.id_categoria = C.id_categoria
+JOIN Estoque E ON P.id_produto = E.id_produto
+JOIN Valor_Variacao V ON E.id_valor_variacao = V.id_valor_variacao;
 
 

@@ -1,11 +1,7 @@
 - Tratar Response de Retorno para restrições de Constraints em todos os resources
+
 - TagResource - findAll e findByName dando erros.
-- Usuario - findbyCnpj dando erro
-
-- Log - Formatar TimeStamp
-- Pedido - Formatar Data e Status(ENUM)
-- Usuario - Formatar CNPJ, CEP, TEL e Regime Tributário(ENUM)
-
+- Usuario - findbyCnpj dando erro e persistUsuario também da erro
 
 - READ ME:
 Colocar o Pitch
