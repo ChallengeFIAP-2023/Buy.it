@@ -125,11 +125,9 @@
   </p>
   <h4>Front-end</h4>
   <p style="text-align:center;">
-    <img alt="JavaScript" src="https://img.shields.io/badge/JAVASCRIPT-323330.svg?&style=flat&logo=javascript&logoColor=%23F7DF1E">
-    <img alt="HTML5" src="https://img.shields.io/badge/HTML5-E34F26.svg?&style=flat&logo=html5&logoColor=white">
-    <img alt="CSS3" src="https://img.shields.io/badge/CSS3-%231572B6.svg?&style=flat&logo=css3&logoColor=white">
-    <img alt="React" src="https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=white">
     <img alt="React Native" src="https://img.shields.io/badge/React_Native-20232A?style=flat&logo=react&logoColor=61DAFB">
+    <img alt="TypeScript"  src="https://img.shields.io/badge/TypeScript-007ACC?style=flat&logo=typescript&logoColor=white">
+    <img alt="Styled Components" src="https://img.shields.io/badge/styled--components-DB7093?style=flat&logo=styled-components&logoColor=white">
   </p>
   <h4>Controle de Versão</h4>
   <p style="text-align:center;">
