@@ -3,7 +3,11 @@
 <p align="center">
   <img src="Documentação/BUYit.png" alt="BUYIt">
 </p>
-<p align="center">https://www.youtube.com/watch?v=Np47f6JyktY</p>
+
+<p align="center">
+  <a href="https://www.youtube.com/watch?v=Np47f6JyktY" style="text-align: center; display: block;">Assista no Youtube!!</a>
+</p>
+
 <br />
 
 **Grupo:**
