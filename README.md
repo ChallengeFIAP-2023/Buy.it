@@ -189,12 +189,12 @@ $ cd Entregas/Sprint\ 1/Hybrid\ Mobile\ APP\ Development
 
 Instale as dependências
 ```bash
-$ npm install
+$ yarn
 ```
 
 Abra o projeto mobile em seu editor e execute o seguinte comando:
 ```bash
-$ npm android
+$ yarn start
 ```
 </details>
 
