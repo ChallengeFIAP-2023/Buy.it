@@ -14,6 +14,10 @@
 
 <hr/>
 
+[Assista o PITCH no Youtube](https://www.youtube.com/watch?v=Np47f6JyktY)
+
+<hr/>
+
 [Protótipo (FIGMA)](https://www.figma.com/file/ugcDozQL0YCSZWAIhKNiP9/Challenge-2?type=design&mode=design&t=EbrQiTt09tx8rjLI-0)
 
 <details>
