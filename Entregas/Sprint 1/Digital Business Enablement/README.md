@@ -82,14 +82,6 @@ Representa as tags associadas a produtos.
 **Atributos:**
 - `nome_tag` (String): Nome da tag.
 
-## Classe `Possui`
-
-Representa a associação entre tags e usuários.
-
-**Atributos:**
-- `id_tag` (int): ID da tag.
-- `id_usuario` (int): ID do usuário.
-
 ## Classe `Pedido`
 
 Representa um pedido feito por um usuário.
@@ -99,14 +91,6 @@ Representa um pedido feito por um usuário.
 - `status_pedido` (String): Status do pedido.
 - `data_pedido` (Date): Data do pedido.
 - `valor_pedido` (float): Valor total do pedido.
-
-## Classe `Contem`
-
-Representa a relação entre pedidos e estoque.
-
-**Atributos:**
-- `id_pedido` (int): ID do pedido.
-- `id_estoque` (int): ID do estoque.
 
 ## Classe `Log`
 
@@ -634,57 +618,6 @@ Deleta uma tag.
 
 ---
 
-## Endpoint **Possui**
-
-#### `GET /possuem`
-
-Lista todos os possuem.
-
-**Exemplo de retorno:**
-```json
-[
-    {
-        "id_tag": 1,
-        "id_usuario": 1
-    },
-    {
-        "id_tag": 2,
-        "id_usuario": 2
-    }
-]
-```
-
-
-#### `POST /possui`
-
-Cadastra um novo possui.
-
-**Exemplo do body da requisição:**
-```json
-{ 
-    "id_tag": 3,
-    "id_usuario": 1
-}
-```
-
-#### `UPDATE /possui/{id}`
-
-Atualiza um possui.
-
-**Exemplo do body da requisição:**
-```json
-{ 
-    "id_tag": 2,
-    "id_usuario": 2
-}
-```
-
-#### `DELETE /possui/{id}`
-
-Deleta um possui.
-
----
-
 ## Endpoint **Pedido**
 
 
@@ -742,58 +675,6 @@ Atualiza um pedido.
 #### `DELETE /pedido/{id}`
 
 Deleta um pedido.
-
----
-
-## Endpoint **Contem**
-
-
-#### `GET /contem`
-
-Lista todos os contem.
-
-**Exemplo de retorno:**
-```json
-[
-    {
-        "id_pedido": 1,
-        "id_estoque": 1
-    },
-    {
-        "id_pedido": 2,
-        "id_estoque": 2
-    }
-]
-```
-
-
-#### `POST /contem`
-
-Cadastra um novo contem.
-
-**Exemplo do body da requisição:**
-```json
-{ 
-    "id_pedido": 3,
-    "id_estoque": 4
-}
-```
-
-#### `UPDATE /contem/{id}`
-
-Atualiza um contem.
-
-**Exemplo do body da requisição:**
-```json
-{ 
-    "id_pedido": 2,
-    "id_estoque": 3
-}
-```
-
-#### `DELETE /contem/{id}`
-
-Deleta um contem.
 
 ---
 
