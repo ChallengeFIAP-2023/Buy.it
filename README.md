@@ -3,6 +3,7 @@
 <p align="center">
   <img src="Documentação/BUYit.png" alt="BUYIt">
 </p>
+<p align="center">https://www.youtube.com/watch?v=Np47f6JyktY</p>
 <br />
 
 **Grupo:**
@@ -11,10 +12,6 @@
 - Mariana Santos - RM 97503 - Front End & Web Design 
 - Natan Cruz - RM 97324 - Back End & DevOps (Scrum Master)
 - Vitor Rubim - RM 97092 - Front End & QA
-
-<hr/>
-
-[Assista o PITCH no Youtube](https://www.youtube.com/watch?v=Np47f6JyktY)
 
 <hr/>
 
