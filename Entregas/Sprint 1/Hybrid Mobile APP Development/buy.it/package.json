@@ -20,7 +20,11 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-native": "0.72.6",
+<<<<<<< HEAD
     "react-native-web": "~0.19.6",
+=======
+    "react-native-svg": "^13.14.0",
+>>>>>>> 0fcaf23d853c2ba975204d84d2979cac6eadc09a
     "styled-components": "5.3.9"
   },
   "devDependencies": {
