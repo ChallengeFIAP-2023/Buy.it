@@ -122,10 +122,10 @@
   <p>
     <img alt="Java" src="https://img.shields.io/badge/Java-ED8B00?style=flat&logo=openjdk&logoColor=white">
     <img alt="Spring" src="https://img.shields.io/badge/Spring-6DB33F?style=flat&logo=spring&logoColor=white">
-    <img alt="JavaScript" src="https://img.shields.io/badge/JAVASCRIPT-323330.svg?&style=flat&logo=javascript&logoColor=%23F7DF1E">
   </p>
   <h4>Front-end</h4>
   <p style="text-align:center;">
+    <img alt="JavaScript" src="https://img.shields.io/badge/JAVASCRIPT-323330.svg?&style=flat&logo=javascript&logoColor=%23F7DF1E">
     <img alt="HTML5" src="https://img.shields.io/badge/HTML5-E34F26.svg?&style=flat&logo=html5&logoColor=white">
     <img alt="CSS3" src="https://img.shields.io/badge/CSS3-%231572B6.svg?&style=flat&logo=css3&logoColor=white">
     <img alt="React" src="https://img.shields.io/badge/React-20232A?style=flat&logo=react&logoColor=white">
