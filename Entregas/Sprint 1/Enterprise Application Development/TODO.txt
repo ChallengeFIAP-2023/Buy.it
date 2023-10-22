@@ -2,6 +2,3 @@
 
 - TagResource - findAll e findByName dando erros.
 - Usuario - findbyCnpj dando erro e persistUsuario também da erro
-
-- READ ME:
-Colocar o Pitch
