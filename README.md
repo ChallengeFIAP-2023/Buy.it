@@ -184,7 +184,7 @@ Abra o seu navegador e navegue até [http://localhost:8080](http://localhost:808
 Navegue até o projeto mobile:
 
 ```bash
-$ cd Entregas/Sprint\ 1/Hybrid\ Mobile\ APP\ Development
+$ cd Entregas/Sprint\ 1/Hybrid\ Mobile\ APP\ Development\ buy.it
 ```
 
 Instale as dependências
