@@ -42,10 +42,27 @@ public class UsuarioRepository implements Repository<Usuario, Long> {
     }
 
     public Usuario findByCnpj(String cnpj_usuario) {
-        String jpql = "SELECT usuario FROM Usuario usuario WHERE usuario.cnpj_usuario = :cnpj_usuario";
-        TypedQuery<Usuario> query = manager.createQuery(jpql, Usuario.class);
-        query.setParameter("cnpj_usuario", cnpj_usuario);
-        return query.getSingleResult();
+        String cnpjNumerico = cnpj_usuario.replaceAll("[^0-9]", "");
+
+        if (cnpjNumerico.length() == 14) {
+            String cnpjFormatado = cnpjNumerico.substring(0, 2) + "." +
+                    cnpjNumerico.substring(2, 5) + "." +
+                    cnpjNumerico.substring(5, 8) + "/" +
+                    cnpjNumerico.substring(8, 12) + "-" +
+                    cnpjNumerico.substring(12);
+
+            String jpql = "SELECT usuario FROM Usuario usuario WHERE usuario.cnpj_usuario = :cnpj_usuario";
+            TypedQuery<Usuario> query = manager.createQuery(jpql, Usuario.class);
+            query.setParameter("cnpj_usuario", cnpjFormatado);
+
+            try {
+                return query.getSingleResult();
+            } catch (Exception e) {
+                return null;
+            }
+        } else {
+            return null;
+        }
     }
 
     @Override

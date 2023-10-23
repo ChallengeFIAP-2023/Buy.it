@@ -1,4 +1,1 @@
 - Tratar Response de Retorno para restrições de Constraints em todos os resources
-
-- TagResource - findAll e findByName dando erros.
-- Usuario - findbyCnpj dando erro e persistUsuario também da erro

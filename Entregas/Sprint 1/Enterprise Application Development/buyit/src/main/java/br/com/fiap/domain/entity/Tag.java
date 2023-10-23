@@ -1,5 +1,6 @@
 package br.com.fiap.domain.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
 import java.util.Collections;
@@ -21,6 +22,7 @@ public class Tag {
     @Column(name = "NM_TAG", nullable = false, columnDefinition = "VARCHAR2(255)")
     private String nm_tag;
 
+    @JsonbTransient
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "BUYIT_USUARIO_TAG",

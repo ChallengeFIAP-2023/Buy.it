@@ -1,5 +1,6 @@
 package br.com.fiap.domain.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -37,6 +38,7 @@ public class Pedido {
     @Column(name = "VALOR_PEDIDO", nullable = false, columnDefinition = "NUMBER(10,2)")
     private BigDecimal valor_pedido;
 
+    @JsonbTransient
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "BUYIT_PEDIDO_ESTOQUE",

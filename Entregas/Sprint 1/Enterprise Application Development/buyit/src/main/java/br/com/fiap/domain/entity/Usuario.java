@@ -1,5 +1,6 @@
 package br.com.fiap.domain.entity;
 
+import jakarta.json.bind.annotation.JsonbTransient;
 import jakarta.persistence.*;
 
 import java.math.BigDecimal;
@@ -60,6 +61,7 @@ public class Usuario {
     @Column(name = "VALOR_MAX_AUTOMATICO_USUARIO", nullable = false, columnDefinition = "NUMBER(10,2)")
     private BigDecimal valor_max_automatico_usuario;
 
+    @JsonbTransient
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "BUYIT_USUARIO_TAG",
