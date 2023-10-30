@@ -36,10 +36,10 @@ public class DescontoRepository implements Repository<Desconto, Long> {
     }
 
 
-    public List<Desconto> findByIdEstoque(Long id_estoque) {
-        String jpql = "SELECT desconto FROM Desconto desconto WHERE desconto.id_estoque = :id_estoque";
+    public List<Desconto> findByIdEstoque(Long id) {
+        String jpql = "SELECT desconto FROM Desconto desconto WHERE desconto.estoque = :id";
         TypedQuery<Desconto> query = manager.createQuery(jpql, Desconto.class);
-        query.setParameter("id_estoque", id_estoque);
+        query.setParameter("id", id);
         return query.getResultList();
     }
 
@@ -52,10 +52,10 @@ public class DescontoRepository implements Repository<Desconto, Long> {
     public Desconto persist(Desconto desconto) {
         EntityTransaction transaction = manager.getTransaction();
         try {
-            desconto.setId_desconto(null);
+            desconto.setId(null);
             transaction.begin();
-            Estoque estoque = manager.find(Estoque.class, desconto.getId_estoque().getId_estoque());
-            desconto.setId_estoque(estoque);
+            Estoque estoque = manager.find(Estoque.class, desconto.getEstoque().getId());
+            desconto.setEstoque(estoque);
             manager.persist(desconto);
             transaction.commit();
         } catch (Exception e) {
@@ -71,18 +71,18 @@ public class DescontoRepository implements Repository<Desconto, Long> {
         EntityTransaction transaction = manager.getTransaction();
         try {
             transaction.begin();
-            Desconto desconto_buscado = manager.find(Desconto.class, desconto.getId_desconto());
+            Desconto desconto_buscado = manager.find(Desconto.class, desconto.getId());
             if (Objects.nonNull(desconto_buscado)) {
 
                 // ID_ESTOQUE
-                if (Objects.nonNull(desconto.getId_estoque())) {
-                    Estoque estoque = manager.find(Estoque.class, desconto.getId_estoque().getId_estoque());
-                    desconto_buscado.setId_estoque(estoque);
+                if (Objects.nonNull(desconto.getId())) {
+                    Estoque estoque = manager.find(Estoque.class, desconto.getEstoque().getId());
+                    desconto_buscado.setEstoque(estoque);
                 }
 
                 // QTD_MIN_PRODUTO
-                if (Objects.nonNull(desconto.getQtd_min_produto())) {
-                    desconto_buscado.setQtd_min_produto(desconto.getQtd_min_produto());
+                if (Objects.nonNull(desconto.getQtdMinProduto())) {
+                    desconto_buscado.setQtdMinProduto(desconto.getQtdMinProduto());
                 }
 
                 // DESCONTO

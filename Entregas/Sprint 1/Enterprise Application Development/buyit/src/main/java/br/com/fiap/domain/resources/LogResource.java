@@ -31,26 +31,26 @@ public class LogResource implements Resource<Log, Long> {
         }
 
         // ID_PEDIDO
-        if (log.getId_pedido() == null) {
+        if (log.getPedido() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Pedido do Log não pode ser NULL");
         }
-        Pedido existingPedido = servicePedido.findById(log.getId_pedido().getId_pedido());
+        Pedido existingPedido = servicePedido.findById(log.getPedido().getId());
         if (existingPedido == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + log.getId_pedido().getId_pedido() + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + log.getPedido().getId() + " não encontrado");
         }
 
         // TIMESTAMP_LOG
-        if (log.getTimestamp_log() == null || log.getTimestamp_log().isEmpty() || log.getTimestamp_log().isBlank()) {
+        if (log.getTimestamp() == null || log.getTimestamp().isEmpty() || log.getTimestamp().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O TimeStamp do Log não pode ser NULL ou vazio");
         }
 
         // NM_LOG
-        if (log.getNm_log() == null || log.getNm_log().isEmpty() || log.getNm_log().isBlank()) {
+        if (log.getNome() == null || log.getNome().isEmpty() || log.getNome().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome do Log não pode ser NULL ou vazio");
         }
 
         // DS_LOG
-        if (log.getDs_log() == null || log.getDs_log().isEmpty() || log.getDs_log().isBlank()) {
+        if (log.getDescricao() == null || log.getDescricao().isEmpty() || log.getDescricao().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Descricao do Log não pode ser NULL ou vazio");
         }
 
@@ -107,7 +107,7 @@ public class LogResource implements Resource<Log, Long> {
             return validationResponse;
         }
         Log persistedLog = service.persist(log);
-        URI location = URI.create("/log/" + persistedLog.getId_log());
+        URI location = URI.create("/log/" + persistedLog.getId());
         return Response.created(location).entity(persistedLog).build();
     }
 
@@ -124,7 +124,7 @@ public class LogResource implements Resource<Log, Long> {
         if (validationResponse != null) {
             return validationResponse;
         }
-        log.setId_log(existingLog.getId_log());
+        log.setId(existingLog.getId());
         Log updatedLog = service.update(log);
         return Response.ok(updatedLog).build();
     }

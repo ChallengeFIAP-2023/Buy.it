@@ -44,13 +44,13 @@ public class AvaliacaoService implements Service<Avaliacao, Long> {
         return repo.findById(id);
     }
 
-    public List<Avaliacao> findByIdUsuario(Long id_usuario) {
-        if (Objects.isNull(id_usuario)) return null;
-        return repo.findByIdUsuario(id_usuario);
+    public List<Avaliacao> findByIdUsuario(Long id) {
+        if (Objects.isNull(id)) return null;
+        return repo.findByIdUsuario(id);
     }
 
-    public Avaliacao findByIdPedido(Long id_pedido) {
-        return repo.findByIdPedido(id_pedido);
+    public Avaliacao findByIdPedido(Long id) {
+        return repo.findByIdPedido(id);
     }
 
     @Override

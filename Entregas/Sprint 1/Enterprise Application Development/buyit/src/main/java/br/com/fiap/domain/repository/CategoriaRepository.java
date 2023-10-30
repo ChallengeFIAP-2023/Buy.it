@@ -34,10 +34,10 @@ public class CategoriaRepository implements Repository<Categoria, Long> {
         return manager.find(Categoria.class, id);
     }
 
-    public List<Categoria> findByName(String name) {
-        String jpql = "SELECT categoria FROM Categoria categoria  where upper(categoria.nm_categoria) LIKE CONCAT('%',upper(:nm_categoria),'%')";
+    public List<Categoria> findByName(String nome) {
+        String jpql = "SELECT categoria FROM Categoria categoria  where upper(categoria.nome) LIKE CONCAT('%',upper(:nome),'%')";
         TypedQuery<Categoria> query = manager.createQuery(jpql, Categoria.class);
-        query.setParameter("nm_categoria", name);
+        query.setParameter("nome", nome);
         return query.getResultList();
     }
 
@@ -50,7 +50,7 @@ public class CategoriaRepository implements Repository<Categoria, Long> {
     public Categoria persist(Categoria categoria) {
         EntityTransaction transaction = manager.getTransaction();
         try {
-            categoria.setId_categoria(null);
+            categoria.setId(null);
             transaction.begin();
             manager.persist(categoria);
             transaction.commit();
@@ -67,16 +67,16 @@ public class CategoriaRepository implements Repository<Categoria, Long> {
         EntityTransaction transaction = manager.getTransaction();
         try {
             transaction.begin();
-            Categoria categoria_buscada = manager.find(Categoria.class, categoria.getId_categoria());
+            Categoria categoria_buscada = manager.find(Categoria.class, categoria.getId());
             if (Objects.nonNull(categoria_buscada)) {
 
                 // NM_CATEGORIA
-                if (Objects.nonNull(categoria.getNm_categoria())) {
-                    categoria_buscada.setNm_categoria(categoria.getNm_categoria());
+                if (Objects.nonNull(categoria.getNome())) {
+                    categoria_buscada.setNome(categoria.getNome());
                 }
 
                 // ICONE_CATEGORIA
-                categoria_buscada.setIcone_categoria(categoria.getIcone_categoria());
+                categoria_buscada.setIcone(categoria.getIcone());
 
                 categoria = manager.merge(categoria_buscada);
                 transaction.commit();

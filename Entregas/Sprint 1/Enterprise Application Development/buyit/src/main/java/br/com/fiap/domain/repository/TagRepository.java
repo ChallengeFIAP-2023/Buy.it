@@ -34,10 +34,10 @@ public class TagRepository implements Repository<Tag, Long> {
         return manager.find(Tag.class, id);
     }
 
-    public List<Tag> findByName(String name) {
-        String jpql = "SELECT tag FROM Tag tag  where upper(tag.nm_tag) LIKE CONCAT('%',upper(:nm_tag),'%')";
+    public List<Tag> findByName(String nome) {
+        String jpql = "SELECT tag FROM Tag tag  where upper(tag.nome) LIKE CONCAT('%',upper(:nome),'%')";
         TypedQuery<Tag> query = manager.createQuery(jpql, Tag.class);
-        query.setParameter("nm_tag", name);
+        query.setParameter("nome", nome);
         return query.getResultList();
     }
 
@@ -50,7 +50,7 @@ public class TagRepository implements Repository<Tag, Long> {
     public Tag persist(Tag tag) {
         EntityTransaction transaction = manager.getTransaction();
         try {
-            tag.setId_tag(null);
+            tag.setId(null);
             transaction.begin();
             manager.persist(tag);
             transaction.commit();
@@ -67,12 +67,12 @@ public class TagRepository implements Repository<Tag, Long> {
         EntityTransaction transaction = manager.getTransaction();
         try {
             transaction.begin();
-            Tag tag_buscada = manager.find(Tag.class, tag.getId_tag());
+            Tag tag_buscada = manager.find(Tag.class, tag.getId());
             if (Objects.nonNull(tag_buscada)) {
 
                 // NM_TAG
-                if (Objects.nonNull(tag.getNm_tag())) {
-                    tag_buscada.setNm_tag(tag.getNm_tag());
+                if (Objects.nonNull(tag.getNome())) {
+                    tag_buscada.setNome(tag.getNome());
                 }
 
                 tag = manager.merge(tag_buscada);

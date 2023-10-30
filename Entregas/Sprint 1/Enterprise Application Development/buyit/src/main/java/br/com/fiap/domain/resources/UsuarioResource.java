@@ -27,42 +27,42 @@ public class UsuarioResource implements Resource<Usuario, Long> {
         }
 
         // CNPJ_USUARIO
-        if (usuario.getCnpj_usuario() == null || usuario.getCnpj_usuario().isEmpty() || usuario.getCnpj_usuario().isBlank()) {
+        if (usuario.getCnpj() == null || usuario.getCnpj().isEmpty() || usuario.getCnpj().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O CNPJ do Usuario não pode ser NULL ou vazio");
         }
 
         // NM_USUARIO
-        if (usuario.getNm_usuario() == null || usuario.getNm_usuario().isEmpty() || usuario.getNm_usuario().isBlank()) {
+        if (usuario.getNome() == null || usuario.getNome().isEmpty() || usuario.getNome().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome do Usuario não pode ser NULL ou vazio");
         }
 
         // CEP_USUARIO
-        if (usuario.getCep_usuario() == null || usuario.getCep_usuario().isEmpty() || usuario.getCep_usuario().isBlank()) {
+        if (usuario.getCep() == null || usuario.getCep().isEmpty() || usuario.getCep().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O CEP do Usuario não pode ser NULL ou vazio");
         }
 
         // LOGRADOURO_USUARIO
-        if (usuario.getLogradouro_usuario() == null || usuario.getLogradouro_usuario().isEmpty() || usuario.getLogradouro_usuario().isBlank()) {
+        if (usuario.getLogradouro() == null || usuario.getLogradouro().isEmpty() || usuario.getLogradouro().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O CEP do Usuario não pode ser NULL ou vazio");
         }
 
         // NUM_ENDERECO_USUARIO
-        if (usuario.getNum_endereco_usuario() == null || usuario.getNum_endereco_usuario().isEmpty() || usuario.getNum_endereco_usuario().isBlank()) {
+        if (usuario.getNumEndereco() == null || usuario.getNumEndereco().isEmpty() || usuario.getNumEndereco().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Número do Endereço do Usuario não pode ser NULL ou vazio");
         }
 
         // EMAIL_USUARIO
-        if (usuario.getEmail_usuario() == null || usuario.getEmail_usuario().isEmpty() || usuario.getEmail_usuario().isBlank()) {
+        if (usuario.getEmail() == null || usuario.getEmail().isEmpty() || usuario.getEmail().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Email do Usuario não pode ser NULL ou vazio");
         }
 
         // SENHA_USUARIO
-        if (usuario.getSenha_usuario() == null || usuario.getSenha_usuario().isEmpty() || usuario.getSenha_usuario().isBlank()) {
+        if (usuario.getSenha() == null || usuario.getSenha().isEmpty() || usuario.getSenha().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Senha do Usuario não pode ser NULL ou vazio");
         }
 
         // TEL_USUARIO
-        if (usuario.getTel_usuario() == null || usuario.getTel_usuario().isEmpty() || usuario.getTel_usuario().isBlank()) {
+        if (usuario.getTel() == null || usuario.getTel().isEmpty() || usuario.getTel().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Senha do Usuario não pode ser NULL ou vazio");
         }
 
@@ -72,12 +72,12 @@ public class UsuarioResource implements Resource<Usuario, Long> {
         }
 
         // REGIME_TRIBUTARIO_USUARIO
-        if (usuario.getRegime_tributario_usuario() == null || usuario.getRegime_tributario_usuario().isEmpty() || usuario.getRegime_tributario_usuario().isBlank()) {
+        if (usuario.getRegimeTributario() == null || usuario.getRegimeTributario().isEmpty() || usuario.getRegimeTributario().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Regime Tributário do Usuario não pode ser NULL ou vazio");
         }
 
         // VALOR_MAX_AUTOMATICO_USUARIO
-        if (usuario.getValor_max_automatico_usuario() == null) {
+        if (usuario.getCompraAutomatica() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Valor Máximo Automático do Usuario não pode ser NULL ou vazio");
         }
 
@@ -125,7 +125,7 @@ public class UsuarioResource implements Resource<Usuario, Long> {
             return validationResponse;
         }
         Usuario persistedUsuario = service.persist(usuario);
-        URI location = URI.create("/usuario/" + persistedUsuario.getId_usuario());
+        URI location = URI.create("/usuario/" + persistedUsuario.getId());
         return Response.created(location).entity(persistedUsuario).build();
     }
 
@@ -142,7 +142,7 @@ public class UsuarioResource implements Resource<Usuario, Long> {
         if (validationResponse != null) {
             return validationResponse;
         }
-        usuario.setId_usuario(existingUsuario.getId_usuario());
+        usuario.setId(existingUsuario.getId());
         Usuario updatedUsuario = service.update(usuario);
         return Response.ok(updatedUsuario).build();
     }

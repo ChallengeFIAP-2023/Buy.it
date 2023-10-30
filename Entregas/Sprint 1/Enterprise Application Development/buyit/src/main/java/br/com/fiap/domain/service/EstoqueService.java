@@ -44,19 +44,19 @@ public class EstoqueService implements Service<Estoque, Long> {
         return repo.findById(id);
     }
 
-    public List<Estoque> findByIdProduto(Long id_produto) {
-        if (Objects.isNull(id_produto)) return null;
-        return repo.findByIdProduto(id_produto);
+    public List<Estoque> findByIdProduto(Long id) {
+        if (Objects.isNull(id)) return null;
+        return repo.findByIdProduto(id);
     }
 
-    public List<Estoque> findByIdValor_Variacao(Long id_estoque) {
-        if (Objects.isNull(id_estoque)) return null;
-        return repo.findByIdValor_Variacao(id_estoque);
+    public List<Estoque> findByIdValorVariacao(Long id) {
+        if (Objects.isNull(id)) return null;
+        return repo.findByIdValorVariacao(id);
     }
 
-    public List<Estoque> findByIdUsuario(Long id_usuario) {
-        if (Objects.isNull(id_usuario)) return null;
-        return repo.findByIdUsuario(id_usuario);
+    public List<Estoque> findByIdUsuario(Long id) {
+        if (Objects.isNull(id)) return null;
+        return repo.findByIdUsuario(id);
     }
 
     @Override

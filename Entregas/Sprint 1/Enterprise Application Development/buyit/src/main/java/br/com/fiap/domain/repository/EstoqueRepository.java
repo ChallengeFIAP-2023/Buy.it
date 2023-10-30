@@ -34,24 +34,24 @@ public class EstoqueRepository implements Repository<Estoque, Long> {
         return manager.find(Estoque.class, id);
     }
 
-    public List<Estoque> findByIdProduto(Long id_produto) {
-        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.id_produto = :id_produto";
+    public List<Estoque> findByIdProduto(Long id) {
+        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.produto = :id";
         TypedQuery<Estoque> query = manager.createQuery(jpql, Estoque.class);
-        query.setParameter("id_produto", id_produto);
+        query.setParameter("id", id);
         return query.getResultList();
     }
 
-    public List<Estoque> findByIdValor_Variacao(Long id_valor_variacao) {
-        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.id_valor_variacao = :id_valor_variacao";
+    public List<Estoque> findByIdValorVariacao(Long id) {
+        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.valorVariacao = :id";
         TypedQuery<Estoque> query = manager.createQuery(jpql, Estoque.class);
-        query.setParameter("id_valor_variacao", id_valor_variacao);
+        query.setParameter("id", id);
         return query.getResultList();
     }
 
-    public List<Estoque> findByIdUsuario(Long id_usuario) {
-        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.id_usuario = :id_usuario";
+    public List<Estoque> findByIdUsuario(Long id) {
+        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.usuario = :id";
         TypedQuery<Estoque> query = manager.createQuery(jpql, Estoque.class);
-        query.setParameter("id_usuario", id_usuario);
+        query.setParameter("id", id);
         return query.getResultList();
     }
 
@@ -64,14 +64,14 @@ public class EstoqueRepository implements Repository<Estoque, Long> {
     public Estoque persist(Estoque estoque) {
         EntityTransaction transaction = manager.getTransaction();
         try {
-            estoque.setId_estoque(null);
+            estoque.setId(null);
             transaction.begin();
-            Produto produto = manager.find(Produto.class, estoque.getId_produto().getId_produto());
-            Valor_Variacao valor_variacao = manager.find(Valor_Variacao.class, estoque.getId_valor_variacao().getId_valor_variacao());
-            Usuario usuario = manager.find(Usuario.class, estoque.getId_usuario().getId_usuario());
-            estoque.setId_produto(produto);
-            estoque.setId_valor_variacao(valor_variacao);
-            estoque.setId_usuario(usuario);
+            Produto produto = manager.find(Produto.class, estoque.getProduto().getId());
+            ValorVariacao valor_variacao = manager.find(ValorVariacao.class, estoque.getValorVariacao().getId());
+            Usuario usuario = manager.find(Usuario.class, estoque.getUsuario().getId());
+            estoque.setProduto(produto);
+            estoque.setValorVariacao(valor_variacao);
+            estoque.setUsuario(usuario);
             manager.persist(estoque);
             transaction.commit();
         } catch (Exception e) {
@@ -87,39 +87,39 @@ public class EstoqueRepository implements Repository<Estoque, Long> {
         EntityTransaction transaction = manager.getTransaction();
         try {
             transaction.begin();
-            Estoque estoque_buscado = findById(estoque.getId_estoque());
+            Estoque estoque_buscado = findById(estoque.getId());
             if (Objects.nonNull(estoque_buscado)) {
 
                 // ID_PRODUTO
-                if (Objects.nonNull(estoque.getId_produto())) {
-                    Produto produto = manager.find(Produto.class, estoque.getId_produto().getId_produto());
-                    estoque_buscado.setId_produto(produto);
+                if (Objects.nonNull(estoque.getProduto())) {
+                    Produto produto = manager.find(Produto.class, estoque.getProduto().getId());
+                    estoque_buscado.setProduto(produto);
                 }
 
                 // ID_VALOR_VARIACAO
-                if (Objects.nonNull(estoque.getId_valor_variacao())) {
-                    Valor_Variacao valor_variacao = manager.find(Valor_Variacao.class, estoque.getId_valor_variacao().getId_valor_variacao());
-                    estoque_buscado.setId_valor_variacao(valor_variacao);
+                if (Objects.nonNull(estoque.getValorVariacao())) {
+                    ValorVariacao valor_variacao = manager.find(ValorVariacao.class, estoque.getValorVariacao().getId());
+                    estoque_buscado.setValorVariacao(valor_variacao);
                 }
 
                 // ID_USUARIO
-                if (Objects.nonNull(estoque.getId_usuario())) {
-                    Usuario usuario = manager.find(Usuario.class, estoque.getId_usuario().getId_usuario());
-                    estoque_buscado.setId_usuario(usuario);
+                if (Objects.nonNull(estoque.getUsuario())) {
+                    Usuario usuario = manager.find(Usuario.class, estoque.getUsuario().getId());
+                    estoque_buscado.setUsuario(usuario);
                 }
 
                 // QTD_ESTOQUE
-                if (Objects.nonNull(estoque.getQtd_estoque())) {
-                    estoque_buscado.setQtd_estoque(estoque.getQtd_estoque());
+                if (Objects.nonNull(estoque.getQuantidade())) {
+                    estoque_buscado.setQuantidade(estoque.getQuantidade());
                 }
 
                 // PRECO
-                if (Objects.nonNull(estoque.getPreco_unitario())) {
-                    estoque_buscado.setPreco_unitario(estoque.getPreco_unitario());
+                if (Objects.nonNull(estoque.getPrecoUnitario())) {
+                    estoque_buscado.setPrecoUnitario(estoque.getPrecoUnitario());
                 }
 
                 // IMG_URL_ESTOQUE
-                estoque_buscado.setImg_url_estoque(estoque.getImg_url_estoque());
+                estoque_buscado.setImgUrl(estoque.getImgUrl());
 
                 manager.merge(estoque_buscado);
                 transaction.commit();

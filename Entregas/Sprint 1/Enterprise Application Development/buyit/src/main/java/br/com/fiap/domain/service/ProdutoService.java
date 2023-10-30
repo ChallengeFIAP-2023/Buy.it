@@ -44,14 +44,14 @@ public class ProdutoService implements Service<Produto, Long> {
         return repo.findById(id);
     }
 
-    public List<Produto> findByIdCategoria(Long id_categoria) {
-        if (Objects.isNull(id_categoria)) return null;
-        return repo.findByIdCategoria(id_categoria);
+    public List<Produto> findByIdCategoria(Long id) {
+        if (Objects.isNull(id)) return null;
+        return repo.findByIdCategoria(id);
     }
 
-    public List<Produto> findByName(String name) {
-        if (Objects.isNull(name)) return null;
-        return repo.findByName(name);
+    public List<Produto> findByName(String nome) {
+        if (Objects.isNull(nome)) return null;
+        return repo.findByName(nome);
     }
 
     @Override

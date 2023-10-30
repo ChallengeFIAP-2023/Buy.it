@@ -35,10 +35,10 @@ public class PedidoRepository implements Repository<Pedido, Long> {
         return manager.find(Pedido.class, id);
     }
 
-    public List<Pedido> findByIdUsuario(Long id_usuario) {
-        String jpql = "SELECT pedido FROM Pedido pedido WHERE pedido.id_usuario = :id_usuario";
+    public List<Pedido> findByIdUsuario(Long id) {
+        String jpql = "SELECT pedido FROM Pedido pedido WHERE pedido.usuario = :id";
         TypedQuery<Pedido> query = manager.createQuery(jpql, Pedido.class);
-        query.setParameter("id_usuario", id_usuario);
+        query.setParameter("id", id);
         return query.getResultList();
     }
 
@@ -51,10 +51,10 @@ public class PedidoRepository implements Repository<Pedido, Long> {
     public Pedido persist(Pedido pedido) {
         EntityTransaction transaction = manager.getTransaction();
         try {
-            pedido.setId_pedido(null);
+            pedido.setId(null);
             transaction.begin();
-            Usuario usuario = manager.find(Usuario.class, pedido.getId_usuario().getId_usuario());
-            pedido.setId_usuario(usuario);
+            Usuario usuario = manager.find(Usuario.class, pedido.getUsuario().getId());
+            pedido.setUsuario(usuario);
             manager.persist(pedido);
             transaction.commit();
         } catch (Exception e) {
@@ -70,28 +70,28 @@ public class PedidoRepository implements Repository<Pedido, Long> {
         EntityTransaction transaction = manager.getTransaction();
         try {
             transaction.begin();
-            Pedido pedido_buscado = findById(pedido.getId_pedido());
+            Pedido pedido_buscado = findById(pedido.getId());
             if (Objects.nonNull(pedido_buscado)) {
 
                 // ID_USUARIO
-                if (Objects.nonNull(pedido.getId_usuario())) {
-                    Usuario usuario = manager.find(Usuario.class, pedido.getId_usuario().getId_usuario());
-                    pedido_buscado.setId_usuario(usuario);
+                if (Objects.nonNull(pedido.getUsuario())) {
+                    Usuario usuario = manager.find(Usuario.class, pedido.getUsuario().getId());
+                    pedido_buscado.setUsuario(usuario);
                 }
 
                 // STATUS_PEDIDO
-                if (Objects.nonNull(pedido.getStatus_pedido())) {
-                    pedido_buscado.setStatus_pedido(pedido.getStatus_pedido());
+                if (Objects.nonNull(pedido.getStatus())) {
+                    pedido_buscado.setStatus(pedido.getStatus());
                 }
 
                 // DATA_PEDIDO
-                if (Objects.nonNull(pedido.getData_pedido())) {
-                    pedido_buscado.setData_pedido(pedido.getData_pedido());
+                if (Objects.nonNull(pedido.getData())) {
+                    pedido_buscado.setData(pedido.getData());
                 }
 
                 // VALOR_PEDIDO
-                if (Objects.nonNull(pedido.getValor_pedido())) {
-                    pedido_buscado.setValor_pedido(pedido.getValor_pedido());
+                if (Objects.nonNull(pedido.getValor())) {
+                    pedido_buscado.setValor(pedido.getValor());
                 }
 
                 manager.merge(pedido_buscado);

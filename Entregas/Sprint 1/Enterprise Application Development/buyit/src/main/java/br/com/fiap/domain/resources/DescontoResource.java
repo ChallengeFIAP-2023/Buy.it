@@ -31,7 +31,7 @@ public class DescontoResource implements Resource<Desconto, Long> {
         }
 
         // QTD_MIN_PRODUTO
-        if (desconto.getQtd_min_produto() == null) {
+        if (desconto.getQtdMinProduto() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Quantidade Mínima do Produto não pode ser NULL");
         }
 
@@ -41,8 +41,8 @@ public class DescontoResource implements Resource<Desconto, Long> {
         }
 
         // ID_ESTOQUE
-        if (desconto.getId_estoque() == null || serviceEstoque.findById(desconto.getId_estoque().getId_estoque()) == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Estoque de ID: " + desconto.getId_estoque().getId_estoque() + " não encontrado");
+        if (desconto.getEstoque() == null || serviceEstoque.findById(desconto.getEstoque().getId()) == null) {
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Estoque de ID: " + desconto.getEstoque().getId() + " não encontrado");
         }
         return null;
     }
@@ -89,7 +89,7 @@ public class DescontoResource implements Resource<Desconto, Long> {
             return validationResponse;
         }
         Desconto persistedDesconto = service.persist(desconto);
-        URI location = URI.create("/desconto/" + persistedDesconto.getId_desconto());
+        URI location = URI.create("/desconto/" + persistedDesconto.getId());
         return Response.created(location).entity(persistedDesconto).build();
     }
 
@@ -106,7 +106,7 @@ public class DescontoResource implements Resource<Desconto, Long> {
         if (validationResponse != null) {
             return validationResponse;
         }
-        desconto.setId_desconto(existingDesconto.getId_desconto());
+        desconto.setId(existingDesconto.getId());
         Desconto updatedDesconto = service.update(desconto);
         return Response.ok(updatedDesconto).build();
     }

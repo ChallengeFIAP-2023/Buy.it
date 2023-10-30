@@ -12,48 +12,48 @@ public class Categoria {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_CATEGORIA")
     @SequenceGenerator(name = "SQ_CATEGORIA", sequenceName = "SQ_CATEGORIA", allocationSize = 1)
-    @Column(name = "ID_CATEGORIA", columnDefinition = "NUMBER(8)")
-    private Long id_categoria;
+    @Column(name = "ID_CATEGORIA")
+    private Long id;
 
-    @Column(name = "NM_CATEGORIA", nullable = false, columnDefinition = "VARCHAR2(255)")
-    private String nm_categoria;
+    @Column(name = "NM_CATEGORIA", nullable = false)
+    private String nome;
 
-    @Column(name = "ICONE_CATEGORIA", columnDefinition = "VARCHAR2(255)")
-    private String icone_categoria;
+    @Column(name = "ICONE_CATEGORIA")
+    private String icone;
 
     public Categoria() {
     }
 
-    public Categoria(Long id_categoria, String nm_categoria, String icone_categoria) {
-        this.id_categoria = id_categoria;
-        this.nm_categoria = nm_categoria;
-        this.icone_categoria = icone_categoria;
+    public Categoria(Long id, String nome, String icone) {
+        this.id = id;
+        this.nome = nome;
+        this.icone = icone;
     }
 
-    public Long getId_categoria() {
-        return id_categoria;
+    public Long getId() {
+        return id;
     }
 
-    public Categoria setId_categoria(Long id_categoria) {
-        this.id_categoria = id_categoria;
+    public Categoria setId(Long id) {
+        this.id = id;
         return this;
     }
 
-    public String getNm_categoria() {
-        return nm_categoria;
+    public String getNome() {
+        return nome;
     }
 
-    public Categoria setNm_categoria(String nm_categoria) {
-        this.nm_categoria = nm_categoria;
+    public Categoria setNome(String nome) {
+        this.nome = nome;
         return this;
     }
 
-    public String getIcone_categoria() {
-        return icone_categoria;
+    public String getIcone() {
+        return icone;
     }
 
-    public Categoria setIcone_categoria(String icone_categoria) {
-        this.icone_categoria = icone_categoria;
+    public Categoria setIcone(String icone) {
+        this.icone = icone;
         return this;
     }
 
@@ -61,20 +61,20 @@ public class Categoria {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Categoria categoria)) return false;
-        return Objects.equals(id_categoria, categoria.id_categoria) && Objects.equals(nm_categoria, categoria.nm_categoria) && Objects.equals(icone_categoria, categoria.icone_categoria);
+        return Objects.equals(id, categoria.id) && Objects.equals(nome, categoria.nome) && Objects.equals(icone, categoria.icone);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_categoria, nm_categoria, icone_categoria);
+        return Objects.hash(id, nome, icone);
     }
 
     @Override
     public String toString() {
         return "Categoria{" +
-                "id_categoria=" + id_categoria +
-                ", nm_categoria='" + nm_categoria + '\'' +
-                ", icone_categoria='" + icone_categoria + '\'' +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
+                ", icone='" + icone + '\'' +
                 '}';
     }
 }

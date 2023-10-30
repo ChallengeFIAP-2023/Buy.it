@@ -27,7 +27,7 @@ public class TagResource implements Resource<Tag, Long> {
         }
 
         // NM_TAG
-        if (tag.getNm_tag() == null || tag.getNm_tag().isEmpty() || tag.getNm_tag().isBlank()) {
+        if (tag.getNome() == null || tag.getNome().isEmpty() || tag.getNome().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome da Tag não pode ser NULL ou vazio");
         }
 
@@ -72,7 +72,7 @@ public class TagResource implements Resource<Tag, Long> {
             return validationResponse;
         }
         Tag persistedTag = service.persist(tag);
-        URI location = URI.create("/tag/" + persistedTag.getId_tag());
+        URI location = URI.create("/tag/" + persistedTag.getId());
         return Response.created(location).entity(persistedTag).build();
     }
 
@@ -89,7 +89,7 @@ public class TagResource implements Resource<Tag, Long> {
         if (validationResponse != null) {
             return validationResponse;
         }
-        tag.setId_tag(existingTag.getId_tag());
+        tag.setId(existingTag.getId());
         Tag updatedTag = service.update(tag);
         return Response.ok(updatedTag).build();
     }

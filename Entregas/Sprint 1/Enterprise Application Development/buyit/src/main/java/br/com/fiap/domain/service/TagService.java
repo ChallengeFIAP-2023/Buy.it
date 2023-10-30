@@ -44,9 +44,9 @@ public class TagService implements Service<Tag, Long> {
         return repo.findById(id);
     }
 
-    public List<Tag> findByName(String name) {
-        if (Objects.isNull(name)) return null;
-        return repo.findByName(name);
+    public List<Tag> findByName(String nome) {
+        if (Objects.isNull(nome)) return null;
+        return repo.findByName(nome);
     }
 
     @Override

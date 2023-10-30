@@ -16,27 +16,26 @@ public class Pedido {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_PEDIDO")
     @SequenceGenerator(name = "SQ_PEDIDO", sequenceName = "SQ_PEDIDO", allocationSize = 1)
-    @Column(name = "ID_PEDIDO", columnDefinition = "NUMBER(8)")
-    private Long id_pedido;
+    @Column(name = "ID_PEDIDO")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_USUARIO",
-            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_USUARIO",
             foreignKey = @ForeignKey(name = "FK_USUARIO_PEDIDO"),
             nullable = false
     )
-    private Usuario id_usuario;
+    private Usuario usuario;
 
-    @Column(name = "STATUS_PEDIDO", nullable = false, columnDefinition = "VARCHAR2(255)")
-    private String status_pedido;
+    @Column(name = "STATUS_PEDIDO", nullable = false)
+    private String status;
 
-    @Column(name = "DATA_PEDIDO", nullable = false, columnDefinition = "DATE")
-    private LocalDate data_pedido;
+    @Column(name = "DATA_PEDIDO", nullable = false)
+    private LocalDate data;
 
-    @Column(name = "VALOR_PEDIDO", nullable = false, columnDefinition = "NUMBER(10,2)")
-    private BigDecimal valor_pedido;
+    @Column(name = "VALOR_PEDIDO", nullable = false)
+    private BigDecimal valor;
 
     @JsonbTransient
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -45,7 +44,6 @@ public class Pedido {
             joinColumns = {
                     @JoinColumn(
                             name = "ID_PEDIDO",
-                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_PEDIDO",
                             foreignKey = @ForeignKey(name = "FK_PEDIDO_ESTOQUE")
                     )
@@ -53,7 +51,6 @@ public class Pedido {
             inverseJoinColumns = {
                     @JoinColumn(
                             name = "ID_ESTOQUE",
-                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_ESTOQUE",
                             foreignKey = @ForeignKey(name = "FK_ESTOQUE_PEDIDO")
                     )
@@ -64,57 +61,57 @@ public class Pedido {
     public Pedido() {
     }
 
-    public Pedido(Long id_pedido, Usuario id_usuario, String status_pedido, LocalDate data_pedido, BigDecimal valor_pedido, Set<Estoque> estoques) {
-        this.id_pedido = id_pedido;
-        this.id_usuario = id_usuario;
-        this.status_pedido = status_pedido;
-        this.data_pedido = data_pedido;
-        this.valor_pedido = valor_pedido;
+    public Pedido(Long id, Usuario usuario, String status, LocalDate data, BigDecimal valor, Set<Estoque> estoques) {
+        this.id = id;
+        this.usuario = usuario;
+        this.status = status;
+        this.data = data;
+        this.valor = valor;
         this.estoques = Objects.nonNull(estoques) ? estoques : new LinkedHashSet<>();
     }
 
-    public Long getId_pedido() {
-        return id_pedido;
+    public Long getId() {
+        return id;
     }
 
-    public Pedido setId_pedido(Long id_pedido) {
-        this.id_pedido = id_pedido;
+    public Pedido setId(Long id) {
+        this.id = id;
         return this;
     }
 
-    public Usuario getId_usuario() {
-        return id_usuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public Pedido setId_usuario(Usuario id_usuario) {
-        this.id_usuario = id_usuario;
+    public Pedido setUsuario(Usuario usuario) {
+        this.usuario = usuario;
         return this;
     }
 
-    public String getStatus_pedido() {
-        return status_pedido;
+    public String getStatus() {
+        return status;
     }
 
-    public Pedido setStatus_pedido(String status_pedido) {
-        this.status_pedido = status_pedido;
+    public Pedido setStatus(String status) {
+        this.status = status;
         return this;
     }
 
-    public LocalDate getData_pedido() {
-        return data_pedido;
+    public LocalDate getData() {
+        return data;
     }
 
-    public Pedido setData_pedido(LocalDate data_pedido) {
-        this.data_pedido = data_pedido;
+    public Pedido setData(LocalDate data) {
+        this.data = data;
         return this;
     }
 
-    public BigDecimal getValor_pedido() {
-        return valor_pedido;
+    public BigDecimal getValor() {
+        return valor;
     }
 
-    public Pedido setValor_pedido(BigDecimal valor_pedido) {
-        this.valor_pedido = valor_pedido;
+    public Pedido setValor(BigDecimal valor) {
+        this.valor = valor;
         return this;
     }
 
@@ -138,22 +135,22 @@ public class Pedido {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Pedido pedido)) return false;
-        return Objects.equals(id_pedido, pedido.id_pedido) && Objects.equals(id_usuario, pedido.id_usuario) && Objects.equals(status_pedido, pedido.status_pedido) && Objects.equals(data_pedido, pedido.data_pedido) && Objects.equals(valor_pedido, pedido.valor_pedido) && Objects.equals(estoques, pedido.estoques);
+        return Objects.equals(id, pedido.id) && Objects.equals(usuario, pedido.usuario) && Objects.equals(status, pedido.status) && Objects.equals(data, pedido.data) && Objects.equals(valor, pedido.valor) && Objects.equals(estoques, pedido.estoques);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_pedido, id_usuario, status_pedido, data_pedido, valor_pedido, estoques);
+        return Objects.hash(id, usuario, status, data, valor, estoques);
     }
 
     @Override
     public String toString() {
         return "Pedido{" +
-                "id_pedido=" + id_pedido +
-                ", id_usuario=" + id_usuario +
-                ", status_pedido='" + status_pedido + '\'' +
-                ", data_pedido=" + data_pedido +
-                ", valor_pedido=" + valor_pedido +
+                "id=" + id +
+                ", usuario=" + usuario +
+                ", status='" + status + '\'' +
+                ", data=" + data +
+                ", valor=" + valor +
                 '}';
     }
 }

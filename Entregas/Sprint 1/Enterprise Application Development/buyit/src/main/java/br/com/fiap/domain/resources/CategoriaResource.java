@@ -28,7 +28,7 @@ public class CategoriaResource implements Resource<Categoria, Long> {
         }
 
         // NM_CATEGORIA
-        if (categoria.getNm_categoria() == null || categoria.getNm_categoria().isEmpty() || categoria.getNm_categoria().isBlank()) {
+        if (categoria.getNome() == null || categoria.getNome().isEmpty() || categoria.getNome().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome da Categoria não pode ser NULL ou vazio");
         }
 
@@ -73,7 +73,7 @@ public class CategoriaResource implements Resource<Categoria, Long> {
             return validationResponse;
         }
         Categoria persistedCategoria = service.persist(categoria);
-        URI location = URI.create("/categoria/" + persistedCategoria.getId_categoria());
+        URI location = URI.create("/categoria/" + persistedCategoria.getId());
         return Response.created(location).entity(persistedCategoria).build();
     }
 
@@ -90,7 +90,7 @@ public class CategoriaResource implements Resource<Categoria, Long> {
         if (validationResponse != null) {
             return validationResponse;
         }
-        categoria.setId_categoria(existingCategoria.getId_categoria());
+        categoria.setId(existingCategoria.getId());
         Categoria updatedCategoria = service.update(categoria);
         return Response.ok(updatedCategoria).build();
     }

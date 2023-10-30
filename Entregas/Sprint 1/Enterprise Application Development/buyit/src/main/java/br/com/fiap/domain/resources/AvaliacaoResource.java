@@ -36,21 +36,21 @@ public class AvaliacaoResource implements Resource<Avaliacao, Long> {
         }
 
         // ID_USUARIO
-        if (avaliacao.getId_usuario() == null) {
+        if (avaliacao.getUsuario() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Usuario da Avaliacao não pode ser NULL");
         }
-        Usuario existingUsuario = serviceUsuario.findById(avaliacao.getId_usuario().getId_usuario());
+        Usuario existingUsuario = serviceUsuario.findById(avaliacao.getUsuario().getId());
         if (existingUsuario == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Usuario de ID: " + avaliacao.getId_usuario().getId_usuario() + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Usuario de ID: " + avaliacao.getUsuario().getId() + " não encontrado");
         }
 
         // ID_PEDIDO
-        if (avaliacao.getId_pedido() == null) {
+        if (avaliacao.getPedido() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Pedido da Avaliacao não pode ser NULL");
         }
-        Pedido existingPedido = servicePedido.findById(avaliacao.getId_pedido().getId_pedido());
+        Pedido existingPedido = servicePedido.findById(avaliacao.getPedido().getId());
         if (existingPedido == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + avaliacao.getId_pedido().getId_pedido() + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + avaliacao.getPedido().getId() + " não encontrado");
         }
 
         return null;
@@ -109,7 +109,7 @@ public class AvaliacaoResource implements Resource<Avaliacao, Long> {
             return validationResponse;
         }
         Avaliacao persistedAvaliacao = service.persist(avaliacao);
-        URI location = URI.create("/avaliacao/" + persistedAvaliacao.getId_avaliacao());
+        URI location = URI.create("/avaliacao/" + persistedAvaliacao.getId());
         return Response.created(location).entity(persistedAvaliacao).build();
     }
 
@@ -126,7 +126,7 @@ public class AvaliacaoResource implements Resource<Avaliacao, Long> {
         if (validationResponse != null) {
             return validationResponse;
         }
-        avaliacao.setId_avaliacao(existingAvaliacao.getId_avaliacao());
+        avaliacao.setId(existingAvaliacao.getId());
         Avaliacao updatedAvaliacao = service.update(avaliacao);
         return Response.ok(updatedAvaliacao).build();
     }

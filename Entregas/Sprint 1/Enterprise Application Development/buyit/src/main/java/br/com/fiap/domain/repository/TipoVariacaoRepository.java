@@ -1,6 +1,6 @@
 package br.com.fiap.domain.repository;
 
-import br.com.fiap.domain.entity.Tipo_Variacao;
+import br.com.fiap.domain.entity.TipoVariacao;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityTransaction;
 import jakarta.persistence.TypedQuery;
@@ -8,49 +8,49 @@ import jakarta.persistence.TypedQuery;
 import java.util.List;
 import java.util.Objects;
 
-public class Tipo_VariacaoRepository implements Repository<Tipo_Variacao, Long> {
+public class TipoVariacaoRepository implements Repository<TipoVariacao, Long> {
 
-    private static volatile Tipo_VariacaoRepository instance;
+    private static volatile TipoVariacaoRepository instance;
     private final EntityManager manager;
 
-    private Tipo_VariacaoRepository(EntityManager manager) {
+    private TipoVariacaoRepository(EntityManager manager) {
         this.manager = manager;
     }
 
-    public static Tipo_VariacaoRepository build(EntityManager manager) {
-        Tipo_VariacaoRepository result = instance;
+    public static TipoVariacaoRepository build(EntityManager manager) {
+        TipoVariacaoRepository result = instance;
         if (Objects.nonNull(result)) return result;
 
-        synchronized (Tipo_VariacaoRepository.class) {
+        synchronized (TipoVariacaoRepository.class) {
             if (Objects.isNull(instance)) {
-                instance = new Tipo_VariacaoRepository(manager);
+                instance = new TipoVariacaoRepository(manager);
             }
             return instance;
         }
     }
 
     @Override
-    public Tipo_Variacao findById(Long id) {
-        return manager.find(Tipo_Variacao.class, id);
+    public TipoVariacao findById(Long id) {
+        return manager.find(TipoVariacao.class, id);
     }
 
-    public List<Tipo_Variacao> findByName(String name) {
-        String jpql = "SELECT tipo_variacao FROM Tipo_Variacao tipo_variacao  where upper(tipo_variacao.nm_tipo_variacao) LIKE CONCAT('%',upper(:nm_tipo_variacao),'%')";
-        TypedQuery<Tipo_Variacao> query = manager.createQuery(jpql, Tipo_Variacao.class);
-        query.setParameter("nm_tipo_variacao", name);
+    public List<TipoVariacao> findByName(String nome) {
+        String jpql = "SELECT tipo_variacao FROM TipoVariacao tipo_variacao  where upper(tipo_variacao.nome) LIKE CONCAT('%',upper(:nome),'%')";
+        TypedQuery<TipoVariacao> query = manager.createQuery(jpql, TipoVariacao.class);
+        query.setParameter("nome", nome);
         return query.getResultList();
     }
 
     @Override
-    public List<Tipo_Variacao> findAll() {
-        return manager.createQuery("FROM Tipo_Variacao", Tipo_Variacao.class).getResultList();
+    public List<TipoVariacao> findAll() {
+        return manager.createQuery("FROM TipoVariacao", TipoVariacao.class).getResultList();
     }
 
     @Override
-    public Tipo_Variacao persist(Tipo_Variacao tipo_variacao) {
+    public TipoVariacao persist(TipoVariacao tipo_variacao) {
         EntityTransaction transaction = manager.getTransaction();
         try {
-            tipo_variacao.setId_tipo_variacao(null);
+            tipo_variacao.setId(null);
             transaction.begin();
             manager.persist(tipo_variacao);
             transaction.commit();
@@ -63,16 +63,16 @@ public class Tipo_VariacaoRepository implements Repository<Tipo_Variacao, Long> 
     }
 
     @Override
-    public Tipo_Variacao update(Tipo_Variacao tipo_variacao) {
+    public TipoVariacao update(TipoVariacao tipo_variacao) {
         EntityTransaction transaction = manager.getTransaction();
         try {
             transaction.begin();
-            Tipo_Variacao tipo_variacao_buscado = manager.find(Tipo_Variacao.class, tipo_variacao.getId_tipo_variacao());
+            TipoVariacao tipo_variacao_buscado = manager.find(TipoVariacao.class, tipo_variacao.getId());
             if (Objects.nonNull(tipo_variacao_buscado)) {
 
                 // NM_TIPO_VARIACAO
-                if (Objects.nonNull(tipo_variacao.getNm_tipo_variacao())) {
-                    tipo_variacao_buscado.setNm_tipo_variacao(tipo_variacao.getNm_tipo_variacao());
+                if (Objects.nonNull(tipo_variacao.getNome())) {
+                    tipo_variacao_buscado.setNome(tipo_variacao.getNome());
                 }
 
                 tipo_variacao = manager.merge(tipo_variacao_buscado);
@@ -89,7 +89,7 @@ public class Tipo_VariacaoRepository implements Repository<Tipo_Variacao, Long> 
     }
 
     @Override
-    public boolean delete(Tipo_Variacao tipo_variacao) {
+    public boolean delete(TipoVariacao tipo_variacao) {
         EntityTransaction transaction = manager.getTransaction();
         try {
             transaction.begin();

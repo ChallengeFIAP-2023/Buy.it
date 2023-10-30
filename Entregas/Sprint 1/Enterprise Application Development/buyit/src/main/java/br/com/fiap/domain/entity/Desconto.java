@@ -13,50 +13,49 @@ public class Desconto {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_DESCONTO")
     @SequenceGenerator(name = "SQ_DESCONTO", sequenceName = "SQ_DESCONTO", allocationSize = 1)
-    @Column(name = "ID_DESCONTO", columnDefinition = "NUMBER(8)")
-    private Long id_desconto;
+    @Column(name = "ID_DESCONTO")
+    private Long id;
 
-    @Column(name = "QTD_MIN_PRODUTO", nullable = false, columnDefinition = "NUMBER(8)")
-    private Long qtd_min_produto;
+    @Column(name = "QTD_MIN_PRODUTO", nullable = false)
+    private Long qtdMinProduto;
 
-    @Column(name = "DESCONTO", nullable = false, columnDefinition = "NUMBER(5,2)")
+    @Column(name = "DESCONTO", nullable = false)
     private BigDecimal desconto;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_ESTOQUE",
-            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_ESTOQUE",
             foreignKey = @ForeignKey(name = "FK_ESTOQUE_DESCONTO"),
             nullable = false
     )
-    private Estoque id_estoque;
+    private Estoque estoque;
 
     public Desconto() {
     }
 
-    public Desconto(Long id_desconto, Long qtd_min_produto, BigDecimal desconto, Estoque id_estoque) {
-        this.id_desconto = id_desconto;
-        this.qtd_min_produto = qtd_min_produto;
+    public Desconto(Long id, Long qtdMinProduto, BigDecimal desconto, Estoque estoque) {
+        this.id = id;
+        this.qtdMinProduto = qtdMinProduto;
         this.desconto = desconto;
-        this.id_estoque = id_estoque;
+        this.estoque = estoque;
     }
 
-    public Long getId_desconto() {
-        return id_desconto;
+    public Long getId() {
+        return id;
     }
 
-    public Desconto setId_desconto(Long id_desconto) {
-        this.id_desconto = id_desconto;
+    public Desconto setId(Long id) {
+        this.id = id;
         return this;
     }
 
-    public Long getQtd_min_produto() {
-        return qtd_min_produto;
+    public Long getQtdMinProduto() {
+        return qtdMinProduto;
     }
 
-    public Desconto setQtd_min_produto(Long qtd_min_produto) {
-        this.qtd_min_produto = qtd_min_produto;
+    public Desconto setQtdMinProduto(Long qtdMinProduto) {
+        this.qtdMinProduto = qtdMinProduto;
         return this;
     }
 
@@ -69,12 +68,12 @@ public class Desconto {
         return this;
     }
 
-    public Estoque getId_estoque() {
-        return id_estoque;
+    public Estoque getEstoque() {
+        return estoque;
     }
 
-    public Desconto setId_estoque(Estoque id_estoque) {
-        this.id_estoque = id_estoque;
+    public Desconto setEstoque(Estoque estoque) {
+        this.estoque = estoque;
         return this;
     }
 
@@ -82,21 +81,21 @@ public class Desconto {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Desconto desconto1)) return false;
-        return Objects.equals(id_desconto, desconto1.id_desconto) && Objects.equals(qtd_min_produto, desconto1.qtd_min_produto) && Objects.equals(desconto, desconto1.desconto) && Objects.equals(id_estoque, desconto1.id_estoque);
+        return Objects.equals(id, desconto1.id) && Objects.equals(qtdMinProduto, desconto1.qtdMinProduto) && Objects.equals(desconto, desconto1.desconto) && Objects.equals(estoque, desconto1.estoque);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_desconto, qtd_min_produto, desconto, id_estoque);
+        return Objects.hash(id, qtdMinProduto, desconto, estoque);
     }
 
     @Override
     public String toString() {
         return "Desconto{" +
-                "id_desconto=" + id_desconto +
-                ", qtd_min_produto=" + qtd_min_produto +
+                "id=" + id +
+                ", qtdMinProduto=" + qtdMinProduto +
                 ", desconto=" + desconto +
-                ", id_estoque=" + id_estoque +
+                ", estoque=" + estoque +
                 '}';
     }
 }

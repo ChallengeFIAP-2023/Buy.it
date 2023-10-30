@@ -44,9 +44,9 @@ public class PedidoService implements Service<Pedido, Long> {
         return repo.findById(id);
     }
 
-    public List<Pedido> findByIdUsuario(Long id_usuario) {
-        if (Objects.isNull(id_usuario)) return null;
-        return repo.findByIdUsuario(id_usuario);
+    public List<Pedido> findByIdUsuario(Long id) {
+        if (Objects.isNull(id)) return null;
+        return repo.findByIdUsuario(id);
     }
 
     @Override

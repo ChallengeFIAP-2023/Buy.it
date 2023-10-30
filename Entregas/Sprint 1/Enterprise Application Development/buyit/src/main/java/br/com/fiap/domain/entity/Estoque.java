@@ -15,47 +15,44 @@ public class Estoque {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_ESTOQUE")
     @SequenceGenerator(name = "SQ_ESTOQUE", sequenceName = "SQ_ESTOQUE", allocationSize = 1)
-    @Column(name = "ID_ESTOQUE", columnDefinition = "NUMBER(8)")
-    private Long id_estoque;
+    @Column(name = "ID_ESTOQUE")
+    private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_PRODUTO",
-            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_PRODUTO",
             foreignKey = @ForeignKey(name = "FK_PRODUTO_ESTOQUE"),
             nullable = false
     )
-    private Produto id_produto;
+    private Produto produto;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_VALOR_VARIACAO",
-            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_VALOR_VARIACAO",
             foreignKey = @ForeignKey(name = "FK_VALOR_VARIACAO_ESTOQUE"),
             nullable = false
     )
-    private Valor_Variacao id_valor_variacao;
+    private ValorVariacao valorVariacao;
 
-    @Column(name = "QTD_ESTOQUE", nullable = false, columnDefinition = "NUMBER(8)")
-    private Long qtd_estoque;
+    @Column(name = "QTD_ESTOQUE", nullable = false)
+    private Long quantidade;
 
-    @Column(name = "PRECO_UNITARIO", nullable = false, columnDefinition = "NUMBER(10,2)")
-    private BigDecimal preco_unitario;
+    @Column(name = "PRECO_UNITARIO", nullable = false)
+    private BigDecimal precoUnitario;
 
-    @Column(name = "IMG_URL_ESTOQUE", columnDefinition = "VARCHAR2(255)")
-    private String img_url_estoque;
+    @Column(name = "IMG_URL_ESTOQUE")
+    private String imgUrl;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_USUARIO",
-            columnDefinition = "NUMBER(8)",
             referencedColumnName = "ID_USUARIO",
             foreignKey = @ForeignKey(name = "FK_USUARIO_ESTOQUE"),
             nullable = false
     )
-    private Usuario id_usuario;
+    private Usuario usuario;
 
     @JsonbTransient
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -64,7 +61,6 @@ public class Estoque {
             joinColumns = {
                     @JoinColumn(
                             name = "ID_ESTOQUE",
-                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_ESTOQUE",
                             foreignKey = @ForeignKey(name = "FK_ESTOQUE_PEDIDO")
                     )
@@ -72,7 +68,6 @@ public class Estoque {
             inverseJoinColumns = {
                     @JoinColumn(
                             name = "ID_PEDIDO",
-                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_PEDIDO",
                             foreignKey = @ForeignKey(name = "FK_PEDIDO_ESTOQUE")
                     )
@@ -83,77 +78,77 @@ public class Estoque {
     public Estoque() {
     }
 
-    public Estoque(Long id_estoque, Produto id_produto, Valor_Variacao id_valor_variacao, Long qtd_estoque, BigDecimal preco_unitario, String img_url_estoque, Usuario id_usuario, Set<Pedido> pedidos) {
-        this.id_estoque = id_estoque;
-        this.id_produto = id_produto;
-        this.id_valor_variacao = id_valor_variacao;
-        this.qtd_estoque = qtd_estoque;
-        this.preco_unitario = preco_unitario;
-        this.img_url_estoque = img_url_estoque;
-        this.id_usuario = id_usuario;
+    public Estoque(Long id, Produto produto, ValorVariacao valorVariacao, Long quantidade, BigDecimal precoUnitario, String imgUrl, Usuario usuario, Set<Pedido> pedidos) {
+        this.id = id;
+        this.produto = produto;
+        this.valorVariacao = valorVariacao;
+        this.quantidade = quantidade;
+        this.precoUnitario = precoUnitario;
+        this.imgUrl = imgUrl;
+        this.usuario = usuario;
         this.pedidos = Objects.nonNull(pedidos) ? pedidos : new LinkedHashSet<>();
     }
 
-    public Long getId_estoque() {
-        return id_estoque;
+    public Long getId() {
+        return id;
     }
 
-    public Estoque setId_estoque(Long id_estoque) {
-        this.id_estoque = id_estoque;
+    public Estoque setId(Long id) {
+        this.id = id;
         return this;
     }
 
-    public Produto getId_produto() {
-        return id_produto;
+    public Produto getProduto() {
+        return produto;
     }
 
-    public Estoque setId_produto(Produto id_produto) {
-        this.id_produto = id_produto;
+    public Estoque setProduto(Produto produto) {
+        this.produto = produto;
         return this;
     }
 
-    public Valor_Variacao getId_valor_variacao() {
-        return id_valor_variacao;
+    public ValorVariacao getValorVariacao() {
+        return valorVariacao;
     }
 
-    public Estoque setId_valor_variacao(Valor_Variacao id_valor_variacao) {
-        this.id_valor_variacao = id_valor_variacao;
+    public Estoque setValorVariacao(ValorVariacao valorVariacao) {
+        this.valorVariacao = valorVariacao;
         return this;
     }
 
-    public Long getQtd_estoque() {
-        return qtd_estoque;
+    public Long getQuantidade() {
+        return quantidade;
     }
 
-    public Estoque setQtd_estoque(Long qtd_estoque) {
-        this.qtd_estoque = qtd_estoque;
+    public Estoque setQuantidade(Long quantidade) {
+        this.quantidade = quantidade;
         return this;
     }
 
-    public BigDecimal getPreco_unitario() {
-        return preco_unitario;
+    public BigDecimal getPrecoUnitario() {
+        return precoUnitario;
     }
 
-    public Estoque setPreco_unitario(BigDecimal preco_unitario) {
-        this.preco_unitario = preco_unitario;
+    public Estoque setPrecoUnitario(BigDecimal precoUnitario) {
+        this.precoUnitario = precoUnitario;
         return this;
     }
 
-    public String getImg_url_estoque() {
-        return img_url_estoque;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public Estoque setImg_url_estoque(String img_url_estoque) {
-        this.img_url_estoque = img_url_estoque;
+    public Estoque setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
         return this;
     }
 
-    public Usuario getId_usuario() {
-        return id_usuario;
+    public Usuario getUsuario() {
+        return usuario;
     }
 
-    public Estoque setId_usuario(Usuario id_usuario) {
-        this.id_usuario = id_usuario;
+    public Estoque setUsuario(Usuario usuario) {
+        this.usuario = usuario;
         return this;
     }
 
@@ -177,24 +172,24 @@ public class Estoque {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Estoque estoque)) return false;
-        return Objects.equals(id_estoque, estoque.id_estoque) && Objects.equals(id_produto, estoque.id_produto) && Objects.equals(id_valor_variacao, estoque.id_valor_variacao) && Objects.equals(qtd_estoque, estoque.qtd_estoque) && Objects.equals(preco_unitario, estoque.preco_unitario) && Objects.equals(img_url_estoque, estoque.img_url_estoque) && Objects.equals(id_usuario, estoque.id_usuario) && Objects.equals(pedidos, estoque.pedidos);
+        return Objects.equals(id, estoque.id) && Objects.equals(produto, estoque.produto) && Objects.equals(valorVariacao, estoque.valorVariacao) && Objects.equals(quantidade, estoque.quantidade) && Objects.equals(precoUnitario, estoque.precoUnitario) && Objects.equals(imgUrl, estoque.imgUrl) && Objects.equals(usuario, estoque.usuario) && Objects.equals(pedidos, estoque.pedidos);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_estoque, id_produto, id_valor_variacao, qtd_estoque, preco_unitario, img_url_estoque, id_usuario, pedidos);
+        return Objects.hash(id, produto, valorVariacao, quantidade, precoUnitario, imgUrl, usuario, pedidos);
     }
 
     @Override
     public String toString() {
         return "Estoque{" +
-                "id_estoque=" + id_estoque +
-                ", id_produto=" + id_produto +
-                ", id_valor_variacao=" + id_valor_variacao +
-                ", qtd_estoque=" + qtd_estoque +
-                ", preco_unitario=" + preco_unitario +
-                ", img_url_estoque='" + img_url_estoque + '\'' +
-                ", id_usuario=" + id_usuario +
+                "id=" + id +
+                ", produto=" + produto +
+                ", valorVariacao=" + valorVariacao +
+                ", quantidade=" + quantidade +
+                ", precoUnitario=" + precoUnitario +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", usuario=" + usuario +
                 '}';
     }
 }

@@ -44,14 +44,14 @@ public class LogService implements Service<Log, Long> {
         return repo.findById(id);
     }
 
-    public List<Log> findByIdPedido(Long id_pedido) {
-        if (Objects.isNull(id_pedido)) return null;
-        return repo.findByIdPedido(id_pedido);
+    public List<Log> findByIdPedido(Long id) {
+        if (Objects.isNull(id)) return null;
+        return repo.findByIdPedido(id);
     }
 
-    public List<Log> findByName(String name) {
-        if (Objects.isNull(name)) return null;
-        return repo.findByName(name);
+    public List<Log> findByName(String nome) {
+        if (Objects.isNull(nome)) return null;
+        return repo.findByName(nome);
     }
 
     @Override

@@ -31,17 +31,17 @@ public class ProdutoResource implements Resource<Produto, Long> {
         }
 
         // NM_PRODUTO
-        if (produto.getNm_produto() == null || produto.getNm_produto().isEmpty() || produto.getNm_produto().isBlank()) {
+        if (produto.getNome() == null || produto.getNome().isEmpty() || produto.getNome().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome do Produto não pode ser NULL ou vazio");
         }
 
         // MARCA_PRODUTO
-        if (produto.getMarca_produto() == null || produto.getMarca_produto().isEmpty() || produto.getMarca_produto().isBlank()) {
+        if (produto.getMarca() == null || produto.getMarca().isEmpty() || produto.getMarca().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome do Produto não pode ser NULL ou vazio");
         }
 
         // MENOR_PRECO_PRODUTO
-        if (produto.getMenor_preco_produto() == null) {
+        if (produto.getMenorPreco() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Menor Preço do Produto não pode ser NULL ou vazio");
         }
 
@@ -98,7 +98,7 @@ public class ProdutoResource implements Resource<Produto, Long> {
             return validationResponse;
         }
         Produto persistedProduto = service.persist(produto);
-        URI location = URI.create("/produto/" + persistedProduto.getId_produto());
+        URI location = URI.create("/produto/" + persistedProduto.getId());
         return Response.created(location).entity(persistedProduto).build();
     }
 
@@ -115,7 +115,7 @@ public class ProdutoResource implements Resource<Produto, Long> {
         if (validationResponse != null) {
             return validationResponse;
         }
-        produto.setId_produto(existingProduto.getId_produto());
+        produto.setId(existingProduto.getId());
         Produto updatedProduto = service.update(produto);
         return Response.ok(updatedProduto).build();
     }

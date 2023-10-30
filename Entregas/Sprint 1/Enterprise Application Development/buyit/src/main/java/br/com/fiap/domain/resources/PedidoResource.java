@@ -30,26 +30,26 @@ public class PedidoResource implements Resource<Pedido, Long> {
         }
 
         // ID_USUARIO
-        if (pedido.getId_usuario() == null) {
+        if (pedido.getUsuario() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Usuario do Pedido não pode ser NULL");
         }
-        Usuario existingUsuario = serviceUsuario.findById(pedido.getId_usuario().getId_usuario());
+        Usuario existingUsuario = serviceUsuario.findById(pedido.getUsuario().getId());
         if (existingUsuario == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Usuario de ID: " + pedido.getId_usuario().getId_usuario() + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Usuario de ID: " + pedido.getUsuario().getId() + " não encontrado");
         }
 
         // STATUS_PEDIDO
-        if (pedido.getStatus_pedido() == null) {
+        if (pedido.getStatus() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Status do Pedido não pode ser NULL ou vazio");
         }
 
         // DATA_PEDIDO
-        if (pedido.getData_pedido() == null) {
+        if (pedido.getData() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Data do Pedido não pode ser NULL ou vazio");
         }
 
         // VALOR_PEDIDO
-        if (pedido.getValor_pedido() == null) {
+        if (pedido.getValor() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Valor do Pedido não pode ser NULL ou vazio");
         }
 
@@ -98,7 +98,7 @@ public class PedidoResource implements Resource<Pedido, Long> {
             return validationResponse;
         }
         Pedido persistedPedido = service.persist(pedido);
-        URI location = URI.create("/pedido/" + persistedPedido.getId_pedido());
+        URI location = URI.create("/pedido/" + persistedPedido.getId());
         return Response.created(location).entity(persistedPedido).build();
     }
 
@@ -115,7 +115,7 @@ public class PedidoResource implements Resource<Pedido, Long> {
         if (validationResponse != null) {
             return validationResponse;
         }
-        pedido.setId_pedido(existingPedido.getId_pedido());
+        pedido.setId(existingPedido.getId());
         Pedido updatedPedido = service.update(pedido);
         return Response.ok(updatedPedido).build();
     }

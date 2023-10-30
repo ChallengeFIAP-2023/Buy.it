@@ -44,9 +44,9 @@ public class CategoriaService implements Service<Categoria, Long> {
         return repo.findById(id);
     }
 
-    public List<Categoria> findByName(String name) {
-        if (Objects.isNull(name)) return null;
-        return repo.findByName(name);
+    public List<Categoria> findByName(String nome) {
+        if (Objects.isNull(nome)) return null;
+        return repo.findByName(nome);
     }
 
     @Override

@@ -44,14 +44,14 @@ public class UsuarioService implements Service<Usuario, Long> {
         return repo.findById(id);
     }
 
-    public List<Usuario> findByName(String name) {
-        if (Objects.isNull(name)) return null;
-        return repo.findByName(name);
+    public List<Usuario> findByName(String nome) {
+        if (Objects.isNull(nome)) return null;
+        return repo.findByName(nome);
     }
 
-    public Usuario findByCnpj(String cnpj_usuario) {
-        if (Objects.isNull(cnpj_usuario)) return null;
-        return repo.findByCnpj(cnpj_usuario);
+    public Usuario findByCnpj(String cnpj) {
+        if (Objects.isNull(cnpj)) return null;
+        return repo.findByCnpj(cnpj);
     }
 
     @Override

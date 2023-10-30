@@ -35,17 +35,17 @@ public class LogRepository implements Repository<Log, Long> {
         return manager.find(Log.class, id);
     }
 
-    public List<Log> findByIdPedido(Long id_pedido) {
-        String jpql = "SELECT log FROM Log log WHERE log.id_pedido = :id_pedido";
+    public List<Log> findByIdPedido(Long id) {
+        String jpql = "SELECT log FROM Log log WHERE log.pedido = :id";
         TypedQuery<Log> query = manager.createQuery(jpql, Log.class);
-        query.setParameter("id_pedido", id_pedido);
+        query.setParameter("id", id);
         return query.getResultList();
     }
 
-    public List<Log> findByName(String name) {
-        String jpql = "SELECT log FROM Log log  where upper(log.nm_log) LIKE CONCAT('%',upper(:nm_log),'%')";
+    public List<Log> findByName(String nome) {
+        String jpql = "SELECT log FROM Log log  where upper(log.nome) LIKE CONCAT('%',upper(:nome),'%')";
         TypedQuery<Log> query = manager.createQuery(jpql, Log.class);
-        query.setParameter("nm_log", name);
+        query.setParameter("nome", nome);
         return query.getResultList();
     }
 
@@ -58,10 +58,10 @@ public class LogRepository implements Repository<Log, Long> {
     public Log persist(Log log) {
         EntityTransaction transaction = manager.getTransaction();
         try {
-            log.setId_log(null);
+            log.setId(null);
             transaction.begin();
-            Pedido pedido = manager.find(Pedido.class, log.getId_pedido().getId_pedido());
-            log.setId_pedido(pedido);
+            Pedido pedido = manager.find(Pedido.class, log.getPedido().getId());
+            log.setPedido(pedido);
             manager.persist(log);
             transaction.commit();
         } catch (Exception e) {
@@ -77,28 +77,28 @@ public class LogRepository implements Repository<Log, Long> {
         EntityTransaction transaction = manager.getTransaction();
         try {
             transaction.begin();
-            Log log_buscado = manager.find(Log.class, log.getId_log());
+            Log log_buscado = manager.find(Log.class, log.getId());
             if (Objects.nonNull(log_buscado)) {
 
                 // ID_PEDIDO
-                if (Objects.nonNull(log.getId_pedido())) {
-                    Pedido pedido = manager.find(Pedido.class, log.getId_pedido().getId_pedido());
-                    log_buscado.setId_pedido(pedido);
+                if (Objects.nonNull(log.getPedido())) {
+                    Pedido pedido = manager.find(Pedido.class, log.getPedido().getId());
+                    log_buscado.setPedido(pedido);
                 }
 
                 // TIMESTAMP_LOG
-                if (log.getTimestamp_log() != null) {
-                    log_buscado.setTimestamp_log(log.getTimestamp_log());
+                if (log.getTimestamp() != null) {
+                    log_buscado.setTimestamp(log.getTimestamp());
                 }
 
                 // NM_LOG
-                if (log.getNm_log() != null) {
-                    log_buscado.setNm_log(log.getNm_log());
+                if (log.getNome() != null) {
+                    log_buscado.setNome(log.getNome());
                 }
 
                 // DS_LOG
-                if (log.getDs_log() != null) {
-                    log_buscado.setDs_log(log.getDs_log());
+                if (log.getDescricao() != null) {
+                    log_buscado.setDescricao(log.getDescricao());
                 }
 
                 log = manager.merge(log_buscado);

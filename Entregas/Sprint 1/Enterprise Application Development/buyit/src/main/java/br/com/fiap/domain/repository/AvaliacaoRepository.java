@@ -36,10 +36,10 @@ public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
         return manager.find(Avaliacao.class, id);
     }
 
-    public List<Avaliacao> findByIdUsuario(Long id_usuario) {
-        String jpql = "SELECT avaliacao FROM Avaliacao avaliacao WHERE avaliacao.id_usuario = :id_usuario";
+    public List<Avaliacao> findByIdUsuario(Long id) {
+        String jpql = "SELECT avaliacao FROM Avaliacao avaliacao WHERE avaliacao.usuario = :id";
         TypedQuery<Avaliacao> query = manager.createQuery(jpql, Avaliacao.class);
-        query.setParameter("id_usuario", id_usuario);
+        query.setParameter("id", id);
         return query.getResultList();
     }
 
@@ -56,12 +56,12 @@ public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
     public Avaliacao persist(Avaliacao avaliacao) {
         EntityTransaction transaction = manager.getTransaction();
         try {
-            avaliacao.setId_avaliacao(null);
+            avaliacao.setId(null);
             transaction.begin();
-            Usuario usuario = manager.find(Usuario.class, avaliacao.getId_usuario().getId_usuario());
-            Pedido pedido = manager.find(Pedido.class, avaliacao.getId_pedido().getId_pedido());
-            avaliacao.setId_usuario(usuario);
-            avaliacao.setId_pedido(pedido);
+            Usuario usuario = manager.find(Usuario.class, avaliacao.getUsuario().getId());
+            Pedido pedido = manager.find(Pedido.class, avaliacao.getPedido().getId());
+            avaliacao.setUsuario(usuario);
+            avaliacao.setPedido(pedido);
             manager.persist(avaliacao);
             transaction.commit();
         } catch (Exception e) {
@@ -77,32 +77,32 @@ public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
         EntityTransaction transaction = manager.getTransaction();
         try {
             transaction.begin();
-            Avaliacao avaliacao_buscada = findById(avaliacao.getId_avaliacao());
+            Avaliacao avaliacao_buscada = findById(avaliacao.getId());
             if (Objects.nonNull(avaliacao_buscada)) {
 
                 // ID_USUARIO
-                if (Objects.nonNull(avaliacao.getId_usuario())) {
-                    Usuario usuario = manager.find(Usuario.class, avaliacao.getId_usuario().getId_usuario());
-                    avaliacao_buscada.setId_usuario(usuario);
+                if (Objects.nonNull(avaliacao.getUsuario())) {
+                    Usuario usuario = manager.find(Usuario.class, avaliacao.getUsuario().getId());
+                    avaliacao_buscada.setUsuario(usuario);
                 }
 
                 // ID_PEDIDO
-                if (Objects.nonNull(avaliacao.getId_pedido())) {
-                    Pedido pedido = manager.find(Pedido.class, avaliacao.getId_pedido().getId_pedido());
-                    avaliacao_buscada.setId_pedido(pedido);
+                if (Objects.nonNull(avaliacao.getPedido())) {
+                    Pedido pedido = manager.find(Pedido.class, avaliacao.getPedido().getId());
+                    avaliacao_buscada.setPedido(pedido);
                 }
 
                 // NOTA_PRECO_AVALIACAO
-                avaliacao_buscada.setNota_preco_avaliacao(avaliacao.getNota_preco_avaliacao());
+                avaliacao_buscada.setNotaPreco(avaliacao.getNotaPreco());
 
                 // NOTA_QUALIDADE_AVALIACAO
-                avaliacao_buscada.setNota_qualidade_avaliacao(avaliacao.getNota_qualidade_avaliacao());
+                avaliacao_buscada.setNotaQualidade(avaliacao.getNotaQualidade());
 
                 // NOTA_ENTREGA_AVALIACAO
-                avaliacao_buscada.setNota_entrega_avaliacao(avaliacao.getNota_entrega_avaliacao());
+                avaliacao_buscada.setNotaEntrega(avaliacao.getNotaEntrega());
 
                 // DS_AVALIACAO
-                avaliacao_buscada.setDs_avaliacao(avaliacao.getDs_avaliacao());
+                avaliacao_buscada.setDescricao(avaliacao.getDescricao());
 
                 manager.merge(avaliacao_buscada);
                 transaction.commit();

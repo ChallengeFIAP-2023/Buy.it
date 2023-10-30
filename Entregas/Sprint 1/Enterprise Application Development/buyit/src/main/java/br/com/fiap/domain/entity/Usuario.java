@@ -19,47 +19,47 @@ public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_USUARIO")
     @SequenceGenerator(name = "SQ_USUARIO", sequenceName = "SQ_USUARIO", allocationSize = 1)
-    @Column(name = "ID_USUARIO", columnDefinition = "NUMBER(8)")
-    private Long id_usuario;
+    @Column(name = "ID_USUARIO")
+    private Long id;
 
-    @Column(name = "CNPJ_USUARIO", nullable = false, columnDefinition = "CHAR(18)")
-    private String cnpj_usuario;
+    @Column(name = "CNPJ_USUARIO", nullable = false)
+    private String cnpj;
 
-    @Column(name = "NM_USUARIO", nullable = false, columnDefinition = "VARCHAR2(255)")
-    private String nm_usuario;
+    @Column(name = "NM_USUARIO", nullable = false)
+    private String nome;
 
-    @Column(name = "CEP_USUARIO", nullable = false, columnDefinition = "CHAR(9)")
-    private String cep_usuario;
+    @Column(name = "CEP_USUARIO", nullable = false)
+    private String cep;
 
-    @Column(name = "LOGRADOURO_USUARIO", nullable = false, columnDefinition = "VARCHAR2(255)")
-    private String logradouro_usuario;
+    @Column(name = "LOGRADOURO_USUARIO", nullable = false)
+    private String logradouro;
 
-    @Column(name = "COMPLEMENTO_USUARIO", columnDefinition = "VARCHAR2(50)")
-    private String complemento_usuario;
+    @Column(name = "COMPLEMENTO_USUARIO")
+    private String complemento;
 
-    @Column(name = "NUM_ENDERECO_USUARIO", nullable = false, columnDefinition = "VARCHAR2(50)")
-    private String num_endereco_usuario;
+    @Column(name = "NUM_ENDERECO_USUARIO", nullable = false)
+    private String numEndereco;
 
-    @Column(name = "EMAIL_USUARIO", nullable = false, columnDefinition = "VARCHAR2(255)")
-    private String email_usuario;
+    @Column(name = "EMAIL_USUARIO", nullable = false)
+    private String email;
 
-    @Column(name = "SENHA_USUARIO", nullable = false, columnDefinition = "VARCHAR2(20)")
-    private String senha_usuario;
+    @Column(name = "SENHA_USUARIO", nullable = false)
+    private String senha;
 
-    @Column(name = "TEL_USUARIO", nullable = false, columnDefinition = "VARCHAR2(15)")
-    private String tel_usuario;
+    @Column(name = "TEL_USUARIO", nullable = false)
+    private String tel;
 
-    @Column(name = "E_FORNECEDOR", nullable = false, columnDefinition = "NUMBER(1)")
+    @Column(name = "E_FORNECEDOR", nullable = false)
     private Long e_fornecedor;
 
-    @Column(name = "IMG_URL_USUARIO", columnDefinition = "VARCHAR2(255)")
-    private String img_url_usuario;
+    @Column(name = "IMG_URL_USUARIO")
+    private String imgUrl;
 
-    @Column(name = "REGIME_TRIBUTARIO_USUARIO", nullable = false, columnDefinition = "VARCHAR2(255)")
-    private String regime_tributario_usuario;
+    @Column(name = "REGIME_TRIBUTARIO_USUARIO", nullable = false)
+    private String regimeTributario;
 
-    @Column(name = "VALOR_MAX_AUTOMATICO_USUARIO", nullable = false, columnDefinition = "NUMBER(10,2)")
-    private BigDecimal valor_max_automatico_usuario;
+    @Column(name = "VALOR_MAX_AUTOMATICO_USUARIO", nullable = false)
+    private BigDecimal compraAutomatica;
 
     @JsonbTransient
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -68,7 +68,6 @@ public class Usuario {
             joinColumns = {
                     @JoinColumn(
                             name = "ID_USUARIO",
-                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_USUARIO",
                             foreignKey = @ForeignKey(name = "FK_USUARIO_TAG")
                     )
@@ -76,7 +75,6 @@ public class Usuario {
             inverseJoinColumns = {
                     @JoinColumn(
                             name = "ID_TAG",
-                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_TAG",
                             foreignKey = @ForeignKey(name = "FK_TAG_USUARIO")
                     )
@@ -87,111 +85,111 @@ public class Usuario {
     public Usuario() {
     }
 
-    public Usuario(Long id_usuario, String cnpj_usuario, String nm_usuario, String cep_usuario, String logradouro_usuario, String complemento_usuario, String num_endereco_usuario, String email_usuario, String senha_usuario, String tel_usuario, Long e_fornecedor, String img_url_usuario, Set<Tag> tags, String regime_tributario_usuario, BigDecimal valor_max_automatico_usuario) {
-        this.id_usuario = id_usuario;
-        this.cnpj_usuario = cnpj_usuario;
-        this.nm_usuario = nm_usuario;
-        this.cep_usuario = cep_usuario;
-        this.logradouro_usuario = logradouro_usuario;
-        this.complemento_usuario = complemento_usuario;
-        this.num_endereco_usuario = num_endereco_usuario;
-        this.email_usuario = email_usuario;
-        this.senha_usuario = senha_usuario;
-        this.tel_usuario = tel_usuario;
+    public Usuario(Long id, String cnpj, String nome, String cep, String logradouro, String complemento, String numEndereco, String email, String senha, String tel, Long e_fornecedor, String imgUrl, Set<Tag> tags, String regimeTributario, BigDecimal compraAutomatica) {
+        this.id = id;
+        this.cnpj = cnpj;
+        this.nome = nome;
+        this.cep = cep;
+        this.logradouro = logradouro;
+        this.complemento = complemento;
+        this.numEndereco = numEndereco;
+        this.email = email;
+        this.senha = senha;
+        this.tel = tel;
         this.e_fornecedor = e_fornecedor;
-        this.img_url_usuario = img_url_usuario;
-        this.regime_tributario_usuario = regime_tributario_usuario;
-        this.valor_max_automatico_usuario = valor_max_automatico_usuario;
+        this.imgUrl = imgUrl;
+        this.regimeTributario = regimeTributario;
+        this.compraAutomatica = compraAutomatica;
         this.tags = Objects.nonNull(tags) ? tags : new LinkedHashSet<>();
     }
 
-    public Long getId_usuario() {
-        return id_usuario;
+    public Long getId() {
+        return id;
     }
 
-    public Usuario setId_usuario(Long id_usuario) {
-        this.id_usuario = id_usuario;
+    public Usuario setId(Long id) {
+        this.id = id;
         return this;
     }
 
-    public String getCnpj_usuario() {
-        return cnpj_usuario;
+    public String getCnpj() {
+        return cnpj;
     }
 
-    public Usuario setCnpj_usuario(String cnpj_usuario) {
-        this.cnpj_usuario = cnpj_usuario;
+    public Usuario setCnpj(String cnpj) {
+        this.cnpj = cnpj;
         return this;
     }
 
-    public String getNm_usuario() {
-        return nm_usuario;
+    public String getNome() {
+        return nome;
     }
 
-    public Usuario setNm_usuario(String nm_usuario) {
-        this.nm_usuario = nm_usuario;
+    public Usuario setNome(String nome) {
+        this.nome = nome;
         return this;
     }
 
-    public String getCep_usuario() {
-        return cep_usuario;
+    public String getCep() {
+        return cep;
     }
 
-    public Usuario setCep_usuario(String cep_usuario) {
-        this.cep_usuario = cep_usuario;
+    public Usuario setCep(String cep) {
+        this.cep = cep;
         return this;
     }
 
-    public String getLogradouro_usuario() {
-        return logradouro_usuario;
+    public String getLogradouro() {
+        return logradouro;
     }
 
-    public Usuario setLogradouro_usuario(String logradouro_usuario) {
-        this.logradouro_usuario = logradouro_usuario;
+    public Usuario setLogradouro(String logradouro) {
+        this.logradouro = logradouro;
         return this;
     }
 
-    public String getComplemento_usuario() {
-        return complemento_usuario;
+    public String getComplemento() {
+        return complemento;
     }
 
-    public Usuario setComplemento_usuario(String complemento_usuario) {
-        this.complemento_usuario = complemento_usuario;
+    public Usuario setComplemento(String complemento) {
+        this.complemento = complemento;
         return this;
     }
 
-    public String getNum_endereco_usuario() {
-        return num_endereco_usuario;
+    public String getNumEndereco() {
+        return numEndereco;
     }
 
-    public Usuario setNum_endereco_usuario(String num_endereco_usuario) {
-        this.num_endereco_usuario = num_endereco_usuario;
+    public Usuario setNumEndereco(String numEndereco) {
+        this.numEndereco = numEndereco;
         return this;
     }
 
-    public String getEmail_usuario() {
-        return email_usuario;
+    public String getEmail() {
+        return email;
     }
 
-    public Usuario setEmail_usuario(String email_usuario) {
-        this.email_usuario = email_usuario;
+    public Usuario setEmail(String email) {
+        this.email = email;
         return this;
     }
 
-    public String getSenha_usuario() {
-        return senha_usuario;
+    public String getSenha() {
+        return senha;
     }
 
-    public Usuario setSenha_usuario(String senha_usuario) {
-        this.senha_usuario = senha_usuario;
+    public Usuario setSenha(String senha) {
+        this.senha = senha;
         return this;
     }
 
-    public String getTel_usuario() {
-        return tel_usuario;
+    public String getTel() {
+        return tel;
     }
 
-    public Usuario setTel_usuario(String tel_usuario) {
-        this.tel_usuario = tel_usuario;
+    public Usuario setTel(String tel) {
+        this.tel = tel;
         return this;
     }
 
@@ -204,30 +202,30 @@ public class Usuario {
         return this;
     }
 
-    public String getImg_url_usuario() {
-        return img_url_usuario;
+    public String getImgUrl() {
+        return imgUrl;
     }
 
-    public Usuario setImg_url_usuario(String img_url_usuario) {
-        this.img_url_usuario = img_url_usuario;
+    public Usuario setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
         return this;
     }
 
-    public String getRegime_tributario_usuario() {
-        return regime_tributario_usuario;
+    public String getRegimeTributario() {
+        return regimeTributario;
     }
 
-    public Usuario setRegime_tributario_usuario(String regime_tributario_usuario) {
-        this.regime_tributario_usuario = regime_tributario_usuario;
+    public Usuario setRegimeTributario(String regimeTributario) {
+        this.regimeTributario = regimeTributario;
         return this;
     }
 
-    public BigDecimal getValor_max_automatico_usuario() {
-        return valor_max_automatico_usuario;
+    public BigDecimal getCompraAutomatica() {
+        return compraAutomatica;
     }
 
-    public Usuario setValor_max_automatico_usuario(BigDecimal valor_max_automatico_usuario) {
-        this.valor_max_automatico_usuario = valor_max_automatico_usuario;
+    public Usuario setCompraAutomatica(BigDecimal compraAutomatica) {
+        this.compraAutomatica = compraAutomatica;
         return this;
     }
 
@@ -251,31 +249,31 @@ public class Usuario {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Usuario usuario)) return false;
-        return Objects.equals(id_usuario, usuario.id_usuario) && Objects.equals(cnpj_usuario, usuario.cnpj_usuario) && Objects.equals(nm_usuario, usuario.nm_usuario) && Objects.equals(cep_usuario, usuario.cep_usuario) && Objects.equals(logradouro_usuario, usuario.logradouro_usuario) && Objects.equals(complemento_usuario, usuario.complemento_usuario) && Objects.equals(num_endereco_usuario, usuario.num_endereco_usuario) && Objects.equals(email_usuario, usuario.email_usuario) && Objects.equals(senha_usuario, usuario.senha_usuario) && Objects.equals(tel_usuario, usuario.tel_usuario) && Objects.equals(e_fornecedor, usuario.e_fornecedor) && Objects.equals(img_url_usuario, usuario.img_url_usuario) && Objects.equals(regime_tributario_usuario, usuario.regime_tributario_usuario) && Objects.equals(valor_max_automatico_usuario, usuario.valor_max_automatico_usuario) && Objects.equals(tags, usuario.tags);
+        return Objects.equals(id, usuario.id) && Objects.equals(cnpj, usuario.cnpj) && Objects.equals(nome, usuario.nome) && Objects.equals(cep, usuario.cep) && Objects.equals(logradouro, usuario.logradouro) && Objects.equals(complemento, usuario.complemento) && Objects.equals(numEndereco, usuario.numEndereco) && Objects.equals(email, usuario.email) && Objects.equals(senha, usuario.senha) && Objects.equals(tel, usuario.tel) && Objects.equals(e_fornecedor, usuario.e_fornecedor) && Objects.equals(imgUrl, usuario.imgUrl) && Objects.equals(regimeTributario, usuario.regimeTributario) && Objects.equals(compraAutomatica, usuario.compraAutomatica) && Objects.equals(tags, usuario.tags);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_usuario, cnpj_usuario, nm_usuario, cep_usuario, logradouro_usuario, complemento_usuario, num_endereco_usuario, email_usuario, senha_usuario, tel_usuario, e_fornecedor, img_url_usuario, regime_tributario_usuario, valor_max_automatico_usuario, tags);
+        return Objects.hash(id, cnpj, nome, cep, logradouro, complemento, numEndereco, email, senha, tel, e_fornecedor, imgUrl, regimeTributario, compraAutomatica, tags);
     }
 
     @Override
     public String toString() {
         return "Usuario{" +
-                "id_usuario=" + id_usuario +
-                ", cnpj_usuario='" + cnpj_usuario + '\'' +
-                ", nm_usuario='" + nm_usuario + '\'' +
-                ", cep_usuario='" + cep_usuario + '\'' +
-                ", logradouro_usuario='" + logradouro_usuario + '\'' +
-                ", complemento_usuario='" + complemento_usuario + '\'' +
-                ", num_endereco_usuario='" + num_endereco_usuario + '\'' +
-                ", email_usuario='" + email_usuario + '\'' +
-                ", senha_usuario='" + senha_usuario + '\'' +
-                ", tel_usuario='" + tel_usuario + '\'' +
+                "id=" + id +
+                ", cnpj='" + cnpj + '\'' +
+                ", nome='" + nome + '\'' +
+                ", cep='" + cep + '\'' +
+                ", logradouro='" + logradouro + '\'' +
+                ", complemento='" + complemento + '\'' +
+                ", numEndereco='" + numEndereco + '\'' +
+                ", email='" + email + '\'' +
+                ", senha='" + senha + '\'' +
+                ", tel='" + tel + '\'' +
                 ", e_fornecedor=" + e_fornecedor +
-                ", img_url_usuario='" + img_url_usuario + '\'' +
-                ", regime_tributario_usuario='" + regime_tributario_usuario + '\'' +
-                ", valor_max_automatico_usuario=" + valor_max_automatico_usuario +
+                ", imgUrl='" + imgUrl + '\'' +
+                ", regimeTributario='" + regimeTributario + '\'' +
+                ", compraAutomatica=" + compraAutomatica +
                 '}';
     }
 }

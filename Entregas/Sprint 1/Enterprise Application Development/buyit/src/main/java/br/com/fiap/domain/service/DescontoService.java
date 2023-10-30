@@ -44,9 +44,9 @@ public class DescontoService implements Service<Desconto, Long> {
         return repo.findById(id);
     }
 
-    public List<Desconto> findByIdEstoque(Long id_estoque) {
-        if (Objects.isNull(id_estoque)) return null;
-        return repo.findByIdEstoque(id_estoque);
+    public List<Desconto> findByIdEstoque(Long id) {
+        if (Objects.isNull(id)) return null;
+        return repo.findByIdEstoque(id);
     }
 
     @Override

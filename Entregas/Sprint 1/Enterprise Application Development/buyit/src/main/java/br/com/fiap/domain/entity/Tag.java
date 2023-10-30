@@ -16,11 +16,11 @@ public class Tag {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TAG")
     @SequenceGenerator(name = "SQ_TAG", sequenceName = "SQ_TAG", allocationSize = 1)
-    @Column(name = "ID_TAG", columnDefinition = "NUMBER(8)")
-    private Long id_tag;
+    @Column(name = "ID_TAG")
+    private Long id;
 
-    @Column(name = "NM_TAG", nullable = false, columnDefinition = "VARCHAR2(255)")
-    private String nm_tag;
+    @Column(name = "NM_TAG", nullable = false)
+    private String nome;
 
     @JsonbTransient
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -29,7 +29,6 @@ public class Tag {
             joinColumns = {
                     @JoinColumn(
                             name = "ID_TAG",
-                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_TAG",
                             foreignKey = @ForeignKey(name = "FK_TAG_USUARIO")
                     )
@@ -37,7 +36,6 @@ public class Tag {
             inverseJoinColumns = {
                     @JoinColumn(
                             name = "ID_USUARIO",
-                            columnDefinition = "NUMBER(8)",
                             referencedColumnName = "ID_USUARIO",
                             foreignKey = @ForeignKey(name = "FK_USUARIO_TAG")
                     )
@@ -48,27 +46,27 @@ public class Tag {
     public Tag() {
     }
 
-    public Tag(Long id_tag, String nm_tag, Set<Usuario> usuarios) {
-        this.id_tag = id_tag;
-        this.nm_tag = nm_tag;
+    public Tag(Long id, String nome, Set<Usuario> usuarios) {
+        this.id = id;
+        this.nome = nome;
         this.usuarios = Objects.nonNull(usuarios) ? usuarios : new LinkedHashSet<>();
     }
 
-    public Long getId_tag() {
-        return id_tag;
+    public Long getId() {
+        return id;
     }
 
-    public Tag setId_tag(Long id_tag) {
-        this.id_tag = id_tag;
+    public Tag setId(Long id) {
+        this.id = id;
         return this;
     }
 
-    public String getNm_tag() {
-        return nm_tag;
+    public String getNome() {
+        return nome;
     }
 
-    public Tag setNm_tag(String nm_tag) {
-        this.nm_tag = nm_tag;
+    public Tag setNome(String nome) {
+        this.nome = nome;
         return this;
     }
 
@@ -92,19 +90,19 @@ public class Tag {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Tag tag)) return false;
-        return Objects.equals(id_tag, tag.id_tag) && Objects.equals(nm_tag, tag.nm_tag) && Objects.equals(usuarios, tag.usuarios);
+        return Objects.equals(id, tag.id) && Objects.equals(nome, tag.nome) && Objects.equals(usuarios, tag.usuarios);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id_tag, nm_tag, usuarios);
+        return Objects.hash(id, nome, usuarios);
     }
 
     @Override
     public String toString() {
         return "Tag{" +
-                "id_tag=" + id_tag +
-                ", nm_tag='" + nm_tag + '\'' +
+                "id=" + id +
+                ", nome='" + nome + '\'' +
                 '}';
     }
 }

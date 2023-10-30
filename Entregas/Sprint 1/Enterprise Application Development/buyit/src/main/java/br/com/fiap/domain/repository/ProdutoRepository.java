@@ -35,17 +35,17 @@ public class ProdutoRepository implements Repository<Produto, Long> {
         return manager.find(Produto.class, id);
     }
 
-    public List<Produto> findByIdCategoria(Long id_categoria) {
-        String jpql = "SELECT produto FROM Produto produto WHERE produto.id_categoria = :id_categoria";
+    public List<Produto> findByIdCategoria(Long id) {
+        String jpql = "SELECT produto FROM Produto produto WHERE produto.categoria = :id";
         TypedQuery<Produto> query = manager.createQuery(jpql, Produto.class);
-        query.setParameter("id_categoria", id_categoria);
+        query.setParameter("id", id);
         return query.getResultList();
     }
 
-    public List<Produto> findByName(String name) {
-        String jpql = "SELECT produto FROM Produto produto  where upper(produto.nm_produto) LIKE CONCAT('%',upper(:nm_produto),'%')";
+    public List<Produto> findByName(String nome) {
+        String jpql = "SELECT produto FROM Produto produto  where upper(produto.nome) LIKE CONCAT('%',upper(:nome),'%')";
         TypedQuery<Produto> query = manager.createQuery(jpql, Produto.class);
-        query.setParameter("nm_produto", name);
+        query.setParameter("nome", nome);
         return query.getResultList();
     }
 
@@ -58,10 +58,10 @@ public class ProdutoRepository implements Repository<Produto, Long> {
     public Produto persist(Produto produto) {
         EntityTransaction transaction = manager.getTransaction();
         try {
-            produto.setId_produto(null);
+            produto.setId(null);
             transaction.begin();
-            Categoria categoria = manager.find(Categoria.class, produto.getId_categoria().getId_categoria());
-            produto.setId_categoria(categoria);
+            Categoria categoria = manager.find(Categoria.class, produto.getCategoria().getId());
+            produto.setCategoria(categoria);
             manager.persist(produto);
             transaction.commit();
         } catch (Exception e) {
@@ -77,32 +77,32 @@ public class ProdutoRepository implements Repository<Produto, Long> {
         EntityTransaction transaction = manager.getTransaction();
         try {
             transaction.begin();
-            Produto produto_buscado = findById(produto.getId_produto());
+            Produto produto_buscado = findById(produto.getId());
             if (Objects.nonNull(produto_buscado)) {
 
                 // ID_CATEGORIA
-                Categoria categoria = manager.find(Categoria.class, produto.getId_categoria().getId_categoria());
-                produto_buscado.setId_categoria(categoria);
+                Categoria categoria = manager.find(Categoria.class, produto.getCategoria().getId());
+                produto_buscado.setCategoria(categoria);
 
                 // NM_PRODUTO
-                if (Objects.nonNull(produto.getNm_produto())) {
-                    produto_buscado.setNm_produto(produto.getNm_produto());
+                if (Objects.nonNull(produto.getNome())) {
+                    produto_buscado.setNome(produto.getNome());
                 }
 
                 // DS_PRODUTO
-                produto_buscado.setDs_produto(produto.getDs_produto());
+                produto_buscado.setDescricao(produto.getDescricao());
 
                 // IMG_URL_PRODUTO
-                produto_buscado.setImg_url_produto(produto.getImg_url_produto());
+                produto_buscado.setImgUrl(produto.getImgUrl());
 
                 // MARCA_PRODUTO
-                if (Objects.nonNull(produto.getMarca_produto())) {
-                    produto_buscado.setMarca_produto(produto.getMarca_produto());
+                if (Objects.nonNull(produto.getMarca())) {
+                    produto_buscado.setMarca(produto.getMarca());
                 }
 
                 // MENOR_PRECO_PRODUTO
-                if (Objects.nonNull(produto.getMenor_preco_produto())) {
-                    produto_buscado.setMenor_preco_produto(produto.getMenor_preco_produto());
+                if (Objects.nonNull(produto.getMenorPreco())) {
+                    produto_buscado.setMenorPreco(produto.getMenorPreco());
                 }
 
                 manager.merge(produto_buscado);
