@@ -36,7 +36,7 @@ public class ProdutoRepository implements Repository<Produto, Long> {
     }
 
     public List<Produto> findByIdCategoria(Long id) {
-        String jpql = "SELECT produto FROM Produto produto WHERE produto.categoria = :id";
+        String jpql = "SELECT produto FROM Produto produto WHERE produto.categoria.id = :id";
         TypedQuery<Produto> query = manager.createQuery(jpql, Produto.class);
         query.setParameter("id", id);
         return query.getResultList();
@@ -80,30 +80,29 @@ public class ProdutoRepository implements Repository<Produto, Long> {
             Produto produto_buscado = findById(produto.getId());
             if (Objects.nonNull(produto_buscado)) {
 
-                // ID_CATEGORIA
+                // CATEGORIA
                 Categoria categoria = manager.find(Categoria.class, produto.getCategoria().getId());
                 produto_buscado.setCategoria(categoria);
 
-                // NM_PRODUTO
+                // NOME
                 if (Objects.nonNull(produto.getNome())) {
                     produto_buscado.setNome(produto.getNome());
                 }
 
-                // DS_PRODUTO
+                // DESCRICAO
                 produto_buscado.setDescricao(produto.getDescricao());
 
-                // IMG_URL_PRODUTO
+                // IMG_URL
                 produto_buscado.setImgUrl(produto.getImgUrl());
 
-                // MARCA_PRODUTO
+                // MARCA
                 if (Objects.nonNull(produto.getMarca())) {
                     produto_buscado.setMarca(produto.getMarca());
                 }
 
-                // MENOR_PRECO_PRODUTO
-                if (Objects.nonNull(produto.getMenorPreco())) {
-                    produto_buscado.setMenorPreco(produto.getMenorPreco());
-                }
+                // MENOR_PRECO
+                produto_buscado.setMenorPreco(produto.getMenorPreco());
+
 
                 manager.merge(produto_buscado);
                 transaction.commit();

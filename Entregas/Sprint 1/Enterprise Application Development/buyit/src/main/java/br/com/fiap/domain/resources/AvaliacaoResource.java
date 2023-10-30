@@ -35,7 +35,7 @@ public class AvaliacaoResource implements Resource<Avaliacao, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Avaliacao não pode ser NULL");
         }
 
-        // ID_USUARIO
+        // USUARIO
         if (avaliacao.getUsuario() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Usuario da Avaliacao não pode ser NULL");
         }
@@ -44,7 +44,7 @@ public class AvaliacaoResource implements Resource<Avaliacao, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Usuario de ID: " + avaliacao.getUsuario().getId() + " não encontrado");
         }
 
-        // ID_PEDIDO
+        // PEDIDO
         if (avaliacao.getPedido() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Pedido da Avaliacao não pode ser NULL");
         }
@@ -78,25 +78,25 @@ public class AvaliacaoResource implements Resource<Avaliacao, Long> {
     }
 
     @GET
-    @Path("/pedido/{id_pedido}")
+    @Path("/pedido/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByIdPedido(@PathParam("id_pedido") Long id_pedido) {
-        Avaliacao avaliacao = service.findByIdPedido(id_pedido);
+    public Response findByIdPedido(@PathParam("id") Long id) {
+        Avaliacao avaliacao = service.findByIdPedido(id);
         if (Objects.isNull(avaliacao)) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + id_pedido + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + id + " não encontrado");
         }
         return Response.ok(avaliacao).build();
     }
 
     @GET
-    @Path("/usuario/{id_usuario}")
+    @Path("/usuario/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByIdUsuario(@PathParam("id_usuario") Long id_usuario) {
-        Usuario existingUsuario = serviceUsuario.findById(id_usuario);
+    public Response findByIdUsuario(@PathParam("id") Long id) {
+        Usuario existingUsuario = serviceUsuario.findById(id);
         if (existingUsuario == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Usuario de ID: " + id_usuario + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Usuario de ID: " + id + " não encontrado");
         }
-        List<Avaliacao> avaliacoes = service.findByIdUsuario(id_usuario);
+        List<Avaliacao> avaliacoes = service.findByIdUsuario(id);
         return Response.ok(avaliacoes).build();
     }
 

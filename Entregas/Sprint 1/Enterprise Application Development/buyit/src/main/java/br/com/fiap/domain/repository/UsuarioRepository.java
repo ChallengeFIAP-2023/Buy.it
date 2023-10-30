@@ -94,45 +94,45 @@ public class UsuarioRepository implements Repository<Usuario, Long> {
             Usuario usuario_buscado = manager.find(Usuario.class, usuario.getId());
             if (Objects.nonNull(usuario_buscado)) {
 
-                // CNPJ_USUARIO
+                // CNPJ
                 if (Objects.nonNull(usuario.getCnpj())) {
                     usuario_buscado.setCnpj(usuario.getCnpj());
                 }
 
-                // NM_USUARIO
+                // NOME
                 if (Objects.nonNull(usuario.getNome())) {
                     usuario_buscado.setNome(usuario.getNome());
                 }
 
-                // CEP_USUARIO
+                // CEP
                 if (Objects.nonNull(usuario.getCep())) {
                     usuario_buscado.setCep(usuario.getCep());
                 }
 
-                // LOGRADOURO_USUARIO
+                // LOGRADOURO
                 if (Objects.nonNull(usuario.getLogradouro())) {
                     usuario_buscado.setLogradouro(usuario.getLogradouro());
                 }
 
-                // COMPLEMENTO_USUARIO
+                // COMPLEMENTO
                 usuario_buscado.setComplemento(usuario.getComplemento());
 
-                // NUM_ENDERECO_USUARIO
+                // NUM_ENDERECO
                 if (Objects.nonNull(usuario.getNumEndereco())) {
                     usuario_buscado.setNumEndereco(usuario.getNumEndereco());
                 }
 
-                // EMAIL_USUARIO
+                // EMAIL
                 if (Objects.nonNull(usuario.getEmail())) {
                     usuario_buscado.setEmail(usuario.getEmail());
                 }
 
-                // SENHA_USUARIO
+                // SENHA
                 if (Objects.nonNull(usuario.getSenha())) {
                     usuario_buscado.setSenha(usuario.getSenha());
                 }
 
-                // TEL_USUARIO
+                // TEL
                 if (Objects.nonNull(usuario.getTel())) {
                     usuario_buscado.setTel(usuario.getTel());
                 }
@@ -142,15 +142,15 @@ public class UsuarioRepository implements Repository<Usuario, Long> {
                     usuario_buscado.setE_fornecedor(usuario.getE_fornecedor());
                 }
 
-                // IMG_URL_USUARIO
+                // IMG_URL
                 usuario_buscado.setImgUrl(usuario.getImgUrl());
 
-                // REGIME_TRIBUTARIO_USUARIO
+                // REGIME_TRIBUTARIO
                 if (Objects.nonNull(usuario.getRegimeTributario())) {
                     usuario_buscado.setRegimeTributario(usuario.getRegimeTributario());
                 }
 
-                // VALOR_MAX_AUTOMATICO_USUARIO
+                // COMPRA_AUTOMATICA
                 if (Objects.nonNull(usuario.getCompraAutomatica())) {
                     usuario_buscado.setCompraAutomatica(usuario.getCompraAutomatica());
                 }

@@ -26,7 +26,7 @@ public class TipoVariacaoResource implements Resource<TipoVariacao, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O TipoVariacao não pode ser NULL");
         }
 
-        // NM_TIPO_VARIACAO
+        // NOME
         if (tipo_variacao.getNome() == null || tipo_variacao.getNome().isEmpty() || tipo_variacao.getNome().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome do TipoVariacao não pode ser NULL ou vazio");
         }
@@ -56,10 +56,10 @@ public class TipoVariacaoResource implements Resource<TipoVariacao, Long> {
     }
 
     @GET
-    @Path("/name/{nm_tipo_variacao}")
+    @Path("/name/{nome}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByName(@PathParam("nm_tipo_variacao") String nm_tipo_variacao) {
-        List<TipoVariacao> tipo_variacoes = service.findByName(nm_tipo_variacao);
+    public Response findByName(@PathParam("nome") String nome) {
+        List<TipoVariacao> tipo_variacoes = service.findByName(nome);
         return Response.ok(tipo_variacoes).build();
     }
 

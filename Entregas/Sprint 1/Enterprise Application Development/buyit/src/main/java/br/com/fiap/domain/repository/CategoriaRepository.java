@@ -70,12 +70,12 @@ public class CategoriaRepository implements Repository<Categoria, Long> {
             Categoria categoria_buscada = manager.find(Categoria.class, categoria.getId());
             if (Objects.nonNull(categoria_buscada)) {
 
-                // NM_CATEGORIA
+                // NOME
                 if (Objects.nonNull(categoria.getNome())) {
                     categoria_buscada.setNome(categoria.getNome());
                 }
 
-                // ICONE_CATEGORIA
+                // ICONE
                 categoria_buscada.setIcone(categoria.getIcone());
 
                 categoria = manager.merge(categoria_buscada);

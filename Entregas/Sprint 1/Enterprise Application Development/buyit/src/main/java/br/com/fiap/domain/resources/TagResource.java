@@ -26,7 +26,7 @@ public class TagResource implements Resource<Tag, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Tag não pode ser NULL");
         }
 
-        // NM_TAG
+        // NOME
         if (tag.getNome() == null || tag.getNome().isEmpty() || tag.getNome().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome da Tag não pode ser NULL ou vazio");
         }
@@ -56,10 +56,10 @@ public class TagResource implements Resource<Tag, Long> {
     }
 
     @GET
-    @Path("/name/{nm_tag}")
+    @Path("/name/{nome}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByName(@PathParam("nm_tag") String nm_tag) {
-        List<Tag> tags = service.findByName(nm_tag);
+    public Response findByName(@PathParam("nome") String nome) {
+        List<Tag> tags = service.findByName(nome);
         return Response.ok(tags).build();
     }
 

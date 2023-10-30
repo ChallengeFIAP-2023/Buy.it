@@ -30,8 +30,8 @@ public class ValorVariacaoResource implements Resource<ValorVariacao, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ValorVariacao não pode ser NULL");
         }
 
-        // ID_TIPO_VARIACAO
-        if (valor_variacao.getId() == null) {
+        // TIPO_VARIACAO
+        if (valor_variacao.getTipoVariacao() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do TipoVariacao do ValorVariacao não pode ser NULL");
         }
         TipoVariacao existingTipoVariacao = serviceTipoVariacao.findById(valor_variacao.getTipoVariacao().getId());
@@ -64,14 +64,14 @@ public class ValorVariacaoResource implements Resource<ValorVariacao, Long> {
     }
 
     @GET
-    @Path("/tipo_variacao/{id_tipo_variacao}")
+    @Path("/tipo_variacao/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByIdTipoVariacao(@PathParam("id_tipo_variacao") Long id_tipo_variacao) {
-        TipoVariacao existingTipoVariacao = serviceTipoVariacao.findById(id_tipo_variacao);
+    public Response findByIdTipoVariacao(@PathParam("id") Long id) {
+        TipoVariacao existingTipoVariacao = serviceTipoVariacao.findById(id);
         if (existingTipoVariacao == null) {
-            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "TipoVariacao de ID: " + id_tipo_variacao + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "TipoVariacao de ID: " + id + " não encontrado");
         }
-        List<ValorVariacao> valor_variacoes = service.findByIdTipoVariacao(id_tipo_variacao);
+        List<ValorVariacao> valor_variacoes = service.findByIdTipoVariacao(id);
         return Response.ok(valor_variacoes).build();
     }
 

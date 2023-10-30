@@ -36,7 +36,7 @@ public class Produto {
     @Column(name = "MARCA_PRODUTO", nullable = false)
     private String marca;
 
-    @Column(name = "MENOR_PRECO_PRODUTO", nullable = false)
+    @Column(name = "MENOR_PRECO_PRODUTO")
     private BigDecimal menorPreco;
 
     public Produto() {

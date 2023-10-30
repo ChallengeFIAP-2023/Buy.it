@@ -36,7 +36,7 @@ public class PedidoRepository implements Repository<Pedido, Long> {
     }
 
     public List<Pedido> findByIdUsuario(Long id) {
-        String jpql = "SELECT pedido FROM Pedido pedido WHERE pedido.usuario = :id";
+        String jpql = "SELECT pedido FROM Pedido pedido WHERE pedido.usuario.id = :id";
         TypedQuery<Pedido> query = manager.createQuery(jpql, Pedido.class);
         query.setParameter("id", id);
         return query.getResultList();
@@ -73,23 +73,23 @@ public class PedidoRepository implements Repository<Pedido, Long> {
             Pedido pedido_buscado = findById(pedido.getId());
             if (Objects.nonNull(pedido_buscado)) {
 
-                // ID_USUARIO
+                // USUARIO
                 if (Objects.nonNull(pedido.getUsuario())) {
                     Usuario usuario = manager.find(Usuario.class, pedido.getUsuario().getId());
                     pedido_buscado.setUsuario(usuario);
                 }
 
-                // STATUS_PEDIDO
+                // STATUS
                 if (Objects.nonNull(pedido.getStatus())) {
                     pedido_buscado.setStatus(pedido.getStatus());
                 }
 
-                // DATA_PEDIDO
+                // DATA
                 if (Objects.nonNull(pedido.getData())) {
                     pedido_buscado.setData(pedido.getData());
                 }
 
-                // VALOR_PEDIDO
+                // VALOR
                 if (Objects.nonNull(pedido.getValor())) {
                     pedido_buscado.setValor(pedido.getValor());
                 }

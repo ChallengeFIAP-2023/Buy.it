@@ -29,7 +29,7 @@ public class PedidoResource implements Resource<Pedido, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Pedido não pode ser NULL");
         }
 
-        // ID_USUARIO
+        // USUARIO
         if (pedido.getUsuario() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Usuario do Pedido não pode ser NULL");
         }
@@ -38,17 +38,17 @@ public class PedidoResource implements Resource<Pedido, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Usuario de ID: " + pedido.getUsuario().getId() + " não encontrado");
         }
 
-        // STATUS_PEDIDO
+        // STATUS
         if (pedido.getStatus() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Status do Pedido não pode ser NULL ou vazio");
         }
 
-        // DATA_PEDIDO
+        // DATA
         if (pedido.getData() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Data do Pedido não pode ser NULL ou vazio");
         }
 
-        // VALOR_PEDIDO
+        // VALOR
         if (pedido.getValor() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Valor do Pedido não pode ser NULL ou vazio");
         }
@@ -78,14 +78,14 @@ public class PedidoResource implements Resource<Pedido, Long> {
     }
 
     @GET
-    @Path("/usuario/{id_usuario}")
+    @Path("/usuario/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByIdUsuario(@PathParam("id_usuario") Long id_usuario) {
-        Usuario existingUsuario = serviceUsuario.findById(id_usuario);
+    public Response findByIdUsuario(@PathParam("id") Long id) {
+        Usuario existingUsuario = serviceUsuario.findById(id);
         if (existingUsuario == null) {
-            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Usuario de ID: " + id_usuario + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Usuario de ID: " + id + " não encontrado");
         }
-        List<Pedido> pedidos = service.findByIdUsuario(id_usuario);
+        List<Pedido> pedidos = service.findByIdUsuario(id);
         return Response.ok(pedidos).build();
     }
 

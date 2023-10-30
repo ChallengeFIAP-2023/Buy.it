@@ -30,19 +30,14 @@ public class ProdutoResource implements Resource<Produto, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Produto não pode ser NULL");
         }
 
-        // NM_PRODUTO
+        // NOME
         if (produto.getNome() == null || produto.getNome().isEmpty() || produto.getNome().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome do Produto não pode ser NULL ou vazio");
         }
 
-        // MARCA_PRODUTO
+        // MARCA
         if (produto.getMarca() == null || produto.getMarca().isEmpty() || produto.getMarca().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome do Produto não pode ser NULL ou vazio");
-        }
-
-        // MENOR_PRECO_PRODUTO
-        if (produto.getMenorPreco() == null) {
-            return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Menor Preço do Produto não pode ser NULL ou vazio");
         }
 
         return null;
@@ -70,22 +65,22 @@ public class ProdutoResource implements Resource<Produto, Long> {
     }
 
     @GET
-    @Path("/name/{nm_produto}")
+    @Path("/name/{nome}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByName(@PathParam("nm_produto") String nm_produto) {
-        List<Produto> produtos = service.findByName(nm_produto);
+    public Response findByName(@PathParam("nome") String nome) {
+        List<Produto> produtos = service.findByName(nome);
         return Response.ok(produtos).build();
     }
 
     @GET
-    @Path("/categoria/{id_categoria}")
+    @Path("/categoria/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByIdCategoria(@PathParam("id_categoria") Long id_categoria) {
-        Categoria existingCategoria = serviceCategoria.findById(id_categoria);
+    public Response findByIdCategoria(@PathParam("id") Long id) {
+        Categoria existingCategoria = serviceCategoria.findById(id);
         if (existingCategoria == null) {
-            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Categoria de ID: " + id_categoria + " não encontrada");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Categoria de ID: " + id + " não encontrada");
         }
-        List<Produto> produtos = service.findByIdCategoria(id_categoria);
+        List<Produto> produtos = service.findByIdCategoria(id);
         return Response.ok(produtos).build();
     }
 

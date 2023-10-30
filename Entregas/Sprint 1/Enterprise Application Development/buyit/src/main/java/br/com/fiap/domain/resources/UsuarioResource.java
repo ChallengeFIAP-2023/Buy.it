@@ -26,42 +26,42 @@ public class UsuarioResource implements Resource<Usuario, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Usuario não pode ser NULL");
         }
 
-        // CNPJ_USUARIO
+        // CNPJ
         if (usuario.getCnpj() == null || usuario.getCnpj().isEmpty() || usuario.getCnpj().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O CNPJ do Usuario não pode ser NULL ou vazio");
         }
 
-        // NM_USUARIO
+        // NOME
         if (usuario.getNome() == null || usuario.getNome().isEmpty() || usuario.getNome().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome do Usuario não pode ser NULL ou vazio");
         }
 
-        // CEP_USUARIO
+        // CEP
         if (usuario.getCep() == null || usuario.getCep().isEmpty() || usuario.getCep().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O CEP do Usuario não pode ser NULL ou vazio");
         }
 
-        // LOGRADOURO_USUARIO
+        // LOGRADOURO
         if (usuario.getLogradouro() == null || usuario.getLogradouro().isEmpty() || usuario.getLogradouro().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O CEP do Usuario não pode ser NULL ou vazio");
         }
 
-        // NUM_ENDERECO_USUARIO
+        // NUM_ENDERECO
         if (usuario.getNumEndereco() == null || usuario.getNumEndereco().isEmpty() || usuario.getNumEndereco().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Número do Endereço do Usuario não pode ser NULL ou vazio");
         }
 
-        // EMAIL_USUARIO
+        // EMAIL
         if (usuario.getEmail() == null || usuario.getEmail().isEmpty() || usuario.getEmail().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Email do Usuario não pode ser NULL ou vazio");
         }
 
-        // SENHA_USUARIO
+        // SENHA
         if (usuario.getSenha() == null || usuario.getSenha().isEmpty() || usuario.getSenha().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Senha do Usuario não pode ser NULL ou vazio");
         }
 
-        // TEL_USUARIO
+        // TEL
         if (usuario.getTel() == null || usuario.getTel().isEmpty() || usuario.getTel().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Senha do Usuario não pode ser NULL ou vazio");
         }
@@ -71,12 +71,12 @@ public class UsuarioResource implements Resource<Usuario, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Atributo É Fornecedor do Usuario não pode ser NULL ou vazio");
         }
 
-        // REGIME_TRIBUTARIO_USUARIO
+        // REGIME_TRIBUTARIO
         if (usuario.getRegimeTributario() == null || usuario.getRegimeTributario().isEmpty() || usuario.getRegimeTributario().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Regime Tributário do Usuario não pode ser NULL ou vazio");
         }
 
-        // VALOR_MAX_AUTOMATICO_USUARIO
+        // COMPRA_AUTOMATICA
         if (usuario.getCompraAutomatica() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Valor Máximo Automático do Usuario não pode ser NULL ou vazio");
         }

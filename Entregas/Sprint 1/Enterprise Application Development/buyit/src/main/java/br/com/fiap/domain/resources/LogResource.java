@@ -30,7 +30,7 @@ public class LogResource implements Resource<Log, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Log não pode ser NULL");
         }
 
-        // ID_PEDIDO
+        // PEDIDO
         if (log.getPedido() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Pedido do Log não pode ser NULL");
         }
@@ -39,17 +39,17 @@ public class LogResource implements Resource<Log, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Pedido de ID: " + log.getPedido().getId() + " não encontrado");
         }
 
-        // TIMESTAMP_LOG
+        // TIMESTAMP
         if (log.getTimestamp() == null || log.getTimestamp().isEmpty() || log.getTimestamp().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O TimeStamp do Log não pode ser NULL ou vazio");
         }
 
-        // NM_LOG
+        // NOME
         if (log.getNome() == null || log.getNome().isEmpty() || log.getNome().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome do Log não pode ser NULL ou vazio");
         }
 
-        // DS_LOG
+        // DESCRICAO
         if (log.getDescricao() == null || log.getDescricao().isEmpty() || log.getDescricao().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Descricao do Log não pode ser NULL ou vazio");
         }
@@ -79,22 +79,22 @@ public class LogResource implements Resource<Log, Long> {
     }
 
     @GET
-    @Path("/name/{nm_log}")
+    @Path("/name/{nome}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByName(@PathParam("nm_log") String nm_log) {
-        List<Log> logs = service.findByName(nm_log);
+    public Response findByName(@PathParam("nome") String nome) {
+        List<Log> logs = service.findByName(nome);
         return Response.ok(logs).build();
     }
 
     @GET
-    @Path("/pedido/{id_pedido}")
+    @Path("/pedido/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByIdPedido(@PathParam("id_pedido") Long id_pedido) {
-        Pedido existingPedido = servicePedido.findById(id_pedido);
+    public Response findByIdPedido(@PathParam("id") Long id) {
+        Pedido existingPedido = servicePedido.findById(id);
         if (existingPedido == null) {
-            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Pedido de ID: " + id_pedido + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Pedido de ID: " + id + " não encontrado");
         }
-        List<Log> logs = service.findByIdPedido(id_pedido);
+        List<Log> logs = service.findByIdPedido(id);
         return Response.ok(logs).build();
     }
 

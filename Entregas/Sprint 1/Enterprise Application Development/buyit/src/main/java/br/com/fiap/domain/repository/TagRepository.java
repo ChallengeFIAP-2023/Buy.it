@@ -70,7 +70,7 @@ public class TagRepository implements Repository<Tag, Long> {
             Tag tag_buscada = manager.find(Tag.class, tag.getId());
             if (Objects.nonNull(tag_buscada)) {
 
-                // NM_TAG
+                // NOME
                 if (Objects.nonNull(tag.getNome())) {
                     tag_buscada.setNome(tag.getNome());
                 }

@@ -37,7 +37,7 @@ public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
     }
 
     public List<Avaliacao> findByIdUsuario(Long id) {
-        String jpql = "SELECT avaliacao FROM Avaliacao avaliacao WHERE avaliacao.usuario = :id";
+        String jpql = "SELECT avaliacao FROM Avaliacao avaliacao WHERE avaliacao.usuario.id = :id";
         TypedQuery<Avaliacao> query = manager.createQuery(jpql, Avaliacao.class);
         query.setParameter("id", id);
         return query.getResultList();
@@ -80,28 +80,28 @@ public class AvaliacaoRepository implements Repository<Avaliacao, Long> {
             Avaliacao avaliacao_buscada = findById(avaliacao.getId());
             if (Objects.nonNull(avaliacao_buscada)) {
 
-                // ID_USUARIO
+                // USUARIO
                 if (Objects.nonNull(avaliacao.getUsuario())) {
                     Usuario usuario = manager.find(Usuario.class, avaliacao.getUsuario().getId());
                     avaliacao_buscada.setUsuario(usuario);
                 }
 
-                // ID_PEDIDO
+                // PEDIDO
                 if (Objects.nonNull(avaliacao.getPedido())) {
                     Pedido pedido = manager.find(Pedido.class, avaliacao.getPedido().getId());
                     avaliacao_buscada.setPedido(pedido);
                 }
 
-                // NOTA_PRECO_AVALIACAO
+                // NOTA_PRECO
                 avaliacao_buscada.setNotaPreco(avaliacao.getNotaPreco());
 
-                // NOTA_QUALIDADE_AVALIACAO
+                // NOTA_QUALIDADE
                 avaliacao_buscada.setNotaQualidade(avaliacao.getNotaQualidade());
 
-                // NOTA_ENTREGA_AVALIACAO
+                // NOTA_ENTREGA
                 avaliacao_buscada.setNotaEntrega(avaliacao.getNotaEntrega());
 
-                // DS_AVALIACAO
+                // DESCRICAO
                 avaliacao_buscada.setDescricao(avaliacao.getDescricao());
 
                 manager.merge(avaliacao_buscada);

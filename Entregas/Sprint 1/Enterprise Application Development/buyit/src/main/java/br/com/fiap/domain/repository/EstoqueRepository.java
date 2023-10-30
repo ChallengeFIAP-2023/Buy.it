@@ -35,21 +35,21 @@ public class EstoqueRepository implements Repository<Estoque, Long> {
     }
 
     public List<Estoque> findByIdProduto(Long id) {
-        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.produto = :id";
+        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.produto.id = :id";
         TypedQuery<Estoque> query = manager.createQuery(jpql, Estoque.class);
         query.setParameter("id", id);
         return query.getResultList();
     }
 
     public List<Estoque> findByIdValorVariacao(Long id) {
-        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.valorVariacao = :id";
+        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.valorVariacao.id = :id";
         TypedQuery<Estoque> query = manager.createQuery(jpql, Estoque.class);
         query.setParameter("id", id);
         return query.getResultList();
     }
 
     public List<Estoque> findByIdUsuario(Long id) {
-        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.usuario = :id";
+        String jpql = "SELECT estoque FROM Estoque estoque WHERE estoque.usuario.id = :id";
         TypedQuery<Estoque> query = manager.createQuery(jpql, Estoque.class);
         query.setParameter("id", id);
         return query.getResultList();
@@ -90,25 +90,25 @@ public class EstoqueRepository implements Repository<Estoque, Long> {
             Estoque estoque_buscado = findById(estoque.getId());
             if (Objects.nonNull(estoque_buscado)) {
 
-                // ID_PRODUTO
+                // PRODUTO
                 if (Objects.nonNull(estoque.getProduto())) {
                     Produto produto = manager.find(Produto.class, estoque.getProduto().getId());
                     estoque_buscado.setProduto(produto);
                 }
 
-                // ID_VALOR_VARIACAO
+                // VALOR_VARIACAO
                 if (Objects.nonNull(estoque.getValorVariacao())) {
                     ValorVariacao valor_variacao = manager.find(ValorVariacao.class, estoque.getValorVariacao().getId());
                     estoque_buscado.setValorVariacao(valor_variacao);
                 }
 
-                // ID_USUARIO
+                // USUARIO
                 if (Objects.nonNull(estoque.getUsuario())) {
                     Usuario usuario = manager.find(Usuario.class, estoque.getUsuario().getId());
                     estoque_buscado.setUsuario(usuario);
                 }
 
-                // QTD_ESTOQUE
+                // QUANTIDADE
                 if (Objects.nonNull(estoque.getQuantidade())) {
                     estoque_buscado.setQuantidade(estoque.getQuantidade());
                 }
@@ -118,7 +118,7 @@ public class EstoqueRepository implements Repository<Estoque, Long> {
                     estoque_buscado.setPrecoUnitario(estoque.getPrecoUnitario());
                 }
 
-                // IMG_URL_ESTOQUE
+                // IMG_URL
                 estoque_buscado.setImgUrl(estoque.getImgUrl());
 
                 manager.merge(estoque_buscado);

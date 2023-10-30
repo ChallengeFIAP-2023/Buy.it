@@ -36,7 +36,7 @@ public class LogRepository implements Repository<Log, Long> {
     }
 
     public List<Log> findByIdPedido(Long id) {
-        String jpql = "SELECT log FROM Log log WHERE log.pedido = :id";
+        String jpql = "SELECT log FROM Log log WHERE log.pedido.id = :id";
         TypedQuery<Log> query = manager.createQuery(jpql, Log.class);
         query.setParameter("id", id);
         return query.getResultList();
@@ -80,23 +80,23 @@ public class LogRepository implements Repository<Log, Long> {
             Log log_buscado = manager.find(Log.class, log.getId());
             if (Objects.nonNull(log_buscado)) {
 
-                // ID_PEDIDO
+                // PEDIDO
                 if (Objects.nonNull(log.getPedido())) {
                     Pedido pedido = manager.find(Pedido.class, log.getPedido().getId());
                     log_buscado.setPedido(pedido);
                 }
 
-                // TIMESTAMP_LOG
+                // TIMESTAMP
                 if (log.getTimestamp() != null) {
                     log_buscado.setTimestamp(log.getTimestamp());
                 }
 
-                // NM_LOG
+                // NOME
                 if (log.getNome() != null) {
                     log_buscado.setNome(log.getNome());
                 }
 
-                // DS_LOG
+                // DESCRICAO
                 if (log.getDescricao() != null) {
                     log_buscado.setDescricao(log.getDescricao());
                 }

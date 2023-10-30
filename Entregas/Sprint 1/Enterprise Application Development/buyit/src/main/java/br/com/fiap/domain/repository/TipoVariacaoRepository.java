@@ -70,7 +70,7 @@ public class TipoVariacaoRepository implements Repository<TipoVariacao, Long> {
             TipoVariacao tipo_variacao_buscado = manager.find(TipoVariacao.class, tipo_variacao.getId());
             if (Objects.nonNull(tipo_variacao_buscado)) {
 
-                // NM_TIPO_VARIACAO
+                // NOME
                 if (Objects.nonNull(tipo_variacao.getNome())) {
                     tipo_variacao_buscado.setNome(tipo_variacao.getNome());
                 }

@@ -37,7 +37,7 @@ public class DescontoRepository implements Repository<Desconto, Long> {
 
 
     public List<Desconto> findByIdEstoque(Long id) {
-        String jpql = "SELECT desconto FROM Desconto desconto WHERE desconto.estoque = :id";
+        String jpql = "SELECT desconto FROM Desconto desconto WHERE desconto.estoque.id = :id";
         TypedQuery<Desconto> query = manager.createQuery(jpql, Desconto.class);
         query.setParameter("id", id);
         return query.getResultList();
@@ -74,7 +74,7 @@ public class DescontoRepository implements Repository<Desconto, Long> {
             Desconto desconto_buscado = manager.find(Desconto.class, desconto.getId());
             if (Objects.nonNull(desconto_buscado)) {
 
-                // ID_ESTOQUE
+                // ESTOQUE
                 if (Objects.nonNull(desconto.getId())) {
                     Estoque estoque = manager.find(Estoque.class, desconto.getEstoque().getId());
                     desconto_buscado.setEstoque(estoque);

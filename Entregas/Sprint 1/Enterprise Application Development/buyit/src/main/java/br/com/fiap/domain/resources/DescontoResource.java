@@ -40,7 +40,7 @@ public class DescontoResource implements Resource<Desconto, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Desconto não pode ser NULL");
         }
 
-        // ID_ESTOQUE
+        // ESTOQUE
         if (desconto.getEstoque() == null || serviceEstoque.findById(desconto.getEstoque().getId()) == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Estoque de ID: " + desconto.getEstoque().getId() + " não encontrado");
         }
@@ -69,14 +69,14 @@ public class DescontoResource implements Resource<Desconto, Long> {
     }
 
     @GET
-    @Path("/estoque/{id_estoque}")
+    @Path("/estoque/{id}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByIdEstoque(@PathParam("id_estoque") Long id_estoque) {
-        Estoque existingEstoque = serviceEstoque.findById(id_estoque);
+    public Response findByIdEstoque(@PathParam("id") Long id) {
+        Estoque existingEstoque = serviceEstoque.findById(id);
         if (existingEstoque == null) {
-            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Estoque de ID: " + id_estoque + " não encontrado");
+            return errorResponse.createErrorResponse(Response.Status.NOT_FOUND, "Estoque de ID: " + id + " não encontrado");
         }
-        List<Desconto> descontos = service.findByIdEstoque(id_estoque);
+        List<Desconto> descontos = service.findByIdEstoque(id);
         return Response.ok(descontos).build();
     }
 

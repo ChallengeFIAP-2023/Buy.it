@@ -32,7 +32,7 @@ public class EstoqueResource implements Resource<Estoque, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Estoque não pode ser NULL");
         }
 
-        // ID_PRODUTO
+        // PRODUTO
         if (estoque.getProduto() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Produto do Estoque não pode ser NULL");
         }
@@ -41,7 +41,7 @@ public class EstoqueResource implements Resource<Estoque, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Produto de ID: " + estoque.getProduto().getId() + " não encontrado");
         }
 
-        // ID_USUARIO
+        // USUARIO
         if (estoque.getUsuario() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do Usuario do Estoque não pode ser NULL");
         }
@@ -50,7 +50,7 @@ public class EstoqueResource implements Resource<Estoque, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "Usuario de ID: " + estoque.getUsuario().getId() + " não encontrado");
         }
 
-        // ID_VALOR_VARIACAO
+        // VALOR_VARIACAO
         if (estoque.getValorVariacao() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O ID do ValorVariacao do Estoque não pode ser NULL");
         }
@@ -59,7 +59,7 @@ public class EstoqueResource implements Resource<Estoque, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "ValorVariacao de ID: " + estoque.getValorVariacao().getId() + " não encontrado");
         }
 
-        // QTD_ESTOQUE
+        // QUANTIDADE
         if (estoque.getQuantidade() == null) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Quantidade do Estoque não pode ser NULL ou vazio");
         }

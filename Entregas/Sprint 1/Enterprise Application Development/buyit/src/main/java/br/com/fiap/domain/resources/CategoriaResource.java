@@ -27,7 +27,7 @@ public class CategoriaResource implements Resource<Categoria, Long> {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "A Avaliacao não pode ser NULL");
         }
 
-        // NM_CATEGORIA
+        // NOME
         if (categoria.getNome() == null || categoria.getNome().isEmpty() || categoria.getNome().isBlank()) {
             return errorResponse.createErrorResponse(Response.Status.BAD_REQUEST, "O Nome da Categoria não pode ser NULL ou vazio");
         }
@@ -57,10 +57,10 @@ public class CategoriaResource implements Resource<Categoria, Long> {
     }
 
     @GET
-    @Path("/name/{nm_categoria}")
+    @Path("/name/{nome}")
     @Produces(MediaType.APPLICATION_JSON)
-    public Response findByName(@PathParam("nm_categoria") String nm_categoria) {
-        List<Categoria> categorias = service.findByName(nm_categoria);
+    public Response findByName(@PathParam("nome") String nome) {
+        List<Categoria> categorias = service.findByName(nome);
         return Response.ok(categorias).build();
     }
 
