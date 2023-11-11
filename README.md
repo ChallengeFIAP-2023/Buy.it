@@ -28,10 +28,10 @@
     
   <em>Quem se Beneficiará da Nossa Solução?</em>
   
-  Diante do desafio proposto pela empresa Level Group BR, em parceria com a FIAP e analisando o cenário empresarial atual, identificamos um problema significativo relacionado à gestão de compras. Muitas empresas, independentemente do porte, enfrentam a dependência excessiva de interações humanas em seus processos de compras. Isso resulta em ineficiências operacionais, elevados custos, complexidades administrativas e, por vezes, erros que prejudicam a rentabilidade e a competitividade.
-  A abordagem tradicional para a gestão de compras muitas vezes carece de recursos tecnológicos avançados, como a inteligência artificial, que poderiam otimizar significativamente a eficiência do processo. Além disso, a comunicação com fornecedores e a análise de dados para tomada de decisões estratégicas frequentemente são subutilizadas, o que impede as empresas de atingir todo o seu potencial.
-  A falta de integração e automação nos processos de compras gera uma série de problemas, incluindo a inabilidade de monitorar de forma proativa as tendências de mercado, a incapacidade de reagir rapidamente a mudanças nas condições de fornecimento e a ausência de ferramentas que permitam uma negociação mais eficaz. Isso leva a um cenário em que muitas empresas não estão aproveitando ao máximo suas oportunidades de economia de custos e não estão sendo capazes de competir no mercado de maneira eficiente.
-  Neste contexto, torna-se evidente a necessidade de uma solução que permita a automação e otimização dos processos de compras empresariais, com foco em usabilidade, simplicidade, e, principalmente, na utilização da inteligência artificial. Essa solução busca eliminar as ineficiências, reduzir os custos e permitir que as empresas tomem decisões informadas e estratégicas para impulsionar sua rentabilidade e competitividade. É com esse propósito que desenvolvemos nosso projeto, buscando oferecer uma solução que atenda a essas demandas e resolva o problema identificado de forma eficaz e inovadora.
+  <p> Diante do desafio proposto pela empresa Level Group BR, em parceria com a FIAP e analisando o cenário empresarial atual, identificamos um problema significativo relacionado à gestão de compras. Muitas empresas, independentemente do porte, enfrentam a dependência excessiva de interações humanas em seus processos de compras. Isso resulta em ineficiências operacionais, elevados custos, complexidades administrativas e, por vezes, erros que prejudicam a rentabilidade e a competitividade. </p>
+  <p> A abordagem tradicional para a gestão de compras muitas vezes carece de recursos tecnológicos avançados, como a inteligência artificial, que poderiam otimizar significativamente a eficiência do processo. Além disso, a comunicação com fornecedores e a análise de dados para tomada de decisões estratégicas frequentemente são subutilizadas, o que impede as empresas de atingir todo o seu potencial. </p> 
+  <p> A falta de integração e automação nos processos de compras gera uma série de problemas, incluindo a inabilidade de monitorar de forma proativa as tendências de mercado, a incapacidade de reagir rapidamente a mudanças nas condições de fornecimento e a ausência de ferramentas que permitam uma negociação mais eficaz. Isso leva a um cenário em que muitas empresas não estão aproveitando ao máximo suas oportunidades de economia de custos e não estão sendo capazes de competir no mercado de maneira eficiente. </p>
+  <p> Neste contexto, torna-se evidente a necessidade de uma solução que permita a automação e otimização dos processos de compras empresariais, com foco em usabilidade, simplicidade, e, principalmente, na utilização da inteligência artificial. Essa solução busca eliminar as ineficiências, reduzir os custos e permitir que as empresas tomem decisões informadas e estratégicas para impulsionar sua rentabilidade e competitividade. É com esse propósito que desenvolvemos nosso projeto, buscando oferecer uma solução que atenda a essas demandas e resolva o problema identificado de forma eficaz e inovadora. </p>
 
   </details>
   
@@ -52,7 +52,7 @@
 
   - Aumento da Agilidade nas Compras: Almejamos aumentar a agilidade dos processos de compras, permitindo que as empresas reajam rapidamente a mudanças nas condições de fornecimento, tornando todo o processo mais flexível e eficaz.
 
-Ao estabelecer esses objetivos, nossa solução busca abordar o problema identificado de forma abrangente e eficaz, oferecendo uma resposta inovadora e estratégica para as necessidades das empresas no que diz respeito à gestão de compras.
+  <p> Ao estabelecer esses objetivos, nossa solução busca abordar o problema identificado de forma abrangente e eficaz, oferecendo uma resposta inovadora e estratégica para as necessidades das empresas no que diz respeito à gestão de compras. </p>
   </details>
   
   <details>
@@ -60,8 +60,9 @@ Ao estabelecer esses objetivos, nossa solução busca abordar o problema identif
   
   <em>Quem se Beneficiará da Nossa Solução?</em>
   
-  Nosso público-alvo consiste em empresas de micro e pequeno porte que enfrentam desafios significativos relacionados à gestão de compras. Segundo o Mapa de Empresas - 1º Quadrimestre de 2023 divulgado pelo Ministério do Desenvolvimento, Indústria, Comércio e Serviços, cerca de 93,7% das empresas são microempresas ou empresas de pequeno porte em atividade no Brasil. Além disso, segundo estudo “Sobrevivência de Empresas no Brasil” divulgado pelo SEBRAE, mais de 50% das microempresas fecham nos 2 primeiros anos de atividade devido a problemas na gestão financeira.
-Compreender o perfil desse público é fundamental para o sucesso de nossa solução. Portanto, delineamos as principais características de nosso público-alvo:
+  <p> Nosso público-alvo consiste em empresas de micro e pequeno porte que enfrentam desafios significativos relacionados à gestão de compras. Segundo o Mapa de Empresas - 1º Quadrimestre de 2023 divulgado pelo Ministério do Desenvolvimento, Indústria, Comércio e Serviços, cerca de 93,7% das empresas são microempresas ou empresas de pequeno porte em atividade no Brasil. Além disso, segundo estudo “Sobrevivência de Empresas no Brasil” divulgado pelo SEBRAE, mais de 50% das microempresas fecham nos 2 primeiros anos de atividade devido a problemas na gestão financeira. </p>
+
+<p> Compreender o perfil desse público é fundamental para o sucesso de nossa solução. Portanto, delineamos as principais características de nosso público-alvo: </p>
 
   - Empresas de Micro e Pequeno Porte: Nosso foco principal são as empresas de micro e pequeno porte, que muitas vezes têm recursos limitados para investir em soluções de gestão empresarial de grande escala. Essas empresas representam uma parcela substancial do cenário empresarial e são fundamentais para a economia.
 
@@ -75,7 +76,7 @@ Compreender o perfil desse público é fundamental para o sucesso de nossa solu�
 
   - Necessidade de Competitividade: Essas empresas estão buscando maneiras de competir de maneira eficaz em um mercado competitivo, e uma gestão de compras eficiente é essencial para alcançar essa competitividade.
 
-Entendendo as características e desafios específicos desse público, nossa solução foi projetada para atender às necessidades das empresas de micro e pequeno porte. Buscamos oferecer uma ferramenta acessível, eficaz e fácil de usar que ajude essas empresas a otimizar seus processos de compras, reduzir custos, aumentar a competitividade e contribuir para seu crescimento e sucesso a longo prazo. Ao direcionar nossos esforços para esse público, acreditamos que nossa solução terá um impacto positivo e significativo no cenário empresarial de micro e pequeno porte, promovendo um ambiente de negócios mais dinâmico e eficiente.
+  <p> Entendendo as características e desafios específicos desse público, nossa solução foi projetada para atender às necessidades das empresas de micro e pequeno porte. Buscamos oferecer uma ferramenta acessível, eficaz e fácil de usar que ajude essas empresas a otimizar seus processos de compras, reduzir custos, aumentar a competitividade e contribuir para seu crescimento e sucesso a longo prazo. Ao direcionar nossos esforços para esse público, acreditamos que nossa solução terá um impacto positivo e significativo no cenário empresarial de micro e pequeno porte, promovendo um ambiente de negócios mais dinâmico e eficiente. </p>
   </details>
   
   <details>
@@ -83,7 +84,7 @@ Entendendo as características e desafios específicos desse público, nossa sol
     
   <em>Contextualização da Concorrência</em>
   
-  No mercado de soluções de gestão empresarial (ERP) e de processos de compras, diversos produtos e sistemas estão atualmente disponíveis. A análise das ofertas existentes é fundamental para a compreensão de nosso posicionamento e diferenciação:
+<p> No mercado de soluções de gestão empresarial (ERP) e de processos de compras, diversos produtos e sistemas estão atualmente disponíveis. A análise das ofertas existentes é fundamental para a compreensão de nosso posicionamento e diferenciação: </p>
 
   - Grandes Players: Empresas renomadas, como TOTVS, SAP e SANKHYA, oferecem soluções abrangentes e multifuncionais de ERP. Embora suas ofertas sejam altamente sofisticadas e completas, seu custo é substancialmente elevado, tornando-as inacessíveis para empresas de micro e pequeno porte, como por exemplo os custos de implantação podendo chegar a mais de R$ 300.000,00 e custos de manutenção por volta de R$ 800,00 por usuário ao mês, sendo inviável para empresas com menor capacidade financeira.
 
@@ -97,7 +98,7 @@ Entendendo as características e desafios específicos desse público, nossa sol
   
   <em>Fatia de mercado a ser conquistada</em>
   
-  Com base na análise de mercado, nossa estratégia visa preencher uma lacuna não atendida no mercado, focando na automação e otimização dos processos de compras empresariais, podendo ser utilizada de forma conjunta a outras ferramentas já existentes ou também separadamente, para atender a propósitos específicos. Nossa solução torna-se inovadora, uma vez que:
+  <p> Com base na análise de mercado, nossa estratégia visa preencher uma lacuna não atendida no mercado, focando na automação e otimização dos processos de compras empresariais, podendo ser utilizada de forma conjunta a outras ferramentas já existentes ou também separadamente, para atender a propósitos específicos. Nossa solução torna-se inovadora, uma vez que: </p>
 
   - É acessível para todos os tipos de empresas.
 
@@ -109,7 +110,7 @@ Entendendo as características e desafios específicos desse público, nossa sol
 
   - Será uma ferramenta versátil e fácil de usar, adaptando-se às necessidades de empresas em diversos setores.
 
-Nossa solução busca abordar um problema crítico que foi identificado no mercado, preenchendo a lacuna entre as ofertas caras e complexas e as soluções mais acessíveis, com a flexibilidade da utilização agregada ou não a softwares do mesmo segmento, enquanto foca especificamente na automação e aprimoramento dos processos de compras. Acreditamos que isso nos posiciona de maneira única para atender a uma demanda carente e atingir o público-alvo com eficácia.
+  <p> Nossa solução busca abordar um problema crítico que foi identificado no mercado, preenchendo a lacuna entre as ofertas caras e complexas e as soluções mais acessíveis, com a flexibilidade da utilização agregada ou não a softwares do mesmo segmento, enquanto foca especificamente na automação e aprimoramento dos processos de compras. Acreditamos que isso nos posiciona de maneira única para atender a uma demanda carente e atingir o público-alvo com eficácia. </p>
   </details>
 
 <details>
@@ -117,11 +118,11 @@ Nossa solução busca abordar um problema crítico que foi identificado no merca
   
   <em>Qual o resultado efetivo?</em>
   
-  A implementação do aplicativo Buy.it para automatizar o processo de compras pode trazer benefícios financeiros significativos para uma empresa. Isso inclui a redução de custos operacionais, aumento na eficiência no processo de compra, permitindo que compradores façam pedidos de maneira rápida e eficiente, economizando tempo e recursos.    Isso reduz erros humanos e a necessidade de correções dispendiosas.	
-  Além disso, a análise de dados aprimorada possibilita decisões de compra mais informadas e estratégicas, auxiliadas pela inteligência artificial para sugestão de preços, prazos e fornecedores melhores avaliados.
-  Em resumo, a automação de compras por meio do Buy.it pode reduzir custos, melhorar a eficiência, proporcionar análise de dados valiosa e aumentar a receita, contribuindo assim para o sucesso financeiro da empresa.
-  Em relação ao investimento necessário, estima-se um prazo de desenvolvimento de aproximadamente 750 horas por desenvolvedor, sendo necessária uma equipe de 5 desenvolvedores, ou seja, 3.000 horas de desenvolvimento no total, com o prazo de entrega de 1 ano desde o início até o produto final. Para uma equipe júnior, calculamos o valor da hora em R$ 50,00, chegando assim a um custo de desenvolvimento de R$ 150.000,00.
-  Além desta despesa, serão necessários investimentos posteriores para manutenções, banco de dados, custos de hospedagem, servidores e infraestrutura no geral, os quais giram em torno de $ 1.500 mensais, porém podem variar de acordo com as plataformas escolhidas (amazon, microsoft, google, etc..) e com o decorrer da estruturação do projeto como um todo.
+  <p> A implementação do aplicativo Buy.it para automatizar o processo de compras pode trazer benefícios financeiros significativos para uma empresa. Isso inclui a redução de custos operacionais, aumento na eficiência no processo de compra, permitindo que compradores façam pedidos de maneira rápida e eficiente, economizando tempo e recursos. Isso reduz erros humanos e a necessidade de correções dispendiosas. </p>
+  <p> Além disso, a análise de dados aprimorada possibilita decisões de compra mais informadas e estratégicas, auxiliadas pela inteligência artificial para sugestão de preços, prazos e fornecedores melhores avaliados. </p>
+  <p> Em resumo, a automação de compras por meio do Buy.it pode reduzir custos, melhorar a eficiência, proporcionar análise de dados valiosa e aumentar a receita, contribuindo assim para o sucesso financeiro da empresa. </p>
+  <p> Em relação ao investimento necessário, estima-se um prazo de desenvolvimento de aproximadamente 750 horas por desenvolvedor, sendo necessária uma equipe de 5 desenvolvedores, ou seja, 3.000 horas de desenvolvimento no total, com o prazo de entrega de 1 ano desde o início até o produto final. Para uma equipe júnior, calculamos o valor da hora em R$ 50,00, chegando assim a um custo de desenvolvimento de R$ 150.000,00. </p>
+  <p> Além desta despesa, serão necessários investimentos posteriores para manutenções, banco de dados, custos de hospedagem, servidores e infraestrutura no geral, os quais giram em torno de $ 1.500 mensais, porém podem variar de acordo com as plataformas escolhidas (amazon, microsoft, google, etc..) e com o decorrer da estruturação do projeto como um todo. </p>
   </details>
   
 </details>
