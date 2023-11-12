@@ -1,7 +1,7 @@
 # **Challenge 2023 - FIAP & Level Group BR & BUY.it**
 <br />
 <p align="center">
-  <img src="Documentação/BUYit.png" alt="BUYIt">
+  <img src="BUYit.png" alt="BUYIt">
 </p>
 
 <p align="center">
@@ -213,21 +213,21 @@ $ yarn start
   <summary><h4><u>Diagrama Entidade Relacionamento (DER)</u></h4></summary>
   <br />
   <p align="center">
-    <img src="Documentação/DER.png" alt="DER">
+    <img src="Database Application & Data Science/DER.png" alt="DER">
   </p>
-    <p>No DER podemos ver 12 entidades, além de 1 entidade que será uma tabela ManyToMany.</p>
-    <p>- Produto se relaciona com Categoria, onde 1 Categoria contem N Produtos, sendo que o id_categoria é uma Foreign Key na entidade Produto.</p>
-    <p>- Produto se relaciona com Estoque, onde N Estoques alocam 1 Produto, sendo que o id_produto é uma Foreign Key na entidade Estoque.</p>
-    <p>- Estoque se relaciona com Desconto, onde 1 Estoque possui N Descontos, sendo que o id_estoque é uma Foreign Key na entidade Desconto.</p>
-    <p>- Estoque se relaciona com Valor_Variacao, onde N Estoques possuem 1 Valor_Variacao, sendo que o id_valor_variacao é uma Foreign Key na entidade Estoque.</p>
-    <p>- Valor_Variacao se relaciona com Tipo_Variacao, onde N Valor_Variacao possuem 1 Tipo_Variacao.</p>
-    <p>- Usuario se relaciona com Estoque, onde 1 Usuario detém N Estoques, sendo que o id_usuario é uma Foreign Key na entidade Estoque.</p>
+    <p>No DER podemos ver 11 entidades, além de 3 entidades que serão tabelas ManyToMany.</p>
+    <p>- Telefone se relaciona com Contato, onde 1 Contato contem N Telefones, sendo que o id_contato é uma Foreign Key na entidade Telefone</p>
+    <p>- Contato se relaciona com Usuario, onde 1 Usuario contem N Contatos, sendo que o id_usuario é uma Foreign Key na entidade Contato</p>
+    <p>- Usuario se relaciona com Pessoa_Juridica, onde 1 Usuario aloca 1 Pessoa_Juridica, sendo que o id_pessoa é uma Foreign Key na entidade Usuario</p>
     <p>- Usuario se relaciona com Tag, onde N Usuarios possuem N Tags, gerando uma nova entidade chamada Usuario_Tag, a qual possui Foreign Keys de ID de ambas as tabelas.</p>
-    <p>- Usuario se relaciona com Avaliacao onde 1 Usuario realiza N Avaliacoes, sendo que id_usuario é uma Foreign Key na entidade Avaliacao.</p>
-    <p>- Usuario se relaciona com Pedido, onde 1 Usuario efetua N Pedidos, sendo que id_usuario é uma Foreign Key na entidade Pedido.</p>
-    <p>- Pedido se relaciona com Avaliacao, onde 1 Pedido gera 1 Avaliacao, sendo que id_pedido é uma Foreign Key na entidade Avaliacao.</p>
-    <p>- Pedido se relaciona com Estoque, onde N Pedido contém N Estoque, gerando uma nova entidade chamada Pedido_Estoque a qual possui Foreign Keys de ID de ambas as tabelas.</p>
-    <p>- Pedido se relaciona com Log, onde 1 Pedido gera N Logs, sendo que id_pedido é uma foreign Key na entidade Log.</p>
+    <p>- Tag se relaciona com Departamento, onde N Tags possuem N Departamentos, gerando uma nova entidade chamada Tag_Departamento, a qual possui Foreign Keys de ID de ambas as tabelas.</p>
+    <p>- Departamento se relaciona com Produto, onde N Departamentos possuem N Produtos, gerando uma nova entidade chamada Produto_Departamento, a qual possui Foreign Keys de ID de ambas as tabelas.</p>
+    <p>- Produto se relaciona com Cotacao, onde 1 Produto está em N Cotações, sendo que o id_produto é uma Foreign Key na entidade Cotacao</p>
+    <p>- Usuario se relaciona com Cotacao, onde 1 Usuario realiza N Cotações, sendo que o id_comprador e o id_fornecedor são Foreign Keys na entidade Cotacao</p>
+    <p>- Cotacao se relaciona com Historico, onde 1 Cotacao registra N Históricos, sendo que o id_cotacao é uma Foreign Key na entidade Historico</p>
+    <p>- Cotacao se relaciona com Status, onde 1 Cotacao possui N Status, sendo que o id_status é uma Foreign Key na entidade Cotacao</p>
+    <p>- Historico se relaciona com Status, onde N Historico possuem 1 Status, sendo que o id_status é uma Foreign Key na entidade Historico</p>
+    <p>- Cotacao se relaciona com Avaliacao, onde 1 Cotacao gera 1 Avaliacao, sendo que o id_cotacao é uma Foreign Key na entidade Avaliacao</p>    
   <br />
   </details>
 
@@ -235,7 +235,7 @@ $ yarn start
   <summary><h4><u>Modelo Entidade Relacionamento (MER)</u></h4></summary>
   <br />
   <p align="center">
-    <img src="Documentação/MER.png" alt="MER">
+    <img src="Database Application & Data Science/MER.png" alt="MER">
   </p>
   <br />
   </details>
