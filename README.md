@@ -215,19 +215,22 @@ $ yarn start
   <p align="center">
     <img src="Database Application & Data Science/DER.png" alt="DER">
   </p>
-    <p>No DER podemos ver 11 entidades, além de 3 entidades que serão tabelas ManyToMany.</p>
-    <p>- Telefone se relaciona com Contato, onde 1 Contato contem N Telefones, sendo que o id_contato é uma Foreign Key na entidade Telefone</p>
-    <p>- Contato se relaciona com Usuario, onde 1 Usuario contem N Contatos, sendo que o id_usuario é uma Foreign Key na entidade Contato</p>
-    <p>- Usuario se relaciona com Pessoa_Juridica, onde 1 Usuario aloca 1 Pessoa_Juridica, sendo que o id_pessoa é uma Foreign Key na entidade Usuario</p>
-    <p>- Usuario se relaciona com Tag, onde N Usuarios possuem N Tags, gerando uma nova entidade chamada Usuario_Tag, a qual possui Foreign Keys de ID de ambas as tabelas.</p>
-    <p>- Tag se relaciona com Departamento, onde N Tags possuem N Departamentos, gerando uma nova entidade chamada Tag_Departamento, a qual possui Foreign Keys de ID de ambas as tabelas.</p>
-    <p>- Departamento se relaciona com Produto, onde N Departamentos possuem N Produtos, gerando uma nova entidade chamada Produto_Departamento, a qual possui Foreign Keys de ID de ambas as tabelas.</p>
-    <p>- Produto se relaciona com Cotacao, onde 1 Produto está em N Cotações, sendo que o id_produto é uma Foreign Key na entidade Cotacao</p>
-    <p>- Usuario se relaciona com Cotacao, onde 1 Usuario realiza N Cotações, sendo que o id_comprador e o id_fornecedor são Foreign Keys na entidade Cotacao</p>
-    <p>- Cotacao se relaciona com Historico, onde 1 Cotacao registra N Históricos, sendo que o id_cotacao é uma Foreign Key na entidade Historico</p>
-    <p>- Cotacao se relaciona com Status, onde 1 Cotacao possui N Status, sendo que o id_status é uma Foreign Key na entidade Cotacao</p>
-    <p>- Historico se relaciona com Status, onde N Historico possuem 1 Status, sendo que o id_status é uma Foreign Key na entidade Historico</p>
-    <p>- Cotacao se relaciona com Avaliacao, onde 1 Cotacao gera 1 Avaliacao, sendo que o id_cotacao é uma Foreign Key na entidade Avaliacao</p>    
+    <p>No DER podemos ver 13 entidades, além de 3 entidades que serão tabelas ManyToMany.</p>
+    <p>- Telefone se relaciona com Contato, onde 1 Contato contem N Telefones, sendo que o id_contato é uma Foreign Key na entidade Telefone;</p>
+    <p>- Email se relaciona com Contato, onde 1 Contato contem N Emails, sendo que o id_contato é uma Foreign Key na entidade Email. Além disso, Email tem a UK endereco_email;</p>
+    <p>- Contato se relaciona com Usuario, onde 1 Usuario contem N Contatos, sendo que o id_usuario é uma Foreign Key na entidade Contato;</p>
+    <p>- Usuario se relaciona com Pessoa, onde 1 Usuario aloca 1 Pessoa, sendo que o id_pessoa é uma Foreign Key na entidade Usuario. Além disso, Usuario tem a UK email_usuario;</p>
+    <p>- Pessoa se relaciona com Pessoa_Juridica, onde 1 Pessoa aloca 1 Pessoa_Juridica, sendo que Pessoa é a Generalização e Pessoa_Juridica é uma especialização de Pessoa;</p>
+    <p>- Pessoa_Juridica se relaciona com Pessoa, onde 1 Pessoa aloca 1 Pessoa_Juridica, sendo que Pessoa é a Generalização e Pessoa_Juridica é uma especialização de Pessoa. Além disso, Pessoa_Juridica tem a UK cnpj_pj;</p>
+    <p>- Usuario se relaciona com Tag, onde N Usuarios possuem N Tags, gerando uma nova entidade chamada Usuario_Tag, a qual possui Foreign Keys de ID de ambas as tabelas. Além disso, Usuario tem a UK email_usuario e TAG tem a UK nome_tag;</p>
+    <p>- Tag se relaciona com Departamento, onde N Tags possuem N Departamentos, gerando uma nova entidade chamada Tag_Departamento, a qual possui Foreign Keys de ID de ambas as tabelas. Além disso, Tag tem a UK nome_tag e Departamento tem a UK nome_departamento;</p>
+    <p>- Departamento se relaciona com Produto, onde N Departamentos possuem N Produtos, gerando uma nova entidade chamada Produto_Departamento, a qual possui Foreign Keys de ID de ambas as tabelas. Além disso, Departamento tem a UK nome_departamento;</p>
+    <p>- Produto se relaciona com Cotacao, onde 1 Produto está em N Cotações, sendo que o id_produto é uma Foreign Key na entidade Cotacao;</p>
+    <p>- Usuario se relaciona com Cotacao, onde 1 Usuario realiza N Cotações, sendo que o id_comprador e o id_fornecedor são Foreign Keys na entidade Cotacao. Além disso, Usuario tem a UK email_usuario;</p>
+    <p>- Cotacao se relaciona com Historico, onde 1 Cotacao registra N Históricos, sendo que o id_cotacao é uma Foreign Key na entidade Historico;</p>
+    <p>- Cotacao se relaciona com Status, onde 1 Cotacao possui N Status, sendo que o id_status é uma Foreign Key na entidade Cotacao. Além disso, Status tem a UK nome_status;</p>
+    <p>- Historico se relaciona com Status, onde N Historico possuem 1 Status, sendo que o id_status é uma Foreign Key na entidade Historico. Além disso, Status tem a UK nome_status;</p>
+    <p>- Cotacao se relaciona com Avaliacao, onde 1 Cotacao gera 1 Avaliacao, sendo que o id_cotacao é uma Foreign Key na entidade Avaliacao. Além disso, Avaliacao tem a UK id_cotacao;</p>   
   <br />
   </details>
 
