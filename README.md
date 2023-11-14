@@ -122,7 +122,7 @@
   <p> Além disso, a análise de dados aprimorada possibilita decisões de compra mais informadas e estratégicas, auxiliadas pela inteligência artificial para sugestão de preços, prazos e fornecedores melhores avaliados. </p>
   <p> Em resumo, a automação de compras por meio do Buy.it pode reduzir custos, melhorar a eficiência, proporcionar análise de dados valiosa e aumentar a receita, contribuindo assim para o sucesso financeiro da empresa. </p>
   <p> Em relação ao investimento necessário, estima-se um prazo de desenvolvimento de aproximadamente 750 horas por desenvolvedor, sendo necessária uma equipe de 5 desenvolvedores, ou seja, 3.000 horas de desenvolvimento no total, com o prazo de entrega de 1 ano desde o início até o produto final. Para uma equipe júnior, calculamos o valor da hora em R$ 50,00, chegando assim a um custo de desenvolvimento de R$ 150.000,00. </p>
-  <p> Além desta despesa, serão necessários investimentos posteriores para manutenções, banco de dados, custos de hospedagem, servidores e infraestrutura no geral, os quais giram em torno de $ 1.500 mensais, porém podem variar de acordo com as plataformas escolhidas (amazon, microsoft, google, etc..) e com o decorrer da estruturação do projeto como um todo. </p>
+  <p> Além desta despesa, serão necessários investimentos posteriores para manutenções, banco de dados, custos de hospedagem, servidores e infraestrutura no geral, os quais giram em torno de $ 1.500 mensais, porém podem variar de acordo com as plataformas escolhidas (Amazon, Microsoft, Google, etc..) e com o decorrer da estruturação do projeto como um todo. </p>
   </details>
   
 </details>
