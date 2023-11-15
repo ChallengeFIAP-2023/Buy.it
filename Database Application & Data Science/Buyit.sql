@@ -391,24 +391,27 @@ END;
 
 -- 03. BLOCO ANÔNIMO COM CURSOR PARA CONSULTA COM JOIN:
 DECLARE
-    CURSOR c_produtos IS
-        SELECT p.nome_produto, d.nome_departamento
-        FROM produto p
-        JOIN produto_departamento pd ON p.id_produto = pd.id_produto
-        JOIN departamento d ON pd.id_departamento = d.id_departamento;
-    v_produto produto.nome_produto%TYPE;
-    v_departamento departamento.nome_departamento%TYPE;
+    CURSOR cotacao_avaliacao_cur IS
+        SELECT c.id_cotacao, c.data_abertura_cotacao, a.nota_entrega_avaliacao, a.nota_qualidade_avaliacao, a.nota_preco_avaliacao
+        FROM cotacao c
+        JOIN avaliacao a ON c.id_cotacao = a.id_cotacao;
+
+    cotacao_avaliacao_rec cotacao_avaliacao_cur%ROWTYPE;
 BEGIN
-    OPEN c_produtos;
+    OPEN cotacao_avaliacao_cur;
+
     LOOP
-        FETCH c_produtos INTO v_produto, v_departamento;
-        EXIT WHEN c_produtos%NOTFOUND;
-        DBMS_OUTPUT.PUT_LINE('Produto: ' || v_produto || ', Departamento: ' || v_departamento);
+        FETCH cotacao_avaliacao_cur INTO cotacao_avaliacao_rec;
+        EXIT WHEN cotacao_avaliacao_cur%NOTFOUND;
+
+        DBMS_OUTPUT.PUT_LINE('ID Cotação: ' || cotacao_avaliacao_rec.id_cotacao ||
+                             ', Data Abertura: ' || cotacao_avaliacao_rec.data_abertura_cotacao ||
+                             ', Nota Entrega: ' || cotacao_avaliacao_rec.nota_entrega_avaliacao ||
+                             ', Nota Qualidade: ' || cotacao_avaliacao_rec.nota_qualidade_avaliacao ||
+                             ', Nota Preço: ' || cotacao_avaliacao_rec.nota_preco_avaliacao);
     END LOOP;
-    CLOSE c_produtos;
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro ao processar os dados.');
+
+    CLOSE cotacao_avaliacao_cur;
 END;
 
 -- 04. PROCEDURE IMPRIMINDO RELATÓRIO QUE CONTENHA FUNÇÕES, INNER JOIN, ORDER BY, SUM OU COUNT
@@ -420,7 +423,6 @@ CREATE OR REPLACE PROCEDURE print_cotacao_report IS
     v_valor_cotacao cotacao.valor_cotacao%TYPE;
 
 BEGIN
-    -- Calculando o total e o valor médio das cotações concluídas
     SELECT COUNT(*), AVG(valor_cotacao)
     INTO v_total_cotacoes, v_valor_medio
     FROM cotacao c
@@ -429,7 +431,6 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Total de Cotações Concluídas: ' || v_total_cotacoes);
     DBMS_OUTPUT.PUT_LINE('Valor Médio das Cotações Cocluídas: ' || v_valor_medio);
 
-    -- Cursor para detalhes das cotações concluídas
     FOR r IN (
         SELECT id_cotacao, data_abertura_cotacao, valor_cotacao
         FROM cotacao c
