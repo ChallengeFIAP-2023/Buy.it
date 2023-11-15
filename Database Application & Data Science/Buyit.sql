@@ -64,6 +64,7 @@ CREATE TABLE tag_departamento (
 
 CREATE TABLE produto (
     id_produto NUMBER(9) CONSTRAINT pk_id_produto PRIMARY KEY,
+    id_departamento NUMBER(9) CONSTRAINT fk_departamento_produto REFERENCES departamento(id_departamento),
     nome_produto VARCHAR2(255) CONSTRAINT nn_nm_produto NOT NULL,
     marca_produto VARCHAR2(255),
     cor_produto VARCHAR2(255),
@@ -72,9 +73,9 @@ CREATE TABLE produto (
     observacao_produto VARCHAR2(255)
 );
 
-CREATE TABLE produto_departamento (
-    id_produto NUMBER(9) CONSTRAINT fk_id_produto_departamento REFERENCES produto(id_produto) CONSTRAINT nn_id_produto_departamento NOT NULL,
-    id_departamento NUMBER(9) CONSTRAINT fk_id_departamento_produto REFERENCES departamento(id_departamento) CONSTRAINT nn_id_departamento_produto NOT NULL
+CREATE TABLE produto_tag (
+    id_produto NUMBER(9) CONSTRAINT fk_id_produto_tag REFERENCES produto(id_produto) CONSTRAINT nn_id_produto_tag NOT NULL,
+    id_tag NUMBER(9) CONSTRAINT fk_id_tag_produto REFERENCES tag(id_tag) CONSTRAINT nn_id_tag_produto NOT NULL
 );
 
 CREATE TABLE status (
@@ -105,6 +106,7 @@ CREATE TABLE avaliacao (
     nota_entrega_avaliacao NUMBER(1) CONSTRAINT nn_nota_entr_avaliacao NOT NULL, 
     nota_qualidade_avaliacao NUMBER(1) CONSTRAINT nn_nota_qual_avaliacao NOT NULL,
     nota_preco_avaliacao NUMBER(1) CONSTRAINT nn_nota_prec_avaliacao NOT NULL,
+    compra_finalizada NUMBER(1) CONSTRAINT nn_compra_fin_avaliacao NOT NULL,
     descricao_avaliacao VARCHAR2(255)
 );
 
@@ -159,9 +161,9 @@ INSERT INTO email VALUES (4, 'gustavao_vaicorinthians@gmail.com', 4);
 INSERT INTO email VALUES (5, 'vitao@rubim.dev', 5);
 
 INSERT INTO tag VALUES (1, 'Periféricos');
-INSERT INTO tag VALUES (2, 'Mouses');
-INSERT INTO tag VALUES (3, 'Teclados');
-INSERT INTO tag VALUES (4, 'Monitores');
+INSERT INTO tag VALUES (2, 'Calças');
+INSERT INTO tag VALUES (3, 'Eletrodomésticos');
+INSERT INTO tag VALUES (4, 'Celulares');
 INSERT INTO tag VALUES (5, 'Água');
 
 INSERT INTO usuario_tag VALUES (5, 4);
@@ -171,28 +173,28 @@ INSERT INTO usuario_tag VALUES (2, 3);
 INSERT INTO usuario_tag VALUES (3, 2);
 
 INSERT INTO departamento VALUES (1, 'Informática', 'icone-informatica');
-INSERT INTO departamento VALUES (2, 'Papelaria', 'icone-papelaria');
-INSERT INTO departamento VALUES (3, 'Alimentos', 'icone-alimentos');
+INSERT INTO departamento VALUES (2, 'Eletrônicos', 'icone-eletrônicos');
+INSERT INTO departamento VALUES (3, 'Vestuário', 'icone-vestuario');
 INSERT INTO departamento VALUES (4, 'Bebidas', 'icone-bebidas');
 INSERT INTO departamento VALUES (5, 'Cozinha', NULL);
 
 INSERT INTO tag_departamento VALUES (1, 1);
 INSERT INTO tag_departamento VALUES (2, 1);
-INSERT INTO tag_departamento VALUES (3, 1);
+INSERT INTO tag_departamento VALUES (3, 5);
 INSERT INTO tag_departamento VALUES (4, 1);
 INSERT INTO tag_departamento VALUES (5, 4);
 
-INSERT INTO produto VALUES (1, 'Mouse', 'Logitech', 'Preto', NULL, NULL, NULL);
-INSERT INTO produto VALUES (2, 'Água', 'Lindóia', NULL, '1 Litro', NULL, NULL);
-INSERT INTO produto VALUES (3, 'Celular', 'Apple', 'Vermelho', NULL, NULL, NULL);
-INSERT INTO produto VALUES (4, 'Calça', 'Hering', 'Vermelho', 'P', 'Jeans', 'Modelo XYZ');
-INSERT INTO produto VALUES (5, 'Teclado Gamer', NULL, NULL, NULL, NULL, NULL);
+INSERT INTO produto VALUES (1, 1, 'Mouse', 'Logitech', 'Preto', NULL, NULL, NULL);
+INSERT INTO produto VALUES (2, 4, 'Água', 'Lindóia', NULL, '1 Litro', NULL, NULL);
+INSERT INTO produto VALUES (3, 2, 'Celular', 'Apple', 'Vermelho', NULL, NULL, NULL);
+INSERT INTO produto VALUES (4, 3, 'Calça', 'Hering', 'Vermelho', 'P', 'Jeans', 'Modelo XYZ');
+INSERT INTO produto VALUES (5, 5, 'Geladeira', NULL, NULL, NULL, NULL, NULL);
 
-INSERT INTO produto_departamento VALUES (1, 1);
-INSERT INTO produto_departamento VALUES (2, 4);
-INSERT INTO produto_departamento VALUES (3, 1);
-INSERT INTO produto_departamento VALUES (4, 2);
-INSERT INTO produto_departamento VALUES (5, 2);
+INSERT INTO produto_tag VALUES (1, 1);
+INSERT INTO produto_tag VALUES (2, 5);
+INSERT INTO produto_tag VALUES (3, 4);
+INSERT INTO produto_tag VALUES (4, 2);
+INSERT INTO produto_tag VALUES (5, 3);
 
 INSERT INTO status VALUES (1, 'Pendente');
 INSERT INTO status VALUES (2, 'Concluído');
@@ -206,11 +208,11 @@ INSERT INTO cotacao VALUES (3, TO_DATE('2023-11-11', 'YYYY-MM-DD'), 4, 2, 2, 50,
 INSERT INTO cotacao VALUES (4, TO_DATE('2023-11-10', 'YYYY-MM-DD'), 4, 3, 5, 30, 2.00, 4, 2, 1, 3, 1, TO_DATE('2023-11-10', 'YYYY-MM-DD')); 
 INSERT INTO cotacao VALUES (5, TO_DATE('2023-11-09', 'YYYY-MM-DD'), 1, 5, 5, 100, 5.00, 4, 3, 1, 2, 7, NULL);
 
-INSERT INTO avaliacao VALUES (1, 1, TO_DATE('2023-11-13', 'YYYY-MM-DD'), 5, 3, 3, 'Muito bom!');
-INSERT INTO avaliacao VALUES (2, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 3, 4, 2, NULL); 
-INSERT INTO avaliacao VALUES (3, 3, TO_DATE('2023-11-11', 'YYYY-MM-DD'), 3, 0, 5, 'Demora para chegar'); 
-INSERT INTO avaliacao VALUES (4, 4, TO_DATE('2023-11-10', 'YYYY-MM-DD'), 0, 0, 0, 'Produto veio com defeito'); 
-INSERT INTO avaliacao VALUES (5, 5, TO_DATE('2023-11-09', 'YYYY-MM-DD'), 5, 5, 5, 'Excelente'); 
+INSERT INTO avaliacao VALUES (1, 1, TO_DATE('2023-11-13', 'YYYY-MM-DD'), 5, 3, 3, 1, 'Muito bom!');
+INSERT INTO avaliacao VALUES (2, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 3, 4, 2, 1, NULL); 
+INSERT INTO avaliacao VALUES (3, 3, TO_DATE('2023-11-11', 'YYYY-MM-DD'), 3, 1, 5, 1, 'Demora para chegar'); 
+INSERT INTO avaliacao VALUES (4, 4, TO_DATE('2023-11-10', 'YYYY-MM-DD'), 1, 1, 1, 0, 'Compra cancelada'); 
+INSERT INTO avaliacao VALUES (5, 5, TO_DATE('2023-11-09', 'YYYY-MM-DD'), 5, 5, 5, 1, 'Excelente'); 
 
 INSERT INTO historico VALUES (1, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 3, 3, 0, 1, 0, 0, 'Não tenho a quantidade no momento');
 INSERT INTO historico VALUES (2, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 3, 2, 1, 1, 0, 0, 'Não trabalho mais com este produto');
@@ -233,23 +235,7 @@ JOIN
 JOIN 
     telefone t ON c.id_contato = t.id_contato;
     
--- 03.02. CONSULTANDO PRODUTOS, DEPARTAMENTOS E TAGS:
-SELECT 
-    p.nome_produto, 
-    d.nome_departamento, 
-    t.nome_tag
-FROM 
-    produto p
-JOIN 
-    produto_departamento pd ON p.id_produto = pd.id_produto
-JOIN 
-    departamento d ON pd.id_departamento = d.id_departamento
-JOIN 
-    tag_departamento td ON d.id_departamento = td.id_departamento
-JOIN 
-    tag t ON td.id_tag = t.id_tag;
-    
--- 03.03. CONSULTANDO COTAÇÕES, STATUS E AVALIAÇÕES:
+-- 03.02. CONSULTANDO COTAÇÕES, STATUS E AVALIAÇÕES:
 SELECT 
     c.id_cotacao, 
     c.data_abertura_cotacao, 
@@ -465,4 +451,24 @@ END;
 BEGIN
     print_cotacao_report;
 END;
+
+--------------------------------------------------------------------------------
+-- DROP TABLES CASO NECESSÁRIO:
+
+DROP TABLE avaliacao CASCADE CONSTRAINTS;
+DROP TABLE contato CASCADE CONSTRAINTS;
+DROP TABLE cotacao CASCADE CONSTRAINTS;
+DROP TABLE departamento CASCADE CONSTRAINTS;
+DROP TABLE email CASCADE CONSTRAINTS;
+DROP TABLE historico CASCADE CONSTRAINTS;
+DROP TABLE pessoa CASCADE CONSTRAINTS;
+DROP TABLE pessoa_juridica CASCADE CONSTRAINTS;
+DROP TABLE produto CASCADE CONSTRAINTS;
+DROP TABLE produto_departamento CASCADE CONSTRAINTS;
+DROP TABLE status CASCADE CONSTRAINTS;
+DROP TABLE tag CASCADE CONSTRAINTS;
+DROP TABLE tag_departamento CASCADE CONSTRAINTS;
+DROP TABLE telefone CASCADE CONSTRAINTS;
+DROP TABLE usuario CASCADE CONSTRAINTS;
+DROP TABLE usuario_tag CASCADE CONSTRAINTS;
 
