@@ -1,0 +1,1 @@
+- Tratar Response de Retorno para restrições de Constraints em todos os resources

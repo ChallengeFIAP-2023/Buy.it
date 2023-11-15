@@ -1,0 +1,2099 @@
+_type: export
+__export_format: 4
+__export_date: 2023-10-23T14:39:58.999Z
+__export_source: insomnia.desktop.app:v8.3.0
+resources:
+  - _id: req_eb0bbf5b891144fd9f5b1ff1cc018a06
+    parentId: fld_c746d1bff2dc43b9841a0395de9e7a56
+    modified: 1697849560624
+    created: 1697849034687
+    url: "{{ _.base_url }}"
+    name: Listar Avaliações
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511433
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_c746d1bff2dc43b9841a0395de9e7a56
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1697849090144
+    created: 1697849027401
+    name: Avaliação
+    description: ""
+    environment:
+      base_url: http://localhost:8080/avaliacao
+    environmentPropertyOrder:
+      "&":
+        - base_url
+    metaSortKey: -1697849027401
+    _type: request_group
+  - _id: wrk_d48889daf6034247aa5cbab534a4a27d
+    parentId: null
+    modified: 1698069577565
+    created: 1698069577565
+    name: BUY.it
+    description: ""
+    scope: collection
+    _type: workspace
+  - _id: req_106bf5f0ebd34577bcba87ac2a1f65dd
+    parentId: fld_c746d1bff2dc43b9841a0395de9e7a56
+    modified: 1697907467546
+    created: 1697849511333
+    url: "{{ _.base_url }}/1"
+    name: Exibir Avaliação
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511408
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_a1da8fe2c5f448a9b945406118688933
+    parentId: fld_c746d1bff2dc43b9841a0395de9e7a56
+    modified: 1697914631853
+    created: 1697914599678
+    url: "{{ _.base_url }}/pedido/1"
+    name: Exibir Avaliação por ID Pedido
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511395.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_da4c721dcd5349df9e0b4a043ca66ec8
+    parentId: fld_c746d1bff2dc43b9841a0395de9e7a56
+    modified: 1697907486392
+    created: 1697907441646
+    url: "{{ _.base_url }}/usuario/1"
+    name: Listar Avaliações por ID Usuário
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511383
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_80f7e0ea03334b3c911820513306d90c
+    parentId: fld_c746d1bff2dc43b9841a0395de9e7a56
+    modified: 1697854352346
+    created: 1697849595431
+    url: "{{ _.base_url }}"
+    name: Cadastrar Avaliação
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "id_usuario": {
+            "id_usuario": 1
+          },
+          "id_pedido": {
+            "id_pedido": 1
+          },
+          "nota_preco_avaliacao": 4,
+          "nota_qualidade_avaliacao": 5,
+          "nota_entrega_avaliacao": 3,
+          "ds_avaliacao": "Cadastrando Nova Avaliação."
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511233
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_f88e8cbb318f41f28f65faa71eec9285
+    parentId: fld_c746d1bff2dc43b9841a0395de9e7a56
+    modified: 1697853262699
+    created: 1697851238046
+    url: "{{ _.base_url }}/1"
+    name: Atualizar Avaliação
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "id_usuario": {
+            "id_usuario": 2
+          },
+          "id_pedido": {
+            "id_pedido": 2
+          },
+          "nota_preco_avaliacao": 0,
+          "nota_qualidade_avaliacao": 2,
+          "nota_entrega_avaliacao": 1,
+          "ds_avaliacao": "Atualizando Nova Avaliação."
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511133
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_a33997ade30140a7aedcbbbba8903a36
+    parentId: fld_c746d1bff2dc43b9841a0395de9e7a56
+    modified: 1697853094688
+    created: 1697851325123
+    url: "{{ _.base_url }}/1"
+    name: Deletar Avaliação
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511033
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_2a3e772be90b4dab94af38d99e69e4ad
+    parentId: fld_c222c39864bf4cf8a413bde7b19eef52
+    modified: 1697853390014
+    created: 1697853354397
+    url: "{{ _.base_url }}"
+    name: Listar Categorias
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511433
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_c222c39864bf4cf8a413bde7b19eef52
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1697853483861
+    created: 1697853354394
+    name: Categoria
+    description: ""
+    environment:
+      base_url: http://localhost:8080/categoria
+    environmentPropertyOrder:
+      "&":
+        - base_url
+    metaSortKey: -1697262480908.25
+    _type: request_group
+  - _id: req_fded065addc840a8b4f6ab7176e9edd6
+    parentId: fld_c222c39864bf4cf8a413bde7b19eef52
+    modified: 1697909983382
+    created: 1697853354404
+    url: "{{ _.base_url }}/1"
+    name: Exibir Categoria
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511333
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_84c760a4fb4c4ecf914ff07fb0f21640
+    parentId: fld_c222c39864bf4cf8a413bde7b19eef52
+    modified: 1697911209979
+    created: 1697911168412
+    url: "{{ _.base_url }}/name/teste"
+    name: Exibir Categoria por Nome
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511283
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_5aab283131e74f8eb5c87830dc001fac
+    parentId: fld_c222c39864bf4cf8a413bde7b19eef52
+    modified: 1697909966870
+    created: 1697853354410
+    url: "{{ _.base_url }}"
+    name: Cadastrar Categoria
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nm_categoria": "Cadastrando Categoria Teste",
+          "icone_categoria": "icone-teste.png"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511233
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_55fcf1b5857e4095bc9e9744ed6a630a
+    parentId: fld_c222c39864bf4cf8a413bde7b19eef52
+    modified: 1697909988423
+    created: 1697853354416
+    url: "{{ _.base_url }}/1"
+    name: Atualizar Categoria
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nm_categoria": "ASDASDASD Categoria Teste",
+          "icone_categoria": "icone-teste-editado.png"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511133
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_9b50706562ca495fa3834f728d2a56cd
+    parentId: fld_c222c39864bf4cf8a413bde7b19eef52
+    modified: 1697910000259
+    created: 1697853354422
+    url: "{{ _.base_url }}/1"
+    name: Deletar Categoria
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511033
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_2b9fbf275388482e8bc7e94d624ec023
+    parentId: fld_169b3a24e1954095b4d8bbe322c2826d
+    modified: 1697853616695
+    created: 1697853472085
+    url: "{{ _.base_url }}"
+    name: Listar Descontos
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511433
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_169b3a24e1954095b4d8bbe322c2826d
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1697853491194
+    created: 1697853472083
+    name: Desconto
+    description: ""
+    environment:
+      base_url: http://localhost:8080/desconto
+    environmentPropertyOrder:
+      "&":
+        - base_url
+    metaSortKey: -1696675934415.5
+    _type: request_group
+  - _id: req_3d8e71fc9566421eb13e2adc2c212746
+    parentId: fld_169b3a24e1954095b4d8bbe322c2826d
+    modified: 1697853624106
+    created: 1697853472091
+    url: "{{ _.base_url }}/1"
+    name: Exibir Desconto
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511333
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_be3f5583c7464a8a9aabb3b7e0d4eabf
+    parentId: fld_169b3a24e1954095b4d8bbe322c2826d
+    modified: 1697910012196
+    created: 1697908169387
+    url: "{{ _.base_url }}/estoque/1"
+    name: Listar Descontos por ID Estoque
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511283
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_2e7d966edd8942189491953d076d7ff2
+    parentId: fld_169b3a24e1954095b4d8bbe322c2826d
+    modified: 1697854284700
+    created: 1697853472096
+    url: "{{ _.base_url }}"
+    name: Cadastrar Desconto
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "qtd_min_produto": 10,
+          "desconto": 15.5,
+          "id_estoque": {
+            "id_estoque": 1
+          }
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511233
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_650301256e0e4923bde49ede865c1d69
+    parentId: fld_169b3a24e1954095b4d8bbe322c2826d
+    modified: 1697853684456
+    created: 1697853472099
+    url: "{{ _.base_url }}/1"
+    name: Atualizar Desconto
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "qtd_min_produto": 1000,
+          "desconto": 5.0,
+          "id_estoque": {
+            "id_estoque": 2
+          }
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511133
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_dad6cd966b294eaf87a7bc6944d10275
+    parentId: fld_169b3a24e1954095b4d8bbe322c2826d
+    modified: 1697853638498
+    created: 1697853472103
+    url: "{{ _.base_url }}/1"
+    name: Deletar Desconto
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511033
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_47ec497ba46f43dab6c04ba461d9e543
+    parentId: fld_82e74341caf946c580e237ea085f6d81
+    modified: 1697853805596
+    created: 1697853799758
+    url: "{{ _.base_url }}"
+    name: Listar Estoques
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511433
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_82e74341caf946c580e237ea085f6d81
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1697853841011
+    created: 1697853799756
+    name: Estoque
+    description: ""
+    environment:
+      base_url: http://localhost:8080/estoque
+    environmentPropertyOrder:
+      "&":
+        - base_url
+    metaSortKey: -1694916294937.25
+    _type: request_group
+  - _id: req_c1449d1950cb431e9170dcff8157e84d
+    parentId: fld_82e74341caf946c580e237ea085f6d81
+    modified: 1697853809856
+    created: 1697853799761
+    url: "{{ _.base_url }}/1"
+    name: Exibir Estoque
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511333
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_eed81e26e25c4d65ba07a6e950b31bd3
+    parentId: fld_82e74341caf946c580e237ea085f6d81
+    modified: 1697911672208
+    created: 1697911634669
+    url: "{{ _.base_url }}/produto/1"
+    name: Listar Estoques por ID Produto
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511283
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_504fd83457894513b84e8a48a26c222e
+    parentId: fld_82e74341caf946c580e237ea085f6d81
+    modified: 1697914902695
+    created: 1697914822279
+    url: "{{ _.base_url }}/valor_variacao/1"
+    name: Listar Estoques por ID Valor_Variacao
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511258
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_3c9226eae3074daf8a7dd29bee314e48
+    parentId: fld_82e74341caf946c580e237ea085f6d81
+    modified: 1697915202078
+    created: 1697915199180
+    url: "{{ _.base_url }}/usuario/1"
+    name: Listar Estoques por ID Usuário
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511245.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_c217380b77d147e6b7558602009d26b8
+    parentId: fld_82e74341caf946c580e237ea085f6d81
+    modified: 1697854276425
+    created: 1697853799765
+    url: "{{ _.base_url }}"
+    name: Cadastrar Estoque
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "id_produto": {
+            "id_produto": 1
+          },
+          "id_valor_variacao": {
+            "id_valor_variacao": 2
+          },
+          "qtd_estoque": 1,
+          "preco_unitario": 49.99,
+          "img_url_estoque": "https://exemplo.com/imagem.jpg",
+          "id_usuario": {
+            "id_usuario": 3
+          }
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511233
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_42f1774117ef49a3b682a5a1eb0af223
+    parentId: fld_82e74341caf946c580e237ea085f6d81
+    modified: 1697853902308
+    created: 1697853799769
+    url: "{{ _.base_url }}/1"
+    name: Atualizar Estoque
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "id_produto": {
+            "id_produto": 2
+          },
+          "id_valor_variacao": {
+            "id_valor_variacao": 1
+          },
+          "qtd_estoque": 100,
+          "preco_unitario": 4.00,
+          "img_url_estoque": "https://asdasdasdasdasdasd.com/imagem.jpg",
+          "id_usuario": {
+            "id_usuario": 2
+          }
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511133
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_9cbf531df18c45aeb6fee3ac8d6782e7
+    parentId: fld_82e74341caf946c580e237ea085f6d81
+    modified: 1697853821184
+    created: 1697853799772
+    url: "{{ _.base_url }}/1"
+    name: Deletar Estoque
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511033
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_46cf1f3cdc3a4bf3803fb8e8332875be
+    parentId: fld_b37616ff805949ef9da1a5761789e334
+    modified: 1697854014842
+    created: 1697854007363
+    url: "{{ _.base_url }}"
+    name: Listar Logs
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511433
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_b37616ff805949ef9da1a5761789e334
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1697854045401
+    created: 1697854007360
+    name: Log
+    description: ""
+    environment:
+      base_url: http://localhost:8080/log
+    environmentPropertyOrder:
+      "&":
+        - base_url
+    metaSortKey: -1694036475198.125
+    _type: request_group
+  - _id: req_1f351ecd40804173a6789738da73c193
+    parentId: fld_b37616ff805949ef9da1a5761789e334
+    modified: 1697915424382
+    created: 1697854007370
+    url: "{{ _.base_url }}/1"
+    name: Exibir Log
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511333
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_5d65172d7adc42e08eb08f672aef0193
+    parentId: fld_b37616ff805949ef9da1a5761789e334
+    modified: 1697915573200
+    created: 1697915560338
+    url: "{{ _.base_url }}/pedido/1"
+    name: Listar Logs por ID Pedido
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511283
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_1b572c159e0c404db561e71c511fe89a
+    parentId: fld_b37616ff805949ef9da1a5761789e334
+    modified: 1697915614626
+    created: 1697915608435
+    url: "{{ _.base_url }}/name/teste"
+    name: Listar Logs por Nome
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511270.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_88f34afc7d534a5cae5743d859be0483
+    parentId: fld_b37616ff805949ef9da1a5761789e334
+    modified: 1697854266307
+    created: 1697854007374
+    url: "{{ _.base_url }}"
+    name: Cadastrar Log
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "id_pedido": {
+            "id_pedido": 1
+          },
+          "timestamp_log": "2023-10-20 14:30:00",
+          "nm_log": "Log de Teste",
+          "ds_log": "Este é um log de teste."
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511233
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_c024dabe5f2c470c896ef6d0732f5d4c
+    parentId: fld_b37616ff805949ef9da1a5761789e334
+    modified: 1697854123893
+    created: 1697854007376
+    url: "{{ _.base_url }}/1"
+    name: Atualizar Log
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "id_pedido": {
+            "id_pedido": 1
+          },
+          "timestamp_log": "2025-12-01 22:00:00",
+          "nm_log": "Editando Log de Teste",
+          "ds_log": "Este é um log de teste editado."
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511133
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_32d994fd038048ce96e3ddc302274872
+    parentId: fld_b37616ff805949ef9da1a5761789e334
+    modified: 1697854030396
+    created: 1697854007379
+    url: "{{ _.base_url }}/1"
+    name: Deletar Log
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511033
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_d351d4fcacd4477894003ac8f4b499d2
+    parentId: fld_3cad15daeddd4d43a1cfb52480210f43
+    modified: 1697854171049
+    created: 1697854158391
+    url: "{{ _.base_url }}"
+    name: Listar Pedidos
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511433
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_3cad15daeddd4d43a1cfb52480210f43
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1697854208280
+    created: 1697854158388
+    name: Pedido
+    description: ""
+    environment:
+      base_url: http://localhost:8080/pedido
+    environmentPropertyOrder:
+      "&":
+        - base_url
+    metaSortKey: -1693596565328.5625
+    _type: request_group
+  - _id: req_dde431bf8c4947d6b826002c56f8135d
+    parentId: fld_3cad15daeddd4d43a1cfb52480210f43
+    modified: 1697854175331
+    created: 1697854158394
+    url: "{{ _.base_url }}/1"
+    name: Exibir Pedido
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511333
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_a33d920c31c44ddca51b357b644aa30c
+    parentId: fld_3cad15daeddd4d43a1cfb52480210f43
+    modified: 1697916085963
+    created: 1697916081706
+    url: "{{ _.base_url }}/usuario/1"
+    name: Listar Pedidos por ID Usuário
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511283
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_cc02712c17a94220b1b54e0d43814b0d
+    parentId: fld_3cad15daeddd4d43a1cfb52480210f43
+    modified: 1697854237572
+    created: 1697854158399
+    url: "{{ _.base_url }}"
+    name: Cadastrar Pedido
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "id_usuario": {
+            "id_usuario": 1
+          },
+          "status_pedido": "Em Andamento",
+          "data_pedido": "2023-10-20",
+          "valor_pedido": 99.99,
+          "estoques": [
+            {
+              "id_estoque": 1
+            },
+            {
+              "id_estoque": 2
+            }
+          ]
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511233
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_ac2eb9c39eaa4a2dade6dcd39b1f219a
+    parentId: fld_3cad15daeddd4d43a1cfb52480210f43
+    modified: 1697854185901
+    created: 1697854158404
+    url: "{{ _.base_url }}/1"
+    name: Atualizar Pedido
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "id_pedido": {
+            "id_pedido": 1
+          },
+          "timestamp_log": "2025-12-01 22:00:00",
+          "nm_log": "Editando Log de Teste",
+          "ds_log": "Este é um log de teste editado."
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511133
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_d25d1b9368c343459bb0f4bfbcad21d3
+    parentId: fld_3cad15daeddd4d43a1cfb52480210f43
+    modified: 1697854190670
+    created: 1697854158407
+    url: "{{ _.base_url }}/1"
+    name: Deletar Pedido
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511033
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_9157102d379a48d6803b7cd1b95c4321
+    parentId: fld_2a4c68b1f0074a07945faf37fc9f39aa
+    modified: 1697855115687
+    created: 1697854821132
+    url: "{{ _.base_url }}"
+    name: Listar Produtos
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511433
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_2a4c68b1f0074a07945faf37fc9f39aa
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1697854845635
+    created: 1697854821128
+    name: Produto
+    description: ""
+    environment:
+      base_url: http://localhost:8080/produto
+    environmentPropertyOrder:
+      "&":
+        - base_url
+    metaSortKey: -1693376610393.7812
+    _type: request_group
+  - _id: req_c5581288d6f545b496f084cd413a52b4
+    parentId: fld_2a4c68b1f0074a07945faf37fc9f39aa
+    modified: 1697916833124
+    created: 1697854821141
+    url: "{{ _.base_url }}/1"
+    name: Exibir Produto
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511333
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_2ebd0058b59e4f5abf34e78da6a015a6
+    parentId: fld_2a4c68b1f0074a07945faf37fc9f39aa
+    modified: 1697917289977
+    created: 1697916937352
+    url: "{{ _.base_url }}/name/teste"
+    name: Listar Produtos por Nome
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511258
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_ef2e9edfec6848bf9b6fd673897a0c6b
+    parentId: fld_2a4c68b1f0074a07945faf37fc9f39aa
+    modified: 1697917311722
+    created: 1697916908084
+    url: "{{ _.base_url }}/categoria/1"
+    name: Listar Produtos por ID Categoria
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511245.5
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_690a0940dc6143b1a47b3ee830e72273
+    parentId: fld_2a4c68b1f0074a07945faf37fc9f39aa
+    modified: 1697854942957
+    created: 1697854821144
+    url: "{{ _.base_url }}"
+    name: Cadastrar Produto
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nm_produto": "Produto de Teste",
+          "ds_produto": "Descrição do Produto de Teste",
+          "img_url_produto": "https://exemplo.com/imagem.jpg",
+          "id_categoria": {
+            "id_categoria": 1
+          },
+          "marca_produto": "Marca do Produto",
+          "menor_preco_produto": 99.99
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511233
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_c15d282d70f444fe89c07099fd3efac1
+    parentId: fld_2a4c68b1f0074a07945faf37fc9f39aa
+    modified: 1697917344899
+    created: 1697854821146
+    url: "{{ _.base_url }}/1"
+    name: Atualizar Produto
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nm_produto": "Editando Produto de Teste",
+          "ds_produto": "Editando Descrição do Produto de Teste",
+          "img_url_produto": "https://asdasdasd.com/imagem.jpg",
+          "id_categoria": {
+            "id_categoria": 9
+          },
+          "marca_produto": "Editando Marca do Produto",
+          "menor_preco_produto": 2399.99
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511133
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_a7752d21a53748a4b74a5fcd343e9f4a
+    parentId: fld_2a4c68b1f0074a07945faf37fc9f39aa
+    modified: 1697917341408
+    created: 1697854821149
+    url: "{{ _.base_url }}/1"
+    name: Deletar Produto
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511033
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_e0b65093b3d544acaed820c4b8280cbc
+    parentId: fld_0ca6b95bc31c478aba4ee0850786726f
+    modified: 1697855111554
+    created: 1697855092073
+    url: "{{ _.base_url }}"
+    name: Listar Tags
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511433
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_0ca6b95bc31c478aba4ee0850786726f
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1697855102115
+    created: 1697855092071
+    name: Tag
+    description: ""
+    environment:
+      base_url: http://localhost:8080/tag
+    environmentPropertyOrder:
+      "&":
+        - base_url
+    metaSortKey: -1693266632926.3906
+    _type: request_group
+  - _id: req_a3cfbb0db1bb4d74907b4df2eb96ac38
+    parentId: fld_0ca6b95bc31c478aba4ee0850786726f
+    modified: 1697919005325
+    created: 1697855092078
+    url: "{{ _.base_url }}/1"
+    name: Exibir Tag
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511333
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_aed27929334f497b8b1f9d1c5a7c60d6
+    parentId: fld_0ca6b95bc31c478aba4ee0850786726f
+    modified: 1698070131133
+    created: 1697918007238
+    url: "{{ _.base_url }}/name/teste"
+    name: Listar Tags por Nome
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511283
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_07cca60eea254de6ad33c78c73377f42
+    parentId: fld_0ca6b95bc31c478aba4ee0850786726f
+    modified: 1698069969939
+    created: 1697855092084
+    url: "{{ _.base_url }}"
+    name: Cadastrar Tag
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nm_tag": "Tag de Testasdasdasde"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511233
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_bfcd8898e52946c3be52958b8f374305
+    parentId: fld_0ca6b95bc31c478aba4ee0850786726f
+    modified: 1697919010547
+    created: 1697855092088
+    url: "{{ _.base_url }}/1"
+    name: Atualizar Tag
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nm_tag": "asdasd Tag de Teste"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511133
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_20756d7e3f0740afa45cef4508d4626a
+    parentId: fld_0ca6b95bc31c478aba4ee0850786726f
+    modified: 1697919013125
+    created: 1697855092090
+    url: "{{ _.base_url }}/1"
+    name: Deletar Tag
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511033
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_a446f54ab9df4cd781165998c3b25a07
+    parentId: fld_fac543b4a3a143eaac6e26664d019403
+    modified: 1697855349543
+    created: 1697855282957
+    url: "{{ _.base_url }}"
+    name: Listar Tipo_Variações
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511433
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_fac543b4a3a143eaac6e26664d019403
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1697855293154
+    created: 1697855282955
+    name: Tipo_Variacao
+    description: ""
+    environment:
+      base_url: http://localhost:8080/tipo_variacao
+    environmentPropertyOrder:
+      "&":
+        - base_url
+    metaSortKey: -1693211644192.6953
+    _type: request_group
+  - _id: req_dff4e8834e56438281e735ccc0067708
+    parentId: fld_fac543b4a3a143eaac6e26664d019403
+    modified: 1697919972383
+    created: 1697855282960
+    url: "{{ _.base_url }}/2"
+    name: Exibir Tipo_Variacao
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511333
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_efc266243d524a25a26ca545932f37d0
+    parentId: fld_fac543b4a3a143eaac6e26664d019403
+    modified: 1697919951572
+    created: 1697919947271
+    url: "{{ _.base_url }}/name/teste"
+    name: Listar Tipo_Variações por Nome
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511283
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_76d35594d36e472582d6edfaf8859407
+    parentId: fld_fac543b4a3a143eaac6e26664d019403
+    modified: 1697855391073
+    created: 1697855282966
+    url: "{{ _.base_url }}"
+    name: Cadastrar Tipo_Variacao
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nm_tipo_variacao": "Tipo_Variação de Teste"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511233
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_83e004e94ec0465da2c2be54fda1a917
+    parentId: fld_fac543b4a3a143eaac6e26664d019403
+    modified: 1697919967353
+    created: 1697855282975
+    url: "{{ _.base_url }}/2"
+    name: Atualizar Tipo_Variacao
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nm_tipo_variacao": "Editando Tipo_Variação de Teste"
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511133
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_643f72fb688e44baadc61a5e860ced7d
+    parentId: fld_fac543b4a3a143eaac6e26664d019403
+    modified: 1697919981528
+    created: 1697855282985
+    url: "{{ _.base_url }}/2"
+    name: Deletar Tipo_Variacao
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511033
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_0e04183d503e4bf7ae325efe851c5832
+    parentId: fld_c10b84c9ddd94e39b7a0aa4e76d89e24
+    modified: 1697855520057
+    created: 1697855444616
+    url: "{{ _.base_url }}"
+    name: Listar Usuários
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511433
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_c10b84c9ddd94e39b7a0aa4e76d89e24
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1697855453545
+    created: 1697855444614
+    name: Usuário
+    description: ""
+    environment:
+      base_url: http://localhost:8080/usuario
+    environmentPropertyOrder:
+      "&":
+        - base_url
+    metaSortKey: -1693184149825.8477
+    _type: request_group
+  - _id: req_90439f74d63a45e78bcdef3a69a21ae0
+    parentId: fld_c10b84c9ddd94e39b7a0aa4e76d89e24
+    modified: 1698069992592
+    created: 1697855444623
+    url: "{{ _.base_url }}/121"
+    name: Exibir Usuário
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511333
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_14707e8c442949b9bb8da308a6bfaeac
+    parentId: fld_c10b84c9ddd94e39b7a0aa4e76d89e24
+    modified: 1698071018197
+    created: 1697920613528
+    url: "{{ _.base_url }}/cnpj/26434667000111"
+    name: Exibir Usuário por CNPJ
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511283
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_08d3bafa1f254aef8ace46a873aaba15
+    parentId: fld_c10b84c9ddd94e39b7a0aa4e76d89e24
+    modified: 1698070692866
+    created: 1697855444629
+    url: "{{ _.base_url }}"
+    name: Cadastrar Usuário
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "cnpj_usuario": "26.434.667/0001-11",
+          "nm_usuario": "Nome do Usuário",
+          "cep_usuario": "12345-678",
+          "logradouro_usuario": "Rua Exemplo, 123",
+          "complemento_usuario": "Complemento",
+          "num_endereco_usuario": "123",
+          "email_usuario": "usuario@exemplo.com",
+          "senha_usuario": "senha123",
+          "tel_usuario": "123456789",
+          "e_fornecedor": 1,
+          "img_url_usuario": "https://exemplo.com/imagem.jpg",
+          "regime_tributario_usuario": "Simples Nacional",
+          "valor_max_automatico_usuario": 1000.00,
+          "tags": [
+            {
+              "id_tag": 1
+            },
+            {
+              "id_tag": 2
+            }
+          ]
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511233
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_86cf6bcbd2be498cbcb01bf1006ee909
+    parentId: fld_c10b84c9ddd94e39b7a0aa4e76d89e24
+    modified: 1697920790866
+    created: 1697855444634
+    url: "{{ _.base_url }}/1"
+    name: Atualizar Usuário
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "cnpj_usuario": "22225678901234",
+          "nm_usuario": "Editando Nome do Usuário",
+          "cep_usuario": "02345-678",
+          "logradouro_usuario": "Editando Rua Exemplo",
+          "complemento_usuario": "Editando Complemento",
+          "num_endereco_usuario": "123123",
+          "email_usuario": "Editandousuario@exemplo.com",
+          "senha_usuario": "Editandosenha123",
+          "tel_usuario": "1198090659",
+          "e_fornecedor": 1,
+          "img_url_usuario": "https://exemplo.com/editandoimagem.jpg",
+          "regime_tributario_usuario": "Simples Internacional",
+          "valor_max_automatico_usuario": 5.00,
+          "tags": [
+            {
+              "id_tag": 2
+            },
+            {
+              "id_tag": 3
+            }
+          ]
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511133
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_f727a2c1b82c47d7ae44c233ab9e2578
+    parentId: fld_c10b84c9ddd94e39b7a0aa4e76d89e24
+    modified: 1698070680045
+    created: 1697855444639
+    url: "{{ _.base_url }}/121"
+    name: Deletar Usuário
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511033
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_a549e7916ce54fc4b48654c635e632b1
+    parentId: fld_057e56ecca0e48c39eb4372296338f43
+    modified: 1697855676948
+    created: 1697855657574
+    url: "{{ _.base_url }}"
+    name: Listar Valor_Variações
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511433
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: fld_057e56ecca0e48c39eb4372296338f43
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1697855666503
+    created: 1697855657572
+    name: Valor_Variação
+    description: ""
+    environment:
+      base_url: http://localhost:8080/valor_variacao
+    environmentPropertyOrder:
+      "&":
+        - base_url
+    metaSortKey: -1693170402642.4238
+    _type: request_group
+  - _id: req_75010c7f47b444ef9e5be50f1c8bd71a
+    parentId: fld_057e56ecca0e48c39eb4372296338f43
+    modified: 1697855681337
+    created: 1697855657577
+    url: "{{ _.base_url }}/1"
+    name: Exibir Valor_Variação
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511333
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_b99536ed8e9c4f558803b0e36f959717
+    parentId: fld_057e56ecca0e48c39eb4372296338f43
+    modified: 1697921565344
+    created: 1697921543674
+    url: "{{ _.base_url }}/tipo_variacao/1"
+    name: Listar Valor_Variações por ID Tipo_Variação
+    description: ""
+    method: GET
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511283
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_17d8cdb75cb04a82b69cf80f0fd4c378
+    parentId: fld_057e56ecca0e48c39eb4372296338f43
+    modified: 1697855741143
+    created: 1697855657581
+    url: "{{ _.base_url }}"
+    name: Cadastrar Valor_Variação
+    description: ""
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nm_valor_variacao": "Nome da Variação",
+          "id_tipo_variacao": {
+            "id_tipo_variacao": 1
+          }
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511233
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_25c9657740eb4aacabbd2e17090e6ff5
+    parentId: fld_057e56ecca0e48c39eb4372296338f43
+    modified: 1697855758138
+    created: 1697855657584
+    url: "{{ _.base_url }}/1"
+    name: Atualizar Valor_Variação
+    description: ""
+    method: PUT
+    body:
+      mimeType: application/json
+      text: |-
+        {
+          "nm_valor_variacao": "Editando Nome da Variação",
+          "id_tipo_variacao": {
+            "id_tipo_variacao": 1
+          }
+        }
+    parameters: []
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511133
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: req_978b7306b169480c9899bc800a434863
+    parentId: fld_057e56ecca0e48c39eb4372296338f43
+    modified: 1697855695169
+    created: 1697855657588
+    url: "{{ _.base_url }}/1"
+    name: Deletar Valor_Variação
+    description: ""
+    method: DELETE
+    body: {}
+    parameters: []
+    headers:
+      - name: User-Agent
+        value: insomnia/2023.5.8
+    authentication: {}
+    metaSortKey: -1697849511033
+    isPrivate: false
+    settingStoreCookies: true
+    settingSendCookies: true
+    settingDisableRenderRequestBody: false
+    settingEncodeUrl: true
+    settingRebuildPath: true
+    settingFollowRedirects: global
+    _type: request
+  - _id: env_c13442b3899e3e2e234511efc79f30354e7388de
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1698069577567
+    created: 1698069577567
+    name: Base Environment
+    data: {}
+    dataPropertyOrder: null
+    color: null
+    isPrivate: false
+    metaSortKey: 1698069577567
+    _type: environment
+  - _id: jar_c13442b3899e3e2e234511efc79f30354e7388de
+    parentId: wrk_d48889daf6034247aa5cbab534a4a27d
+    modified: 1698069577569
+    created: 1698069577569
+    name: Default Jar
+    cookies: []
+    _type: cookie_jar
