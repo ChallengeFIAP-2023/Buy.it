@@ -1,0 +1,9 @@
+stakeholder: quem demanda - level group
+driver: o que demanda - Automatizar e facilitar o processo de compras B2B
+assessment: como vou medir o resultado que vou alcançar em relação à demanda - Histórico detalhado de cotações
+goal: o que será feito - Conectar compradores e fornecedores baseado em seus requisitos para facilitar o processo
+princípios: regras que tenho que atender dentro desse objetivo - 
+requirements: requisitos do sistema
+	- funcionais: ações executadas
+	- não funcionais: outras características como questoes visuais, de segurança, 
+constraints: regras por cima de requisitos
