@@ -443,7 +443,6 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
-
 -- 02.01.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_pessoa(
     p_id_pessoa IN pessoa.id_pessoa%TYPE
@@ -469,6 +468,1309 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
+-- 02.02. PESSOA_JURIDICA:
+-- 02.02.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_pessoa_juridica(
+    p_id_pj IN pessoa_juridica.id_pj%TYPE,
+    p_cnpj_pj IN pessoa_juridica.cnpj_pj%TYPE,
+    p_is_fornecedor IN pessoa_juridica.is_fornecedor%TYPE,
+    p_id_pessoa IN pessoa_juridica.id_pessoa%TYPE
+) AS
+BEGIN
+    IF NOT is_cnpj_valid(p_cnpj_pj) THEN
+        RAISE_APPLICATION_ERROR(-20015, 'CNPJ inválido');
+    END IF;
+
+    INSERT INTO pessoa_juridica (id_pj, cnpj_pj, is_fornecedor, id_pessoa)
+    VALUES (p_id_pj, p_cnpj_pj, p_is_fornecedor, p_id_pessoa);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20008, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20009, 'Chave duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20010, SQLERRM);
+END;
+
+BEGIN
+    insert_pessoa_juridica(6, '59291534000167', 1, 6);
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.02.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_pessoa_juridica(
+    p_id_pj IN pessoa_juridica.id_pj%TYPE,
+    p_cnpj_pj IN pessoa_juridica.cnpj_pj%TYPE,
+    p_is_fornecedor IN pessoa_juridica.is_fornecedor%TYPE,
+    p_id_pessoa IN pessoa_juridica.id_pessoa%TYPE
+) AS
+BEGIN
+    IF NOT is_cnpj_valid(p_cnpj_pj) THEN
+        RAISE_APPLICATION_ERROR(-20016, 'CNPJ inválido');
+    END IF;
+
+    UPDATE pessoa_juridica
+    SET cnpj_pj = p_cnpj_pj, is_fornecedor = p_is_fornecedor, id_pessoa = p_id_pessoa
+    WHERE id_pj = p_id_pj;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20011, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20012, SQLERRM);
+END;
+
+BEGIN
+    update_pessoa_juridica(6, '59291534000167', 0, 6);
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.02.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_pessoa_juridica(
+    p_id_pj IN pessoa_juridica.id_pj%TYPE
+) AS
+BEGIN
+    DELETE FROM pessoa_juridica
+    WHERE id_pj = p_id_pj;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20013, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20014, SQLERRM);
+END;
+
+BEGIN
+    delete_pessoa_juridica(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.03. USUARIO:
+-- 02.03.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_usuario(
+    p_id_usuario IN usuario.id_usuario%TYPE,
+    p_email_usuario IN usuario.email_usuario%TYPE,
+    p_senha_usuario IN usuario.senha_usuario%TYPE,
+    p_id_pessoa IN usuario.id_pessoa%TYPE
+) AS
+BEGIN
+    IF NOT is_email_valid(p_email_usuario) THEN
+        RAISE_APPLICATION_ERROR(-20024, 'E-mail inválido');
+    END IF;
+
+    INSERT INTO usuario (id_usuario, email_usuario, senha_usuario, id_pessoa)
+    VALUES (p_id_usuario, p_email_usuario, p_senha_usuario, p_id_pessoa);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20017, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20018, 'Chave duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20019, SQLERRM);
+END;
+
+BEGIN
+    insert_usuario(6, 'teste@exemplo.com', 'senha123', 6);
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+
+-- 02.03.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_usuario(
+    p_id_usuario IN usuario.id_usuario%TYPE,
+    p_email_usuario IN usuario.email_usuario%TYPE,
+    p_senha_usuario IN usuario.senha_usuario%TYPE,
+    p_id_pessoa IN usuario.id_pessoa%TYPE
+) AS
+BEGIN
+    IF NOT is_email_valid(p_email_usuario) THEN
+        RAISE_APPLICATION_ERROR(-20025, 'E-mail inválido');
+    END IF;
+
+    UPDATE usuario
+    SET email_usuario = p_email_usuario, senha_usuario = p_senha_usuario, id_pessoa = p_id_pessoa
+    WHERE id_usuario = p_id_usuario;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20020, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20021, SQLERRM);
+END;
+
+BEGIN
+    update_usuario(6, 'atualizado@exemplo.com', 'senhaNova123', 6);
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+
+-- 02.03.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_usuario(
+    p_id_usuario IN usuario.id_usuario%TYPE
+) AS
+BEGIN
+    DELETE FROM usuario
+    WHERE id_usuario = p_id_usuario;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20022, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20023, SQLERRM);
+END;
+
+BEGIN
+    delete_usuario(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.04. CONTATO:
+-- 02.04.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_contato(
+    p_id_contato IN contato.id_contato%TYPE,
+    p_nome_contato IN contato.nome_contato%TYPE,
+    p_id_usuario IN contato.id_usuario%TYPE
+) AS
+BEGIN
+    INSERT INTO contato (id_contato, nome_contato, id_usuario)
+    VALUES (p_id_contato, p_nome_contato, p_id_usuario);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20026, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20027, 'Chave duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20028, SQLERRM);
+END;
+
+BEGIN
+    insert_contato(6, 'Contato Teste', 1);
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.04.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_contato(
+    p_id_contato IN contato.id_contato%TYPE,
+    p_nome_contato IN contato.nome_contato%TYPE,
+    p_id_usuario IN contato.id_usuario%TYPE
+) AS
+BEGIN
+    UPDATE contato
+    SET nome_contato = p_nome_contato, id_usuario = p_id_usuario
+    WHERE id_contato = p_id_contato;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20029, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20030, SQLERRM);
+END;
+
+BEGIN
+    update_contato(6, 'Contato Atualizado', 1);
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.04.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_contato(
+    p_id_contato IN contato.id_contato%TYPE
+) AS
+BEGIN
+    DELETE FROM contato
+    WHERE id_contato = p_id_contato;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20031, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20032, SQLERRM);
+END;
+
+BEGIN
+    delete_contato(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.05. TELEFONE:
+-- 02.05.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_telefone(
+    p_id_telefone IN telefone.id_telefone%TYPE,
+    p_ddi_telefone IN telefone.ddi_telefone%TYPE,
+    p_ddd_telefone IN telefone.ddd_telefone%TYPE,
+    p_numero_telefone IN telefone.numero_telefone%TYPE,
+    p_id_contato IN telefone.id_contato%TYPE
+) AS
+BEGIN
+    INSERT INTO telefone (id_telefone, ddi_telefone, ddd_telefone, numero_telefone, id_contato)
+    VALUES (p_id_telefone, p_ddi_telefone, p_ddd_telefone, p_numero_telefone, p_id_contato);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20033, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20034, 'Chave duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20035, SQLERRM);
+END;
+
+BEGIN
+    insert_telefone(6, '+55', '11', '123456789', 1);
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.05.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_telefone(
+    p_id_telefone IN telefone.id_telefone%TYPE,
+    p_ddi_telefone IN telefone.ddi_telefone%TYPE,
+    p_ddd_telefone IN telefone.ddd_telefone%TYPE,
+    p_numero_telefone IN telefone.numero_telefone%TYPE,
+    p_id_contato IN telefone.id_contato%TYPE
+) AS
+BEGIN
+    UPDATE telefone
+    SET ddi_telefone = p_ddi_telefone, ddd_telefone = p_ddd_telefone, numero_telefone = p_numero_telefone, id_contato = p_id_contato
+    WHERE id_telefone = p_id_telefone;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20036, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20037, SQLERRM);
+END;
+
+BEGIN
+    update_telefone(6, '+55', '11', '987654321', 1);
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.05.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_telefone(
+    p_id_telefone IN telefone.id_telefone%TYPE
+) AS
+BEGIN
+    DELETE FROM telefone
+    WHERE id_telefone = p_id_telefone;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20038, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20039, SQLERRM);
+END;
+
+BEGIN
+    delete_telefone(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.06. EMAIL:
+-- 02.06.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_email(
+    p_id_email IN email.id_email%TYPE,
+    p_endereco_email IN email.endereco_email%TYPE,
+    p_id_contato IN email.id_contato%TYPE
+) AS
+BEGIN
+    IF NOT is_email_valid(p_endereco_email) THEN
+        RAISE_APPLICATION_ERROR(-20040, 'Endereço de e-mail inválido');
+    END IF;
+
+    INSERT INTO email (id_email, endereco_email, id_contato)
+    VALUES (p_id_email, p_endereco_email, p_id_contato);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20041, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20042, 'Chave duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20043, SQLERRM);
+END;
+
+BEGIN
+    insert_email(6, 'teste@exemplo.com', 1);
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.06.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_email(
+    p_id_email IN email.id_email%TYPE,
+    p_endereco_email IN email.endereco_email%TYPE,
+    p_id_contato IN email.id_contato%TYPE
+) AS
+BEGIN
+    IF NOT is_email_valid(p_endereco_email) THEN
+        RAISE_APPLICATION_ERROR(-20044, 'Endereço de e-mail inválido');
+    END IF;
+
+    UPDATE email
+    SET endereco_email = p_endereco_email, id_contato = p_id_contato
+    WHERE id_email = p_id_email;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20045, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20046, SQLERRM);
+END;
+
+BEGIN
+    update_email(6, 'atualizado@exemplo.com', 1);
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.06.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_email(
+    p_id_email IN email.id_email%TYPE
+) AS
+BEGIN
+    DELETE FROM email
+    WHERE id_email = p_id_email;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20047, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20048, SQLERRM);
+END;
+
+BEGIN
+    delete_email(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.07. TAG:
+-- 02.07.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_tag(
+    p_id_tag IN tag.id_tag%TYPE,
+    p_nome_tag IN tag.nome_tag%TYPE
+) AS
+BEGIN
+    INSERT INTO tag (id_tag, nome_tag)
+    VALUES (p_id_tag, p_nome_tag);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20049, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20050, 'Chave duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20051, SQLERRM);
+END;
+
+BEGIN
+    insert_tag(6, 'Tag Exemplo');
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+
+-- 02.07.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_tag(
+    p_id_tag IN tag.id_tag%TYPE,
+    p_nome_tag IN tag.nome_tag%TYPE
+) AS
+BEGIN
+    UPDATE tag
+    SET nome_tag = p_nome_tag
+    WHERE id_tag = p_id_tag;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20052, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20053, SQLERRM);
+END;
+
+BEGIN
+    update_tag(6, 'Tag Atualizada');
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.07.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_tag(
+    p_id_tag IN tag.id_tag%TYPE
+) AS
+BEGIN
+    DELETE FROM tag
+    WHERE id_tag = p_id_tag;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20054, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20055, SQLERRM);
+END;
+
+BEGIN
+    delete_tag(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.08. USUARIO_TAG:
+-- 02.08.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_usuario_tag(
+    p_id_usuario IN usuario_tag.id_usuario%TYPE,
+    p_id_tag IN usuario_tag.id_tag%TYPE
+) AS
+BEGIN
+    INSERT INTO usuario_tag (id_usuario, id_tag)
+    VALUES (p_id_usuario, p_id_tag);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20056, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20057, 'Relação duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20058, SQLERRM);
+END;
+
+BEGIN
+    insert_usuario_tag(1, 1);
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.08.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_usuario_tag(
+    p_id_usuario_antigo IN usuario_tag.id_usuario%TYPE,
+    p_id_tag_antigo IN usuario_tag.id_tag%TYPE,
+    p_id_usuario_novo IN usuario_tag.id_usuario%TYPE,
+    p_id_tag_novo IN usuario_tag.id_tag%TYPE
+) AS
+BEGIN
+    UPDATE usuario_tag
+    SET id_usuario = p_id_usuario_novo, id_tag = p_id_tag_novo
+    WHERE id_usuario = p_id_usuario_antigo AND id_tag = p_id_tag_antigo;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20061, 'Relação não encontrada para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20062, SQLERRM);
+END;
+
+BEGIN
+    update_usuario_tag(1, 1, 1, 3);
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.08.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_usuario_tag(
+    p_id_usuario IN usuario_tag.id_usuario%TYPE,
+    p_id_tag IN usuario_tag.id_tag%TYPE
+) AS
+BEGIN
+    DELETE FROM usuario_tag
+    WHERE id_usuario = p_id_usuario AND id_tag = p_id_tag;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20059, 'Relação não encontrada para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20060, SQLERRM);
+END;
+
+BEGIN
+    delete_usuario_tag(1, 3);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.09. DEPARTAMENTO:
+-- 02.09.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_departamento(
+    p_id_departamento IN departamento.id_departamento%TYPE,
+    p_nome_departamento IN departamento.nome_departamento%TYPE,
+    p_icone_departamento IN departamento.icone_departamento%TYPE
+) AS
+BEGIN
+    INSERT INTO departamento (id_departamento, nome_departamento, icone_departamento)
+    VALUES (p_id_departamento, p_nome_departamento, p_icone_departamento);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20063, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20064, 'Chave duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20065, SQLERRM);
+END;
+
+BEGIN
+    insert_departamento(6, 'TI', 'icone_ti.png');
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.09.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_departamento(
+    p_id_departamento IN departamento.id_departamento%TYPE,
+    p_nome_departamento IN departamento.nome_departamento%TYPE,
+    p_icone_departamento IN departamento.icone_departamento%TYPE
+) AS
+BEGIN
+    UPDATE departamento
+    SET nome_departamento = p_nome_departamento, icone_departamento = p_icone_departamento
+    WHERE id_departamento = p_id_departamento;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20066, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20067, SQLERRM);
+END;
+
+BEGIN
+    update_departamento(6, 'Tecnologia da Informação', 'icone_ti_novo.png');
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.09.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_departamento(
+    p_id_departamento IN departamento.id_departamento%TYPE
+) AS
+BEGIN
+    DELETE FROM departamento
+    WHERE id_departamento = p_id_departamento;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20068, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20069, SQLERRM);
+END;
+
+BEGIN
+    delete_departamento(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.10. TAG_DEPARTAMENTO:
+-- 02.10.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_tag_departamento(
+    p_id_tag IN tag_departamento.id_tag%TYPE,
+    p_id_departamento IN tag_departamento.id_departamento%TYPE
+) AS
+BEGIN
+    INSERT INTO tag_departamento (id_tag, id_departamento)
+    VALUES (p_id_tag, p_id_departamento);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20070, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20071, 'Relação duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20072, SQLERRM);
+END;
+
+BEGIN
+    insert_tag_departamento(1, 4);
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.10.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_tag_departamento(
+    p_id_tag_antigo IN tag_departamento.id_tag%TYPE,
+    p_id_departamento_antigo IN tag_departamento.id_departamento%TYPE,
+    p_id_tag_novo IN tag_departamento.id_tag%TYPE,
+    p_id_departamento_novo IN tag_departamento.id_departamento%TYPE
+) AS
+BEGIN
+    UPDATE tag_departamento
+    SET id_tag = p_id_tag_novo, id_departamento = p_id_departamento_novo
+    WHERE id_tag = p_id_tag_antigo AND id_departamento = p_id_departamento_antigo;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20075, 'Relação não encontrada para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20076, SQLERRM);
+END;
+
+BEGIN
+    update_tag_departamento(1, 4, 1, 2);
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.10.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_tag_departamento(
+    p_id_tag IN tag_departamento.id_tag%TYPE,
+    p_id_departamento IN tag_departamento.id_departamento%TYPE
+) AS
+BEGIN
+    DELETE FROM tag_departamento
+    WHERE id_tag = p_id_tag AND id_departamento = p_id_departamento;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20073, 'Relação não encontrada para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20074, SQLERRM);
+END;
+
+BEGIN
+    delete_tag_departamento(1, 2);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.11. PRODUTO:
+-- 02.11.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_produto(
+    p_id_produto IN produto.id_produto%TYPE,
+    p_id_departamento IN produto.id_departamento%TYPE,
+    p_nome_produto IN produto.nome_produto%TYPE,
+    p_marca_produto IN produto.marca_produto%TYPE,
+    p_cor_produto IN produto.cor_produto%TYPE,
+    p_tamanho_produto IN produto.tamanho_produto%TYPE,
+    p_material_produto IN produto.material_produto%TYPE,
+    p_observacao_produto IN produto.observacao_produto%TYPE
+) AS
+BEGIN
+    INSERT INTO produto (id_produto, id_departamento, nome_produto, marca_produto, cor_produto, tamanho_produto, material_produto, observacao_produto)
+    VALUES (p_id_produto, p_id_departamento, p_nome_produto, p_marca_produto, p_cor_produto, p_tamanho_produto, p_material_produto, p_observacao_produto);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20077, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20078, 'Chave duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20079, SQLERRM);
+END;
+
+BEGIN
+    insert_produto(6, 1, 'Produto Teste', 'Marca Teste', 'Azul', 'M', 'Algodão', 'Sem observações');
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.11.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_produto(
+    p_id_produto IN produto.id_produto%TYPE,
+    p_id_departamento IN produto.id_departamento%TYPE,
+    p_nome_produto IN produto.nome_produto%TYPE,
+    p_marca_produto IN produto.marca_produto%TYPE,
+    p_cor_produto IN produto.cor_produto%TYPE,
+    p_tamanho_produto IN produto.tamanho_produto%TYPE,
+    p_material_produto IN produto.material_produto%TYPE,
+    p_observacao_produto IN produto.observacao_produto%TYPE
+) AS
+BEGIN
+    UPDATE produto
+    SET id_departamento = p_id_departamento, nome_produto = p_nome_produto, marca_produto = p_marca_produto, cor_produto = p_cor_produto, tamanho_produto = p_tamanho_produto, material_produto = p_material_produto, observacao_produto = p_observacao_produto
+    WHERE id_produto = p_id_produto;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20080, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20081, SQLERRM);
+END;
+
+BEGIN
+    update_produto(6, 2, 'Produto Atualizado', 'Marca Nova', 'Vermelho', 'G', 'Poliéster', 'Atualizado');
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.11.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_produto(
+    p_id_produto IN produto.id_produto%TYPE
+) AS
+BEGIN
+    DELETE FROM produto
+    WHERE id_produto = p_id_produto;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20082, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20083, SQLERRM);
+END;
+
+BEGIN
+    delete_produto(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.12. PRODUTO_TAG:
+-- 02.12.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_produto_tag(
+    p_id_produto IN produto_tag.id_produto%TYPE,
+    p_id_tag IN produto_tag.id_tag%TYPE
+) AS
+BEGIN
+    INSERT INTO produto_tag (id_produto, id_tag)
+    VALUES (p_id_produto, p_id_tag);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20084, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20085, 'Relação duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20086, SQLERRM);
+END;
+
+BEGIN
+    insert_produto_tag(1, 4);
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.12.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_produto_tag(
+    p_id_produto_antigo IN produto_tag.id_produto%TYPE,
+    p_id_tag_antigo IN produto_tag.id_tag%TYPE,
+    p_id_produto_novo IN produto_tag.id_produto%TYPE,
+    p_id_tag_novo IN produto_tag.id_tag%TYPE
+) AS
+BEGIN
+    UPDATE produto_tag
+    SET id_produto = p_id_produto_novo, id_tag = p_id_tag_novo
+    WHERE id_produto = p_id_produto_antigo AND id_tag = p_id_tag_antigo;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20087, 'Relação não encontrada para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20088, SQLERRM);
+END;
+
+BEGIN
+    update_produto_tag(1, 4, 1, 2);
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+
+-- 02.12.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_produto_tag(
+    p_id_produto IN produto_tag.id_produto%TYPE,
+    p_id_tag IN produto_tag.id_tag%TYPE
+) AS
+BEGIN
+    DELETE FROM produto_tag
+    WHERE id_produto = p_id_produto AND id_tag = p_id_tag;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20089, 'Relação não encontrada para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20090, SQLERRM);
+END;
+
+BEGIN
+    delete_produto_tag(1, 2);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.13. STATUS:
+-- 02.13.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_status(
+    p_id_status IN status.id_status%TYPE,
+    p_nome_status IN status.nome_status%TYPE
+) AS
+BEGIN
+    INSERT INTO status (id_status, nome_status)
+    VALUES (p_id_status, p_nome_status);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20091, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20092, 'Chave duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20093, SQLERRM);
+END;
+
+BEGIN
+    insert_status(6, 'Em Processamento');
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.13.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_status(
+    p_id_status IN status.id_status%TYPE,
+    p_nome_status IN status.nome_status%TYPE
+) AS
+BEGIN
+    UPDATE status
+    SET nome_status = p_nome_status
+    WHERE id_status = p_id_status;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20094, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20095, SQLERRM);
+END;
+
+BEGIN
+    update_status(6, 'OK');
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.13.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_status(
+    p_id_status IN status.id_status%TYPE
+) AS
+BEGIN
+    DELETE FROM status
+    WHERE id_status = p_id_status;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20096, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20097, SQLERRM);
+END;
+
+BEGIN
+    delete_status(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.14. COTACAO:
+-- 02.14.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_cotacao(
+    p_id_cotacao IN cotacao.id_cotacao%TYPE,
+    p_data_abertura_cotacao IN cotacao.data_abertura_cotacao%TYPE,
+    p_id_comprador IN cotacao.id_comprador%TYPE,
+    p_id_fornecedor IN cotacao.id_fornecedor%TYPE,
+    p_id_produto IN cotacao.id_produto%TYPE,
+    p_quantidade_produto IN cotacao.quantidade_produto%TYPE,
+    p_valor_cotacao IN cotacao.valor_cotacao%TYPE,
+    p_id_status IN cotacao.id_status%TYPE,
+    p_prioridade_entrega IN cotacao.prioridade_entrega%TYPE,
+    p_prioridade_qualidade IN cotacao.prioridade_qualidade%TYPE,
+    p_prioridade_preco IN cotacao.prioridade_preco%TYPE,
+    p_prazo_cotacao IN cotacao.prazo_cotacao%TYPE,
+    p_data_fechamento_cotacao IN cotacao.data_fechamento_cotacao%TYPE
+) AS
+BEGIN
+    INSERT INTO cotacao (id_cotacao, data_abertura_cotacao, id_comprador, id_fornecedor, id_produto, quantidade_produto, valor_cotacao, id_status, prioridade_entrega, prioridade_qualidade, prioridade_preco, prazo_cotacao, data_fechamento_cotacao)
+    VALUES (p_id_cotacao, p_data_abertura_cotacao, p_id_comprador, p_id_fornecedor, p_id_produto, p_quantidade_produto, p_valor_cotacao, p_id_status, p_prioridade_entrega, p_prioridade_qualidade, p_prioridade_preco, p_prazo_cotacao, p_data_fechamento_cotacao);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20098, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20099, 'Chave duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20100, SQLERRM);
+END;
+
+BEGIN
+    insert_cotacao(6, SYSDATE, 1, 2, 1, 100, 500, 1, 1, 1, 1, 30, SYSDATE);
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.14.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_cotacao(
+    p_id_cotacao IN cotacao.id_cotacao%TYPE,
+    p_data_abertura_cotacao IN cotacao.data_abertura_cotacao%TYPE,
+    p_id_comprador IN cotacao.id_comprador%TYPE,
+    p_id_fornecedor IN cotacao.id_fornecedor%TYPE,
+    p_id_produto IN cotacao.id_produto%TYPE,
+    p_quantidade_produto IN cotacao.quantidade_produto%TYPE,
+    p_valor_cotacao IN cotacao.valor_cotacao%TYPE,
+    p_id_status IN cotacao.id_status%TYPE,
+    p_prioridade_entrega IN cotacao.prioridade_entrega%TYPE,
+    p_prioridade_qualidade IN cotacao.prioridade_qualidade%TYPE,
+    p_prioridade_preco IN cotacao.prioridade_preco%TYPE,
+    p_prazo_cotacao IN cotacao.prazo_cotacao%TYPE,
+    p_data_fechamento_cotacao IN cotacao.data_fechamento_cotacao%TYPE
+) AS
+BEGIN
+    UPDATE cotacao
+    SET data_abertura_cotacao = p_data_abertura_cotacao, id_comprador = p_id_comprador, id_fornecedor = p_id_fornecedor, id_produto = p_id_produto, quantidade_produto = p_quantidade_produto, valor_cotacao = p_valor_cotacao, id_status = p_id_status, prioridade_entrega = p_prioridade_entrega, prioridade_qualidade = p_prioridade_qualidade, prioridade_preco = p_prioridade_preco, prazo_cotacao = p_prazo_cotacao, data_fechamento_cotacao = p_data_fechamento_cotacao
+    WHERE id_cotacao = p_id_cotacao;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20101, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20102, SQLERRM);
+END;
+
+BEGIN
+    update_cotacao(6, SYSDATE, 1, 3, 2, 150, 750, 2, 0, 1, 0, 45, SYSDATE);
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.14.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_cotacao(
+    p_id_cotacao IN cotacao.id_cotacao%TYPE
+) AS
+BEGIN
+    DELETE FROM cotacao
+    WHERE id_cotacao = p_id_cotacao;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20103, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20104, SQLERRM);
+END;
+
+BEGIN
+    delete_cotacao(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.15. AVALIACAO:
+-- 02.15.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_avaliacao(
+    p_id_avaliacao IN avaliacao.id_avaliacao%TYPE,
+    p_id_cotacao IN avaliacao.id_cotacao%TYPE,
+    p_data_avaliacao IN avaliacao.data_avaliacao%TYPE,
+    p_nota_entrega_avaliacao IN avaliacao.nota_entrega_avaliacao%TYPE,
+    p_nota_qualidade_avaliacao IN avaliacao.nota_qualidade_avaliacao%TYPE,
+    p_nota_preco_avaliacao IN avaliacao.nota_preco_avaliacao%TYPE,
+    p_compra_finalizada IN avaliacao.compra_finalizada%TYPE,
+    p_descricao_avaliacao IN avaliacao.descricao_avaliacao%TYPE
+) AS
+BEGIN
+    INSERT INTO avaliacao (id_avaliacao, id_cotacao, data_avaliacao, nota_entrega_avaliacao, nota_qualidade_avaliacao, nota_preco_avaliacao, compra_finalizada, descricao_avaliacao)
+    VALUES (p_id_avaliacao, p_id_cotacao, p_data_avaliacao, p_nota_entrega_avaliacao, p_nota_qualidade_avaliacao, p_nota_preco_avaliacao, p_compra_finalizada, p_descricao_avaliacao);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20105, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20106, 'Chave duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20107, SQLERRM);
+END;
+
+BEGIN
+    insert_avaliacao(6, 6, SYSDATE, 4, 5, 4, 1, 'Avaliação positiva');
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.15.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_avaliacao(
+    p_id_avaliacao IN avaliacao.id_avaliacao%TYPE,
+    p_id_cotacao IN avaliacao.id_cotacao%TYPE,
+    p_data_avaliacao IN avaliacao.data_avaliacao%TYPE,
+    p_nota_entrega_avaliacao IN avaliacao.nota_entrega_avaliacao%TYPE,
+    p_nota_qualidade_avaliacao IN avaliacao.nota_qualidade_avaliacao%TYPE,
+    p_nota_preco_avaliacao IN avaliacao.nota_preco_avaliacao%TYPE,
+    p_compra_finalizada IN avaliacao.compra_finalizada%TYPE,
+    p_descricao_avaliacao IN avaliacao.descricao_avaliacao%TYPE
+) AS
+BEGIN
+    UPDATE avaliacao
+    SET id_cotacao = p_id_cotacao, data_avaliacao = p_data_avaliacao, nota_entrega_avaliacao = p_nota_entrega_avaliacao, nota_qualidade_avaliacao = p_nota_qualidade_avaliacao, nota_preco_avaliacao = p_nota_preco_avaliacao, compra_finalizada = p_compra_finalizada, descricao_avaliacao = p_descricao_avaliacao
+    WHERE id_avaliacao = p_id_avaliacao;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20108, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20109, SQLERRM);
+END;
+
+BEGIN
+    update_avaliacao(6, 6, SYSDATE, 3, 4, 5, 1, 'Avaliação atualizada');
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.15.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_avaliacao(
+    p_id_avaliacao IN avaliacao.id_avaliacao%TYPE
+) AS
+BEGIN
+    DELETE FROM avaliacao
+    WHERE id_avaliacao = p_id_avaliacao;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20110, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20111, SQLERRM);
+END;
+
+BEGIN
+    delete_avaliacao(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.16. HISTORICO:
+-- 02.16.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_historico(
+    p_id_historico IN historico.id_historico%TYPE,
+    p_id_cotacao IN historico.id_cotacao%TYPE,
+    p_data_historico IN historico.data_historico%TYPE,
+    p_id_status IN historico.id_status%TYPE,
+    p_id_fornecedor IN historico.id_fornecedor%TYPE,
+    p_recusado_por_produto IN historico.recusado_por_produto%TYPE,
+    p_recusado_por_quantidade IN historico.recusado_por_quantidade%TYPE,
+    p_recusado_por_preco IN historico.recusado_por_preco%TYPE,
+    p_recusado_por_prazo IN historico.recusado_por_prazo%TYPE,
+    p_descricao_historico IN historico.descricao_historio%TYPE
+) AS
+BEGIN
+    INSERT INTO historico (id_historico, id_cotacao, data_historico, id_status, id_fornecedor, recusado_por_produto, recusado_por_quantidade, recusado_por_preco, recusado_por_prazo, descricao_historio)
+    VALUES (p_id_historico, p_id_cotacao, p_data_historico, p_id_status, p_id_fornecedor, p_recusado_por_produto, p_recusado_por_quantidade, p_recusado_por_preco, p_recusado_por_prazo, p_descricao_historico);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20112, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20113, 'Chave duplicada');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20114, SQLERRM);
+END;
+
+BEGIN
+    insert_historico(6, 2, SYSDATE, 1, 2, 0, 0, 0, 0, 'Histórico inicial da cotação');
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.16.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_historico(
+    p_id_historico IN historico.id_historico%TYPE,
+    p_id_cotacao IN historico.id_cotacao%TYPE,
+    p_data_historico IN historico.data_historico%TYPE,
+    p_id_status IN historico.id_status%TYPE,
+    p_id_fornecedor IN historico.id_fornecedor%TYPE,
+    p_recusado_por_produto IN historico.recusado_por_produto%TYPE,
+    p_recusado_por_quantidade IN historico.recusado_por_quantidade%TYPE,
+    p_recusado_por_preco IN historico.recusado_por_preco%TYPE,
+    p_recusado_por_prazo IN historico.recusado_por_prazo%TYPE,
+    p_descricao_historico IN historico.descricao_historio%TYPE
+) AS
+BEGIN
+    UPDATE historico
+    SET id_cotacao = p_id_cotacao, data_historico = p_data_historico, id_status = p_id_status, id_fornecedor = p_id_fornecedor, recusado_por_produto = p_recusado_por_produto, recusado_por_quantidade = p_recusado_por_quantidade, recusado_por_preco = p_recusado_por_preco, recusado_por_prazo = p_recusado_por_prazo, descricao_historio = p_descricao_historico
+    WHERE id_historico = p_id_historico;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20115, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20116, SQLERRM);
+END;
+
+BEGIN
+    update_historico(6, 2, SYSDATE, 2, 3, 1, 0, 1, 0, 'Atualização do histórico da cotação');
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.16.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_historico(
+    p_id_historico IN historico.id_historico%TYPE
+) AS
+BEGIN
+    DELETE FROM historico
+    WHERE id_historico = p_id_historico;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20117, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20118, SQLERRM);
+END;
+
+BEGIN
+    delete_historico(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
 
 -- 03. BLOCO ANÔNIMO COM CURSOR PARA CONSULTA COM JOIN:
 DECLARE
