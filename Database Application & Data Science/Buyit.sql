@@ -385,8 +385,89 @@ BEGIN
     END IF;
 END;
 
--- 02. PROCEDURES DE INSERT, UPDATE e DELETE
+-- 02. PROCEDURES DE INSERT, UPDATE e DELETE:
 
+-- 02.01. PESSOA:
+-- 02.01.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_pessoa(
+    p_id_pessoa IN pessoa.id_pessoa%TYPE,
+    p_nome_pessoa IN pessoa.nome_pessoa%TYPE,
+    p_imagem_pessoa IN pessoa.imagem_pessoa%TYPE
+) AS
+BEGIN
+    INSERT INTO pessoa (id_pessoa, nome_pessoa, imagem_pessoa)
+    VALUES (p_id_pessoa, p_nome_pessoa, p_imagem_pessoa);
+
+EXCEPTION
+    WHEN VALUE_ERROR THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Erro de valor na inserção');
+    WHEN DUP_VAL_ON_INDEX THEN
+        RAISE_APPLICATION_ERROR(-20002, 'ID duplicado');
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20003, SQLERRM);
+END;
+
+BEGIN
+    insert_pessoa(6, 'Nome Teste', 'imagem_teste.jpg');
+    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+-- 02.01.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_pessoa(
+    p_id_pessoa IN pessoa.id_pessoa%TYPE,
+    p_nome_pessoa IN pessoa.nome_pessoa%TYPE,
+    p_imagem_pessoa IN pessoa.imagem_pessoa%TYPE
+) AS
+BEGIN
+    UPDATE pessoa
+    SET nome_pessoa = p_nome_pessoa, imagem_pessoa = p_imagem_pessoa
+    WHERE id_pessoa = p_id_pessoa;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20004, 'Registro não encontrado para atualização');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20005, SQLERRM);
+END;
+
+BEGIN
+    update_pessoa(6, 'Nome Atualizado', 'imagem_atualizada.jpg');
+    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
+
+
+-- 02.01.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_pessoa(
+    p_id_pessoa IN pessoa.id_pessoa%TYPE
+) AS
+BEGIN
+    DELETE FROM pessoa
+    WHERE id_pessoa = p_id_pessoa;
+
+    IF SQL%ROWCOUNT = 0 THEN
+        RAISE_APPLICATION_ERROR(-20006, 'Registro não encontrado para exclusão');
+    END IF;
+
+EXCEPTION
+    WHEN OTHERS THEN
+        RAISE_APPLICATION_ERROR(-20007, SQLERRM);
+END;
+
+BEGIN
+    delete_pessoa(6);
+    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+EXCEPTION
+    WHEN OTHERS THEN
+        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
+END;
 
 
 -- 03. BLOCO ANÔNIMO COM CURSOR PARA CONSULTA COM JOIN:
