@@ -215,22 +215,94 @@ $ yarn start
   <p align="center">
     <img src="Database Application & Data Science/DER.png" alt="DER">
   </p>
-    <p>No DER podemos ver 13 entidades, além de 3 entidades que serão tabelas ManyToMany.</p>
-    <p>- Telefone se relaciona com Contato, onde 1 Contato contem N Telefones, sendo que o id_contato é uma Foreign Key na entidade Telefone;</p>
-    <p>- Email se relaciona com Contato, onde 1 Contato contem N Emails, sendo que o id_contato é uma Foreign Key na entidade Email. Além disso, Email tem a UK endereco_email;</p>
-    <p>- Contato se relaciona com Usuario, onde 1 Usuario contem N Contatos, sendo que o id_usuario é uma Foreign Key na entidade Contato;</p>
-    <p>- Usuario se relaciona com Pessoa, onde 1 Usuario aloca 1 Pessoa, sendo que o id_pessoa é uma Foreign Key na entidade Usuario. Além disso, Usuario tem a UK email_usuario;</p>
-    <p>- Pessoa se relaciona com Pessoa_Juridica, onde 1 Pessoa aloca 1 Pessoa_Juridica, sendo que Pessoa é a Generalização e Pessoa_Juridica é uma especialização de Pessoa;</p>
-    <p>- Pessoa_Juridica se relaciona com Pessoa, onde 1 Pessoa aloca 1 Pessoa_Juridica, sendo que Pessoa é a Generalização e Pessoa_Juridica é uma especialização de Pessoa. Além disso, Pessoa_Juridica tem a UK cnpj_pj;</p>
-    <p>- Usuario se relaciona com Tag, onde N Usuarios possuem N Tags, gerando uma nova entidade chamada Usuario_Tag, a qual possui Foreign Keys de ID de ambas as tabelas. Além disso, Usuario tem a UK email_usuario e TAG tem a UK nome_tag;</p>
-    <p>- Tag se relaciona com Departamento, onde N Tags possuem N Departamentos, gerando uma nova entidade chamada Tag_Departamento, a qual possui Foreign Keys de ID de ambas as tabelas. Além disso, Tag tem a UK nome_tag e Departamento tem a UK nome_departamento;</p>
-    <p>- Departamento se relaciona com Produto, onde N Departamentos possuem N Produtos, gerando uma nova entidade chamada Produto_Departamento, a qual possui Foreign Keys de ID de ambas as tabelas. Além disso, Departamento tem a UK nome_departamento;</p>
-    <p>- Produto se relaciona com Cotacao, onde 1 Produto está em N Cotações, sendo que o id_produto é uma Foreign Key na entidade Cotacao;</p>
-    <p>- Usuario se relaciona com Cotacao, onde 1 Usuario realiza N Cotações, sendo que o id_comprador e o id_fornecedor são Foreign Keys na entidade Cotacao. Além disso, Usuario tem a UK email_usuario;</p>
-    <p>- Cotacao se relaciona com Historico, onde 1 Cotacao registra N Históricos, sendo que o id_cotacao é uma Foreign Key na entidade Historico;</p>
-    <p>- Cotacao se relaciona com Status, onde 1 Cotacao possui N Status, sendo que o id_status é uma Foreign Key na entidade Cotacao. Além disso, Status tem a UK nome_status;</p>
-    <p>- Historico se relaciona com Status, onde N Historico possuem 1 Status, sendo que o id_status é uma Foreign Key na entidade Historico. Além disso, Status tem a UK nome_status;</p>
-    <p>- Cotacao se relaciona com Avaliacao, onde 1 Cotacao gera 1 Avaliacao, sendo que o id_cotacao é uma Foreign Key na entidade Avaliacao. Além disso, Avaliacao tem a UK id_cotacao;</p>   
+
+  ### Tabelas e Relacionamentos
+  
+  #### 1. Pessoa
+  - **Descrição**: Armazena informações básicas das pessoas.
+  - **Chave primária**: `id_pessoa`
+  - **Restrição**: `nome_pessoa` não pode ser nulo.
+  
+  #### 2. Pessoa Jurídica
+  - **Descrição**: Representa uma pessoa jurídica, que pode ser um fornecedor.
+  - **Chave primária**: `id_pj`
+  - **Relacionamento**: Cada `id_pessoa` de `Pessoa` corresponde a um `id_pj` em `Pessoa Jurídica`.
+  - **Restrições**: `cnpj_pj` deve ser único e não nulo; `is_fornecedor` e `id_pessoa` não podem ser nulos.
+  
+  #### 3. Usuário
+  - **Descrição**: Armazena informações dos usuários.
+  - **Chave primária**: `id_usuario`
+  - **Relacionamento**: Cada `id_pessoa` de `Pessoa` corresponde a um `id_usuario` em `Usuário`.
+  - **Restrições**: `email_usuario` deve ser único e não nulo; `senha_usuario` e `id_pessoa` não podem ser nulos.
+  
+  #### 4. Contato
+  - **Descrição**: Armazena informações de contato.
+  - **Chave primária**: `id_contato`
+  - **Relacionamento**: Relacionado com `Usuário` através de `id_usuario`.
+  - **Restrição**: `nome_contato` não pode ser nulo.
+  
+  #### 5. Telefone
+  - **Descrição**: Armazena números de telefone.
+  - **Chave primária**: `id_telefone`
+  - **Relacionamento**: Relacionado com `Contato` através de `id_contato`.
+  - **Restrição**: `ddi_telefone` e `numero_telefone` não podem ser nulos.
+  
+  #### 6. Email
+  - **Descrição**: Armazena endereços de email.
+  - **Chave primária**: `id_email`
+  - **Relacionamento**: Relacionado com `Contato` através de `id_contato`.
+  - **Restrições**: `endereco_email` deve ser único e não nulo.
+  
+  #### 7. Tag
+  - **Descrição**: Armazena etiquetas para categorização.
+  - **Chave primária**: `id_tag`
+  - **Restrição**: `nome_tag` deve ser único e não nulo.
+  
+  #### 8. Usuário Tag
+  - **Descrição**: Associa usuários a tags.
+  - **Relacionamento**: Relaciona `Usuário` com `Tag`.
+  
+  #### 9. Departamento
+  - **Descrição**: Armazena informações dos departamentos.
+  - **Chave primária**: `id_departamento`
+  - **Restrição**: `nome_departamento` deve ser único e não nulo.
+  
+  #### 10. Tag Departamento
+  - **Descrição**: Associa tags a departamentos.
+  - **Relacionamento**: Relaciona `Tag` com `Departamento`.
+  
+  #### 11. Produto
+  - **Descrição**: Armazena informações dos produtos.
+  - **Chave primária**: `id_produto`
+  - **Relacionamento**: Relacionado com `Departamento` através de `id_departamento`.
+  - **Restrição**: `nome_produto` não pode ser nulo.
+  
+  #### 12. Produto Tag
+  - **Descrição**: Associa produtos a tags.
+  - **Relacionamento**: Relaciona `Produto` com `Tag`.
+  
+  #### 13. Status
+  - **Descrição**: Armazena diferentes estados para cotações e históricos.
+  - **Chave primária**: `id_status`
+  - **Restrição**: `nome_status` deve ser único e não nulo.
+  
+  #### 14. Cotação
+  - **Descrição**: Armazena informações de cotações.
+  - **Chave primária**: `id_cotacao`
+  - **Relacionamentos**: Relacionado com `Usuário`, `Produto` e `Status`.
+  - **Restrições**: Várias colunas não podem ser nulas, incluindo datas, `id_comprador`, `id_produto`, quantidades e valores.
+  
+  #### 15. Avaliação
+  - **Descrição**: Armazena avaliações das cotações.
+  - **Chave primária**: `id_avaliacao`
+  - **Relacionamento**: Relacionado com `Cotação` através de `id_cotacao`.
+  - **Restrições**: Várias colunas não podem ser nulas, incluindo `data_avaliacao` e notas de avaliação.
+  
+  #### 16. Histórico
+  - **Descrição**: Armazena o histórico das cotações.
+  - **Chave primária**: `id_historico`
+  - **Relacionamento**: Relacionado com `Cotação` e `Status`.
+  - **Restrições**: Várias colunas não podem ser nulas, incluindo `data_historico`, `id_status`, `id_fornecedor`, e informações de recusa.
   <br />
   </details>
 
