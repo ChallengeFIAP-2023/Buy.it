@@ -2,8 +2,17 @@ stakeholder: quem demanda - level group
 driver: o que demanda - Automatizar e facilitar o processo de compras B2B
 assessment: como vou medir o resultado que vou alcançar em relação à demanda - Histórico detalhado de cotações
 goal: o que será feito - Conectar compradores e fornecedores baseado em seus requisitos para facilitar o processo
-princípios: regras que tenho que atender dentro desse objetivo - 
+princípios: regras que tenho que atender dentro desse objetivo - Conectar apenas fornecedores que atendam aos requisitos (possuam o produto, entreguem no prazo estabelecido...)
 requirements: requisitos do sistema
 	- funcionais: ações executadas
-	- não funcionais: outras características como questoes visuais, de segurança, 
-constraints: regras por cima de requisitos
+	- não funcionais: outras características como questoes visuais, de segurança
+- Processar e guardar os requisitos de cada cotação enviada pelo comprador
+- Notificar os fornecedores relacionados às cotações enviadas
+- Fornecer os dados de contato às empresas após a finalização
+- Permitir a avaliação da cotação ao final
+
+constraints: regras dos requisitos
+
+business event: principal evento do negócio - 
+business process: principal processo de negócio
+business service: serviços relacionados aos processos
