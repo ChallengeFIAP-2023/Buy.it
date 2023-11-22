@@ -9,22 +9,21 @@ import styled from 'styled-components/native';
 //   height: 100%;
 // `;
 
-// export const Header = styled.View`
-//   height: 50px;
-
-//   transform: skew(0deg, 10deg);
-//   background-color: ${({ theme }) => theme.COLORS.GRAY_600};
-
-//   border-top-right-radius: 10px;
-//   border-top-left-radius: 10px;
-// `;
+export const Header = styled.View`
+  height: 60px;
+  transform: skew(0deg, 7deg);
+  background-color: ${({ theme }) => theme.COLORS.GRAY_600};
+  border-top-right-radius: 10px;
+  border-top-left-radius: 10px;
+  margin-bottom: -25px;
+  margin-top: 25px;
+`;
 
 export const Container = styled.View`
-  margin-top: 10%;
 
   flex: 1;
 
   background-color: ${({ theme }) => theme.COLORS.GRAY_600};
 
-  padding: 15% 30px 0;
+  padding: 0 30px 0;
 `;

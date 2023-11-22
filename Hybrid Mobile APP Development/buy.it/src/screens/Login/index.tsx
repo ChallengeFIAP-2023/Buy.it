@@ -11,7 +11,8 @@ import {
 // Style import
 import { Container, Fieldset, RegisterText, Touchable, RegisterTextBold } from './styles';
 
-export function Login() {
+export function Login({ navigation }) {
+
   return (
     <Container>
       {/* Arrumar esse dois componentes abaixo */}
@@ -41,7 +42,9 @@ export function Login() {
 
         <Button label="Entrar" />
 
-        <Touchable>
+        <Touchable
+          onPress={() => navigation.navigate("Step1")}
+        >
           <RegisterText>Novo por aqui?</RegisterText>
           <RegisterTextBold>Criar uma conta</RegisterTextBold>
         </Touchable>

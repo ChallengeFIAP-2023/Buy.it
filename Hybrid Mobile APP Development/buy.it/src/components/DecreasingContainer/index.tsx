@@ -1,5 +1,5 @@
 // Style import
-import { Container } from './styles';
+import { Container, Header } from './styles';
 
 interface Props {
   children: React.ReactNode;
@@ -7,8 +7,11 @@ interface Props {
 
 export function DecreasingContainer({ children }: Props) {
   return (
-    <Container>
-      {children}
-    </Container>
+    <>
+      <Header />
+      <Container>
+        {children}
+      </Container>
+    </>
   );
 }
