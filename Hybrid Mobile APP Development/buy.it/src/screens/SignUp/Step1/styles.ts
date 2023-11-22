@@ -1,4 +1,8 @@
-import styled from "styled-components/native";
+import styled, { css } from "styled-components/native";
+
+interface OptionProps {
+    active?: boolean;
+}
 
 export const Container = styled.View`
   padding-top: 50px; // REMOVER ISSO (VOU ADICIONAR HEADER E STATUS BAR)
@@ -9,29 +13,23 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.COLORS.GRAY_700};
 `;
 
-export const Fieldset = styled.View`
-  width: 100%;
-
-  margin-bottom: 45px;
+export const Content = styled.View`
+    padding: 0 30px;
+    flex: 1;
+    justify-content: start;
+    margin-top: 40px;
 `;
 
-export const Touchable = styled.TouchableOpacity`
-  align-items: center;
-  flex-direction: row;
-  gap: 5px;
-  justify-content: center;
-
-  margin-top: 65px;
+export const Option = styled.Pressable<OptionProps>`
+    background-color: ${({ theme }) => theme.COLORS.GRAY_600};
+    border: solid 2px ${({ theme, active }) => active ? theme.COLORS.PRIMARY : theme.COLORS.GRAY_600};
+    border-radius: 7px;
+    padding: 20px 10px 23px;
+    margin: 15px 0;
 `;
 
-export const RegisterText = styled.Text`
-  font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
-  color: ${({ theme }) => theme.COLORS.GRAY_300};
-  font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.REGULAR};
-`;
-
-export const RegisterTextBold = styled.Text`
-  font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
-  color: ${({ theme }) => theme.COLORS.GRAY_300};
-  font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.BOLD};
-`;
+export const OptionText = styled.Text<OptionProps>`
+    color: ${({ theme, active }) => active ? theme.COLORS.PRIMARY_LIGHT : theme.COLORS.GRAY_200};
+    font-family: ${({theme}) => theme.FONT_FAMILY.ROBOTO.BOLD}
+    font-size: ${({theme}) => theme.FONT_SIZE.XL}px;
+`

@@ -1,17 +1,19 @@
 // Component import
 import {
-    DecreasingContainer,
-    StatusBar,
-    Header,
     Highlight,
-    Input,
     Button
-  } from "@components/index";
-  
-  // Style import
-  import { Container, Fieldset, RegisterText, Touchable, RegisterTextBold } from './styles';
+} from "@components/index";
+
+// Style import
+import { Container, Content, Option, OptionText } from './styles';
+import { useState } from "react";
+
+import { ArrowRight } from "phosphor-react-native";
   
   export function Step1() {
+
+    const [isSupplier, setSupplier] = useState(false)
+
     return (
       <Container>
         {/* Arrumar esse dois componentes abaixo */}
@@ -22,30 +24,23 @@ import {
           title="Qual a intenção da sua empresa?"
           subtitle="Passo 1 de 6"
         />
-  
-        <DecreasingContainer>
-          <Fieldset>
-            <Input
-              label="E-mail ou CNPJ"
-              placeholder="Johndoe@example.com"
-            />
-          </Fieldset>
-  
-          <Fieldset>
-            <Input
-              label="Senha"
-              placeholder="Johndoe@example.com"
-              secureTextEntry
-            />
-          </Fieldset>
-  
-          <Button label="Entrar" />
-  
-          <Touchable>
-            <RegisterText>Novo por aqui?</RegisterText>
-            <RegisterTextBold>Criar uma conta</RegisterTextBold>
-          </Touchable>
-        </DecreasingContainer>
+
+        <Content>
+            <Option onPress={() => setSupplier(false)} active={!isSupplier}>
+                <OptionText active={!isSupplier}> Comprar </OptionText>
+            </Option>
+
+            <Option onPress={() => setSupplier(true)} active={isSupplier}>
+                <OptionText active={isSupplier}> Fornecer </OptionText>
+            </Option>
+        </Content>
+
+        <Button 
+            label="Continuar"
+            size="XL"
+            icon={<ArrowRight color={'#fff'} weight="bold" />}
+            bottom
+        />
       </Container>
     );
   }

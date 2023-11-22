@@ -18,13 +18,13 @@ export const Flex = styled.View`
 `;
 
 export const Title = styled.Text`
-  font-size: ${({ theme }) => theme.FONT_SIZE.XL}px;
+  font-size: ${({ theme }) => theme.FONT_SIZE.XXL}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.RALEWAY.BOLD};
   color: ${({ theme }) => theme.COLORS.WHITE};
 `;
 
 export const HighlightedText = styled.Text`
-  font-size: ${({ theme }) => theme.FONT_SIZE.XL}px;
+  font-size: ${({ theme }) => theme.FONT_SIZE.XXL}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.RALEWAY.BOLD};
   color: ${({ theme }) => theme.COLORS.PRIMARY_LIGHT};
 `;
