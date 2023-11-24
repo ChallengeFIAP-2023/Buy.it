@@ -622,7 +622,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.04. FORMA_CONTATO:
+-- 02.04. TIPO_CONTATO:
 -- 02.04.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_tipo_contato(
     p_id_tipo_contato IN tipo_contato.id_tipo_contato%TYPE,
@@ -1560,7 +1560,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.15. HISTORICO:
+-- 02.15. HISTORICO (OBS: NÃO FUNCIONA COM NUMERO DECIAL NO VALOR_OFERTADO_HISTORICO. NÃO CONSEGUIMOS RESOLVER)
 -- 02.15.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_historico(
     p_id_historico IN historico.id_historico%TYPE,
@@ -1576,6 +1576,7 @@ CREATE OR REPLACE PROCEDURE insert_historico(
     p_descricao_historico IN historico.descricao_historico%TYPE
 ) AS
 BEGIN
+    
     INSERT INTO historico (id_historico, id_cotacao, data_historico, id_status, id_fornecedor, valor_ofertado_historico, recusado_por_produto, recusado_por_quantidade, recusado_por_preco, recusado_por_prazo, descricao_historico)
     VALUES (p_id_historico, p_id_cotacao, p_data_historico, p_id_status, p_id_fornecedor, p_valor_ofertado_historico, p_recusado_por_produto, p_recusado_por_quantidade, p_recusado_por_preco, p_recusado_por_prazo, p_descricao_historico);
 
@@ -1589,7 +1590,7 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_historico(6, 2, SYSDATE, 1, 2, 5.90, 0, 0, 0, 0, 'Histórico inicial da cotação');
+    insert_historico(6, 2, SYSDATE, 1, 2, 15000, 0, 0, 0, 0, 'Histórico inicial da cotação');
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
@@ -1603,15 +1604,16 @@ CREATE OR REPLACE PROCEDURE update_historico(
     p_data_historico IN historico.data_historico%TYPE,
     p_id_status IN historico.id_status%TYPE,
     p_id_fornecedor IN historico.id_fornecedor%TYPE,
+    p_valor_ofertado_historico IN historico.valor_ofertado_historico%TYPE,
     p_recusado_por_produto IN historico.recusado_por_produto%TYPE,
     p_recusado_por_quantidade IN historico.recusado_por_quantidade%TYPE,
     p_recusado_por_preco IN historico.recusado_por_preco%TYPE,
     p_recusado_por_prazo IN historico.recusado_por_prazo%TYPE,
-    p_descricao_historico IN historico.descricao_historio%TYPE
+    p_descricao_historico IN historico.descricao_historico%TYPE
 ) AS
 BEGIN
     UPDATE historico
-    SET id_cotacao = p_id_cotacao, data_historico = p_data_historico, id_status = p_id_status, id_fornecedor = p_id_fornecedor, recusado_por_produto = p_recusado_por_produto, recusado_por_quantidade = p_recusado_por_quantidade, recusado_por_preco = p_recusado_por_preco, recusado_por_prazo = p_recusado_por_prazo, descricao_historio = p_descricao_historico
+    SET id_cotacao = p_id_cotacao, data_historico = p_data_historico, id_status = p_id_status, id_fornecedor = p_id_fornecedor, valor_ofertado_historico = p_valor_ofertado_historico, recusado_por_produto = p_recusado_por_produto, recusado_por_quantidade = p_recusado_por_quantidade, recusado_por_preco = p_recusado_por_preco, recusado_por_prazo = p_recusado_por_prazo, descricao_historico = p_descricao_historico
     WHERE id_historico = p_id_historico;
 
     IF SQL%ROWCOUNT = 0 THEN
@@ -1624,7 +1626,7 @@ EXCEPTION
 END;
 
 BEGIN
-    update_historico(6, 2, SYSDATE, 2, 3, 1, 0, 1, 0, 'Atualização do histórico da cotação');
+    update_historico(6, 2, SYSDATE, 2, 3, 550, 1, 0, 1, 0, 'Atualização do histórico da cotação');
     DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
@@ -1687,10 +1689,10 @@ CREATE OR REPLACE PROCEDURE print_cotacao_report IS
     v_valor_medio NUMBER;
     v_id_cotacao cotacao.id_cotacao%TYPE;
     v_data_abertura DATE;
-    v_valor_cotacao cotacao.valor_cotacao%TYPE;
+    v_valor_produto cotacao.valor_produto%TYPE;
 
 BEGIN
-    SELECT COUNT(*), AVG(valor_cotacao)
+    SELECT COUNT(*), AVG(valor_produto)
     INTO v_total_cotacoes, v_valor_medio
     FROM cotacao c
     JOIN status s ON c.id_status = s.id_status
@@ -1699,7 +1701,7 @@ BEGIN
     DBMS_OUTPUT.PUT_LINE('Valor Médio das Cotações Cocluídas: ' || v_valor_medio);
 
     FOR r IN (
-        SELECT id_cotacao, data_abertura_cotacao, valor_cotacao
+        SELECT id_cotacao, data_abertura_cotacao, valor_produto
         FROM cotacao c
         JOIN status s ON c.id_status = s.id_status
         WHERE s.nome_status = 'Concluído'
@@ -1707,7 +1709,7 @@ BEGIN
     ) LOOP
         DBMS_OUTPUT.PUT_LINE('ID da Cotação: ' || r.id_cotacao || 
                              ', Data de Abertura: ' || r.data_abertura_cotacao || 
-                             ', Valor: ' || r.valor_cotacao);
+                             ', Valor: ' || r.valor_produto);
     END LOOP;
 
 EXCEPTION
