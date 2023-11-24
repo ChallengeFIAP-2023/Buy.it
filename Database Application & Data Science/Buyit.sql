@@ -21,24 +21,16 @@ CREATE TABLE usuario (
     id_pessoa NUMBER(9) CONSTRAINT fk_pessoa_usuario REFERENCES pessoa(id_pessoa) CONSTRAINT uk_pessoa_usuario UNIQUE CONSTRAINT nn_pessoa_usuario NOT NULL
 );
 
-CREATE TABLE contato (
-    id_contato NUMBER(9) CONSTRAINT pk_id_contato PRIMARY KEY,
-    nome_contato VARCHAR2(255) CONSTRAINT nn_nm_contato NOT NULL,
-    id_usuario NUMBER(9) CONSTRAINT fk_usuario_contato REFERENCES usuario(id_usuario) CONSTRAINT nn_usuario_contato NOT NULL
+CREATE TABLE tipo_contato (
+    id_tipo_contato NUMBER(9) CONSTRAINT pk_id_tipo_contato PRIMARY KEY,
+    nome_tipo_contato VARCHAR2(255) CONSTRAINT uk_nm_tipo_contato UNIQUE CONSTRAINT nn_nm_tipo_contato NOT NULL
 );
 
-CREATE TABLE telefone (
-    id_telefone NUMBER(9) CONSTRAINT pk_id_telefone PRIMARY KEY,
-    ddi_telefone VARCHAR2(25) CONSTRAINT nn_ddi_telefone NOT NULL,
-    ddd_telefone VARCHAR2(25),
-    numero_telefone VARCHAR2(25) CONSTRAINT nn_num_telefone NOT NULL,
-    id_contato NUMBER(9) CONSTRAINT fk_contato_telefone REFERENCES contato(id_contato) CONSTRAINT nn_contato_telefone NOT NULL
-);
-
-CREATE TABLE email (
-    id_email NUMBER(9) CONSTRAINT pk_id_email PRIMARY KEY,
-    endereco_email VARCHAR2(255) CONSTRAINT uk_end_email UNIQUE CONSTRAINT nn_end_email NOT NULL,
-    id_contato NUMBER(9) CONSTRAINT fk_contato_email REFERENCES contato(id_contato) CONSTRAINT nn_contato_email NOT NULL
+CREATE TABLE forma_contato (
+    id_forma_contato NUMBER(9) CONSTRAINT pk_id_forma_contato PRIMARY KEY,
+    id_tipo_contato NUMBER(9) CONSTRAINT fk_tp_ctt_forma_contato REFERENCES tipo_contato(id_tipo_contato) CONSTRAINT nn_tp_ctt_forma_contato NOT NULL,
+    valor_forma_contato VARCHAR2(255) CONSTRAINT nn_vlr_forma_contato NOT NULL,
+    id_pessoa NUMBER(9) CONSTRAINT fk_pessoa_forma_contato REFERENCES pessoa(id_pessoa) CONSTRAINT nn_pessoa_forma_contato NOT NULL
 );
 
 CREATE TABLE tag (
@@ -87,10 +79,9 @@ CREATE TABLE cotacao (
     id_cotacao NUMBER(9) CONSTRAINT pk_id_cotacao PRIMARY KEY,
     data_abertura_cotacao DATE CONSTRAINT nn_dt_cotacao NOT NULL,
     id_comprador NUMBER(9) CONSTRAINT fk_comprador_cotacao REFERENCES usuario(id_usuario) CONSTRAINT nn_comprador_cotacao NOT NULL,
-    id_fornecedor NUMBER(9) CONSTRAINT fk_fornecedor_cotacao REFERENCES usuario(id_usuario),
     id_produto NUMBER(9) CONSTRAINT fk_produto_cotacao REFERENCES produto(id_produto) CONSTRAINT nn_produto_cotacao NOT NULL,
     quantidade_produto NUMBER(8,2) CONSTRAINT nn_qtd_produto NOT NULL,
-    valor_cotacao NUMBER(8,2) CONSTRAINT nn_vlr_cotacao NOT NULL,
+    valor_produto NUMBER(8,2) CONSTRAINT nn_vlr_produto NOT NULL,
     id_status NUMBER(9) CONSTRAINT fk_status_cotacao REFERENCES status(id_status) CONSTRAINT nn_status_cotacao NOT NULL,
     prioridade_entrega NUMBER(1) CONSTRAINT nn_pri_entr_cotacao NOT NULL,
     prioridade_qualidade NUMBER(1) CONSTRAINT nn_pri_qual_cotacao NOT NULL,
@@ -106,7 +97,6 @@ CREATE TABLE avaliacao (
     nota_entrega_avaliacao NUMBER(1) CONSTRAINT nn_nota_entr_avaliacao NOT NULL, 
     nota_qualidade_avaliacao NUMBER(1) CONSTRAINT nn_nota_qual_avaliacao NOT NULL,
     nota_preco_avaliacao NUMBER(1) CONSTRAINT nn_nota_prec_avaliacao NOT NULL,
-    compra_finalizada NUMBER(1) CONSTRAINT nn_compra_fin_avaliacao NOT NULL,
     descricao_avaliacao VARCHAR2(255)
 );
 
@@ -116,11 +106,12 @@ CREATE TABLE historico (
     data_historico DATE CONSTRAINT nn_dt_historico NOT NULL,
     id_status NUMBER(9) CONSTRAINT fk_status_historico REFERENCES status(id_status) CONSTRAINT nn_status_historico NOT NULL,
     id_fornecedor NUMBER(9) CONSTRAINT fk_fornecedor_historico REFERENCES usuario(id_usuario) CONSTRAINT nn_fornecedor_historico NOT NULL,
+    valor_ofertado_historico NUMBER(8,2),
     recusado_por_produto NUMBER(1) CONSTRAINT nn_rec_prod_historico NOT NULL,
     recusado_por_quantidade NUMBER(1) CONSTRAINT nn_rec_qtd_historico NOT NULL,
     recusado_por_preco NUMBER(1) CONSTRAINT nn_rec_prec_historico NOT NULL,
     recusado_por_prazo NUMBER(1) CONSTRAINT nn_rec_praz_historico NOT NULL,
-    descricao_historio VARCHAR2(255)
+    descricao_historico VARCHAR2(255)
 );
 
 -- 02. INSERTS NAS TABELAS:
@@ -142,23 +133,17 @@ INSERT INTO usuario VALUES (3, 'adm@kabum.com.br', 'kabuuuuum', 3);
 INSERT INTO usuario VALUES (4, 'operacional@kuaracapital.com', 'farialima', 4);
 INSERT INTO usuario VALUES (5, 'magalu@magalu.com.br', 'vempromagalu', 5);
 
-INSERT INTO contato VALUES (1, 'Kaue Caponero', 1);
-INSERT INTO contato VALUES (2, 'Mariana Santos', 1);
-INSERT INTO contato VALUES (3, 'Natan Cruz', 4);
-INSERT INTO contato VALUES (4, 'Gustavo Sorrilha', 4);
-INSERT INTO contato VALUES (5, 'Vitor Rubim', 4);
+INSERT INTO tipo_contato VALUES (1, 'Email');
+INSERT INTO tipo_contato VALUES (2, 'Telefone');
+INSERT INTO tipo_contato VALUES (3, 'Celular');
+INSERT INTO tipo_contato VALUES (4, 'Whatsapp');
+INSERT INTO tipo_contato VALUES (5, 'Fax');
 
-INSERT INTO telefone VALUES (1, '+55', '011', '98309-0659', 1);
-INSERT INTO telefone VALUES (2, '+55', '021', '98264-3445', 1);
-INSERT INTO telefone VALUES (3, '+1', NULL, '98105-0169', 3);
-INSERT INTO telefone VALUES (4, '+55', '083', '98000-0129', 3);
-INSERT INTO telefone VALUES (5, '+55', '011', '98308-9529', 2);
-
-INSERT INTO email VALUES (1, 'kaue@one.com.br', 1);
-INSERT INTO email VALUES (2, 'maryjane@hotmal.com', 2);
-INSERT INTO email VALUES (3, 'natan@nates.com.br', 3);
-INSERT INTO email VALUES (4, 'gustavao_vaicorinthians@gmail.com', 4);
-INSERT INTO email VALUES (5, 'vitao@rubim.dev', 5);
+INSERT INTO forma_contato VALUES (1, 1, 'kaue@oneservicos.com.br', 1);
+INSERT INTO forma_contato VALUES (2, 1, 'vendas@kalunga.com.br', 2);
+INSERT INTO forma_contato VALUES (3, 2, '(11) 3200-0000', 2);
+INSERT INTO forma_contato VALUES (4, 3, '(11) 98282-0000', 2);
+INSERT INTO forma_contato VALUES (5, 4, '(11) 98585-0000', 3);
 
 INSERT INTO tag VALUES (1, 'Periféricos');
 INSERT INTO tag VALUES (2, 'Calças');
@@ -196,51 +181,37 @@ INSERT INTO produto_tag VALUES (3, 4);
 INSERT INTO produto_tag VALUES (4, 2);
 INSERT INTO produto_tag VALUES (5, 3);
 
-INSERT INTO status VALUES (1, 'Pendente');
-INSERT INTO status VALUES (2, 'Concluído');
-INSERT INTO status VALUES (3, 'Recusado');
-INSERT INTO status VALUES (4, 'Aguardando Avaliação');
-INSERT INTO status VALUES (5, 'Exemplo 05');
+INSERT INTO status VALUES (1, 'Em Andamento');
+INSERT INTO status VALUES (2, 'Recusado');
+INSERT INTO status VALUES (3, 'Aprovado');
+INSERT INTO status VALUES (4, 'Fechado');
+INSERT INTO status VALUES (5, 'Concluído');
 
-INSERT INTO cotacao VALUES (1, TO_DATE('2023-11-13', 'YYYY-MM-DD'), 1, 3, 3, 10, 50.99, 1, 3, 1, 2, 10, NULL); 
-INSERT INTO cotacao VALUES (2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 1, 2, 2, 20, 99.90, 2, 2, 1, 3, 5, TO_DATE('2023-11-13', 'YYYY-MM-DD')); 
-INSERT INTO cotacao VALUES (3, TO_DATE('2023-11-11', 'YYYY-MM-DD'), 4, 2, 2, 50, 150.00, 3, 1, 2, 3, 2, NULL); 
-INSERT INTO cotacao VALUES (4, TO_DATE('2023-11-10', 'YYYY-MM-DD'), 4, 3, 5, 30, 2.00, 4, 2, 1, 3, 1, TO_DATE('2023-11-10', 'YYYY-MM-DD')); 
-INSERT INTO cotacao VALUES (5, TO_DATE('2023-11-09', 'YYYY-MM-DD'), 1, 5, 5, 100, 5.00, 4, 3, 1, 2, 7, NULL);
+INSERT INTO cotacao VALUES (1, TO_DATE('2023-11-13', 'YYYY-MM-DD'), 1, 1, 20, 50.99, 1, 3, 1, 2, 10, NULL); 
+INSERT INTO cotacao VALUES (2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 1, 1, 10, 69.90, 5, 2, 1, 3, 5, TO_DATE('2023-11-13', 'YYYY-MM-DD')); 
+INSERT INTO cotacao VALUES (3, TO_DATE('2023-11-11', 'YYYY-MM-DD'), 4, 3, 5, 1500.00, 1, 1, 2, 3, 2, NULL); 
+INSERT INTO cotacao VALUES (4, TO_DATE('2023-11-10', 'YYYY-MM-DD'), 4, 2, 100, 2.00, 1, 2, 1, 3, 1, NULL); 
+INSERT INTO cotacao VALUES (5, TO_DATE('2023-11-09', 'YYYY-MM-DD'), 1, 5, 2, 3.500, 5, 3, 1, 2, 7, TO_DATE('2023-11-10', 'YYYY-MM-DD'));
 
-INSERT INTO avaliacao VALUES (1, 1, TO_DATE('2023-11-13', 'YYYY-MM-DD'), 5, 3, 3, 1, 'Muito bom!');
-INSERT INTO avaliacao VALUES (2, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 3, 4, 2, 1, NULL); 
-INSERT INTO avaliacao VALUES (3, 3, TO_DATE('2023-11-11', 'YYYY-MM-DD'), 3, 1, 5, 1, 'Demora para chegar'); 
-INSERT INTO avaliacao VALUES (4, 4, TO_DATE('2023-11-10', 'YYYY-MM-DD'), 1, 1, 1, 0, 'Compra cancelada'); 
-INSERT INTO avaliacao VALUES (5, 5, TO_DATE('2023-11-09', 'YYYY-MM-DD'), 5, 5, 5, 1, 'Excelente'); 
+-- Valores inseridos somente para contemplar os 5 inserts solicitados, porém só serão avaliados as cotações de status concluído.
+INSERT INTO avaliacao VALUES (1, 1, TO_DATE('2023-11-13', 'YYYY-MM-DD'), 5, 3, 3, 'Muito bom!');
+INSERT INTO avaliacao VALUES (2, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 3, 4, 2, NULL); 
+INSERT INTO avaliacao VALUES (3, 3, TO_DATE('2023-11-11', 'YYYY-MM-DD'), 3, 1, 5, 'Demora para chegar'); 
+INSERT INTO avaliacao VALUES (4, 4, TO_DATE('2023-11-10', 'YYYY-MM-DD'), 1, 1, 1, 'Compra cancelada'); 
+INSERT INTO avaliacao VALUES (5, 5, TO_DATE('2023-11-09', 'YYYY-MM-DD'), 5, 5, 5, 'Excelente'); 
 
-INSERT INTO historico VALUES (1, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 3, 3, 0, 1, 0, 0, 'Não tenho a quantidade no momento');
-INSERT INTO historico VALUES (2, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 3, 2, 1, 1, 0, 0, 'Não trabalho mais com este produto');
-INSERT INTO historico VALUES (3, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 2, 5, 0, 0, 0, 0, NULL);
-INSERT INTO historico VALUES (4, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 4, 5, 0, 0, 0, 0, NULL);
-INSERT INTO historico VALUES (5, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 4, 1, 0, 0, 0, 0, NULL);
-
--- 03.01. CONSULTANDO USUÁRIOS, CONTATOS E TELEFONES:
-SELECT
-    u.id_usuario, 
-    u.email_usuario, 
-    c.nome_contato, 
-    t.ddi_telefone, 
-    t.ddd_telefone, 
-    t.numero_telefone
-FROM 
-    usuario u
-JOIN 
-    contato c ON u.id_usuario = c.id_usuario
-JOIN 
-    telefone t ON c.id_contato = t.id_contato;
+INSERT INTO historico VALUES (1, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 2, 3, NULL, 0, 1, 0, 0, 'Não tenho a quantidade no momento');
+INSERT INTO historico VALUES (2, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 4, 2, 59.90, 0, 0, 0, 0, NULL);
+INSERT INTO historico VALUES (3, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 5, 5, 44.50, 0, 0, 0, 0, NULL);
+INSERT INTO historico VALUES (4, 3, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 2, 5, 2000, 0, 0, 1, 0, 'Recusado Automaticamente: Preço ofertado maior do que o preço da cotação');
+INSERT INTO historico VALUES (5, 5, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 5, 1, 2999.99, 0, 0, 0, 0, NULL);
     
--- 03.02. CONSULTANDO COTAÇÕES, STATUS E AVALIAÇÕES:
+-- 03. CONSULTANDO COTAÇÕES, STATUS E AVALIAÇÕES:
 SELECT 
     c.id_cotacao, 
     c.data_abertura_cotacao, 
     c.quantidade_produto, 
-    c.valor_cotacao, 
+    c.valor_produto, 
     s.nome_status, 
     a.nota_entrega_avaliacao, 
     a.nota_qualidade_avaliacao, 
@@ -626,7 +597,6 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
-
 -- 02.03.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_usuario(
     p_id_usuario IN usuario.id_usuario%TYPE
@@ -652,16 +622,15 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.04. CONTATO:
+-- 02.04. FORMA_CONTATO:
 -- 02.04.01. INSERT E TESTE:
-CREATE OR REPLACE PROCEDURE insert_contato(
-    p_id_contato IN contato.id_contato%TYPE,
-    p_nome_contato IN contato.nome_contato%TYPE,
-    p_id_usuario IN contato.id_usuario%TYPE
+CREATE OR REPLACE PROCEDURE insert_tipo_contato(
+    p_id_tipo_contato IN tipo_contato.id_tipo_contato%TYPE,
+    p_nome_tipo_contato IN tipo_contato.nome_tipo_contato%TYPE
 ) AS
-BEGIN
-    INSERT INTO contato (id_contato, nome_contato, id_usuario)
-    VALUES (p_id_contato, p_nome_contato, p_id_usuario);
+BEGIN    
+    INSERT INTO tipo_contato (id_tipo_contato, nome_tipo_contato)
+    VALUES (p_id_tipo_contato, p_nome_tipo_contato);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -673,7 +642,7 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_contato(6, 'Contato Teste', 1);
+    insert_tipo_contato(6, 'Caixa Postal');
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
@@ -681,15 +650,14 @@ EXCEPTION
 END;
 
 -- 02.04.02. UPDATE E TESTE:
-CREATE OR REPLACE PROCEDURE update_contato(
-    p_id_contato IN contato.id_contato%TYPE,
-    p_nome_contato IN contato.nome_contato%TYPE,
-    p_id_usuario IN contato.id_usuario%TYPE
+CREATE OR REPLACE PROCEDURE update_tipo_contato(
+    p_id_tipo_contato IN tipo_contato.id_tipo_contato%TYPE,
+    p_nome_tipo_contato IN tipo_contato.nome_tipo_contato%TYPE
 ) AS
 BEGIN
-    UPDATE contato
-    SET nome_contato = p_nome_contato, id_usuario = p_id_usuario
-    WHERE id_contato = p_id_contato;
+    UPDATE tipo_contato
+    SET nome_tipo_contato = p_nome_tipo_contato
+    WHERE id_tipo_contato = p_id_tipo_contato;
 
     IF SQL%ROWCOUNT = 0 THEN
         RAISE_APPLICATION_ERROR(-20029, 'Registro não encontrado para atualização');
@@ -701,7 +669,7 @@ EXCEPTION
 END;
 
 BEGIN
-    update_contato(6, 'Contato Atualizado', 1);
+    update_tipo_contato(6, 'Tipo de Contato Atualizado');
     DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
@@ -709,12 +677,12 @@ EXCEPTION
 END;
 
 -- 02.04.03. DELETE E TESTE:
-CREATE OR REPLACE PROCEDURE delete_contato(
-    p_id_contato IN contato.id_contato%TYPE
+CREATE OR REPLACE PROCEDURE delete_tipo_contato(
+    p_id_tipo_contato IN tipo_contato.id_tipo_contato%TYPE
 ) AS
 BEGIN
-    DELETE FROM contato
-    WHERE id_contato = p_id_contato;
+    DELETE FROM tipo_contato
+    WHERE id_tipo_contato = p_id_tipo_contato;
 
     IF SQL%ROWCOUNT = 0 THEN
         RAISE_APPLICATION_ERROR(-20031, 'Registro não encontrado para exclusão');
@@ -726,37 +694,42 @@ EXCEPTION
 END;
 
 BEGIN
-    delete_contato(6);
+    delete_tipo_contato(6);
     DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.05. TELEFONE:
+-- 02.05. FORMA_CONTATO:
 -- 02.05.01. INSERT E TESTE:
-CREATE OR REPLACE PROCEDURE insert_telefone(
-    p_id_telefone IN telefone.id_telefone%TYPE,
-    p_ddi_telefone IN telefone.ddi_telefone%TYPE,
-    p_ddd_telefone IN telefone.ddd_telefone%TYPE,
-    p_numero_telefone IN telefone.numero_telefone%TYPE,
-    p_id_contato IN telefone.id_contato%TYPE
+CREATE OR REPLACE PROCEDURE insert_forma_contato(
+    p_id_forma_contato IN forma_contato.id_forma_contato%TYPE,
+    p_id_tipo_contato IN forma_contato.id_tipo_contato%TYPE,
+    p_valor_forma_contato IN forma_contato.valor_forma_contato%TYPE,
+    p_id_pessoa IN forma_contato.id_pessoa%TYPE
 ) AS
 BEGIN
-    INSERT INTO telefone (id_telefone, ddi_telefone, ddd_telefone, numero_telefone, id_contato)
-    VALUES (p_id_telefone, p_ddi_telefone, p_ddd_telefone, p_numero_telefone, p_id_contato);
+    IF p_id_tipo_contato = 1 THEN
+        IF NOT is_email_valid(p_valor_forma_contato) THEN
+            RAISE_APPLICATION_ERROR(-20025, 'E-mail inválido');
+        END IF;
+    END IF;
+    
+    INSERT INTO forma_contato (id_forma_contato, id_tipo_contato, valor_forma_contato, id_pessoa)
+    VALUES (p_id_forma_contato, p_id_tipo_contato, p_valor_forma_contato, p_id_pessoa);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20033, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20026, 'Erro de valor na inserção');
     WHEN DUP_VAL_ON_INDEX THEN
-        RAISE_APPLICATION_ERROR(-20034, 'Chave duplicada');
+        RAISE_APPLICATION_ERROR(-20027, 'Chave duplicada');
     WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20035, SQLERRM);
+        RAISE_APPLICATION_ERROR(-20028, SQLERRM);
 END;
 
 BEGIN
-    insert_telefone(6, '+55', '11', '123456789', 1);
+    insert_forma_contato(6, 1, 'kaue@kaue.com', 1);
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
@@ -764,29 +737,34 @@ EXCEPTION
 END;
 
 -- 02.05.02. UPDATE E TESTE:
-CREATE OR REPLACE PROCEDURE update_telefone(
-    p_id_telefone IN telefone.id_telefone%TYPE,
-    p_ddi_telefone IN telefone.ddi_telefone%TYPE,
-    p_ddd_telefone IN telefone.ddd_telefone%TYPE,
-    p_numero_telefone IN telefone.numero_telefone%TYPE,
-    p_id_contato IN telefone.id_contato%TYPE
+CREATE OR REPLACE PROCEDURE update_forma_contato(
+    p_id_forma_contato IN forma_contato.id_forma_contato%TYPE,
+    p_id_tipo_contato IN forma_contato.id_tipo_contato%TYPE,
+    p_valor_forma_contato IN forma_contato.valor_forma_contato%TYPE,
+    p_id_pessoa IN forma_contato.id_pessoa%TYPE
 ) AS
 BEGIN
-    UPDATE telefone
-    SET ddi_telefone = p_ddi_telefone, ddd_telefone = p_ddd_telefone, numero_telefone = p_numero_telefone, id_contato = p_id_contato
-    WHERE id_telefone = p_id_telefone;
+    IF p_id_tipo_contato = 1 THEN
+        IF NOT is_email_valid(p_valor_forma_contato) THEN
+            RAISE_APPLICATION_ERROR(-20025, 'E-mail inválido');
+        END IF;
+    END IF;
+    
+    UPDATE forma_contato
+    SET id_tipo_contato = p_id_tipo_contato, valor_forma_contato = p_valor_forma_contato, id_pessoa = p_id_pessoa
+    WHERE id_forma_contato = p_id_forma_contato;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20036, 'Registro não encontrado para atualização');
+        RAISE_APPLICATION_ERROR(-20029, 'Registro não encontrado para atualização');
     END IF;
 
 EXCEPTION
     WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20037, SQLERRM);
+        RAISE_APPLICATION_ERROR(-20030, SQLERRM);
 END;
 
 BEGIN
-    update_telefone(6, '+55', '11', '987654321', 1);
+    update_forma_contato(6, 1, 'Contatoatualizado@email.com', 1);
     DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
@@ -794,121 +772,32 @@ EXCEPTION
 END;
 
 -- 02.05.03. DELETE E TESTE:
-CREATE OR REPLACE PROCEDURE delete_telefone(
-    p_id_telefone IN telefone.id_telefone%TYPE
+CREATE OR REPLACE PROCEDURE delete_forma_contato(
+    p_id_forma_contato IN forma_contato.id_forma_contato%TYPE
 ) AS
 BEGIN
-    DELETE FROM telefone
-    WHERE id_telefone = p_id_telefone;
+    DELETE FROM forma_contato
+    WHERE id_forma_contato = p_id_forma_contato;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20038, 'Registro não encontrado para exclusão');
+        RAISE_APPLICATION_ERROR(-20031, 'Registro não encontrado para exclusão');
     END IF;
 
 EXCEPTION
     WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20039, SQLERRM);
+        RAISE_APPLICATION_ERROR(-20032, SQLERRM);
 END;
 
 BEGIN
-    delete_telefone(6);
+    delete_forma_contato(6);
     DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.06. EMAIL:
+-- 02.06. TAG:
 -- 02.06.01. INSERT E TESTE:
-CREATE OR REPLACE PROCEDURE insert_email(
-    p_id_email IN email.id_email%TYPE,
-    p_endereco_email IN email.endereco_email%TYPE,
-    p_id_contato IN email.id_contato%TYPE
-) AS
-BEGIN
-    IF NOT is_email_valid(p_endereco_email) THEN
-        RAISE_APPLICATION_ERROR(-20040, 'Endereço de e-mail inválido');
-    END IF;
-
-    INSERT INTO email (id_email, endereco_email, id_contato)
-    VALUES (p_id_email, p_endereco_email, p_id_contato);
-
-EXCEPTION
-    WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20041, 'Erro de valor na inserção');
-    WHEN DUP_VAL_ON_INDEX THEN
-        RAISE_APPLICATION_ERROR(-20042, 'Chave duplicada');
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20043, SQLERRM);
-END;
-
-BEGIN
-    insert_email(6, 'teste@exemplo.com', 1);
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
-END;
-
--- 02.06.02. UPDATE E TESTE:
-CREATE OR REPLACE PROCEDURE update_email(
-    p_id_email IN email.id_email%TYPE,
-    p_endereco_email IN email.endereco_email%TYPE,
-    p_id_contato IN email.id_contato%TYPE
-) AS
-BEGIN
-    IF NOT is_email_valid(p_endereco_email) THEN
-        RAISE_APPLICATION_ERROR(-20044, 'Endereço de e-mail inválido');
-    END IF;
-
-    UPDATE email
-    SET endereco_email = p_endereco_email, id_contato = p_id_contato
-    WHERE id_email = p_id_email;
-
-    IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20045, 'Registro não encontrado para atualização');
-    END IF;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20046, SQLERRM);
-END;
-
-BEGIN
-    update_email(6, 'atualizado@exemplo.com', 1);
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
-END;
-
--- 02.06.03. DELETE E TESTE:
-CREATE OR REPLACE PROCEDURE delete_email(
-    p_id_email IN email.id_email%TYPE
-) AS
-BEGIN
-    DELETE FROM email
-    WHERE id_email = p_id_email;
-
-    IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20047, 'Registro não encontrado para exclusão');
-    END IF;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20048, SQLERRM);
-END;
-
-BEGIN
-    delete_email(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
-END;
-
--- 02.07. TAG:
--- 02.07.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_tag(
     p_id_tag IN tag.id_tag%TYPE,
     p_nome_tag IN tag.nome_tag%TYPE
@@ -934,8 +823,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
-
--- 02.07.02. UPDATE E TESTE:
+-- 02.06.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_tag(
     p_id_tag IN tag.id_tag%TYPE,
     p_nome_tag IN tag.nome_tag%TYPE
@@ -962,7 +850,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.07.03. DELETE E TESTE:
+-- 02.06.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_tag(
     p_id_tag IN tag.id_tag%TYPE
 ) AS
@@ -987,8 +875,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.08. USUARIO_TAG:
--- 02.08.01. INSERT E TESTE:
+-- 02.07. USUARIO_TAG:
+-- 02.07.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_usuario_tag(
     p_id_usuario IN usuario_tag.id_usuario%TYPE,
     p_id_tag IN usuario_tag.id_tag%TYPE
@@ -1014,7 +902,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.08.02. UPDATE E TESTE:
+-- 02.07.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_usuario_tag(
     p_id_usuario_antigo IN usuario_tag.id_usuario%TYPE,
     p_id_tag_antigo IN usuario_tag.id_tag%TYPE,
@@ -1043,7 +931,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.08.03. DELETE E TESTE:
+-- 02.07.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_usuario_tag(
     p_id_usuario IN usuario_tag.id_usuario%TYPE,
     p_id_tag IN usuario_tag.id_tag%TYPE
@@ -1069,8 +957,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.09. DEPARTAMENTO:
--- 02.09.01. INSERT E TESTE:
+-- 02.08. DEPARTAMENTO:
+-- 02.08.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_departamento(
     p_id_departamento IN departamento.id_departamento%TYPE,
     p_nome_departamento IN departamento.nome_departamento%TYPE,
@@ -1097,7 +985,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.09.02. UPDATE E TESTE:
+-- 02.08.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_departamento(
     p_id_departamento IN departamento.id_departamento%TYPE,
     p_nome_departamento IN departamento.nome_departamento%TYPE,
@@ -1125,7 +1013,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.09.03. DELETE E TESTE:
+-- 02.08.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_departamento(
     p_id_departamento IN departamento.id_departamento%TYPE
 ) AS
@@ -1150,8 +1038,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.10. TAG_DEPARTAMENTO:
--- 02.10.01. INSERT E TESTE:
+-- 02.09. TAG_DEPARTAMENTO:
+-- 02.09.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_tag_departamento(
     p_id_tag IN tag_departamento.id_tag%TYPE,
     p_id_departamento IN tag_departamento.id_departamento%TYPE
@@ -1177,7 +1065,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.10.02. UPDATE E TESTE:
+-- 02.09.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_tag_departamento(
     p_id_tag_antigo IN tag_departamento.id_tag%TYPE,
     p_id_departamento_antigo IN tag_departamento.id_departamento%TYPE,
@@ -1206,7 +1094,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.10.03. DELETE E TESTE:
+-- 02.09.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_tag_departamento(
     p_id_tag IN tag_departamento.id_tag%TYPE,
     p_id_departamento IN tag_departamento.id_departamento%TYPE
@@ -1232,8 +1120,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.11. PRODUTO:
--- 02.11.01. INSERT E TESTE:
+-- 02.10. PRODUTO:
+-- 02.10.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_produto(
     p_id_produto IN produto.id_produto%TYPE,
     p_id_departamento IN produto.id_departamento%TYPE,
@@ -1265,7 +1153,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.11.02. UPDATE E TESTE:
+-- 02.10.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_produto(
     p_id_produto IN produto.id_produto%TYPE,
     p_id_departamento IN produto.id_departamento%TYPE,
@@ -1298,7 +1186,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.11.03. DELETE E TESTE:
+-- 02.10.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_produto(
     p_id_produto IN produto.id_produto%TYPE
 ) AS
@@ -1323,8 +1211,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.12. PRODUTO_TAG:
--- 02.12.01. INSERT E TESTE:
+-- 02.11. PRODUTO_TAG:
+-- 02.11.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_produto_tag(
     p_id_produto IN produto_tag.id_produto%TYPE,
     p_id_tag IN produto_tag.id_tag%TYPE
@@ -1350,7 +1238,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.12.02. UPDATE E TESTE:
+-- 02.11.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_produto_tag(
     p_id_produto_antigo IN produto_tag.id_produto%TYPE,
     p_id_tag_antigo IN produto_tag.id_tag%TYPE,
@@ -1379,8 +1267,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
-
--- 02.12.03. DELETE E TESTE:
+-- 02.11.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_produto_tag(
     p_id_produto IN produto_tag.id_produto%TYPE,
     p_id_tag IN produto_tag.id_tag%TYPE
@@ -1406,8 +1293,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.13. STATUS:
--- 02.13.01. INSERT E TESTE:
+-- 02.12. STATUS:
+-- 02.12.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_status(
     p_id_status IN status.id_status%TYPE,
     p_nome_status IN status.nome_status%TYPE
@@ -1433,7 +1320,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.13.02. UPDATE E TESTE:
+-- 02.12.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_status(
     p_id_status IN status.id_status%TYPE,
     p_nome_status IN status.nome_status%TYPE
@@ -1460,7 +1347,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.13.03. DELETE E TESTE:
+-- 02.12.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_status(
     p_id_status IN status.id_status%TYPE
 ) AS
@@ -1485,16 +1372,15 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.14. COTACAO:
--- 02.14.01. INSERT E TESTE:
+-- 02.13. COTACAO:
+-- 02.13.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_cotacao(
     p_id_cotacao IN cotacao.id_cotacao%TYPE,
     p_data_abertura_cotacao IN cotacao.data_abertura_cotacao%TYPE,
     p_id_comprador IN cotacao.id_comprador%TYPE,
-    p_id_fornecedor IN cotacao.id_fornecedor%TYPE,
     p_id_produto IN cotacao.id_produto%TYPE,
     p_quantidade_produto IN cotacao.quantidade_produto%TYPE,
-    p_valor_cotacao IN cotacao.valor_cotacao%TYPE,
+    p_valor_produto IN cotacao.valor_produto%TYPE,
     p_id_status IN cotacao.id_status%TYPE,
     p_prioridade_entrega IN cotacao.prioridade_entrega%TYPE,
     p_prioridade_qualidade IN cotacao.prioridade_qualidade%TYPE,
@@ -1503,8 +1389,8 @@ CREATE OR REPLACE PROCEDURE insert_cotacao(
     p_data_fechamento_cotacao IN cotacao.data_fechamento_cotacao%TYPE
 ) AS
 BEGIN
-    INSERT INTO cotacao (id_cotacao, data_abertura_cotacao, id_comprador, id_fornecedor, id_produto, quantidade_produto, valor_cotacao, id_status, prioridade_entrega, prioridade_qualidade, prioridade_preco, prazo_cotacao, data_fechamento_cotacao)
-    VALUES (p_id_cotacao, p_data_abertura_cotacao, p_id_comprador, p_id_fornecedor, p_id_produto, p_quantidade_produto, p_valor_cotacao, p_id_status, p_prioridade_entrega, p_prioridade_qualidade, p_prioridade_preco, p_prazo_cotacao, p_data_fechamento_cotacao);
+    INSERT INTO cotacao (id_cotacao, data_abertura_cotacao, id_comprador, id_produto, quantidade_produto, valor_produto, id_status, prioridade_entrega, prioridade_qualidade, prioridade_preco, prazo_cotacao, data_fechamento_cotacao)
+    VALUES (p_id_cotacao, p_data_abertura_cotacao, p_id_comprador, p_id_produto, p_quantidade_produto, p_valor_produto, p_id_status, p_prioridade_entrega, p_prioridade_qualidade, p_prioridade_preco, p_prazo_cotacao, p_data_fechamento_cotacao);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -1516,22 +1402,21 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_cotacao(6, SYSDATE, 1, 2, 1, 100, 500, 1, 1, 1, 1, 30, SYSDATE);
+    insert_cotacao(6, SYSDATE, 1, 1, 100, 500, 1, 1, 1, 1, 30, SYSDATE);
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.14.02. UPDATE E TESTE:
+-- 02.13.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_cotacao(
     p_id_cotacao IN cotacao.id_cotacao%TYPE,
     p_data_abertura_cotacao IN cotacao.data_abertura_cotacao%TYPE,
     p_id_comprador IN cotacao.id_comprador%TYPE,
-    p_id_fornecedor IN cotacao.id_fornecedor%TYPE,
     p_id_produto IN cotacao.id_produto%TYPE,
     p_quantidade_produto IN cotacao.quantidade_produto%TYPE,
-    p_valor_cotacao IN cotacao.valor_cotacao%TYPE,
+    p_valor_produto IN cotacao.valor_produto%TYPE,
     p_id_status IN cotacao.id_status%TYPE,
     p_prioridade_entrega IN cotacao.prioridade_entrega%TYPE,
     p_prioridade_qualidade IN cotacao.prioridade_qualidade%TYPE,
@@ -1541,7 +1426,7 @@ CREATE OR REPLACE PROCEDURE update_cotacao(
 ) AS
 BEGIN
     UPDATE cotacao
-    SET data_abertura_cotacao = p_data_abertura_cotacao, id_comprador = p_id_comprador, id_fornecedor = p_id_fornecedor, id_produto = p_id_produto, quantidade_produto = p_quantidade_produto, valor_cotacao = p_valor_cotacao, id_status = p_id_status, prioridade_entrega = p_prioridade_entrega, prioridade_qualidade = p_prioridade_qualidade, prioridade_preco = p_prioridade_preco, prazo_cotacao = p_prazo_cotacao, data_fechamento_cotacao = p_data_fechamento_cotacao
+    SET data_abertura_cotacao = p_data_abertura_cotacao, id_comprador = p_id_comprador, id_produto = p_id_produto, quantidade_produto = p_quantidade_produto, valor_produto = p_valor_produto, id_status = p_id_status, prioridade_entrega = p_prioridade_entrega, prioridade_qualidade = p_prioridade_qualidade, prioridade_preco = p_prioridade_preco, prazo_cotacao = p_prazo_cotacao, data_fechamento_cotacao = p_data_fechamento_cotacao
     WHERE id_cotacao = p_id_cotacao;
 
     IF SQL%ROWCOUNT = 0 THEN
@@ -1554,14 +1439,14 @@ EXCEPTION
 END;
 
 BEGIN
-    update_cotacao(6, SYSDATE, 1, 3, 2, 150, 750, 2, 0, 1, 0, 45, SYSDATE);
+    update_cotacao(6, SYSDATE, 1, 2, 150, 750, 2, 0, 1, 0, 45, SYSDATE);
     DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.14.03. DELETE E TESTE:
+-- 02.13.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_cotacao(
     p_id_cotacao IN cotacao.id_cotacao%TYPE
 ) AS
@@ -1586,8 +1471,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.15. AVALIACAO:
--- 02.15.01. INSERT E TESTE:
+-- 02.14. AVALIACAO:
+-- 02.14.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_avaliacao(
     p_id_avaliacao IN avaliacao.id_avaliacao%TYPE,
     p_id_cotacao IN avaliacao.id_cotacao%TYPE,
@@ -1595,12 +1480,11 @@ CREATE OR REPLACE PROCEDURE insert_avaliacao(
     p_nota_entrega_avaliacao IN avaliacao.nota_entrega_avaliacao%TYPE,
     p_nota_qualidade_avaliacao IN avaliacao.nota_qualidade_avaliacao%TYPE,
     p_nota_preco_avaliacao IN avaliacao.nota_preco_avaliacao%TYPE,
-    p_compra_finalizada IN avaliacao.compra_finalizada%TYPE,
     p_descricao_avaliacao IN avaliacao.descricao_avaliacao%TYPE
 ) AS
 BEGIN
-    INSERT INTO avaliacao (id_avaliacao, id_cotacao, data_avaliacao, nota_entrega_avaliacao, nota_qualidade_avaliacao, nota_preco_avaliacao, compra_finalizada, descricao_avaliacao)
-    VALUES (p_id_avaliacao, p_id_cotacao, p_data_avaliacao, p_nota_entrega_avaliacao, p_nota_qualidade_avaliacao, p_nota_preco_avaliacao, p_compra_finalizada, p_descricao_avaliacao);
+    INSERT INTO avaliacao (id_avaliacao, id_cotacao, data_avaliacao, nota_entrega_avaliacao, nota_qualidade_avaliacao, nota_preco_avaliacao, descricao_avaliacao)
+    VALUES (p_id_avaliacao, p_id_cotacao, p_data_avaliacao, p_nota_entrega_avaliacao, p_nota_qualidade_avaliacao, p_nota_preco_avaliacao, p_descricao_avaliacao);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -1612,14 +1496,14 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_avaliacao(6, 6, SYSDATE, 4, 5, 4, 1, 'Avaliação positiva');
+    insert_avaliacao(6, 6, SYSDATE, 4, 5, 4, 'Avaliação positiva');
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.15.02. UPDATE E TESTE:
+-- 02.14.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_avaliacao(
     p_id_avaliacao IN avaliacao.id_avaliacao%TYPE,
     p_id_cotacao IN avaliacao.id_cotacao%TYPE,
@@ -1627,12 +1511,11 @@ CREATE OR REPLACE PROCEDURE update_avaliacao(
     p_nota_entrega_avaliacao IN avaliacao.nota_entrega_avaliacao%TYPE,
     p_nota_qualidade_avaliacao IN avaliacao.nota_qualidade_avaliacao%TYPE,
     p_nota_preco_avaliacao IN avaliacao.nota_preco_avaliacao%TYPE,
-    p_compra_finalizada IN avaliacao.compra_finalizada%TYPE,
     p_descricao_avaliacao IN avaliacao.descricao_avaliacao%TYPE
 ) AS
 BEGIN
     UPDATE avaliacao
-    SET id_cotacao = p_id_cotacao, data_avaliacao = p_data_avaliacao, nota_entrega_avaliacao = p_nota_entrega_avaliacao, nota_qualidade_avaliacao = p_nota_qualidade_avaliacao, nota_preco_avaliacao = p_nota_preco_avaliacao, compra_finalizada = p_compra_finalizada, descricao_avaliacao = p_descricao_avaliacao
+    SET id_cotacao = p_id_cotacao, data_avaliacao = p_data_avaliacao, nota_entrega_avaliacao = p_nota_entrega_avaliacao, nota_qualidade_avaliacao = p_nota_qualidade_avaliacao, nota_preco_avaliacao = p_nota_preco_avaliacao, descricao_avaliacao = p_descricao_avaliacao
     WHERE id_avaliacao = p_id_avaliacao;
 
     IF SQL%ROWCOUNT = 0 THEN
@@ -1645,14 +1528,14 @@ EXCEPTION
 END;
 
 BEGIN
-    update_avaliacao(6, 6, SYSDATE, 3, 4, 5, 1, 'Avaliação atualizada');
+    update_avaliacao(6, 6, SYSDATE, 3, 4, 5, 'Avaliação atualizada');
     DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.15.03. DELETE E TESTE:
+-- 02.14.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_avaliacao(
     p_id_avaliacao IN avaliacao.id_avaliacao%TYPE
 ) AS
@@ -1677,23 +1560,24 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.16. HISTORICO:
--- 02.16.01. INSERT E TESTE:
+-- 02.15. HISTORICO:
+-- 02.15.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_historico(
     p_id_historico IN historico.id_historico%TYPE,
     p_id_cotacao IN historico.id_cotacao%TYPE,
     p_data_historico IN historico.data_historico%TYPE,
     p_id_status IN historico.id_status%TYPE,
     p_id_fornecedor IN historico.id_fornecedor%TYPE,
+    p_valor_ofertado_historico IN historico.valor_ofertado_historico%TYPE,
     p_recusado_por_produto IN historico.recusado_por_produto%TYPE,
     p_recusado_por_quantidade IN historico.recusado_por_quantidade%TYPE,
     p_recusado_por_preco IN historico.recusado_por_preco%TYPE,
     p_recusado_por_prazo IN historico.recusado_por_prazo%TYPE,
-    p_descricao_historico IN historico.descricao_historio%TYPE
+    p_descricao_historico IN historico.descricao_historico%TYPE
 ) AS
 BEGIN
-    INSERT INTO historico (id_historico, id_cotacao, data_historico, id_status, id_fornecedor, recusado_por_produto, recusado_por_quantidade, recusado_por_preco, recusado_por_prazo, descricao_historio)
-    VALUES (p_id_historico, p_id_cotacao, p_data_historico, p_id_status, p_id_fornecedor, p_recusado_por_produto, p_recusado_por_quantidade, p_recusado_por_preco, p_recusado_por_prazo, p_descricao_historico);
+    INSERT INTO historico (id_historico, id_cotacao, data_historico, id_status, id_fornecedor, valor_ofertado_historico, recusado_por_produto, recusado_por_quantidade, recusado_por_preco, recusado_por_prazo, descricao_historico)
+    VALUES (p_id_historico, p_id_cotacao, p_data_historico, p_id_status, p_id_fornecedor, p_valor_ofertado_historico, p_recusado_por_produto, p_recusado_por_quantidade, p_recusado_por_preco, p_recusado_por_prazo, p_descricao_historico);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -1705,14 +1589,14 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_historico(6, 2, SYSDATE, 1, 2, 0, 0, 0, 0, 'Histórico inicial da cotação');
+    insert_historico(6, 2, SYSDATE, 1, 2, 5.90, 0, 0, 0, 0, 'Histórico inicial da cotação');
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.16.02. UPDATE E TESTE:
+-- 02.15.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_historico(
     p_id_historico IN historico.id_historico%TYPE,
     p_id_cotacao IN historico.id_cotacao%TYPE,
@@ -1747,7 +1631,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.16.03. DELETE E TESTE:
+-- 02.15.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_historico(
     p_id_historico IN historico.id_historico%TYPE
 ) AS
@@ -1837,22 +1721,37 @@ BEGIN
 END;
 
 --------------------------------------------------------------------------------
+-- SELECTS CASO NECESSÁRIO:
+SELECT * FROM avaliacao;
+SELECT * FROM cotacao;
+SELECT * FROM departamento;
+SELECT * FROM forma_contato;
+SELECT * FROM historico;
+SELECT * FROM pessoa;
+SELECT * FROM pessoa_juridica;
+SELECT * FROM produto;
+SELECT * FROM produto_tag;
+SELECT * FROM status;
+SELECT * FROM tag;
+SELECT * FROM tag_departamento;
+SELECT * FROM tipo_contato;
+SELECT * FROM usuario;
+SELECT * FROM usuario_tag;
+
 -- DROP TABLES CASO NECESSÁRIO:
 
 DROP TABLE avaliacao CASCADE CONSTRAINTS;
-DROP TABLE contato CASCADE CONSTRAINTS;
 DROP TABLE cotacao CASCADE CONSTRAINTS;
 DROP TABLE departamento CASCADE CONSTRAINTS;
-DROP TABLE email CASCADE CONSTRAINTS;
+DROP TABLE forma_contato CASCADE CONSTRAINTS;
 DROP TABLE historico CASCADE CONSTRAINTS;
 DROP TABLE pessoa CASCADE CONSTRAINTS;
 DROP TABLE pessoa_juridica CASCADE CONSTRAINTS;
 DROP TABLE produto CASCADE CONSTRAINTS;
-DROP TABLE produto_departamento CASCADE CONSTRAINTS;
+DROP TABLE produto_tag CASCADE CONSTRAINTS;
 DROP TABLE status CASCADE CONSTRAINTS;
 DROP TABLE tag CASCADE CONSTRAINTS;
 DROP TABLE tag_departamento CASCADE CONSTRAINTS;
-DROP TABLE telefone CASCADE CONSTRAINTS;
+DROP TABLE tipo_contato CASCADE CONSTRAINTS;
 DROP TABLE usuario CASCADE CONSTRAINTS;
 DROP TABLE usuario_tag CASCADE CONSTRAINTS;
-
