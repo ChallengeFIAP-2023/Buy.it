@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <a href="https://www.youtube.com/watch?v=Np47f6JyktY" style="text-align: center; display: block;">Assista no Youtube!!</a>
+  <a href="https://www.youtube.com/watch?v=7OR--WDDkFs" target="blank" style="text-align: center; display: block;">Assista no Youtube!!</a>
 </p>
 
 <br />
