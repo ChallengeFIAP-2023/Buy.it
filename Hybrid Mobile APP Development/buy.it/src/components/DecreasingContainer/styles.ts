@@ -19,7 +19,7 @@ export const Header = styled.View`
   margin-top: 25px;
 `;
 
-export const Container = styled.View`
+export const Container = styled.ScrollView`
 
   flex: 1;
 

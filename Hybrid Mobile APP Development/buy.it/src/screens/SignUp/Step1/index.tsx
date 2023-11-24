@@ -10,7 +10,7 @@ import { useState } from "react";
 
 import { ArrowRight } from "phosphor-react-native";
   
-  export function Step1() {
+  export function Step1({ navigation }) {
 
     const [isSupplier, setSupplier] = useState(false)
 
@@ -40,6 +40,7 @@ import { ArrowRight } from "phosphor-react-native";
             size="XL"
             icon={<ArrowRight color={'#fff'} weight="bold" />}
             bottom
+            onPress={() => navigation.navigate("Step2")}
         />
       </Container>
     );

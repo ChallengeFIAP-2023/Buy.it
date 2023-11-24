@@ -1,3 +1,4 @@
+export { Chip } from './Chip';
 export { Loading } from './Loading';
 export { Header } from './Header';
 export { StatusBar } from './StatusBar';

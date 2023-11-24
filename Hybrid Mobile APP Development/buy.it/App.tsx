@@ -15,6 +15,7 @@ import { Loading } from '@components/Loading';
 // Screen import
 import { Login } from "@screens/Login";
 import { Step1 } from "@screens/SignUp/Step1";
+import { Step2 } from "@screens/SignUp/Step2";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -41,6 +42,7 @@ export default function App() {
         <Stack.Navigator initialRouteName="Login" screenOptions={{ headerShown: false }}>
           <Stack.Screen name="Login" component={Login} />
           <Stack.Screen name="Step1" component={Step1} />
+          <Stack.Screen name="Step2" component={Step2} />
         </Stack.Navigator>
       </NavigationContainer>
     </ThemeProvider>
