@@ -227,13 +227,13 @@ $ yarn start
   - **Descrição**: Representa uma pessoa jurídica, que pode ser um fornecedor.
   - **Chave primária**: `id_pj`
   - **Relacionamento**: Cada `id_pessoa` de `Pessoa` corresponde a um `id_pj` em `Pessoa Jurídica`.
-  - **Restrições**: `cnpj_pj` deve ser único e não nulo; `is_fornecedor` e `id_pessoa` não podem ser nulos.
+  - **Restrições**: `cnpj_pj` e `id_pessoa` devem ser únicos e não nulos; `is_fornecedor` não pode ser nulos.
   
   #### 3. Usuário
   - **Descrição**: Armazena informações dos usuários.
   - **Chave primária**: `id_usuario`
   - **Relacionamento**: Cada `id_pessoa` de `Pessoa` corresponde a um `id_usuario` em `Usuário`.
-  - **Restrições**: `email_usuario` deve ser único e não nulo; `senha_usuario` e `id_pessoa` não podem ser nulos.
+  - **Restrições**: `id_pessoa` e  `email_usuario` devem ser únicos e não nulos; `senha_usuario` não pode ser nulo.
   
   #### 4. Forma_Contato
   - **Descrição**: Armazena informações de formas de contato.
@@ -284,13 +284,13 @@ $ yarn start
   - **Descrição**: Armazena avaliações das cotações.
   - **Chave primária**: `id_avaliacao`
   - **Relacionamento**: Relacionado com `Cotação` através de `id_cotacao`.
-  - **Restrições**: Várias colunas não podem ser nulas, incluindo `data_avaliacao` e notas de avaliação.
+  - **Restrições**: `id_cotacao` deve ser único e não nulo; `data_avaliacao` e notas de avaliação não podem ser nulos.
   
   #### 14. Histórico
   - **Descrição**: Armazena o histórico das cotações.
   - **Chave primária**: `id_historico`
-  - **Relacionamento**: Relacionado com `Cotação` e `Status`.
-  - **Restrições**: Várias colunas não podem ser nulas, incluindo `data_historico`, `id_status`, `id_fornecedor`, e informações de recusa.
+  - **Relacionamento**: Relacionado com `Usuario`, `Cotação` e `Status`.
+  - **Restrições**: Várias colunas não podem ser nulas, incluindo `data_historico`, `id_status`, `id_fornecedor`, `id_cotacao` e informações de recusa não podem ser nulos.
   <br />
   </details>
 
