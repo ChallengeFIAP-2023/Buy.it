@@ -26,6 +26,7 @@ export default {
   FONT_FAMILY: {
     RALEWAY: {
       REGULAR: "Raleway-Regular",
+      SEMIBOLD: "Raleway-Semibold",
       BOLD: "Raleway-Bold",
     },
 

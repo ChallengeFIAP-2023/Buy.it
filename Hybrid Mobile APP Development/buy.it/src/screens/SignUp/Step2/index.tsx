@@ -13,7 +13,7 @@ import {
 import { Container, Fieldset, WrapChip } from './styles';
 import { ArrowRight } from "phosphor-react-native";
 
-export function Step2({ navigation }) {
+export function Step2({ navigation }: any) {
 
   return (
     <Container>
@@ -69,7 +69,7 @@ export function Step2({ navigation }) {
         size="XL"
         icon={<ArrowRight color={'#fff'} weight="bold" />}
         bottom
-        onPress={() => navigation.navigate("Step2")}
+        onPress={() => navigation.navigate("Step3")}
       />
     </Container>
   );

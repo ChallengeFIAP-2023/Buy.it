@@ -10,7 +10,7 @@ import { useState } from "react";
 
 import { ArrowRight } from "phosphor-react-native";
   
-  export function Step1({ navigation }) {
+  export function Step1({ navigation }: any) {
 
     const [isSupplier, setSupplier] = useState(false)
 

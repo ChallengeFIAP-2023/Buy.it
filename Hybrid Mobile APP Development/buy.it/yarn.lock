@@ -8337,6 +8337,11 @@ react-lifecycles-compat@2.0.0:
   resolved "https://registry.yarnpkg.com/react-lifecycles-compat/-/react-lifecycles-compat-2.0.0.tgz#71d9c4cde47114c4102454f76da055c2bc48c948"
   integrity sha512-txfpPCQYiazVdcbMRhatqWKcAxJweUu2wDXvts5/7Wyp6+Y9cHojqXHsLPEckzutfHlxZhG8Oiundbmp8Fd6eQ==
 
+react-native-input-select@^1.3.2:
+  version "1.3.2"
+  resolved "https://registry.yarnpkg.com/react-native-input-select/-/react-native-input-select-1.3.2.tgz#72e7c2641629abed1148434657209e744ea70875"
+  integrity sha512-XUcO3xYc3N8Fw0EgdwpJbd245HBLWsM0qqlY/BY3GRJdz8+g+1pON4od4QFo20WEsF36vFz4xlTSFIenj57USA==
+
 react-native-navigation@^7.37.1-hotfix.1:
   version "7.37.1-hotfix.1"
   resolved "https://registry.yarnpkg.com/react-native-navigation/-/react-native-navigation-7.37.1-hotfix.1.tgz#a9c19e513d6c872a47cdf9672befe80d97d3718f"

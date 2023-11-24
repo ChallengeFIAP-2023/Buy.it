@@ -11,7 +11,7 @@ import {
 // Style import
 import { Container, Fieldset, RegisterText, Touchable, RegisterTextBold } from './styles';
 
-export function Login({ navigation }) {
+export function Login({ navigation }: any) {
 
   return (
     <Container>
