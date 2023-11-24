@@ -234,59 +234,64 @@ $ yarn start
   - **Chave primária**: `id_usuario`
   - **Relacionamento**: Cada `id_pessoa` de `Pessoa` corresponde a um `id_usuario` em `Usuário`.
   - **Restrições**: `id_pessoa` e  `email_usuario` devem ser únicos e não nulos; `senha_usuario` não pode ser nulo.
+
+  #### 4. Tipo_Contato
+  - **Descrição**: Armazena informações do tipo de contato.
+  - **Chave primária**: `id_tipo_contato`
+  - **Restrição**: `nome_tipo_contato` deve ser único e não nulo.
   
-  #### 4. Forma_Contato
+  #### 5. Forma_Contato
   - **Descrição**: Armazena informações de formas de contato.
   - **Chave primária**: `id_forma_contato`
-  - **Relacionamento**: Relacionado com `Pessoa` através de `id_pessoa`.
-  - **Restrição**: `valor_forma_contato` deve ser único e não nulo; `tipo_forma_contato` e `id_pessoa` não podem ser nulos.
+  - **Relacionamento**: Relacionado com `Pessoa` e `Tipo_Contato`.
+  - **Restrição**:  `id_tipo_contato` deve ser único e não nulo; `id_pessoa` e `valor_forma_contato` não podem ser nulos.
   
-  #### 5. Tag
+  #### 6. Tag
   - **Descrição**: Armazena etiquetas para categorização.
   - **Chave primária**: `id_tag`
   - **Restrição**: `nome_tag` deve ser único e não nulo.
   
-  #### 6. Usuário Tag
+  #### 7. Usuário Tag
   - **Descrição**: Associa usuários a tags.
   - **Relacionamento**: Relaciona `Usuário` com `Tag`.
   
-  #### 7. Departamento
+  #### 8. Departamento
   - **Descrição**: Armazena informações dos departamentos.
   - **Chave primária**: `id_departamento`
   - **Restrição**: `nome_departamento` deve ser único e não nulo.
   
-  #### 8. Tag Departamento
+  #### 9. Tag Departamento
   - **Descrição**: Associa tags a departamentos.
   - **Relacionamento**: Relaciona `Tag` com `Departamento`.
   
-  #### 9. Produto
+  #### 10. Produto
   - **Descrição**: Armazena informações dos produtos.
   - **Chave primária**: `id_produto`
   - **Relacionamento**: Relacionado com `Departamento` através de `id_departamento`.
   - **Restrição**: `nome_produto` não pode ser nulo.
   
-  #### 10. Produto Tag
+  #### 11. Produto Tag
   - **Descrição**: Associa produtos a tags.
   - **Relacionamento**: Relaciona `Produto` com `Tag`.
   
-  #### 11. Status
+  #### 12. Status
   - **Descrição**: Armazena diferentes estados para cotações e históricos.
   - **Chave primária**: `id_status`
   - **Restrição**: `nome_status` deve ser único e não nulo.
   
-  #### 12. Cotação
+  #### 13. Cotação
   - **Descrição**: Armazena informações de cotações.
   - **Chave primária**: `id_cotacao`
   - **Relacionamentos**: Relacionado com `Usuário`, `Produto` e `Status`.
   - **Restrições**: Nenhuma informação pode ser nula, com exceção da `data_fechamento_cotacao`.
   
-  #### 13. Avaliação
+  #### 14. Avaliação
   - **Descrição**: Armazena avaliações das cotações.
   - **Chave primária**: `id_avaliacao`
   - **Relacionamento**: Relacionado com `Cotação` através de `id_cotacao`.
   - **Restrições**: `id_cotacao` deve ser único e não nulo; `data_avaliacao` e notas de avaliação não podem ser nulos.
   
-  #### 14. Histórico
+  #### 15. Histórico
   - **Descrição**: Armazena o histórico das cotações.
   - **Chave primária**: `id_historico`
   - **Relacionamento**: Relacionado com `Usuario`, `Cotação` e `Status`.
