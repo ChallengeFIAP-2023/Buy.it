@@ -127,7 +127,7 @@ export function Step3({ navigation }: any) {
         size="XL"
         icon={<ArrowRight color={'#fff'} weight="bold" />}
         bottom
-        onPress={() => navigation.navigate("Step2")}
+        onPress={() => navigation.navigate("Step4")}
       />
 
     </Container>

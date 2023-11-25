@@ -3,10 +3,11 @@ import styled from 'styled-components/native';
 interface Props {
   size: 'SM' | 'MD' | 'LG' | 'XL' | 'XXL';
   bottom?: boolean;
+  backgroundColor?: string;
 }
 
 export const ButtonContainer = styled.TouchableOpacity<Props>`
-  background-color: ${({ theme }) => theme.COLORS.PRIMARY};
+  background-color: ${({ backgroundColor }) => backgroundColor};
   display: flex;
   flex-direction: row;
   align-items: center;
