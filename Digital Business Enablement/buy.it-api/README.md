@@ -1,179 +1,148 @@
 # Documentação das Classes
 
-## Classe `Telefone`
-
-Representa um tipoContato no sistema.
-
-**Atributos:**
-- `id_telefone` (NUMBER): Identificador do tipoContato.
-- `ddi_telefone` (VARCHAR): DDI do tipoContato.
-- `ddd_telefone` (VARCHAR): DDD do tipoContato.
-- `numero_telefone` (VARCHAR): Número do tipoContato.
-- `id_contato` (NUMBER): Identificador do contato associado.
-- `fk_Contato_id_contato` (NUMBER): Chave estrangeira para o contato.
-
-## Classe `Contato`
-
-Representa um contato no sistema.
-
-**Atributos:**
-- `id_contato` (NUMBER): Identificador do contato.
-- `nome_contato` (VARCHAR): Nome do contato.
-- `id_usuario` (NUMBER): Identificador do usuário associado.
-- `fk_Usuario_id_usuario` (NUMBER): Chave estrangeira para o usuário.
-
-## Classe `Email`
-
-Representa um email no sistema.
-
-**Atributos:**
-- `id_email` (NUMBER): Identificador do email.
-- `endereco_email` (VARCHAR): Endereço de email.
-- `id_contato` (NUMBER): Identificador do contato associado.
-- `fk_Contato_id_contato` (NUMBER): Chave estrangeira para o contato.
-
-## Classe `Pessoa_Juridica`
-
-Representa uma pessoa jurídica no sistema.
-
-**Atributos:**
-- `id_pj` (NUMBER): Identificador da pessoa jurídica.
-- `is_fornecedor_pj` (NUMBER): Indica se é fornecedor (0 para não, 1 para sim).
-- `cnpj_pj` (CHAR): CNPJ da pessoa jurídica.
-- `fk_Pessoa_id_pessoa` (NUMBER): Chave estrangeira para a pessoa.
+Este documento descreve as classes (tabelas) e seus atributos para o sistema definido pelo DDL fornecido.
 
 ## Classe `Pessoa`
 
 Representa uma pessoa no sistema.
 
 **Atributos:**
-- `id_pessoa` (NUMBER): ID único da pessoa.
-- `nome_pessoa` (VARCHAR): Nome da pessoa.
-- `imagem_pessoa` (VARCHAR): URL da imagem da pessoa.
+- `id_pessoa` (NUMBER(9)): Identificador único da pessoa.
+- `nome_pessoa` (VARCHAR2(255)): Nome da pessoa.
+- `imagem_pessoa` (VARCHAR2(255)): URL da imagem da pessoa.
+
+## Classe `Pessoa_Juridica`
+
+Representa uma entidade jurídica no sistema.
+
+**Atributos:**
+- `id_pj` (NUMBER(9)): Identificador único da pessoa jurídica.
+- `cnpj_pj` (CHAR(18)): CNPJ da pessoa jurídica.
+- `is_fornecedor` (NUMBER(1)): Indicador se a entidade é fornecedora (0 = não, 1 = sim).
+- `id_pessoa` (NUMBER(9)): Identificador da pessoa associada.
 
 ## Classe `Usuario`
 
-Representa um usuário no sistema.
+Representa um usuário do sistema.
 
 **Atributos:**
-- `id_usuario` (NUMBER): ID único do usuário.
-- `email_usuario` (VARCHAR): Endereço de e-mail do usuário.
-- `senha_usuario` (VARCHAR): Senha do usuário.
-- `id_pessoa` (NUMBER): ID da pessoa associada ao usuário.
+- `id_usuario` (NUMBER(9)): Identificador único do usuário.
+- `email_usuario` (VARCHAR2(255)): Endereço de e-mail do usuário.
+- `senha_usuario` (VARCHAR2(255)): Senha do usuário.
+- `id_pessoa` (NUMBER(9)): Identificador da pessoa associada ao usuário.
 
 ## Classe `Usuario_Tag`
 
-Representa a relação entre usuários e tags.
+Representa a associação entre um usuário e suas tags no sistema.
 
 **Atributos:**
-- `fk_Usuario_id_usuario` (NUMBER): ID do usuário.
-- `fk_Tag_id_tag` (NUMBER): ID da tag.
+- `id_usuario` (NUMBER(9)): Identificador do usuário.
+- `id_tag` (NUMBER(9)): Identificador da tag.
+
+## Classe `Tipo_Contato`
+
+Representa um tipo de contato no sistema.
+
+**Atributos:**
+- `id_tipo_contato` (NUMBER(9)): Identificador único do tipo de contato.
+- `nome_tipo_contato` (VARCHAR2(255)): Nome do tipo de contato.
+
+## Classe `Forma_Contato`
+
+Representa uma forma de contato associada a uma pessoa.
+
+**Atributos:**
+- `id_forma_contato` (NUMBER(9)): Identificador único da forma de contato.
+- `id_tipo_contato` (NUMBER(9)): Identificador do tipo de contato relacionado.
+- `valor_forma_contato` (VARCHAR2(255)): Valor da forma de contato.
+- `id_pessoa` (NUMBER(9)): Identificador da pessoa associada.
 
 ## Classe `Tag`
 
 Representa uma tag no sistema.
 
 **Atributos:**
-- `id_tag` (NUMBER): ID único da tag.
-- `nome_tag` (VARCHAR): Nome da tag.
-
-## Classe `Tag_Departamento`
-
-Representa a relação entre tags e departamentos.
-
-**Atributos:**
-- `fk_Departamento_id_departamento` (NUMBER): ID do departamento.
-- `fk_Tag_id_tag` (NUMBER): ID da tag.
+- `id_tag` (NUMBER(9)): Identificador único da tag.
+- `nome_tag` (VARCHAR2(255)): Nome da tag.
 
 ## Classe `Departamento`
 
-Representa um departamento no sistema.
+Representa um departamento dentro da organização.
 
 **Atributos:**
-- `id_departamento` (NUMBER): ID único do departamento.
-- `nome_departamento` (VARCHAR): Nome do departamento.
-- `icone_departamento` (VARCHAR): URL do ícone do departamento.
-
-## Classe `Produto_Departamento`
-
-Representa a relação entre produtos e departamentos.
-
-**Atributos:**
-- `fk_Produto_id_produto` (NUMBER): ID do produto.
-- `fk_Departamento_id_departamento` (NUMBER): ID do departamento.
+- `id_departamento` (NUMBER(9)): Identificador único do departamento.
+- `nome_departamento` (VARCHAR2(255)): Nome do departamento.
+- `icone_departamento` (VARCHAR2(255)): URL do ícone do departamento.
 
 ## Classe `Produto`
 
 Representa um produto no sistema.
 
 **Atributos:**
-- `id_produto` (NUMBER): Identificador único do produto.
-- `nome_produto` (VARCHAR): Nome do produto.
-- `marca_produto` (VARCHAR): Marca do produto.
-- `cor_produto` (VARCHAR): Cor do produto.
-- `tamanho_produto` (VARCHAR): Tamanho do produto.
-- `material_produto` (VARCHAR): Material do produto.
-- `observacao_produto` (VARCHAR): Observações adicionais sobre o produto.
-
-## Classe `Cotacao`
-
-Representa uma cotação de compra ou venda de um produto.
-
-**Atributos:**
-- `id_cotacao` (NUMBER): Identificador único da cotação.
-- `data_abertura_cotacao` (DATE): Data de abertura da cotação.
-- `id_comprador` (NUMBER): Identificador do comprador.
-- `id_fornecedor` (NUMBER): Identificador do fornecedor.
-- `id_produto` (NUMBER): Identificador do produto cotado.
-- `quantidade_produto` (NUMBER): Quantidade do produto cotado.
-- `valor_cotacao` (NUMBER): Valor da cotação.
-- `id_status` (NUMBER): Status da cotação.
-- `prioridade_entrega` (NUMBER): Prioridade de entrega.
-- `prioridade_qualidade` (NUMBER): Prioridade de qualidade.
-- `prioridade_preco` (NUMBER): Prioridade de preço.
-- `prazo_cotacao` (NUMBER): Prazo para a cotação.
-- `data_fechamento_cotacao` (DATE): Data de fechamento da cotação.
-- `fk_Usuario_id_usuario` (NUMBER): Chave estrangeira para o usuário.
-- `fk_Status_id_status` (NUMBER): Chave estrangeira para o status.
-- `fk_Produto_id_produto` (NUMBER): Chave estrangeira para o produto.
-
-## Classe `Historico`
-
-Representa o histórico de cotações.
-
-**Atributos:**
-- `id_historico` (NUMBER(9)): ID primário do histórico.
-- `id_cotacao` (NUMBER(9)): ID da cotação relacionada.
-- `id_status` (NUMBER(9)): ID do status atual da cotação.
-- `recusado_por_produto` (NUMBER(1)): Indica se a cotação foi recusada por questões relativas ao produto.
-- `recusado_por_quantidade` (NUMBER(1)): Indica se a cotação foi recusada por questões de quantidade.
-- `recusado_por_preco` (NUMBER(1)): Indica se a cotação foi recusada por questões de preço.
-- `recusado_por_prazo` (NUMBER(1)): Indica se a cotação foi recusada por questões de prazo.
-- `descricao_historico` (VARCHAR(255)): Descrição do registro no histórico.
-- `data_historico` (DATE): Data do registro no histórico.
-- `fk_Cotacao_id_cotacao` (NUMBER(9)): Chave estrangeira referenciando a cotação.
-- `fk_Status_id_status` (NUMBER(9)): Chave estrangeira referenciando o status.
+- `id_produto` (NUMBER(9)): Identificador único do produto.
+- `id_departamento` (NUMBER(9)): Identificador do departamento associado.
+- `nome_produto` (VARCHAR2(255)): Nome do produto.
+- `marca_produto` (VARCHAR2(255)): Marca do produto.
+- `cor_produto` (VARCHAR2(255)): Cor do produto.
+- `tamanho_produto` (VARCHAR2(255)): Tamanho do produto.
+- `material_produto` (VARCHAR2(255)): Material do produto.
+- `observacao_produto` (VARCHAR2(255)): Observações adicionais sobre o produto.
 
 ## Classe `Status`
 
-Representa o status de uma cotação ou pedido.
+Representa o status de um processo ou atividade no sistema.
 
 **Atributos:**
-- `id_status` (NUMBER(9)): ID primário do status.
-- `nome_status` (VARCHAR(255)): Nome do status.
+- `id_status` (NUMBER(9)): Identificador único do status.
+- `nome_status` (VARCHAR2(255)): Nome do status.
+
+## Classe `Cotacao`
+
+Representa uma cotação para compra ou venda de produtos no sistema.
+
+**Atributos:**
+- `id_cotacao` (NUMBER(9)): Identificador único da cotação.
+- `data_abertura_cotacao` (DATE): Data de abertura da cotação.
+- `id_comprador` (NUMBER(9)): Identificador do usuário que é o comprador.
+- `id_produto` (NUMBER(9)): Identificador do produto cotado.
+- `quantidade_produto` (NUMBER(8,2)): Quantidade do produto na cotação.
+- `valor_produto` (NUMBER(8,2)): Valor proposto na cotação.
+- `id_status` (NUMBER(9)): Identificador do status da cotação.
+- `prioridade_entrega` (NUMBER(1)): Prioridade de entrega (em escala definida).
+- `prioridade_qualidade` (NUMBER(1)): Prioridade de qualidade (em escala definida).
+- `prioridade_preco` (NUMBER(1)): Prioridade de preço (em escala definida).
+- `prazo_cotacao` (NUMBER(3)): Prazo em dias para a cotação.
+- `data_fechamento_cotacao` (DATE): Data de fechamento da cotação.
 
 ## Classe `Avaliacao`
 
-Representa uma avaliação feita por um usuário a uma cotação.
+Representa uma avaliação feita a uma cotação no sistema.
 
 **Atributos:**
-- `id_avaliacao` (int): ID da avaliação.
-- `descricao_avaliacao` (String): Descrição da avaliação.
-- `nota_qualidade_avaliacao` (int): Nota de qualidade na avaliação.
-- `nota_preco_avaliacao` (int): Nota de preço na avaliação.
-- `nota_entrega_avaliacao` (int): Nota de entrega na avaliação.
-- `id_cotacao` (int): ID da cotação avaliada.
-- `data_avaliacao` (Date): Data em que a avaliação foi realizada.
+- `id_avaliacao` (NUMBER(9)): Identificador único da avaliação.
+- `id_cotacao` (NUMBER(9)): Identificador da cotação avaliada.
+- `data_avaliacao` (DATE): Data da realização da avaliação.
+- `nota_entrega_avaliacao` (NUMBER(1)): Nota para a entrega na avaliação.
+- `nota_qualidade_avaliacao` (NUMBER(1)): Nota para a qualidade na avaliação.
+- `nota_preco_avaliacao` (NUMBER(1)): Nota para o preço na avaliação.
+- `descricao_avaliacao` (VARCHAR2(255)): Descrição textual da avaliação.
+
+## Classe `Historico`
+
+Representa o histórico de cotações no sistema.
+
+**Atributos:**
+- `id_historico` (NUMBER(9)): Identificador único do histórico.
+- `id_cotacao` (NUMBER(9)): Identificador da cotação associada.
+- `data_historico` (DATE): Data do registro no histórico.
+- `id_status` (NUMBER(9)): Identificador do status da cotação no histórico.
+- `id_fornecedor` (NUMBER(9)): Identificador do fornecedor envolvido.
+- `valor_ofertado_historico` (NUMBER(8,2)): Valor ofertado no histórico.
+- `recusado_por_produto` (NUMBER(1)): Indicação se a recusa foi por questões do produto.
+- `recusado_por_quantidade` (NUMBER(1)): Indicação se a recusa foi por questões de quantidade.
+- `recusado_por_preco` (NUMBER(1)): Indicação se a recusa foi por questões de preço.
+- `recusado_por_prazo` (NUMBER(1)): Indicação se a recusa foi por questões de prazo.
+- `descricao_historico` (VARCHAR2(255)): Descrição do registro no histórico.
 
 ---
 
