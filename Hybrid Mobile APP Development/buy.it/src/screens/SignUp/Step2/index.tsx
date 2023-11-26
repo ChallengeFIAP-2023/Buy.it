@@ -19,11 +19,11 @@ export function Step2({ navigation }: any) {
     <Container>
       {/* Arrumar esse dois componentes abaixo */}
       {/* <StatusBar /> */}
-      {/* <Header /> */}
+      <Header />
 
       <Highlight
         title="Dados da empresa"
-        subtitle="Passo 2 de 6"
+        subtitle="Passo 2 de 5"
       />
 
       <DecreasingContainer>

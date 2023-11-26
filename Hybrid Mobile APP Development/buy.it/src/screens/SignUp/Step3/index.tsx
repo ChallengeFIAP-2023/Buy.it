@@ -7,14 +7,15 @@ import {
   Input,
   Button,
   CustomDropdown,
-  Display
+  Display,
+  Header
 } from "@components/index";
 
 // Style import
 import { Container, Fieldset, Subtitle, WrapContacts, WrapDropdown } from './styles';
 
 import { ArrowRight } from "phosphor-react-native";
-import { FlatList, NativeSyntheticEvent, Text, TextInputChangeEventData } from "react-native";
+import { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
 
 export function Step3({ navigation }: any) {
 
@@ -61,11 +62,11 @@ export function Step3({ navigation }: any) {
     <Container>
       {/* Arrumar esse dois componentes abaixo */}
       {/* <StatusBar /> */}
-      {/* <Header /> */}
+      <Header />
 
       <Highlight
         title="Dados de contato"
-        subtitle="Passo 3 de 6"
+        subtitle="Passo 3 de 5"
       />
 
       <DecreasingContainer>

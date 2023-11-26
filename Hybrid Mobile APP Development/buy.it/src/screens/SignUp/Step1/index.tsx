@@ -1,7 +1,9 @@
 // Component import
 import {
     Highlight,
-    Button
+    Button,
+    StatusBar,
+    Header
 } from "@components/index";
 
 // Style import
@@ -18,11 +20,11 @@ import { ArrowRight } from "phosphor-react-native";
       <Container>
         {/* Arrumar esse dois componentes abaixo */}
         {/* <StatusBar /> */}
-        {/* <Header /> */}
+        <Header />
   
         <Highlight
           title="Qual a intenção da sua empresa?"
-          subtitle="Passo 1 de 6"
+          subtitle="Passo 1 de 5"
         />
 
         <Content>

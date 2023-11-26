@@ -41,7 +41,7 @@ export function Step4({ navigation }: any) {
     <Container>
       {/* Arrumar esse dois componentes abaixo */}
       {/* <StatusBar /> */}
-      {/* <Header /> */}
+      <Header />
 
       <Highlight
         title="Logo da empresa"
@@ -77,7 +77,7 @@ export function Step4({ navigation }: any) {
         size="XL"
         icon={<ArrowRight color={'#fff'} weight="bold" />}
         bottom
-        onPress={() => navigation.navigate("Step3")}
+        onPress={() => navigation.navigate("Step5")}
       />
     </Container>
   );

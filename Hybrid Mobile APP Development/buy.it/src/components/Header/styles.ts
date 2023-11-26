@@ -1,4 +1,4 @@
-import { CaretLeft } from 'phosphor-react-native';
+import { ArrowLeft } from 'phosphor-react-native';
 import styled from 'styled-components/native';
 
 // Asset import
@@ -12,6 +12,7 @@ export const Container = styled.View`
   flex-direction: row;
   align-items: center;
   justify-content: center;
+  padding: 0 30px;
 `;
 
 export const Logo = styled.Image.attrs({
@@ -25,7 +26,7 @@ export const BackButton = styled.TouchableOpacity`
   flex: 1;
 `;
 
-export const BackIcon = styled(CaretLeft).attrs(({ theme }) => ({
-  size: 36,
-  color: theme.COLORS.WHITE
+export const BackIcon = styled(ArrowLeft).attrs(({ theme }) => ({
+  size: theme.FONT_SIZE.XXL,
+  color: theme.COLORS.GRAY_300
 }))``;
