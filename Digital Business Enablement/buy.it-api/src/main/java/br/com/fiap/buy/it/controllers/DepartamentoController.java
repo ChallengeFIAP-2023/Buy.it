@@ -1,12 +1,14 @@
 package br.com.fiap.buy.it.controllers;
 
 import br.com.fiap.buy.it.model.Departamento;
-import br.com.fiap.buy.it.model.Produto;
 import br.com.fiap.buy.it.model.Tag;
 import br.com.fiap.buy.it.repository.DepartamentoRepository;
 import br.com.fiap.buy.it.repository.TagRepository;
+
 import jakarta.validation.Valid;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -21,72 +23,72 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("departamentos")
 @Slf4j
 public class DepartamentoController {
 
     @Autowired
     private DepartamentoRepository departamentoRepository;
+
     @Autowired
     private TagRepository tagRepository;
 
-    @GetMapping("/departamentos")
-    public ResponseEntity<Page<Departamento>> getAllDepartamentos(
-            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<Departamento> departamentos = departamentoRepository.findAll(pageable);
-        return ResponseEntity.ok(departamentos);
+    @GetMapping
+    public Page<Departamento> listAll(
+        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
+    ) {
+        log.info("(Departamento) - Buscando todos(as)");
+        return departamentoRepository.findAll(pageRequest);
     }
 
-    @GetMapping("/departamento/{id}")
-    public ResponseEntity<Departamento> getDepartamentoById(@PathVariable Long id) {
-        Departamento departamento = departamentoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Departamento não encontrado com ID: " + id));
-        return ResponseEntity.ok(departamento);
+    @GetMapping("{id}")
+    public ResponseEntity<Departamento> findById(@PathVariable Long id) {
+        log.info("(Departamento) - Exibindo por ID: " + id);
+        return ResponseEntity.ok(getById(id));
     }
 
-    @PostMapping("/departamento")
-    public ResponseEntity<Departamento> createDepartamento(@RequestBody @Valid Departamento departamento) {
-        Set<Tag> tagsValidadas = departamento.getTags().stream()
+    @PostMapping
+    public ResponseEntity<Departamento> create(@RequestBody @Valid Departamento newData) {
+        log.info("(Departamento) - Cadastrando: " + newData);
+
+        Set<Tag> tags = newData.getTags().stream()
                 .map(tag -> tagRepository.findById(tag.getId())
                         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Tag não encontrada com o ID: " + tag.getId())))
+                                "(Departamento) - Tag não encontrado(a) por ID: " + tag.getId())))
                 .collect(Collectors.toSet());
+        newData.setTags(tags);
 
-        departamento.setTags(tagsValidadas);
-        Departamento savedDepartamento = departamentoRepository.save(departamento);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedDepartamento);
+        Departamento savedData = departamentoRepository.save(newData);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
     }
 
-    @PutMapping("/departamento/{id}")
-    public ResponseEntity<Departamento> updateDepartamento(@PathVariable Long id, @RequestBody @Valid Departamento departamentoDetails) {
-        Departamento departamento = departamentoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Departamento não encontrado com ID: " + id));
+    @PutMapping("{id}")
+    public ResponseEntity<Departamento> update(@PathVariable Long id, @RequestBody @Valid Departamento updatedData) {
+        log.info("(Departamento) - Atualizando por ID: " + id);
+        
+        getById(id);
+        updatedData.setId(id);
 
-        departamento.setNome(departamentoDetails.getNome());
-        departamento.setIcone(departamentoDetails.getIcone());
+        Set<Tag> tags = updatedData.getTags().stream()
+                .map(tag -> tagRepository.findById(tag.getId())
+                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                                "(Departamento) - Tag não encontrado(a) por ID: " + tag.getId())))
+                .collect(Collectors.toSet());
+        updatedData.setTags(tags);
 
-        if (departamentoDetails.getTags() != null) {
-            Set<Tag> tagsValidadas = departamentoDetails.getTags().stream()
-                    .map(tag -> tagRepository.findById(tag.getId())
-                            .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                    "Tag não encontrada com o ID: " + tag.getId())))
-                    .collect(Collectors.toSet());
-
-            departamento.setTags(tagsValidadas);
-        }
-
-        Departamento updatedDepartamento = departamentoRepository.save(departamento);
-        return ResponseEntity.ok(updatedDepartamento);
+        departamentoRepository.save(updatedData);
+        return ResponseEntity.ok(updatedData);
     }
 
-    @DeleteMapping("/departamento/{id}")
-    public ResponseEntity<HttpStatus> deleteDepartamento(@PathVariable Long id) {
-        Departamento departamento = departamentoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Departamento não encontrado com ID: " + id));
-
-        departamentoRepository.delete(departamento);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Departamento> delete(@PathVariable Long id) {
+        log.info("(Departamento) - Deletando por ID: " + id);
+        departamentoRepository.delete(getById(id));
         return ResponseEntity.noContent().build();
+    }
+
+    private Departamento getById(Long id) {
+        return departamentoRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Departamento) não encontrado(a) por ID: " + id));
     }
 }

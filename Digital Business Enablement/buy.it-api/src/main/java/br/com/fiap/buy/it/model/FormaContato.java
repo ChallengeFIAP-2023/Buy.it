@@ -19,7 +19,7 @@ public class FormaContato {
     @Column(name = "ID_FORMA_CONTATO")
     private Long id;
 
-    //@NotBlank(message = "O id tipo contato é obrigatório.")
+    @NotBlank(message = "O id tipo contato é obrigatório.")
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_TIPO_CONTATO",
@@ -33,7 +33,7 @@ public class FormaContato {
     @Column(name = "VALOR_FORMA_CONTATO", nullable = false)
     private String valor;
 
-    //@NotBlank(message = "O id de pessoa é obrigatório.")
+    @NotBlank(message = "O id de pessoa é obrigatório.")
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_PESSOA",

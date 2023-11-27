@@ -1,12 +1,18 @@
 package br.com.fiap.buy.it.controllers;
 
-import br.com.fiap.buy.it.model.*;
+import br.com.fiap.buy.it.model.Cotacao;
+import br.com.fiap.buy.it.model.Historico;
+import br.com.fiap.buy.it.model.Status;
+import br.com.fiap.buy.it.model.Usuario;
 import br.com.fiap.buy.it.repository.CotacaoRepository;
 import br.com.fiap.buy.it.repository.HistoricoRepository;
 import br.com.fiap.buy.it.repository.StatusRepository;
 import br.com.fiap.buy.it.repository.UsuarioRepository;
+
 import jakarta.validation.Valid;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,93 +24,94 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
+@RequestMapping("historicos")
 @Slf4j
 public class HistoricoController {
 
     @Autowired
     private HistoricoRepository historicoRepository;
+
     @Autowired
     private UsuarioRepository usuarioRepository;
+
     @Autowired
     private CotacaoRepository cotacaoRepository;
+
     @Autowired
     private StatusRepository statusRepository;
 
-    @GetMapping("/historicos")
-    public ResponseEntity<Page<Historico>> getAllHistoricos(
-            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<Historico> historicos = historicoRepository.findAll(pageable);
-        return ResponseEntity.ok(historicos);
+    @GetMapping
+    public Page<Historico> listAll(
+        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
+    ) {
+        log.info("(Historico) - Buscando todos(as)");
+        return historicoRepository.findAll(pageRequest);
     }
 
-    @GetMapping("/historico/{id}")
-    public ResponseEntity<Historico> getHistoricoById(@PathVariable Long id) {
-        Historico historico = historicoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Histórico não encontrado"));
-        return ResponseEntity.ok(historico);
+    @GetMapping("{id}")
+    public ResponseEntity<Historico> findById(@PathVariable Long id) {
+        log.info("(Historico) - Exibindo por ID: " + id);
+        return ResponseEntity.ok(getById(id));
     }
 
-    @PostMapping("/historico")
-    public ResponseEntity<Historico> createHistorico(@RequestBody @Valid Historico historico) {
-        Cotacao cotacao = cotacaoRepository.findById(historico.getCotacao().getId())
+    @PostMapping
+    public ResponseEntity<Historico> create(@RequestBody @Valid Historico newData) {
+        log.info("(Historico) - Cadastrando: " + newData);
+
+        Cotacao cotacao = cotacaoRepository.findById(newData.getCotacao().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Cotação não encontrada com o ID: " + historico.getCotacao().getId()));
+                        "(Historico) - Cotacao não encontrado(a) por ID: " + newData.getCotacao().getId()));
+        newData.setCotacao(cotacao);
 
-        Usuario fornecedor = usuarioRepository.findById(historico.getFornecedor().getId())
+        Usuario fornecedor = usuarioRepository.findById(newData.getFornecedor().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Fornecedor não encontrado com o ID: " + historico.getFornecedor().getId()));
+                        "(Historico) - Fornecedor não encontrado(a) por ID: " + newData.getFornecedor().getId()));
+        newData.setFornecedor(fornecedor);
 
-        Status status = statusRepository.findById(historico.getStatus().getId())
+        Status status = statusRepository.findById(newData.getStatus().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Status não encontrado com o ID: " + historico.getStatus().getId()));
+                        "(Historico) - Status não encontrado(a) por ID: " + newData.getStatus().getId()));
+        newData.setStatus(status);
 
-        historico.setCotacao(cotacao);
-        historico.setFornecedor(fornecedor);
-        historico.setStatus(status);
-
-        Historico savedHistorico = historicoRepository.save(historico);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedHistorico);
+        Historico savedData = historicoRepository.save(newData);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
     }
 
-    @PutMapping("/historico/{id}")
-    public ResponseEntity<Historico> updateHistorico(@PathVariable Long id, @RequestBody @Valid Historico historicoDetails) {
-        Historico historico = historicoRepository.findById(id)
+    @PutMapping("{id}")
+    public ResponseEntity<Historico> update(@PathVariable Long id, @RequestBody @Valid Historico updatedData) {
+        log.info("(Historico) - Atualizando por ID: " + id);
+        
+        getById(id);
+        updatedData.setId(id);
+
+        Cotacao cotacao = cotacaoRepository.findById(updatedData.getCotacao().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Histórico não encontrado"));
+                        "(Historico) - Cotacao não encontrado(a) por ID: " + updatedData.getCotacao().getId()));
+        updatedData.setCotacao(cotacao);
 
-        Cotacao cotacao = cotacaoRepository.findById(historicoDetails.getCotacao().getId())
+        Usuario fornecedor = usuarioRepository.findById(updatedData.getFornecedor().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Cotação não encontrada com o ID: " + historicoDetails.getCotacao().getId()));
+                        "(Historico) - Fornecedor não encontrado(a) por ID: " + updatedData.getFornecedor().getId()));
+        updatedData.setFornecedor(fornecedor);
 
-        Usuario fornecedor = usuarioRepository.findById(historicoDetails.getFornecedor().getId())
+        Status status = statusRepository.findById(updatedData.getStatus().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Fornecedor não encontrado com o ID: " + historicoDetails.getFornecedor().getId()));
+                        "(Historico) - Status não encontrado(a) por ID: " + updatedData.getStatus().getId()));
+        updatedData.setStatus(status);
 
-        Status status = statusRepository.findById(historicoDetails.getStatus().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Status não encontrado com o ID: " + historicoDetails.getStatus().getId()));
-
-        historico.setCotacao(cotacao);
-        historico.setFornecedor(fornecedor);
-        historico.setStatus(status);
-        historico.setRecusadoPorProduto(historicoDetails.getRecusadoPorProduto());
-        historico.setRecusadoPorQuantidade(historicoDetails.getRecusadoPorQuantidade());
-        historico.setRecusadoPorPreco(historicoDetails.getRecusadoPorPreco());
-        historico.setRecusadoPorPrazo(historicoDetails.getRecusadoPorPrazo());
-        historico.setDescricao(historicoDetails.getDescricao());
-        historico.setData(historicoDetails.getData());
-        historico.setValorOfertado(historicoDetails.getValorOfertado());
-
-        final Historico updatedHistorico = historicoRepository.save(historico);
-        return ResponseEntity.ok(updatedHistorico);
+        historicoRepository.save(updatedData);
+        return ResponseEntity.ok(updatedData);
     }
 
-    @DeleteMapping("/historico/{id}")
-    public ResponseEntity<HttpStatus> deleteHistorico(@PathVariable Long id) {
-        Historico historico = historicoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Histórico não encontrado"));
-
-        historicoRepository.delete(historico);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Historico> delete(@PathVariable Long id) {
+        log.info("(Historico) - Deletando por ID: " + id);
+        historicoRepository.delete(getById(id));
         return ResponseEntity.noContent().build();
+    }
+
+    private Historico getById(Long id) {
+        return historicoRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Historico) não encontrado(a) por ID: " + id));
     }
 }

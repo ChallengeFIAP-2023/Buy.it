@@ -2,8 +2,11 @@ package br.com.fiap.buy.it.controllers;
 
 import br.com.fiap.buy.it.model.Pessoa;
 import br.com.fiap.buy.it.repository.PessoaRepository;
+
 import jakarta.validation.Valid;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -15,55 +18,55 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
+@RequestMapping("pessoas")
 @Slf4j
 public class PessoaController {
 
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    @GetMapping("/pessoas")
-    public ResponseEntity<Page<Pessoa>> getAllPessoas(
-            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<Pessoa> pessoas = pessoaRepository.findAll(pageable);
-        return ResponseEntity.ok(pessoas);
-    }
-    @GetMapping("/pessoa/{id}")
-    public ResponseEntity<Pessoa> getPessoaById(@PathVariable Long id) {
-        Pessoa pessoa = pessoaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Pessoa não encontrada com ID: " + id));
-        return ResponseEntity.ok(pessoa);
+    @GetMapping
+    public Page<Pessoa> listAll(
+        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
+    ) {
+        log.info("(Pessoa) - Buscando todos(as)");
+        return pessoaRepository.findAll(pageRequest);
     }
 
-    @PostMapping("/pessoa")
-    public ResponseEntity<Pessoa> createPessoa(@RequestBody @Valid Pessoa pessoa) {
-        Pessoa savedPessoa = pessoaRepository.save(pessoa);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedPessoa);
+    @GetMapping("{id}")
+    public ResponseEntity<Pessoa> findById(@PathVariable Long id) {
+        log.info("(Pessoa) - Exibindo por ID: " + id);
+        return ResponseEntity.ok(getById(id));
     }
 
-    @PutMapping("/pessoa/{id}")
-    public ResponseEntity<Pessoa> updatePessoa(@PathVariable Long id, @RequestBody @Valid Pessoa pessoaDetails) {
-        Pessoa pessoa = pessoaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Pessoa não encontrada com ID: " + id));
+    @PostMapping
+    public ResponseEntity<Pessoa> create(@RequestBody @Valid Pessoa newData) {
+        log.info("(Pessoa) - Cadastrando: " + newData);
 
-        pessoa.setNome(pessoaDetails.getNome());
-        pessoa.setUrlImagem(pessoaDetails.getUrlImagem());
-
-        final Pessoa updatedPessoa = pessoaRepository.save(pessoa);
-        return ResponseEntity.ok(updatedPessoa);
+        Pessoa savedData = pessoaRepository.save(newData);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
     }
 
-    @DeleteMapping("/pessoa/{id}")
-    public ResponseEntity<HttpStatus> deletePessoa(@PathVariable Long id) {
-        ResponseEntity<Pessoa> responseEntity = getPessoaById(id);
-        Pessoa pessoa = responseEntity.getBody();
+    @PutMapping("{id}")
+    public ResponseEntity<Pessoa> update(@PathVariable Long id, @RequestBody @Valid Pessoa updatedData) {
+        log.info("(Pessoa) - Atualizando por ID: " + id);
+        
+        getById(id);
+        updatedData.setId(id);
 
-        if (pessoa != null) {
-            pessoaRepository.delete(pessoa);
-            return ResponseEntity.noContent().build();
-        } else {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa não encontrada com ID: " + id);
-        }
+        pessoaRepository.save(updatedData);
+        return ResponseEntity.ok(updatedData);
+    }
+
+    @DeleteMapping("{id}")
+    public ResponseEntity<Pessoa> delete(@PathVariable Long id) {
+        log.info("(Pessoa) - Deletando por ID: " + id);
+        pessoaRepository.delete(getById(id));
+        return ResponseEntity.noContent().build();
+    }
+
+    private Pessoa getById(Long id) {
+        return pessoaRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Pessoa) não encontrado(a) por ID: " + id));
     }
 }

@@ -6,8 +6,11 @@ import br.com.fiap.buy.it.model.Tag;
 import br.com.fiap.buy.it.repository.DepartamentoRepository;
 import br.com.fiap.buy.it.repository.ProdutoRepository;
 import br.com.fiap.buy.it.repository.TagRepository;
+
 import jakarta.validation.Valid;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -18,92 +21,89 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Collections;
-import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @RestController
+@RequestMapping("produtos")
 @Slf4j
 public class ProdutoController {
 
     @Autowired
     private ProdutoRepository produtoRepository;
+
     @Autowired
     private TagRepository tagRepository;
+
     @Autowired
     private DepartamentoRepository departamentoRepository;
 
-    @GetMapping("/produtos")
-    public ResponseEntity<Page<Produto>> getAllProdutos(
-            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<Produto> produtos = produtoRepository.findAll(pageable);
-        return ResponseEntity.ok(produtos);
+    @GetMapping
+    public Page<Produto> listAll(
+        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
+    ) {
+        log.info("(Produto) - Buscando todos(as)");
+        return produtoRepository.findAll(pageRequest);
     }
 
-    @GetMapping("/produto/{id}")
-    public ResponseEntity<Produto> getProdutoById(@PathVariable Long id) {
-        Produto produto = produtoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Produto não encontrado com ID: " + id));
-        return ResponseEntity.ok(produto);
+    @GetMapping("{id}")
+    public ResponseEntity<Produto> findById(@PathVariable Long id) {
+        log.info("(Produto) - Exibindo por ID: " + id);
+        return ResponseEntity.ok(getById(id));
     }
 
-    @PostMapping("/produto")
-    public ResponseEntity<Produto> createProduto(@RequestBody @Valid Produto produto) {
-        Departamento departamento = departamentoRepository.findById(produto.getDepartamento().getId())
+    @PostMapping
+    public ResponseEntity<Produto> create(@RequestBody @Valid Produto newData) {
+        log.info("(Produto) - Cadastrando: " + newData);
+
+        Departamento departamento = departamentoRepository.findById(newData.getDepartamento().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Departamento não encontrado com o ID: " + produto.getDepartamento().getId()));
+                        "(Produto) - Departamento não encontrado(a) por ID: " + newData.getDepartamento().getId()));
+        newData.setDepartamento(departamento);
 
-        Set<Tag> tagsValidadas = produto.getTags().stream()
+        Set<Tag> tags = newData.getTags().stream()
                 .map(tag -> tagRepository.findById(tag.getId())
                         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Tag não encontrada com o ID: " + tag.getId())))
+                                "(Produto) - Tag não encontrado(a) por ID: " + tag.getId())))
                 .collect(Collectors.toSet());
+        newData.setTags(tags);
 
-        produto.setDepartamento(departamento);
-        produto.setTags(tagsValidadas);
-
-        Produto savedProduto = produtoRepository.save(produto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedProduto);
+        Produto savedData = produtoRepository.save(newData);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
     }
 
-    @PutMapping("/produto/{id}")
-    public ResponseEntity<Produto> updateProduto(@PathVariable Long id, @RequestBody @Valid Produto produtoDetails) {
-        Produto produto = produtoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Produto não encontrado com ID: " + id));
+    @PutMapping("{id}")
+    public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody @Valid Produto updatedData) {
+        log.info("(Produto) - Atualizando por ID: " + id);
+        
+        getById(id);
+        updatedData.setId(id);
 
-        Departamento departamento = departamentoRepository.findById(produtoDetails.getDepartamento().getId())
+        Departamento departamento = departamentoRepository.findById(updatedData.getDepartamento().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Departamento não encontrado com o ID: " + produtoDetails.getDepartamento().getId()));
+                        "(Produto) - Departamento não encontrado(a) por ID: " + updatedData.getDepartamento().getId()));
+        updatedData.setDepartamento(departamento);
 
-        Set<Tag> tagsValidadas = Optional.ofNullable(produtoDetails.getTags()).orElse(Collections.emptySet()).stream()
+        Set<Tag> tags = updatedData.getTags().stream()
                 .map(tag -> tagRepository.findById(tag.getId())
                         .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "Tag não encontrada com o ID: " + tag.getId())))
+                                "(Produto) - Tag não encontrado(a) por ID: " + tag.getId())))
                 .collect(Collectors.toSet());
+        updatedData.setTags(tags);
 
-        produto.setNome(produtoDetails.getNome());
-        produto.setMarca(produtoDetails.getMarca());
-        produto.setCor(produtoDetails.getCor());
-        produto.setTamanho(produtoDetails.getTamanho());
-        produto.setMaterial(produtoDetails.getMaterial());
-        produto.setObservacao(produtoDetails.getObservacao());
-        produto.setDepartamento(departamento);
-        produto.setTags(tagsValidadas);
-
-        final Produto updatedProduto = produtoRepository.save(produto);
-        return ResponseEntity.ok(updatedProduto);
+        produtoRepository.save(updatedData);
+        return ResponseEntity.ok(updatedData);
     }
 
-    @DeleteMapping("/produto/{id}")
-    public ResponseEntity<HttpStatus> deleteProduto(@PathVariable Long id) {
-        Produto produto = produtoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Produto não encontrado com ID: " + id));
-
-        produtoRepository.delete(produto);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Produto> delete(@PathVariable Long id) {
+        log.info("(Produto) - Deletando por ID: " + id);
+        produtoRepository.delete(getById(id));
         return ResponseEntity.noContent().build();
+    }
+
+    private Produto getById(Long id) {
+        return produtoRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Produto) não encontrado(a) por ID: " + id));
     }
 }

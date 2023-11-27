@@ -4,8 +4,11 @@ import br.com.fiap.buy.it.model.Avaliacao;
 import br.com.fiap.buy.it.model.Cotacao;
 import br.com.fiap.buy.it.repository.AvaliacaoRepository;
 import br.com.fiap.buy.it.repository.CotacaoRepository;
+
 import jakarta.validation.Valid;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -16,69 +19,69 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.List;
-
 @RestController
+@RequestMapping("avaliacoes")
 @Slf4j
 public class AvaliacaoController {
 
     @Autowired
     private AvaliacaoRepository avaliacaoRepository;
+
     @Autowired
     private CotacaoRepository cotacaoRepository;
 
-    @GetMapping("/avaliacoes")
-    public ResponseEntity<Page<Avaliacao>> getAllAvaliacoes(
-            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<Avaliacao> avaliacoes = avaliacaoRepository.findAll(pageable);
-        return ResponseEntity.ok(avaliacoes);
+    @GetMapping
+    public Page<Avaliacao> listAll(
+        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
+    ) {
+        log.info("(Avaliacao) - Buscando todos(as)");
+        return avaliacaoRepository.findAll(pageRequest);
     }
 
-    @GetMapping("/avaliacao/{id}")
-    public ResponseEntity<Avaliacao> getAvaliacaoById(@PathVariable Long id) {
-        Avaliacao avaliacao = avaliacaoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação não encontrada"));
-        return ResponseEntity.ok(avaliacao);
+    @GetMapping("{id}")
+    public ResponseEntity<Avaliacao> findById(@PathVariable Long id) {
+        log.info("(Avaliacao) - Exibindo por ID: " + id);
+        return ResponseEntity.ok(getById(id));
     }
 
-    @PostMapping("/avaliacao")
-    public ResponseEntity<Avaliacao> createAvaliacao(@RequestBody @Valid Avaliacao novaAvaliacao) {
-        Long idCotacao = novaAvaliacao.getCotacao().getId();
-        Cotacao cotacao = cotacaoRepository.findById(idCotacao)
+    @PostMapping
+    public ResponseEntity<Avaliacao> create(@RequestBody @Valid Avaliacao newData) {
+        log.info("(Avaliacao) - Cadastrando: " + newData);
+
+        Cotacao cotacao = cotacaoRepository.findById(newData.getCotacao().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Cotacao não encontrada com o ID: " + idCotacao));
-        novaAvaliacao.setCotacao(cotacao);
-        Avaliacao savedAvaliacao = avaliacaoRepository.save(novaAvaliacao);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedAvaliacao);
+                        "(Avaliacao) - Cotacao não encontrado(a) por ID: " + newData.getCotacao().getId()));
+        newData.setCotacao(cotacao);
+
+        Avaliacao savedData = avaliacaoRepository.save(newData);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
     }
 
-    @PutMapping("/avaliacao/{id}")
-    public ResponseEntity<Avaliacao> updateAvaliacao(@PathVariable Long id, @RequestBody @Valid Avaliacao avaliacaoDetails) {
-        Avaliacao avaliacao = avaliacaoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação não encontrada"));
+    @PutMapping("{id}")
+    public ResponseEntity<Avaliacao> update(@PathVariable Long id, @RequestBody @Valid Avaliacao updatedData) {
+        log.info("(Avaliacao) - Atualizando por ID: " + id);
+        
+        getById(id);
+        updatedData.setId(id);
 
-        Long novaCotacaoId = avaliacaoDetails.getCotacao().getId();
-        Cotacao novaCotacao = cotacaoRepository.findById(novaCotacaoId)
+        Cotacao cotacao = cotacaoRepository.findById(updatedData.getCotacao().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Cotacao não encontrada com o ID: " + novaCotacaoId));
-        avaliacao.setCotacao(novaCotacao);
+                        "(Avaliacao) - Cotacao não encontrado(a) por ID: " + updatedData.getCotacao().getId()));
+        updatedData.setCotacao(cotacao);
 
-        avaliacao.setData(avaliacaoDetails.getData());
-        avaliacao.setNotaEntrega(avaliacaoDetails.getNotaEntrega());
-        avaliacao.setNotaQualidade(avaliacaoDetails.getNotaQualidade());
-        avaliacao.setNotaPreco(avaliacaoDetails.getNotaPreco());
-        avaliacao.setDescricao(avaliacaoDetails.getDescricao());
-
-        final Avaliacao updatedAvaliacao = avaliacaoRepository.save(avaliacao);
-        return ResponseEntity.ok(updatedAvaliacao);
+        avaliacaoRepository.save(updatedData);
+        return ResponseEntity.ok(updatedData);
     }
 
-    @DeleteMapping("/avaliacao/{id}")
-    public ResponseEntity<HttpStatus> deleteAvaliacao(@PathVariable Long id) {
-        Avaliacao avaliacao = avaliacaoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Avaliação não encontrada"));
-
-        avaliacaoRepository.delete(avaliacao);
+    @DeleteMapping("{id}")
+    public ResponseEntity<Avaliacao> delete(@PathVariable Long id) {
+        log.info("(Avaliacao) - Deletando por ID: " + id);
+        avaliacaoRepository.delete(getById(id));
         return ResponseEntity.noContent().build();
+    }
+
+    private Avaliacao getById(Long id) {
+        return avaliacaoRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Avaliacao) não encontrado(a) por ID: " + id));
     }
 }

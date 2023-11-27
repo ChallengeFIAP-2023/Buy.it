@@ -6,92 +6,97 @@ import br.com.fiap.buy.it.model.TipoContato;
 import br.com.fiap.buy.it.repository.FormaContatoRepository;
 import br.com.fiap.buy.it.repository.PessoaRepository;
 import br.com.fiap.buy.it.repository.TipoContatoRepository;
+
 import jakarta.validation.Valid;
+
 import lombok.extern.slf4j.Slf4j;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.web.PageableDefault;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 
 @RestController
+@RequestMapping("formasContato")
 @Slf4j
 public class FormaContatoController {
 
     @Autowired
     private FormaContatoRepository formaContatoRepository;
+
     @Autowired
     private TipoContatoRepository tipoContatoRepository;
+
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    @GetMapping("/formaContatos")
-    public ResponseEntity<Page<FormaContato>> getAllFormaContatos(
-            @PageableDefault(size = 10, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        Page<FormaContato> formaContatos = formaContatoRepository.findAll(pageable);
-        return ResponseEntity.ok(formaContatos);
+    @GetMapping
+    public Page<FormaContato> listAll(
+        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
+    ) {
+        log.info("(FormaContato) - Buscando todos(as)");
+        return formaContatoRepository.findAll(pageRequest);
     }
 
-    @GetMapping("/formaContato/{id}")
-    public ResponseEntity<FormaContato> getFormaContatoById(@PathVariable Long id) {
-        FormaContato formaContato = formaContatoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Forma de contato não encontrada com ID: " + id));
-        return ResponseEntity.ok(formaContato);
+    @GetMapping("{id}")
+    public ResponseEntity<FormaContato> findById(@PathVariable Long id) {
+        log.info("(FormaContato) - Exibindo por ID: " + id);
+        return ResponseEntity.ok(getById(id));
     }
 
-    @PostMapping("/formaContato")
-    public ResponseEntity<FormaContato> createFormaContato(@RequestBody @Valid FormaContato formaContato) {
-        log.info("Cadastrando forma de contato: {}", formaContato);
+    @PostMapping
+    public ResponseEntity<FormaContato> create(@RequestBody @Valid FormaContato newData) {
+        log.info("(FormaContato) - Cadastrando: " + newData);
 
-        TipoContato tipoContato = tipoContatoRepository.findById(formaContato.getTipoContato().getId())
+        TipoContato tipoContato = tipoContatoRepository.findById(newData.getTipoContato().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Tipo de contato não encontrado com o ID: " + formaContato.getTipoContato().getId()));
+                        "(FormaContato) - TipoContato não encontrado(a) por ID: " + newData.getTipoContato().getId()));
+        newData.setTipoContato(tipoContato);
 
-        Pessoa pessoa = pessoaRepository.findById(formaContato.getPessoa().getId())
+        Pessoa pessoa = pessoaRepository.findById(newData.getPessoa().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Pessoa não encontrada com o ID: " + formaContato.getPessoa().getId()));
+                        "(FormaContato) - Pessoa não encontrado(a) por ID: " + newData.getPessoa().getId()));
+        newData.setPessoa(pessoa);
 
-        formaContato.setTipoContato(tipoContato);
-        formaContato.setPessoa(pessoa);
-
-        FormaContato savedFormaContato = formaContatoRepository.save(formaContato);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedFormaContato);
+        FormaContato savedData = formaContatoRepository.save(newData);
+        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
     }
 
-    @PutMapping("/formaContato/{id}")
-    public ResponseEntity<FormaContato> updateFormaContato(@PathVariable Long id, @RequestBody @Valid FormaContato formaContatoDetails) {
-        FormaContato formaContato = formaContatoRepository.findById(id)
+    @PutMapping("{id}")
+    public ResponseEntity<FormaContato> update(@PathVariable Long id, @RequestBody @Valid FormaContato updatedData) {
+        log.info("(FormaContato) - Atualizando por ID: " + id);
+        
+        getById(id);
+        updatedData.setId(id);
+
+        TipoContato tipoContato = tipoContatoRepository.findById(updatedData.getTipoContato().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Forma de contato não encontrada com ID: " + id));
+                        "(FormaContato) - TipoContato não encontrado(a) por ID: " + updatedData.getTipoContato().getId()));
+        updatedData.setTipoContato(tipoContato);
 
-        TipoContato tipoContato = tipoContatoRepository.findById(formaContatoDetails.getTipoContato().getId())
+        Pessoa pessoa = pessoaRepository.findById(updatedData.getPessoa().getId())
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Tipo de contato não encontrado com o ID: " + formaContatoDetails.getTipoContato().getId()));
+                        "(FormaContato) - Pessoa não encontrado(a) por ID: " + updatedData.getPessoa().getId()));
+        updatedData.setPessoa(pessoa);
 
-        Pessoa pessoa = pessoaRepository.findById(formaContatoDetails.getPessoa().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "Pessoa não encontrada com o ID: " + formaContatoDetails.getPessoa().getId()));
-
-        formaContato.setTipoContato(tipoContato);
-        formaContato.setValor(formaContatoDetails.getValor());
-        formaContato.setPessoa(pessoa);
-
-        final FormaContato updatedFormaContato = formaContatoRepository.save(formaContato);
-        return ResponseEntity.ok(updatedFormaContato);
+        formaContatoRepository.save(updatedData);
+        return ResponseEntity.ok(updatedData);
     }
 
-    @DeleteMapping("/formaContato/{id}")
-    public ResponseEntity<HttpStatus> deleteFormaContato(@PathVariable Long id) {
-        FormaContato formaContato = formaContatoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(
-                        HttpStatus.NOT_FOUND, "Forma de contato não encontrada com ID: " + id));
-
-        formaContatoRepository.delete(formaContato);
+    @DeleteMapping("{id}")
+    public ResponseEntity<FormaContato> delete(@PathVariable Long id) {
+        log.info("(FormaContato) - Deletando por ID: " + id);
+        formaContatoRepository.delete(getById(id));
         return ResponseEntity.noContent().build();
+    }
+
+    private FormaContato getById(Long id) {
+        return formaContatoRepository.findById(id).orElseThrow(
+                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(FormaContato) não encontrado(a) por ID: " + id));
     }
 }
