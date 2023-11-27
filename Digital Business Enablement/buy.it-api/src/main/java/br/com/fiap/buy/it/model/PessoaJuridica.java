@@ -1,12 +1,9 @@
 package br.com.fiap.buy.it.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
-import lombok.NoArgsConstructor;
-import lombok.AllArgsConstructor;
-import lombok.ToString;
+import jakarta.validation.constraints.*;
+
+import lombok.*;
 
 @Getter
 @Setter
@@ -19,14 +16,11 @@ import lombok.ToString;
 })
 @DiscriminatorValue("PJ")
 public class PessoaJuridica extends Pessoa {
-
-
-    @Column(name = "IS_FORNECEDOR_PJ", nullable = false)
-    @NotBlank(message = "O isFornecedor da pessoa juridica não pode estar vazio." )
-    private Boolean isFornecedor;
-
     @Column(name = "CNPJ_PJ", nullable = false)
     @NotBlank (message = "O cnpj da pessoa juridica não pode estar vazio.")
     private String cnpj;
 
+    @Column(name = "IS_FORNECEDOR_PJ", nullable = false)
+    @NotBlank(message = "O isFornecedor da pessoa juridica não pode estar vazio." )
+    private Boolean isFornecedor;
 }

@@ -1,11 +1,11 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
 import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
 
 @Data
@@ -21,19 +21,23 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_USUARIO")
     @SequenceGenerator(name = "SQ_USUARIO", sequenceName = "SQ_USUARIO", allocationSize = 1)
     @Column(name = "ID_USUARIO")
+    @Getter @Setter
     private Long id;
 
     @Column(name = "EMAIL_USUARIO", nullable = false)
     @NotBlank(message = "O endereço de e-mail não pode estar vazio.")
     @Email(message = "Endereço de e-mail inválido.")
+    @Getter @Setter
     private String email;
 
     @Column(name = "SENHA_USUARIO", nullable = false)
     @NotBlank(message = "A senha não pode estar vazia.")
+    @Getter @Setter
     private String senha;
 
     @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "ID_PESSOA", referencedColumnName = "ID_PESSOA", foreignKey = @ForeignKey(name = "FK_PESSOA_USUARIO"))
+    @Getter @Setter
     private Pessoa pessoa;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -54,44 +58,7 @@ public class Usuario {
                     )
             }
     )
-    private Set<Tag> tags = new HashSet<>();
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public Usuario setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Usuario setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public Usuario setSenha(String senha) {
-        this.senha = senha;
-        return this;
-    }
-
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public Usuario setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-        return this;
-    }
+    private Set<Tag> tags;
 
     public Usuario addTag(Tag tag) {
         this.tags.add(tag);
@@ -109,4 +76,3 @@ public class Usuario {
         return Collections.unmodifiableSet(tags);
     }
 }
-

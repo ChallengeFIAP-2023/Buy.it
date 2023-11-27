@@ -1,7 +1,8 @@
 package br.com.fiap.buy.it.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
 @Getter
@@ -12,7 +13,6 @@ import lombok.*;
 @Entity
 @Table(name = "FORMA_CONTATO")
 public class FormaContato {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_FORMA_CONTATO")
     @SequenceGenerator(name = "SQ_FORMA_CONTATO", sequenceName = "SQ_FORMA_CONTATO", allocationSize = 1)

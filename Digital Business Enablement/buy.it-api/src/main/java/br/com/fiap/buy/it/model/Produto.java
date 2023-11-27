@@ -1,6 +1,8 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
 import java.util.Collections;
@@ -17,33 +19,41 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_PRODUTO")
     @SequenceGenerator(name = "SQ_PRODUTO", sequenceName = "SQ_PRODUTO", allocationSize = 1)
     @Column(name = "ID_PRODUTO")
+    @Getter @Setter
     private Long id;
 
     @Column(name = "NOME_PRODUTO",nullable = false)
     @NotBlank(message = "O nome do produto não pode estar vazio.")
+    @Getter @Setter
     private String nome;
 
     @Column(name = "MARCA_PRODUTO")
+    @Getter @Setter
     private String marca;
 
     @Column(name = "COR_PRODUTO")
+    @Getter @Setter
     private String cor;
 
     @Column(name = "TAMANHO_PRODUTO")
+    @Getter @Setter
     private String tamanho;
 
     @Column(name = "MATERIAL_PRODUTO")
+    @Getter @Setter
     private String material;
 
     @Column(name = "OBSERVACAO_PRODUTO", length = 500)
+    @Getter @Setter
     private String observacao;
-
+    
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(
             name = "ID_DEPARTAMENTO",
             referencedColumnName = "ID_DEPARTAMENTO",
             foreignKey = @ForeignKey(name = "FK_DEPARTAMENTO_PRODUTO")
     )
+    @Getter @Setter
     private Departamento departamento;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -66,78 +76,6 @@ public class Produto {
     )
     private Set<Tag> tags;
 
-    public Long getId() {
-        return id;
-    }
-
-    public Produto setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public Produto setNome(String nome) {
-        this.nome = nome;
-        return this;
-    }
-
-    public String getMarca() {
-        return marca;
-    }
-
-    public Produto setMarca(String marca) {
-        this.marca = marca;
-        return this;
-    }
-
-    public String getCor() {
-        return cor;
-    }
-
-    public Produto setCor(String cor) {
-        this.cor = cor;
-        return this;
-    }
-
-    public String getTamanho() {
-        return tamanho;
-    }
-
-    public Produto setTamanho(String tamanho) {
-        this.tamanho = tamanho;
-        return this;
-    }
-
-    public String getMaterial() {
-        return material;
-    }
-
-    public Produto setMaterial(String material) {
-        this.material = material;
-        return this;
-    }
-
-    public String getObservacao() {
-        return observacao;
-    }
-
-    public Produto setObservacao(String observacao) {
-        this.observacao = observacao;
-        return this;
-    }
-
-    public Departamento getDepartamento() {
-        return departamento;
-    }
-
-    public Produto setDepartamento(Departamento departamento) {
-        this.departamento = departamento;
-        return this;
-    }
-
     public Produto addTag(Tag tag) {
         this.tags.add(tag);
         tag.addProduto(this);
@@ -154,4 +92,3 @@ public class Produto {
         return Collections.unmodifiableSet(tags);
     }
 }
-

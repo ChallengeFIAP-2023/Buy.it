@@ -85,7 +85,6 @@ public class FormaContatoController {
         return ResponseEntity.ok(updatedFormaContato);
     }
 
-
     @DeleteMapping("/formaContato/{id}")
     public ResponseEntity<HttpStatus> deleteFormaContato(@PathVariable Long id) {
         FormaContato formaContato = formaContatoRepository.findById(id)

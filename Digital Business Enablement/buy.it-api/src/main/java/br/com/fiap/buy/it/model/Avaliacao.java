@@ -1,6 +1,8 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
 import lombok.*;
 
 import java.util.Date;
@@ -48,8 +50,4 @@ public class Avaliacao {
 
     @Column(name = "DESCRICAO_AVALIACAO", length = 400)
     private String descricao;
-
-
 }
-
-

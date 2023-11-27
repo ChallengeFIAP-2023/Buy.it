@@ -81,7 +81,6 @@ public class TagController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedTag);
     }
 
-
     @PutMapping("/tag/{id}")
     public ResponseEntity<Tag> updateTag(@PathVariable Long id, @RequestBody @Valid Tag tagDetails) {
         Tag tag = tagRepository.findById(id)
@@ -114,8 +113,6 @@ public class TagController {
         return ResponseEntity.ok(updatedTag);
     }
 
-
-
     @DeleteMapping("/tag/{id}")
     public ResponseEntity<HttpStatus> deleteTag(@PathVariable Long id) {
         Tag tag = tagRepository.findById(id)
@@ -125,5 +122,4 @@ public class TagController {
         tagRepository.delete(tag);
         return ResponseEntity.noContent().build();
     }
-
 }

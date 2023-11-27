@@ -37,7 +37,6 @@ public class HistoricoController {
         return ResponseEntity.ok(historicos);
     }
 
-
     @GetMapping("/historico/{id}")
     public ResponseEntity<Historico> getHistoricoById(@PathVariable Long id) {
         Historico historico = historicoRepository.findById(id)
@@ -66,7 +65,6 @@ public class HistoricoController {
         Historico savedHistorico = historicoRepository.save(historico);
         return ResponseEntity.status(HttpStatus.CREATED).body(savedHistorico);
     }
-
 
     @PutMapping("/historico/{id}")
     public ResponseEntity<Historico> updateHistorico(@PathVariable Long id, @RequestBody @Valid Historico historicoDetails) {
@@ -100,7 +98,6 @@ public class HistoricoController {
         final Historico updatedHistorico = historicoRepository.save(historico);
         return ResponseEntity.ok(updatedHistorico);
     }
-
 
     @DeleteMapping("/historico/{id}")
     public ResponseEntity<HttpStatus> deleteHistorico(@PathVariable Long id) {

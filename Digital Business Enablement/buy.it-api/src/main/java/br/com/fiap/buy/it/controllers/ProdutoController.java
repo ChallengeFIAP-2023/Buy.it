@@ -68,7 +68,6 @@ public class ProdutoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedProduto);
     }
 
-
     @PutMapping("/produto/{id}")
     public ResponseEntity<Produto> updateProduto(@PathVariable Long id, @RequestBody @Valid Produto produtoDetails) {
         Produto produto = produtoRepository.findById(id)
@@ -98,7 +97,6 @@ public class ProdutoController {
         return ResponseEntity.ok(updatedProduto);
     }
 
-
     @DeleteMapping("/produto/{id}")
     public ResponseEntity<HttpStatus> deleteProduto(@PathVariable Long id) {
         Produto produto = produtoRepository.findById(id)
@@ -108,6 +106,4 @@ public class ProdutoController {
         produtoRepository.delete(produto);
         return ResponseEntity.noContent().build();
     }
-
 }
-

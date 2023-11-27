@@ -16,4 +16,3 @@ public interface CotacaoRepository extends JpaRepository<Cotacao, Long> {
     @Query("SELECT t FROM Cotacao t")
     Page<Cotacao> findAllWithPagination(Pageable pageable);
 }
-

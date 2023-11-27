@@ -16,4 +16,3 @@ public interface DepartamentoRepository extends JpaRepository<Departamento, Long
     @Query("SELECT t FROM Departamento t")
     Page<Departamento> findAllWithPagination(Pageable pageable);
 }
-

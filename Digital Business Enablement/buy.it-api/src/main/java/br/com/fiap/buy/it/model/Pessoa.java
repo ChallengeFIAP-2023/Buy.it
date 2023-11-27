@@ -1,6 +1,8 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
 @Getter
@@ -26,5 +28,4 @@ public class Pessoa {
 
     @Column(name = "IMAGEM_PESSOA")
     private String urlImagem;
-
 }

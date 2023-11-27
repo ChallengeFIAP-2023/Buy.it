@@ -36,7 +36,6 @@ public class StatusController {
         return ResponseEntity.ok(statuses);
     }
 
-
     @GetMapping("/status/{id}")
     public ResponseEntity<Status> getStatusById(@PathVariable Long id) {
         Status status = statusRepository.findById(id)
@@ -64,4 +63,3 @@ public class StatusController {
         return ResponseEntity.noContent().build();
     }
 }
-

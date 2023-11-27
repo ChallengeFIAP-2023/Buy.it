@@ -1,6 +1,8 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
 import java.util.Collections;
@@ -19,10 +21,12 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TAG")
     @SequenceGenerator(name = "SQ_TAG", sequenceName = "SQ_TAG", allocationSize = 1)
     @Column(name = "ID_TAG")
+    @Getter @Setter
     private Long id;
 
     @Column(name = "NOME_TAG", nullable = false)
     @NotBlank(message = "O nome da tag não pode estar vazio.")
+    @Getter @Setter
     private String nome;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -85,24 +89,6 @@ public class Tag {
     )
     private Set<Produto> produtos;
 
-    public Long getId() {
-        return id;
-    }
-
-    public Tag setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public Tag setNome(String nome) {
-        this.nome = nome;
-        return this;
-    }
-
     public Tag addDepartamento(Departamento departamento) {
         this.departamentos.add(departamento);
         departamento.addTag(this);
@@ -114,7 +100,6 @@ public class Tag {
         if (departamento.getTags().equals(this)) departamento.removeTag(this);
         return this;
     }
-
 
     public Set<Departamento> getDepartamentos() {
         return Collections.unmodifiableSet(departamentos);
@@ -147,7 +132,6 @@ public class Tag {
         if (produto.getTags().equals(this)) produto.removeTag(this);
         return this;
     }
-
 
     public Set<Produto> getProdutos() {
         return Collections.unmodifiableSet(produtos);

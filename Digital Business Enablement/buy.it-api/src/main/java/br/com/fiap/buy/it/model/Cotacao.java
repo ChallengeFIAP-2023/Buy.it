@@ -1,6 +1,8 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -79,5 +81,4 @@ public class Cotacao {
     @Column(name = "DATA_FECHAMENTO_COTACAO")
     @PastOrPresent
     private Date dataFechamento;
-
 }

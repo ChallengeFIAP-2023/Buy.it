@@ -1,6 +1,8 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
+
 import lombok.*;
 
 import java.math.BigDecimal;
@@ -72,6 +74,4 @@ public class Historico {
     @Column(name = "VALOR_OFERTADO_HISTORICO")
     @Positive
     private BigDecimal valorOfertado;
-
 }
-

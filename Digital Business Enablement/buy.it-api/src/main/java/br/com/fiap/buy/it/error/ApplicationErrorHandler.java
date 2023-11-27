@@ -22,6 +22,5 @@ public class ApplicationErrorHandler {
                 .stream()
                 .map(err -> new RestValidationError(err.getField(), err.getDefaultMessage()))
                 .collect(Collectors.toList());
-
     }
 }

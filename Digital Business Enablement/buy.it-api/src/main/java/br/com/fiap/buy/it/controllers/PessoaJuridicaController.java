@@ -63,4 +63,3 @@ public class PessoaJuridicaController {
         return ResponseEntity.noContent().build();
     }
 }
-

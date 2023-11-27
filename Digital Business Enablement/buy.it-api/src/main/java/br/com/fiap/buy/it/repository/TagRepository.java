@@ -16,4 +16,3 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
     @Query("SELECT t FROM Tag t")
     Page<Tag> findAllWithPagination(Pageable pageable);
 }
-

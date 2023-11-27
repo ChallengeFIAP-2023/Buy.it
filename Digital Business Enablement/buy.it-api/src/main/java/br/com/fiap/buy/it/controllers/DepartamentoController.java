@@ -57,7 +57,6 @@ public class DepartamentoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedDepartamento);
     }
 
-
     @PutMapping("/departamento/{id}")
     public ResponseEntity<Departamento> updateDepartamento(@PathVariable Long id, @RequestBody @Valid Departamento departamentoDetails) {
         Departamento departamento = departamentoRepository.findById(id)
@@ -81,7 +80,6 @@ public class DepartamentoController {
         return ResponseEntity.ok(updatedDepartamento);
     }
 
-
     @DeleteMapping("/departamento/{id}")
     public ResponseEntity<HttpStatus> deleteDepartamento(@PathVariable Long id) {
         Departamento departamento = departamentoRepository.findById(id)
@@ -91,6 +89,4 @@ public class DepartamentoController {
         departamentoRepository.delete(departamento);
         return ResponseEntity.noContent().build();
     }
-
 }
-

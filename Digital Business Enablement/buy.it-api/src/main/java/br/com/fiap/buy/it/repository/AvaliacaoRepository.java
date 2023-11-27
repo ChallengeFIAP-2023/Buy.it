@@ -16,4 +16,3 @@ public interface AvaliacaoRepository extends JpaRepository<Avaliacao, Long> {
     @Query("SELECT t FROM Avaliacao t")
     Page<Avaliacao> findAllWithPagination(Pageable pageable);
 }
-

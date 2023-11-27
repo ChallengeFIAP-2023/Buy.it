@@ -1,6 +1,8 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
 @Getter
@@ -23,5 +25,4 @@ public class Status {
     @Column(name = "NOME_STATUS", nullable = false)
     @NotBlank(message = "O nome do status não pode estar vazio.")
     private String nome;
-
 }

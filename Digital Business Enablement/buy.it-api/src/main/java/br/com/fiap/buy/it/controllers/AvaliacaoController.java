@@ -34,7 +34,6 @@ public class AvaliacaoController {
         return ResponseEntity.ok(avaliacoes);
     }
 
-
     @GetMapping("/avaliacao/{id}")
     public ResponseEntity<Avaliacao> getAvaliacaoById(@PathVariable Long id) {
         Avaliacao avaliacao = avaliacaoRepository.findById(id)
@@ -73,7 +72,6 @@ public class AvaliacaoController {
         final Avaliacao updatedAvaliacao = avaliacaoRepository.save(avaliacao);
         return ResponseEntity.ok(updatedAvaliacao);
     }
-
 
     @DeleteMapping("/avaliacao/{id}")
     public ResponseEntity<HttpStatus> deleteAvaliacao(@PathVariable Long id) {

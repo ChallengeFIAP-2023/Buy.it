@@ -8,6 +8,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
+
 @Repository
 public interface PessoaJuridicaRepository extends JpaRepository<PessoaJuridica, Long> {
     Optional<PessoaJuridica> findById(Long id);
@@ -15,4 +16,3 @@ public interface PessoaJuridicaRepository extends JpaRepository<PessoaJuridica, 
     @Query("SELECT t FROM PessoaJuridica t")
     Page<PessoaJuridica> findAllWithPagination(Pageable pageable);
 }
-

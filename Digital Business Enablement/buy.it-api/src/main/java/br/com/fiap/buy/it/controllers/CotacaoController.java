@@ -35,8 +35,6 @@ public class CotacaoController {
     @Autowired
     private StatusRepository statusRepository;
 
-
-
     @GetMapping("/cotacoes")
     public ResponseEntity<Page<Cotacao>> getAllCotacoes(
             @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
@@ -73,7 +71,6 @@ public class CotacaoController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedCotacao);
     }
 
-
     @PutMapping("/cotacao/{id}")
     public ResponseEntity<Cotacao> updateCotacao(@PathVariable Long id, @RequestBody @Valid Cotacao cotacaoDetails) {
         Cotacao cotacao = cotacaoRepository.findById(id)
@@ -106,7 +103,6 @@ public class CotacaoController {
         final Cotacao updatedCotacao = cotacaoRepository.save(cotacao);
         return ResponseEntity.ok(updatedCotacao);
     }
-
 
     @DeleteMapping("/cotacao/{id}")
     public ResponseEntity<HttpStatus> deleteCotacao(@PathVariable Long id) {

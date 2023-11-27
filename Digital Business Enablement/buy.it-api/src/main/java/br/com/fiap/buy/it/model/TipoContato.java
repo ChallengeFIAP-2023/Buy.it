@@ -1,7 +1,8 @@
 package br.com.fiap.buy.it.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
 @Getter
@@ -14,7 +15,6 @@ import lombok.*;
         @UniqueConstraint(name = "UK_NM_TIPO_CONTATO", columnNames = "NOME_TIPO_CONTATO")
 })
 public class TipoContato {
-
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TIPO_CONTATO")
     @SequenceGenerator(name = "SQ_TIPO_CONTATO", sequenceName = "SQ_TIPO_CONTATO", allocationSize = 1)

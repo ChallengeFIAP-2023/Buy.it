@@ -70,7 +70,6 @@ public class UsuarioController {
         return ResponseEntity.status(HttpStatus.CREATED).body(savedUsuario);
     }
 
-
     @PutMapping("/usuario/{id}")
     public ResponseEntity<Usuario> updateUsuario(@PathVariable Long id, @RequestBody @Valid Usuario usuarioDetails) {
         Usuario usuario = usuarioRepository.findById(id)
@@ -98,9 +97,6 @@ public class UsuarioController {
         return ResponseEntity.ok(updatedUsuario);
     }
 
-
-
-
     @DeleteMapping("/usuario/{id}")
     public ResponseEntity<HttpStatus> deleteUsuario(@PathVariable Long id) {
         Usuario usuario = usuarioRepository.findById(id)
@@ -110,5 +106,4 @@ public class UsuarioController {
         usuarioRepository.delete(usuario);
         return ResponseEntity.noContent().build();
     }
-
 }

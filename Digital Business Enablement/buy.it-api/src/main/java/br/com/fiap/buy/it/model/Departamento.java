@@ -1,6 +1,8 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
 import java.util.Collections;
@@ -19,13 +21,16 @@ public class Departamento {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_DEPARTAMENTO")
     @SequenceGenerator(name = "SQ_DEPARTAMENTO", sequenceName = "SQ_DEPARTAMENTO", allocationSize = 1)
     @Column(name = "ID_DEPARTAMENTO")
+    @Getter @Setter
     private Long id;
 
     @Column(name = "NOME_DEPARTAMENTO", nullable = false)
     @NotBlank(message = "O nome do departamento não pode estar vazio.")
+    @Getter @Setter
     private String nome;
 
     @Column(name = "ICONE_DEPARTAMENTO")
+    @Getter @Setter
     private String icone;
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -48,33 +53,6 @@ public class Departamento {
     )
     private Set<Tag> tags;
 
-    public Long getId() {
-        return id;
-    }
-
-    public Departamento setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public Departamento setNome(String nome) {
-        this.nome = nome;
-        return this;
-    }
-
-    public String getIcone() {
-        return icone;
-    }
-
-    public Departamento setIcone(String icone) {
-        this.icone = icone;
-        return this;
-    }
-
     public Departamento addTag(Tag tag) {
         this.tags.add(tag);
         tag.addDepartamento(this);
@@ -91,4 +69,3 @@ public class Departamento {
         return Collections.unmodifiableSet(tags);
     }
 }
-

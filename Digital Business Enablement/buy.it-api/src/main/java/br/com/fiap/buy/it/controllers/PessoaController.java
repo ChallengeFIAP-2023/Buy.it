@@ -66,6 +66,4 @@ public class PessoaController {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Pessoa não encontrada com ID: " + id);
         }
     }
-
 }
-
