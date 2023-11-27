@@ -171,6 +171,35 @@ O projeto é divido em duas partes:
 
 ##### 👉 **_Backend:_**
 
+#### Opção 01:
+Siga as instruções abaixo para gerar o arquivo JAR a partir do código-fonte e executá-lo.
+
+1. Clone o repositório ou baixe o código-fonte do projeto para o seu computador.
+2. Navegue até a raiz do projeto, onde o arquivo `pom.xml` está localizado.
+3. Abra o terminal ou prompt de comando nesta localização.
+4. Execute o seguinte comando para compilar o projeto e gerar o arquivo JAR:
+   
+```bash
+$ mvn clean package
+```
+
+Este comando irá limpar o projeto (remove arquivos compilados anteriores), compila o código-fonte e empacota o resultado em um arquivo JAR dentro do diretório `target`.
+
+5. Após a conclusão do processo, você encontrará o arquivo JAR gerado no diretório `target`.
+
+Executando o Arquivo JAR
+6. Navegue até o diretório `target` que contém o novo arquivo JAR.
+7. Execute o arquivo JAR usando o comando:
+
+```bash
+$ java -jar nome-do-seu-arquivo.jar
+```
+
+Solução de Problemas:
+- Se ocorrerem erros durante a compilação ou geração do JAR, verifique se todas as dependências estão corretas e disponíveis.
+- Caso receba mensagens de erro ao tentar executar o arquivo JAR, assegure-se de que está utilizando a versão correta do Java e que todas as variáveis de ambiente estão devidamente configuradas.
+
+#### Opção 02:
 Navegue até o projeto maven:
 
 ```bash
