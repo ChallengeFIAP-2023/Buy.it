@@ -29,24 +29,28 @@ public class AvaliacaoService {
 
     public Avaliacao findById(Long id) {
         return avaliacaoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                    "(Avaliacao) não encontrado(a) por ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "(Avaliacao) não encontrado(a) por ID: " + id));
     }
 
     public Avaliacao create(Avaliacao newData) {
         Cotacao cotacao = cotacaoRepository.findById(newData.getCotacao().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                    "(Avaliacao) - Cotacao não encontrado(a) por ID: " + newData.getCotacao().getId()));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "(Avaliacao) - Cotacao não encontrado(a) por ID: " + newData.getCotacao().getId()));
         newData.setCotacao(cotacao);
         return avaliacaoRepository.save(newData);
     }
 
     public Avaliacao update(Long id, Avaliacao updatedData) {
+        if (!id.equals(updatedData.getId())) {
+            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
+                    "(Avaliacao) ID no corpo da solicitação não corresponde ao ID na URL.");
+        }
         findById(id);
         updatedData.setId(id);
         Cotacao cotacao = cotacaoRepository.findById(updatedData.getCotacao().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, 
-                    "(Avaliacao) - Cotacao não encontrado(a) por ID: " + updatedData.getCotacao().getId()));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "(Avaliacao) - Cotacao não encontrado(a) por ID: " + updatedData.getCotacao().getId()));
         updatedData.setCotacao(cotacao);
         return avaliacaoRepository.save(updatedData);
     }

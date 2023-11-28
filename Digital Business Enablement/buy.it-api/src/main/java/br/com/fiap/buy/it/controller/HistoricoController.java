@@ -1,13 +1,11 @@
 package br.com.fiap.buy.it.controller;
 
-import br.com.fiap.buy.it.model.Cotacao;
+import br.com.fiap.buy.it.dto.HistoricoDTO;
 import br.com.fiap.buy.it.model.Historico;
-import br.com.fiap.buy.it.model.Status;
-import br.com.fiap.buy.it.model.Usuario;
-import br.com.fiap.buy.it.repository.CotacaoRepository;
-import br.com.fiap.buy.it.repository.HistoricoRepository;
-import br.com.fiap.buy.it.repository.StatusRepository;
-import br.com.fiap.buy.it.repository.UsuarioRepository;
+import br.com.fiap.buy.it.service.HistoricoService;
+import br.com.fiap.buy.it.service.CotacaoService;
+import br.com.fiap.buy.it.service.StatusService;
+import br.com.fiap.buy.it.service.UsuarioService;
 
 import jakarta.validation.Valid;
 
@@ -21,7 +19,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("historicos")
@@ -29,89 +28,97 @@ import org.springframework.web.server.ResponseStatusException;
 public class HistoricoController {
 
     @Autowired
-    private HistoricoRepository historicoRepository;
+    private HistoricoService historicoService;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private CotacaoService cotacaoService;
 
     @Autowired
-    private CotacaoRepository cotacaoRepository;
+    private StatusService statusService;
 
     @Autowired
-    private StatusRepository statusRepository;
+    private UsuarioService usuarioService;
 
     @GetMapping
-    public Page<Historico> listAll(
-        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
-    ) {
-        log.info("(Historico) - Buscando todos(as)");
-        return historicoRepository.findAll(pageRequest);
+    public Page<HistoricoDTO> listAll(
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
+        return historicoService.listAll(pageable).map(this::convertToDto);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Historico> findById(@PathVariable Long id) {
-        log.info("(Historico) - Exibindo por ID: " + id);
-        return ResponseEntity.ok(getById(id));
+    public ResponseEntity<HistoricoDTO> findById(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
+        return ResponseEntity.ok(convertToDto(historicoService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<Historico> create(@RequestBody @Valid Historico newData) {
-        log.info("(Historico) - Cadastrando: " + newData);
-
-        Cotacao cotacao = cotacaoRepository.findById(newData.getCotacao().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Historico) - Cotacao não encontrado(a) por ID: " + newData.getCotacao().getId()));
-        newData.setCotacao(cotacao);
-
-        Usuario fornecedor = usuarioRepository.findById(newData.getFornecedor().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Historico) - Fornecedor não encontrado(a) por ID: " + newData.getFornecedor().getId()));
-        newData.setFornecedor(fornecedor);
-
-        Status status = statusRepository.findById(newData.getStatus().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Historico) - Status não encontrado(a) por ID: " + newData.getStatus().getId()));
-        newData.setStatus(status);
-
-        Historico savedData = historicoRepository.save(newData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
+    public ResponseEntity<HistoricoDTO> create(@RequestBody @Valid HistoricoDTO newData) {
+        log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(convertToDto(historicoService.create(convertToEntity(newData))));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Historico> update(@PathVariable Long id, @RequestBody @Valid Historico updatedData) {
-        log.info("(Historico) - Atualizando por ID: " + id);
-        
-        getById(id);
-        updatedData.setId(id);
-
-        Cotacao cotacao = cotacaoRepository.findById(updatedData.getCotacao().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Historico) - Cotacao não encontrado(a) por ID: " + updatedData.getCotacao().getId()));
-        updatedData.setCotacao(cotacao);
-
-        Usuario fornecedor = usuarioRepository.findById(updatedData.getFornecedor().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Historico) - Fornecedor não encontrado(a) por ID: " + updatedData.getFornecedor().getId()));
-        updatedData.setFornecedor(fornecedor);
-
-        Status status = statusRepository.findById(updatedData.getStatus().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Historico) - Status não encontrado(a) por ID: " + updatedData.getStatus().getId()));
-        updatedData.setStatus(status);
-
-        historicoRepository.save(updatedData);
-        return ResponseEntity.ok(updatedData);
+    public ResponseEntity<HistoricoDTO> update(@PathVariable Long id, @RequestBody @Valid HistoricoDTO updatedData) {
+        log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
+        return ResponseEntity.ok(convertToDto(historicoService.update(id, convertToEntity(updatedData))));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Historico> delete(@PathVariable Long id) {
-        log.info("(Historico) - Deletando por ID: " + id);
-        historicoRepository.delete(getById(id));
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Deletando por ID: " + id);
+        historicoService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    private Historico getById(Long id) {
-        return historicoRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Historico) não encontrado(a) por ID: " + id));
+    private HistoricoDTO convertToDto(Historico historico) {
+        HistoricoDTO dto = new HistoricoDTO();
+        dto.setId(historico.getId());
+        dto.setIdCotacao(historico.getCotacao() != null ? historico.getCotacao().getId() : null);
+        dto.setIdFornecedor(historico.getFornecedor() != null ? historico.getFornecedor().getId() : null);
+        dto.setIdStatus(historico.getStatus() != null ? historico.getStatus().getId() : null);
+        dto.setRecusadoPorProduto(historico.getRecusadoPorProduto());
+        dto.setRecusadoPorQuantidade(historico.getRecusadoPorQuantidade());
+        dto.setRecusadoPorPreco(historico.getRecusadoPorPreco());
+        dto.setRecusadoPorPrazo(historico.getRecusadoPorPrazo());
+        dto.setDescricao(historico.getDescricao());
+        dto.setData(historico.getData());
+        dto.setValorOfertado(historico.getValorOfertado());
+        return dto;
+    }
+
+    private Historico convertToEntity(HistoricoDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(Historico) ID Historico não pode ser nulo.");
+        }
+        if (dto.getIdCotacao() == null) {
+            throw new IllegalArgumentException("(Historico) ID Cotacao não pode ser nulo.");
+        }
+        if (dto.getIdFornecedor() == null) {
+            throw new IllegalArgumentException("(Historico) ID Fornecedor não pode ser nulo.");
+        }
+        if (dto.getIdStatus() == null) {
+            throw new IllegalArgumentException("(Historico) ID Status não pode ser nulo.");
+        }
+        Historico historico = new Historico();
+        historico.setId(dto.getId());
+        if (dto.getIdCotacao() != null)
+            historico.setCotacao(cotacaoService.findById(dto.getIdCotacao()));
+        if (dto.getIdFornecedor() != null)
+            historico.setFornecedor(usuarioService.findById(dto.getIdFornecedor()));
+        if (dto.getIdStatus() != null)
+            historico.setStatus(statusService.findById(dto.getIdStatus()));
+        historico.setRecusadoPorProduto(dto.getRecusadoPorProduto());
+        historico.setRecusadoPorQuantidade(dto.getRecusadoPorQuantidade());
+        historico.setRecusadoPorPreco(dto.getRecusadoPorPreco());
+        historico.setRecusadoPorPrazo(dto.getRecusadoPorPrazo());
+        historico.setDescricao(dto.getDescricao());
+        historico.setData(dto.getData());
+        historico.setValorOfertado(dto.getValorOfertado());
+        return historico;
     }
 }

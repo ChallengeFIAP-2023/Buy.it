@@ -1,7 +1,8 @@
 package br.com.fiap.buy.it.controller;
 
+import br.com.fiap.buy.it.dto.PessoaDTO;
 import br.com.fiap.buy.it.model.Pessoa;
-import br.com.fiap.buy.it.repository.PessoaRepository;
+import br.com.fiap.buy.it.service.PessoaService;
 
 import jakarta.validation.Valid;
 
@@ -15,7 +16,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("pessoas")
@@ -23,50 +25,60 @@ import org.springframework.web.server.ResponseStatusException;
 public class PessoaController {
 
     @Autowired
-    private PessoaRepository pessoaRepository;
+    private PessoaService pessoaService;
 
     @GetMapping
-    public Page<Pessoa> listAll(
-        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
-    ) {
-        log.info("(Pessoa) - Buscando todos(as)");
-        return pessoaRepository.findAll(pageRequest);
+    public Page<PessoaDTO> listAll(
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
+        return pessoaService.listAll(pageable).map(this::convertToDto);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Pessoa> findById(@PathVariable Long id) {
-        log.info("(Pessoa) - Exibindo por ID: " + id);
-        return ResponseEntity.ok(getById(id));
+    public ResponseEntity<PessoaDTO> findById(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
+        return ResponseEntity.ok(convertToDto(pessoaService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<Pessoa> create(@RequestBody @Valid Pessoa newData) {
-        log.info("(Pessoa) - Cadastrando: " + newData);
-
-        Pessoa savedData = pessoaRepository.save(newData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
+    public ResponseEntity<PessoaDTO> create(@RequestBody @Valid PessoaDTO newData) {
+        log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(convertToDto(pessoaService.create(convertToEntity(newData))));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Pessoa> update(@PathVariable Long id, @RequestBody @Valid Pessoa updatedData) {
-        log.info("(Pessoa) - Atualizando por ID: " + id);
-        
-        getById(id);
-        updatedData.setId(id);
-
-        pessoaRepository.save(updatedData);
-        return ResponseEntity.ok(updatedData);
+    public ResponseEntity<PessoaDTO> update(@PathVariable Long id, @RequestBody @Valid PessoaDTO updatedData) {
+        log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
+        return ResponseEntity.ok(convertToDto(pessoaService.update(id, convertToEntity(updatedData))));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Pessoa> delete(@PathVariable Long id) {
-        log.info("(Pessoa) - Deletando por ID: " + id);
-        pessoaRepository.delete(getById(id));
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Deletando por ID: " + id);
+        pessoaService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    private Pessoa getById(Long id) {
-        return pessoaRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Pessoa) não encontrado(a) por ID: " + id));
+    private PessoaDTO convertToDto(Pessoa pessoa) {
+        PessoaDTO dto = new PessoaDTO();
+        dto.setId(pessoa.getId());
+        dto.setNome(pessoa.getNome());
+        dto.setUrlImagem(pessoa.getUrlImagem());
+        return dto;
+    }
+
+    private Pessoa convertToEntity(PessoaDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(Pessoa) ID Pessoa não pode ser nulo.");
+        }
+        Pessoa pessoa = new Pessoa();
+        pessoa.setId(dto.getId());
+        pessoa.setNome(dto.getNome());
+        pessoa.setUrlImagem(dto.getUrlImagem());
+        return pessoa;
     }
 }

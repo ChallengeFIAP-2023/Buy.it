@@ -1,7 +1,8 @@
 package br.com.fiap.buy.it.controller;
 
+import br.com.fiap.buy.it.dto.PessoaJuridicaDTO;
 import br.com.fiap.buy.it.model.PessoaJuridica;
-import br.com.fiap.buy.it.repository.PessoaJuridicaRepository;
+import br.com.fiap.buy.it.service.PessoaJuridicaService;
 
 import jakarta.validation.Valid;
 
@@ -15,7 +16,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("pessoasJuridicas")
@@ -23,50 +25,65 @@ import org.springframework.web.server.ResponseStatusException;
 public class PessoaJuridicaController {
 
     @Autowired
-    private PessoaJuridicaRepository pessoaJuridicaRepository;
+    private PessoaJuridicaService pessoaJuridicaService;
 
     @GetMapping
-    public Page<PessoaJuridica> listAll(
-        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
-    ) {
-        log.info("(PessoaJuridica) - Buscando todos(as)");
-        return pessoaJuridicaRepository.findAll(pageRequest);
+    public Page<PessoaJuridicaDTO> listAll(
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
+        return pessoaJuridicaService.listAll(pageable).map(this::convertToDto);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<PessoaJuridica> findById(@PathVariable Long id) {
-        log.info("(PessoaJuridica) - Exibindo por ID: " + id);
-        return ResponseEntity.ok(getById(id));
+    public ResponseEntity<PessoaJuridicaDTO> findById(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
+        return ResponseEntity.ok(convertToDto(pessoaJuridicaService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<PessoaJuridica> create(@RequestBody @Valid PessoaJuridica newData) {
-        log.info("(PessoaJuridica) - Cadastrando: " + newData);
-
-        PessoaJuridica savedData = pessoaJuridicaRepository.save(newData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
+    public ResponseEntity<PessoaJuridicaDTO> create(@RequestBody @Valid PessoaJuridicaDTO newData) {
+        log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(convertToDto(pessoaJuridicaService.create(convertToEntity(newData))));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<PessoaJuridica> update(@PathVariable Long id, @RequestBody @Valid PessoaJuridica updatedData) {
-        log.info("(PessoaJuridica) - Atualizando por ID: " + id);
-        
-        getById(id);
-        updatedData.setId(id);
-
-        pessoaJuridicaRepository.save(updatedData);
-        return ResponseEntity.ok(updatedData);
+    public ResponseEntity<PessoaJuridicaDTO> update(@PathVariable Long id,
+            @RequestBody @Valid PessoaJuridicaDTO updatedData) {
+        log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
+        return ResponseEntity.ok(convertToDto(pessoaJuridicaService.update(id, convertToEntity(updatedData))));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<PessoaJuridica> delete(@PathVariable Long id) {
-        log.info("(PessoaJuridica) - Deletando por ID: " + id);
-        pessoaJuridicaRepository.delete(getById(id));
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Deletando por ID: " + id);
+        pessoaJuridicaService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    private PessoaJuridica getById(Long id) {
-        return pessoaJuridicaRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(PessoaJuridica) não encontrado(a) por ID: " + id));
+    private PessoaJuridicaDTO convertToDto(PessoaJuridica pessoaJuridica) {
+        PessoaJuridicaDTO dto = new PessoaJuridicaDTO();
+        dto.setId(pessoaJuridica.getId());
+        dto.setNome(pessoaJuridica.getNome());
+        dto.setUrlImagem(pessoaJuridica.getUrlImagem());
+        dto.setCnpj(pessoaJuridica.getCnpj());
+        dto.setIsFornecedor(dto.getIsFornecedor());
+        return dto;
+    }
+
+    private PessoaJuridica convertToEntity(PessoaJuridicaDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(PessoaJuridica) ID PessoaJuridica não pode ser nulo.");
+        }
+        PessoaJuridica pessoaJuridica = new PessoaJuridica();
+        pessoaJuridica.setId(dto.getId());
+        pessoaJuridica.setNome(dto.getNome());
+        pessoaJuridica.setUrlImagem(dto.getUrlImagem());
+        pessoaJuridica.setCnpj(dto.getCnpj());
+        pessoaJuridica.setIsFornecedor(dto.getIsFornecedor());
+        return pessoaJuridica;
     }
 }

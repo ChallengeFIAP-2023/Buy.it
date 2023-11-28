@@ -1,9 +1,11 @@
 package br.com.fiap.buy.it.controller;
 
+import br.com.fiap.buy.it.dto.UsuarioDTO;
 import br.com.fiap.buy.it.model.Usuario;
 import br.com.fiap.buy.it.model.Tag;
-import br.com.fiap.buy.it.repository.UsuarioRepository;
-import br.com.fiap.buy.it.repository.TagRepository;
+import br.com.fiap.buy.it.service.UsuarioService;
+import br.com.fiap.buy.it.service.PessoaService;
+import br.com.fiap.buy.it.service.TagService;
 
 import jakarta.validation.Valid;
 
@@ -17,10 +19,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("usuarios")
@@ -28,67 +30,74 @@ import java.util.stream.Collectors;
 public class UsuarioController {
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
     @Autowired
-    private TagRepository tagRepository;
+    private PessoaService pessoaService;
+
+    @Autowired
+    private TagService tagService;
 
     @GetMapping
-    public Page<Usuario> listAll(
-        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
-    ) {
-        log.info("(Usuario) - Buscando todos(as)");
-        return usuarioRepository.findAll(pageRequest);
+    public Page<UsuarioDTO> listAll(
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
+        return usuarioService.listAll(pageable).map(this::convertToDto);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Long id) {
-        log.info("(Usuario) - Exibindo por ID: " + id);
-        return ResponseEntity.ok(getById(id));
+    public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
+        return ResponseEntity.ok(convertToDto(usuarioService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> create(@RequestBody @Valid Usuario newData) {
-        log.info("(Usuario) - Cadastrando: " + newData);
-
-        Set<Tag> tags = newData.getTags().stream()
-                .map(tag -> tagRepository.findById(tag.getId())
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "(Usuario) - Tag não encontrado(a) por ID: " + tag.getId())))
-                .collect(Collectors.toSet());
-        newData.setTags(tags);
-
-        Usuario savedData = usuarioRepository.save(newData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
+    public ResponseEntity<UsuarioDTO> create(@RequestBody @Valid UsuarioDTO newData) {
+        log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(convertToDto(usuarioService.create(convertToEntity(newData))));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody @Valid Usuario updatedData) {
-        log.info("(Usuario) - Atualizando por ID: " + id);
-        
-        getById(id);
-        updatedData.setId(id);
-
-        Set<Tag> tags = updatedData.getTags().stream()
-                .map(tag -> tagRepository.findById(tag.getId())
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "(Usuario) - Tag não encontrado(a) por ID: " + tag.getId())))
-                .collect(Collectors.toSet());
-        updatedData.setTags(tags);
-
-        usuarioRepository.save(updatedData);
-        return ResponseEntity.ok(updatedData);
+    public ResponseEntity<UsuarioDTO> update(@PathVariable Long id, @RequestBody @Valid UsuarioDTO updatedData) {
+        log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
+        return ResponseEntity.ok(convertToDto(usuarioService.update(id, convertToEntity(updatedData))));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Usuario> delete(@PathVariable Long id) {
-        log.info("(Usuario) - Deletando por ID: " + id);
-        usuarioRepository.delete(getById(id));
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Deletando por ID: " + id);
+        usuarioService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    private Usuario getById(Long id) {
-        return usuarioRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Usuario) não encontrado(a) por ID: " + id));
+    private UsuarioDTO convertToDto(Usuario usuario) {
+        UsuarioDTO dto = new UsuarioDTO();
+        dto.setId(usuario.getId());
+        dto.setEmail(usuario.getEmail());
+        dto.setSenha(usuario.getSenha());
+        dto.setIdPessoa(usuario.getPessoa() != null ? usuario.getPessoa().getId() : null);
+        Set<Long> idsTags = usuario.getTags().stream()
+                .map(Tag::getId)
+                .collect(Collectors.toSet());
+        dto.setIdsTags(idsTags);
+        return dto;
+    }
+
+    private Usuario convertToEntity(UsuarioDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        Usuario usuario = new Usuario();
+        usuario.setId(dto.getId());
+        usuario.setEmail(dto.getEmail());
+        usuario.setSenha(dto.getSenha());
+        if (dto.getIdPessoa() != null)
+            usuario.setPessoa(pessoaService.findById(dto.getIdPessoa()));
+        dto.getIdsTags().stream().forEach(id -> {
+            Tag tag = tagService.findById(id);
+            usuario.addTag(tag);
+        });
+        return usuario;
     }
 }

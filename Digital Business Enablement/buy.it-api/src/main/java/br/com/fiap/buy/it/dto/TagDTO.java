@@ -13,6 +13,6 @@ public class TagDTO {
     private Long id;
     private String nome;
     private Set<Long> idsDepartamentos;
-    private Set<Long> idsUsuario;
+    private Set<Long> idsUsuarios;
     private Set<Long> idsProdutos;
 }

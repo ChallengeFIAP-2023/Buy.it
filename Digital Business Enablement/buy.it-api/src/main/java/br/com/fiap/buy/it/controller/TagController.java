@@ -1,13 +1,14 @@
 package br.com.fiap.buy.it.controller;
 
+import br.com.fiap.buy.it.dto.TagDTO;
 import br.com.fiap.buy.it.model.Departamento;
 import br.com.fiap.buy.it.model.Produto;
-import br.com.fiap.buy.it.model.Tag;
 import br.com.fiap.buy.it.model.Usuario;
-import br.com.fiap.buy.it.repository.DepartamentoRepository;
-import br.com.fiap.buy.it.repository.ProdutoRepository;
-import br.com.fiap.buy.it.repository.TagRepository;
-import br.com.fiap.buy.it.repository.UsuarioRepository;
+import br.com.fiap.buy.it.model.Tag;
+import br.com.fiap.buy.it.service.DepartamentoService;
+import br.com.fiap.buy.it.service.ProdutoService;
+import br.com.fiap.buy.it.service.UsuarioService;
+import br.com.fiap.buy.it.service.TagService;
 
 import jakarta.validation.Valid;
 
@@ -21,10 +22,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("tags")
@@ -32,101 +33,88 @@ import java.util.stream.Collectors;
 public class TagController {
 
     @Autowired
-    private TagRepository tagRepository;
+    private TagService tagService;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private DepartamentoService departamentoService;
 
     @Autowired
-    private DepartamentoRepository departamentoRepository;
+    private ProdutoService produtoService;
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private UsuarioService usuarioService;
 
     @GetMapping
-    public Page<Tag> listAll(
-        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
-    ) {
-        log.info("(Tag) - Buscando todos(as)");
-        return tagRepository.findAll(pageRequest);
+    public Page<TagDTO> listAll(
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
+        return tagService.listAll(pageable).map(this::convertToDto);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Tag> findById(@PathVariable Long id) {
-        log.info("(Tag) - Exibindo por ID: " + id);
-        return ResponseEntity.ok(getById(id));
+    public ResponseEntity<TagDTO> findById(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
+        return ResponseEntity.ok(convertToDto(tagService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<Tag> create(@RequestBody @Valid Tag newData) {
-        log.info("(Tag) - Cadastrando: " + newData);
-
-        Set<Departamento> departamentos = newData.getDepartamentos().stream()
-                .map(departamento -> departamentoRepository.findById(departamento.getId())
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "(Tag) - Departamento não encontrado(a) por ID: " + departamento.getId())))
-                .collect(Collectors.toSet());
-        newData.setDepartamentos(departamentos);
-
-        Set<Usuario> usuarios = newData.getUsuarios().stream()
-                .map(usuario -> usuarioRepository.findById(usuario.getId())
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "(Tag) - Usuario não encontrado(a) por ID: " + usuario.getId())))
-                .collect(Collectors.toSet());
-        newData.setUsuarios(usuarios);
-
-        Set<Produto> produtos = newData.getProdutos().stream()
-                .map(produto -> produtoRepository.findById(produto.getId())
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "(Tag) - Produto não encontrado(a) por ID: " + produto.getId())))
-                .collect(Collectors.toSet());
-        newData.setProdutos(produtos);
-
-        Tag savedData = tagRepository.save(newData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
+    public ResponseEntity<TagDTO> create(@RequestBody @Valid TagDTO newData) {
+        log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(convertToDto(tagService.create(convertToEntity(newData))));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Tag> update(@PathVariable Long id, @RequestBody @Valid Tag updatedData) {
-        log.info("(Tag) - Atualizando por ID: " + id);
-        
-        getById(id);
-        updatedData.setId(id);
-
-        Set<Departamento> departamentos = updatedData.getDepartamentos().stream()
-                .map(departamento -> departamentoRepository.findById(departamento.getId())
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "(Tag) - Departamento não encontrado(a) por ID: " + departamento.getId())))
-                .collect(Collectors.toSet());
-        updatedData.setDepartamentos(departamentos);
-
-        Set<Usuario> usuarios = updatedData.getUsuarios().stream()
-                .map(usuario -> usuarioRepository.findById(usuario.getId())
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "(Tag) - Usuario não encontrado(a) por ID: " + usuario.getId())))
-                .collect(Collectors.toSet());
-        updatedData.setUsuarios(usuarios);
-
-        Set<Produto> produtos = updatedData.getProdutos().stream()
-                .map(produto -> produtoRepository.findById(produto.getId())
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "(Tag) - Produto não encontrado(a) por ID: " + produto.getId())))
-                .collect(Collectors.toSet());
-        updatedData.setProdutos(produtos);
-
-        tagRepository.save(updatedData);
-        return ResponseEntity.ok(updatedData);
+    public ResponseEntity<TagDTO> update(@PathVariable Long id, @RequestBody @Valid TagDTO updatedData) {
+        log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
+        return ResponseEntity.ok(convertToDto(tagService.update(id, convertToEntity(updatedData))));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Tag> delete(@PathVariable Long id) {
-        log.info("(Tag) - Deletando por ID: " + id);
-        tagRepository.delete(getById(id));
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Deletando por ID: " + id);
+        tagService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    private Tag getById(Long id) {
-        return tagRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Tag) não encontrado(a) por ID: " + id));
+    private TagDTO convertToDto(Tag tag) {
+        TagDTO dto = new TagDTO();
+        dto.setId(tag.getId());
+        dto.setNome(tag.getNome());
+        Set<Long> idsDepartamentos = tag.getDepartamentos().stream()
+                .map(Departamento::getId)
+                .collect(Collectors.toSet());
+        dto.setIdsDepartamentos(idsDepartamentos);
+        Set<Long> idsUsuarios = tag.getUsuarios().stream()
+                .map(Usuario::getId)
+                .collect(Collectors.toSet());
+        dto.setIdsUsuarios(idsUsuarios);
+        Set<Long> idsProdutos = tag.getProdutos().stream()
+                .map(Produto::getId)
+                .collect(Collectors.toSet());
+        dto.setIdsProdutos(idsProdutos);
+        return dto;
+    }
+
+    private Tag convertToEntity(TagDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        Tag tag = new Tag();
+        tag.setId(dto.getId());
+        tag.setNome(dto.getNome());
+        dto.getIdsDepartamentos().stream().forEach(id -> {
+            Departamento departamento = departamentoService.findById(id);
+            tag.addDepartamento(departamento);
+        });
+        dto.getIdsUsuarios().stream().forEach(id -> {
+            Usuario usuario = usuarioService.findById(id);
+            tag.addUsuario(usuario);
+        });
+        dto.getIdsProdutos().stream().forEach(id -> {
+            Produto produto = produtoService.findById(id);
+            tag.addProduto(produto);
+        });
+        return tag;
     }
 }

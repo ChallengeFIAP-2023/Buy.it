@@ -1,7 +1,8 @@
 package br.com.fiap.buy.it.controller;
 
+import br.com.fiap.buy.it.dto.StatusDTO;
 import br.com.fiap.buy.it.model.Status;
-import br.com.fiap.buy.it.repository.StatusRepository;
+import br.com.fiap.buy.it.service.StatusService;
 
 import jakarta.validation.Valid;
 
@@ -15,7 +16,8 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Objects;
 
 @RestController
 @RequestMapping("status")
@@ -23,50 +25,58 @@ import org.springframework.web.server.ResponseStatusException;
 public class StatusController {
 
     @Autowired
-    private StatusRepository statusRepository;
+    private StatusService statusService;
 
     @GetMapping
-    public Page<Status> listAll(
-        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
-    ) {
-        log.info("(Status) - Buscando todos(as)");
-        return statusRepository.findAll(pageRequest);
+    public Page<StatusDTO> listAll(
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
+        return statusService.listAll(pageable).map(this::convertToDto);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Status> findById(@PathVariable Long id) {
-        log.info("(Status) - Exibindo por ID: " + id);
-        return ResponseEntity.ok(getById(id));
+    public ResponseEntity<StatusDTO> findById(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
+        return ResponseEntity.ok(convertToDto(statusService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<Status> create(@RequestBody @Valid Status newData) {
-        log.info("(Status) - Cadastrando: " + newData);
-
-        Status savedData = statusRepository.save(newData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
+    public ResponseEntity<StatusDTO> create(@RequestBody @Valid StatusDTO newData) {
+        log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(convertToDto(statusService.create(convertToEntity(newData))));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Status> update(@PathVariable Long id, @RequestBody @Valid Status updatedData) {
-        log.info("(Status) - Atualizando por ID: " + id);
-        
-        getById(id);
-        updatedData.setId(id);
-
-        statusRepository.save(updatedData);
-        return ResponseEntity.ok(updatedData);
+    public ResponseEntity<StatusDTO> update(@PathVariable Long id, @RequestBody @Valid StatusDTO updatedData) {
+        log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
+        return ResponseEntity.ok(convertToDto(statusService.update(id, convertToEntity(updatedData))));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Status> delete(@PathVariable Long id) {
-        log.info("(Status) - Deletando por ID: " + id);
-        statusRepository.delete(getById(id));
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Deletando por ID: " + id);
+        statusService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    private Status getById(Long id) {
-        return statusRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Status) não encontrado(a) por ID: " + id));
+    private StatusDTO convertToDto(Status status) {
+        StatusDTO dto = new StatusDTO();
+        dto.setId(status.getId());
+        dto.setNome(status.getNome());
+        return dto;
+    }
+
+    private Status convertToEntity(StatusDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(Status) ID Status não pode ser nulo.");
+        }
+        Status status = new Status();
+        status.setId(dto.getId());
+        status.setNome(dto.getNome());
+        return status;
     }
 }

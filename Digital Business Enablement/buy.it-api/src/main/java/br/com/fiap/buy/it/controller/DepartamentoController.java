@@ -1,9 +1,10 @@
 package br.com.fiap.buy.it.controller;
 
+import br.com.fiap.buy.it.dto.DepartamentoDTO;
 import br.com.fiap.buy.it.model.Departamento;
 import br.com.fiap.buy.it.model.Tag;
-import br.com.fiap.buy.it.repository.DepartamentoRepository;
-import br.com.fiap.buy.it.repository.TagRepository;
+import br.com.fiap.buy.it.service.DepartamentoService;
+import br.com.fiap.buy.it.service.TagService;
 
 import jakarta.validation.Valid;
 
@@ -17,10 +18,10 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("departamentos")
@@ -28,67 +29,69 @@ import java.util.stream.Collectors;
 public class DepartamentoController {
 
     @Autowired
-    private DepartamentoRepository departamentoRepository;
+    private DepartamentoService departamentoService;
 
     @Autowired
-    private TagRepository tagRepository;
+    private TagService tagService;
 
     @GetMapping
-    public Page<Departamento> listAll(
-        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
-    ) {
-        log.info("(Departamento) - Buscando todos(as)");
-        return departamentoRepository.findAll(pageRequest);
+    public Page<DepartamentoDTO> listAll(
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
+        return departamentoService.listAll(pageable).map(this::convertToDto);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Departamento> findById(@PathVariable Long id) {
-        log.info("(Departamento) - Exibindo por ID: " + id);
-        return ResponseEntity.ok(getById(id));
+    public ResponseEntity<DepartamentoDTO> findById(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
+        return ResponseEntity.ok(convertToDto(departamentoService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<Departamento> create(@RequestBody @Valid Departamento newData) {
-        log.info("(Departamento) - Cadastrando: " + newData);
-
-        Set<Tag> tags = newData.getTags().stream()
-                .map(tag -> tagRepository.findById(tag.getId())
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "(Departamento) - Tag não encontrado(a) por ID: " + tag.getId())))
-                .collect(Collectors.toSet());
-        newData.setTags(tags);
-
-        Departamento savedData = departamentoRepository.save(newData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
+    public ResponseEntity<DepartamentoDTO> create(@RequestBody @Valid DepartamentoDTO newData) {
+        log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(convertToDto(departamentoService.create(convertToEntity(newData))));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Departamento> update(@PathVariable Long id, @RequestBody @Valid Departamento updatedData) {
-        log.info("(Departamento) - Atualizando por ID: " + id);
-        
-        getById(id);
-        updatedData.setId(id);
-
-        Set<Tag> tags = updatedData.getTags().stream()
-                .map(tag -> tagRepository.findById(tag.getId())
-                        .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                                "(Departamento) - Tag não encontrado(a) por ID: " + tag.getId())))
-                .collect(Collectors.toSet());
-        updatedData.setTags(tags);
-
-        departamentoRepository.save(updatedData);
-        return ResponseEntity.ok(updatedData);
+    public ResponseEntity<DepartamentoDTO> update(@PathVariable Long id,
+            @RequestBody @Valid DepartamentoDTO updatedData) {
+        log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
+        return ResponseEntity.ok(convertToDto(departamentoService.update(id, convertToEntity(updatedData))));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<Departamento> delete(@PathVariable Long id) {
-        log.info("(Departamento) - Deletando por ID: " + id);
-        departamentoRepository.delete(getById(id));
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Deletando por ID: " + id);
+        departamentoService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    private Departamento getById(Long id) {
-        return departamentoRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Departamento) não encontrado(a) por ID: " + id));
+    private DepartamentoDTO convertToDto(Departamento departamento) {
+        DepartamentoDTO dto = new DepartamentoDTO();
+        dto.setId(departamento.getId());
+        dto.setNome(departamento.getNome());
+        dto.setIcone(departamento.getIcone());
+        Set<Long> idsTags = departamento.getTags().stream()
+                .map(Tag::getId)
+                .collect(Collectors.toSet());
+        dto.setIdsTags(idsTags);
+        return dto;
+    }
+
+    private Departamento convertToEntity(DepartamentoDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        Departamento departamento = new Departamento();
+        departamento.setId(dto.getId());
+        departamento.setNome(dto.getNome());
+        departamento.setIcone(dto.getIcone());
+        dto.getIdsTags().stream().forEach(id -> {
+            Tag tag = tagService.findById(id);
+            departamento.addTag(tag);
+        });
+        return departamento;
     }
 }

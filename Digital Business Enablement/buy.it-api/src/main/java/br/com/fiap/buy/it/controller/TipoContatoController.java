@@ -1,7 +1,8 @@
 package br.com.fiap.buy.it.controller;
 
+import br.com.fiap.buy.it.dto.TipoContatoDTO;
 import br.com.fiap.buy.it.model.TipoContato;
-import br.com.fiap.buy.it.repository.TipoContatoRepository;
+import br.com.fiap.buy.it.service.TipoContatoService;
 
 import jakarta.validation.Valid;
 
@@ -15,58 +16,68 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
+
+import java.util.Objects;
 
 @RestController
-@RequestMapping("tiposContato")
+@RequestMapping("tiposContatos")
 @Slf4j
 public class TipoContatoController {
 
     @Autowired
-    private TipoContatoRepository tipoContatoRepository;
+    private TipoContatoService tipoContatoService;
 
     @GetMapping
-    public Page<TipoContato> listAll(
-        @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageRequest
-    ) {
-        log.info("(TipoContato) - Buscando todos(as)");
-        return tipoContatoRepository.findAll(pageRequest);
+    public Page<TipoContatoDTO> listAll(
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
+        return tipoContatoService.listAll(pageable).map(this::convertToDto);
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<TipoContato> findById(@PathVariable Long id) {
-        log.info("(TipoContato) - Exibindo por ID: " + id);
-        return ResponseEntity.ok(getById(id));
+    public ResponseEntity<TipoContatoDTO> findById(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
+        return ResponseEntity.ok(convertToDto(tipoContatoService.findById(id)));
     }
 
     @PostMapping
-    public ResponseEntity<TipoContato> create(@RequestBody @Valid TipoContato newData) {
-        log.info("(TipoContato) - Cadastrando: " + newData);
-
-        TipoContato savedData = tipoContatoRepository.save(newData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedData);
+    public ResponseEntity<TipoContatoDTO> create(@RequestBody @Valid TipoContatoDTO newData) {
+        log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(convertToDto(tipoContatoService.create(convertToEntity(newData))));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<TipoContato> update(@PathVariable Long id, @RequestBody @Valid TipoContato updatedData) {
-        log.info("(TipoContato) - Atualizando por ID: " + id);
-        
-        getById(id);
-        updatedData.setId(id);
-
-        tipoContatoRepository.save(updatedData);
-        return ResponseEntity.ok(updatedData);
+    public ResponseEntity<TipoContatoDTO> update(@PathVariable Long id,
+            @RequestBody @Valid TipoContatoDTO updatedData) {
+        log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
+        return ResponseEntity.ok(convertToDto(tipoContatoService.update(id, convertToEntity(updatedData))));
     }
 
     @DeleteMapping("{id}")
-    public ResponseEntity<TipoContato> delete(@PathVariable Long id) {
-        log.info("(TipoContato) - Deletando por ID: " + id);
-        tipoContatoRepository.delete(getById(id));
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
+        log.info("(" + getClass().getSimpleName() + ") - Deletando por ID: " + id);
+        tipoContatoService.delete(id);
         return ResponseEntity.noContent().build();
     }
 
-    private TipoContato getById(Long id) {
-        return tipoContatoRepository.findById(id).orElseThrow(
-                () -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(TipoContato) não encontrado(a) por ID: " + id));
+    private TipoContatoDTO convertToDto(TipoContato tipoContato) {
+        TipoContatoDTO dto = new TipoContatoDTO();
+        dto.setId(tipoContato.getId());
+        dto.setNome(tipoContato.getNome());
+        return dto;
+    }
+
+    private TipoContato convertToEntity(TipoContatoDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(TipoContato) ID TipoContato não pode ser nulo.");
+        }
+        TipoContato tipoContato = new TipoContato();
+        tipoContato.setId(dto.getId());
+        tipoContato.setNome(dto.getNome());
+        return tipoContato;
     }
 }

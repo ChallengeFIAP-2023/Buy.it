@@ -1,4 +1,5 @@
 package br.com.fiap.buy.it.controller;
+
 import br.com.fiap.buy.it.dto.LoginDTO;
 import br.com.fiap.buy.it.model.Usuario;
 import br.com.fiap.buy.it.service.UsuarioService;
