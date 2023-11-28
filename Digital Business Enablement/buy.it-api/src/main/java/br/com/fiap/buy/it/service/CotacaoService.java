@@ -1,13 +1,8 @@
 package br.com.fiap.buy.it.service;
 
+import br.com.fiap.buy.it.dto.CotacaoDTO;
 import br.com.fiap.buy.it.model.Cotacao;
-import br.com.fiap.buy.it.model.Produto;
-import br.com.fiap.buy.it.model.Status;
-import br.com.fiap.buy.it.model.Usuario;
 import br.com.fiap.buy.it.repository.CotacaoRepository;
-import br.com.fiap.buy.it.repository.ProdutoRepository;
-import br.com.fiap.buy.it.repository.StatusRepository;
-import br.com.fiap.buy.it.repository.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
+
 @Service
 public class CotacaoService {
 
@@ -23,69 +20,96 @@ public class CotacaoService {
     private CotacaoRepository cotacaoRepository;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private ProdutoService produtoService;
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private StatusService statusService;
 
     @Autowired
-    private StatusRepository statusRepository;
+    private UsuarioService usuarioService;
 
-    public Page<Cotacao> listAll(Pageable pageRequest) {
-        return cotacaoRepository.findAll(pageRequest);
+    public Page<CotacaoDTO> listAll(Pageable pageRequest) {
+        return cotacaoRepository.findAll(pageRequest).map(this::convertToDto);
     }
 
-    public Cotacao findById(Long id) {
-        return cotacaoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Cotacao) não encontrado(a) por ID: " + id));
+    public CotacaoDTO findById(Long id) {
+        Cotacao cotacao = findEntityById(id);
+        return convertToDto(cotacao);
     }
 
-    public Cotacao create(Cotacao newData) {
-        Usuario comprador = usuarioRepository.findById(newData.getComprador().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Cotacao) - Usuario não encontrado(a) por ID: "
-                                + newData.getComprador().getId()));
-        newData.setComprador(comprador);
-        Produto produto = produtoRepository.findById(newData.getProduto().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Cotacao) - Produto não encontrado(a) por ID: "
-                                + newData.getProduto().getId()));
-        newData.setProduto(produto);
-        Status status = statusRepository.findById(newData.getStatus().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Cotacao) - Status não encontrado(a) por ID: "
-                                + newData.getStatus().getId()));
-        newData.setStatus(status);
-        return cotacaoRepository.save(newData);
+    public CotacaoDTO create(CotacaoDTO newData) {
+        Cotacao entity = convertToEntity(newData);
+        Cotacao savedEntity = cotacaoRepository.save(entity);
+        return convertToDto(savedEntity);
     }
 
-    public Cotacao update(Long id, Cotacao updatedData) {
-        if (!id.equals(updatedData.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "(Cotacao) ID no corpo da solicitação não corresponde ao ID na URL.");
-        }
-        findById(id);
+    public CotacaoDTO update(Long id, CotacaoDTO updatedData) {
+        findEntityById(id);
         updatedData.setId(id);
-        Usuario comprador = usuarioRepository.findById(updatedData.getComprador().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Cotacao) - Usuario não encontrado(a) por ID: "
-                                + updatedData.getComprador().getId()));
-        updatedData.setComprador(comprador);
-        Produto produto = produtoRepository.findById(updatedData.getProduto().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Cotacao) - Produto não encontrado(a) por ID: "
-                                + updatedData.getProduto().getId()));
-        updatedData.setProduto(produto);
-        Status status = statusRepository.findById(updatedData.getStatus().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Cotacao) - Status não encontrado(a) por ID: "
-                                + updatedData.getStatus().getId()));
-        updatedData.setStatus(status);
-        return cotacaoRepository.save(updatedData);
+        Cotacao updatedEntity = convertToEntity(updatedData);    
+        Cotacao savedEntity = cotacaoRepository.save(updatedEntity);
+        return convertToDto(savedEntity);
     }
 
     public void delete(Long id) {
-        cotacaoRepository.delete(findById(id));
+        Cotacao entity = findEntityById(id);
+        cotacaoRepository.delete(entity);
+    }
+
+    private CotacaoDTO convertToDto(Cotacao cotacao) {
+        CotacaoDTO dto = new CotacaoDTO();
+        dto.setId(cotacao.getId());
+        dto.setDataAbertura(cotacao.getDataAbertura());
+        dto.setIdComprador(cotacao.getComprador() != null ? cotacao.getComprador().getId() : null);
+        dto.setIdProduto(cotacao.getProduto() != null ? cotacao.getProduto().getId() : null);
+        dto.setQuantidadeProduto(cotacao.getQuantidadeProduto());
+        dto.setValorProduto(cotacao.getValorProduto());
+        dto.setIdStatus(cotacao.getStatus() != null ? cotacao.getStatus().getId() : null);
+        dto.setPrioridadeEntrega(cotacao.getPrioridadeEntrega());
+        dto.setPrioridadeQualidade(cotacao.getPrioridadeQualidade());
+        dto.setPrioridadePreco(cotacao.getPrioridadePreco());
+        dto.setPrazo(cotacao.getPrazo());
+        dto.setDataFechamento(cotacao.getDataFechamento());
+        return dto;
+    }
+
+    public Cotacao findEntityById(Long id) {
+        return cotacaoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Cotacao) - Cotacao não encontrado(a) por ID: " + id));
+    }
+
+    private Cotacao convertToEntity(CotacaoDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(Cotacao) ID Cotacao não pode ser nulo.");
+        }
+        if (dto.getIdComprador() == null) {
+            throw new IllegalArgumentException("(Cotacao) ID Comprador não pode ser nulo.");
+        }
+        if (dto.getIdProduto() == null) {
+            throw new IllegalArgumentException("(Cotacao) ID Produto não pode ser nulo.");
+        }
+        if (dto.getIdStatus() == null) {
+            throw new IllegalArgumentException("(Cotacao) ID Status não pode ser nulo.");
+        }
+        Cotacao cotacao = new Cotacao();
+        cotacao.setId(dto.getId());
+        cotacao.setDataAbertura(dto.getDataAbertura());
+        if (dto.getIdComprador() != null)
+            cotacao.setComprador(usuarioService.findEntityById(dto.getIdComprador()));
+        if (dto.getIdProduto() != null)
+            cotacao.setProduto(produtoService.findEntityById(dto.getIdProduto()));
+        cotacao.setQuantidadeProduto(dto.getQuantidadeProduto());
+        cotacao.setValorProduto(dto.getValorProduto());
+        if (dto.getIdStatus() != null)
+            cotacao.setStatus(statusService.findEntityById(dto.getIdStatus()));
+        cotacao.setPrioridadeEntrega(dto.getPrioridadeEntrega());
+        cotacao.setPrioridadeQualidade(dto.getPrioridadeQualidade());
+        cotacao.setPrioridadePreco(dto.getPrioridadePreco());
+        cotacao.setPrazo(dto.getPrazo());
+        cotacao.setDataFechamento(dto.getDataFechamento());
+        return cotacao;
     }
 }

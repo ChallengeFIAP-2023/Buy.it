@@ -1,11 +1,9 @@
 package br.com.fiap.buy.it.service;
 
+import br.com.fiap.buy.it.dto.ProdutoDTO;
 import br.com.fiap.buy.it.model.Produto;
-import br.com.fiap.buy.it.model.Departamento;
-import br.com.fiap.buy.it.model.Tag;
 import br.com.fiap.buy.it.repository.ProdutoRepository;
-import br.com.fiap.buy.it.repository.DepartamentoRepository;
-import br.com.fiap.buy.it.repository.TagRepository;
+import br.com.fiap.buy.it.model.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class ProdutoService {
@@ -23,54 +23,83 @@ public class ProdutoService {
     private ProdutoRepository produtoRepository;
 
     @Autowired
-    private DepartamentoRepository departamentoRepository;
+    private DepartamentoService departamentoService;
 
     @Autowired
-    private TagRepository tagRepository;
+    private TagService tagService;
 
-    public Page<Produto> listAll(Pageable pageRequest) {
-        return produtoRepository.findAll(pageRequest);
+    public Page<ProdutoDTO> listAll(Pageable pageRequest) {
+        return produtoRepository.findAll(pageRequest).map(this::convertToDto);
     }
 
-    public Produto findById(Long id) {
-        return produtoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Produto) não encontrado(a) por ID: " + id));
+    public ProdutoDTO findById(Long id) {
+        Produto produto = findEntityById(id);
+        return convertToDto(produto);
     }
 
-    public Produto create(Produto newData) {
-        Departamento departamento = departamentoRepository.findById(newData.getDepartamento().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Produto) - Departamento não encontrado(a) por ID: " + newData.getDepartamento().getId()));
-        newData.setDepartamento(departamento);
-        validateTags(newData.getTags());
-        return produtoRepository.save(newData);
+    public ProdutoDTO create(ProdutoDTO newData) {
+        Produto entity = convertToEntity(newData);
+        Produto savedEntity = produtoRepository.save(entity);
+        return convertToDto(savedEntity);
     }
 
-    public Produto update(Long id, Produto updatedData) {
-        if (!id.equals(updatedData.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "(Produto) ID no corpo da solicitação não corresponde ao ID na URL.");
-        }
-        findById(id);
+    public ProdutoDTO update(Long id, ProdutoDTO updatedData) {
+        findEntityById(id);
         updatedData.setId(id);
-        Departamento departamento = departamentoRepository.findById(updatedData.getDepartamento().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Produto) - Departamento não encontrado(a) por ID: " + updatedData.getDepartamento().getId()));
-        updatedData.setDepartamento(departamento);
-        validateTags(updatedData.getTags());
-        return produtoRepository.save(updatedData);
+        Produto updatedEntity = convertToEntity(updatedData);    
+        Produto savedEntity = produtoRepository.save(updatedEntity);
+        return convertToDto(savedEntity);
     }
+    
 
     public void delete(Long id) {
-        produtoRepository.delete(findById(id));
+        Produto entity = findEntityById(id);
+        produtoRepository.delete(entity);
     }
 
-    private void validateTags(Set<Tag> tags) {
-        for (Tag tag : tags) {
-            tagRepository.findById(tag.getId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                            "(Produto) - Tag não encontrada por ID: " + tag.getId()));
+    public Produto findEntityById(Long id) {
+        return produtoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Produto) - Produto não encontrado(a) por ID: " + id));
+    }
+
+    private ProdutoDTO convertToDto(Produto produto) {
+        ProdutoDTO dto = new ProdutoDTO();
+        dto.setId(produto.getId());
+        dto.setNome(produto.getNome());
+        dto.setMarca(produto.getMarca());
+        dto.setCor(produto.getCor());
+        dto.setTamanho(produto.getTamanho());
+        dto.setMaterial(produto.getMaterial());
+        dto.setObservacao(produto.getObservacao());
+        dto.setIdDepartamento(produto.getDepartamento() != null ? produto.getDepartamento().getId() : null);
+        Set<Long> idsTags = produto.getTags().stream()
+                .map(Tag::getId)
+                .collect(Collectors.toSet());
+        dto.setIdsTags(idsTags);
+        return dto;
+    }
+
+    private Produto convertToEntity(ProdutoDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
         }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(Produto) ID Produto não pode ser nulo.");
+        }
+        Produto produto = new Produto();
+        produto.setId(dto.getId());
+        produto.setNome(dto.getNome());
+        produto.setMarca(dto.getMarca());
+        produto.setCor(dto.getCor());
+        produto.setTamanho(dto.getTamanho());
+        produto.setMaterial(dto.getMaterial());
+        produto.setObservacao(dto.getObservacao());
+        if (dto.getIdDepartamento() != null)
+            produto.setDepartamento(departamentoService.findEntityById(dto.getIdDepartamento()));
+        dto.getIdsTags().stream().forEach(id -> {
+            Tag tag = tagService.findEntityById(id);
+            produto.addTag(tag);
+        });
+        return produto;
     }
 }

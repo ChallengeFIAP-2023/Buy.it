@@ -1,12 +1,10 @@
 package br.com.fiap.buy.it.service;
 
-import br.com.fiap.buy.it.model.Usuario;
 import br.com.fiap.buy.it.dto.LoginDTO;
-import br.com.fiap.buy.it.model.Pessoa;
-import br.com.fiap.buy.it.model.Tag;
+import br.com.fiap.buy.it.dto.UsuarioDTO;
+import br.com.fiap.buy.it.model.Usuario;
 import br.com.fiap.buy.it.repository.UsuarioRepository;
-import br.com.fiap.buy.it.repository.PessoaRepository;
-import br.com.fiap.buy.it.repository.TagRepository;
+import br.com.fiap.buy.it.model.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -15,7 +13,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 import java.util.Optional;
 
 @Service
@@ -25,55 +25,75 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private PessoaRepository pessoaRepository;
+    private PessoaService pessoaService;
 
     @Autowired
-    private TagRepository tagRepository;
+    private TagService tagService;
 
-    public Page<Usuario> listAll(Pageable pageRequest) {
-        return usuarioRepository.findAll(pageRequest);
+    public Page<UsuarioDTO> listAll(Pageable pageRequest) {
+        return usuarioRepository.findAll(pageRequest).map(this::convertToDto);
     }
 
-    public Usuario findById(Long id) {
-        return usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Usuario) não encontrado(a) por ID: " + id));
+    public UsuarioDTO findById(Long id) {
+        Usuario usuario = findEntityById(id);
+        return convertToDto(usuario);
     }
 
-    public Usuario create(Usuario newData) {
-        Pessoa pessoa = pessoaRepository.findById(newData.getPessoa().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Usuario) - Pessoa não encontrado(a) por ID: " + newData.getPessoa().getId()));
-        newData.setPessoa(pessoa);
-        validateTags(newData.getTags());
-        return usuarioRepository.save(newData);
+    public UsuarioDTO create(UsuarioDTO newData) {
+        Usuario entity = convertToEntity(newData);
+        Usuario savedEntity = usuarioRepository.save(entity);
+        return convertToDto(savedEntity);
     }
 
-    public Usuario update(Long id, Usuario updatedData) {
-        if (!id.equals(updatedData.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "(Usuario) ID no corpo da solicitação não corresponde ao ID na URL.");
-        }
-        findById(id);
+    public UsuarioDTO update(Long id, UsuarioDTO updatedData) {
+        findEntityById(id);
         updatedData.setId(id);
-        Pessoa pessoa = pessoaRepository.findById(updatedData.getPessoa().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Usuario) - Pessoa não encontrado(a) por ID: " + updatedData.getPessoa().getId()));
-        updatedData.setPessoa(pessoa);
-        validateTags(updatedData.getTags());
-        return usuarioRepository.save(updatedData);
+        Usuario updatedEntity = convertToEntity(updatedData);    
+        Usuario savedEntity = usuarioRepository.save(updatedEntity);
+        return convertToDto(savedEntity);
     }
 
     public void delete(Long id) {
-        usuarioRepository.delete(findById(id));
+        Usuario entity = findEntityById(id);
+        usuarioRepository.delete(entity);
     }
 
-    private void validateTags(Set<Tag> tags) {
-        for (Tag tag : tags) {
-            tagRepository.findById(tag.getId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                            "(Usuario) - Tag não encontrada por ID: " + tag.getId()));
+    public Usuario findEntityById(Long id) {
+        return usuarioRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Usuario) - Usuario não encontrado(a) por ID: " + id));
+    }
+
+    private UsuarioDTO convertToDto(Usuario usuario) {
+        UsuarioDTO dto = new UsuarioDTO();
+        dto.setId(usuario.getId());
+        dto.setEmail(usuario.getEmail());
+        dto.setSenha(usuario.getSenha());
+        dto.setIdPessoa(usuario.getPessoa() != null ? usuario.getPessoa().getId() : null);
+        Set<Long> idsTags = usuario.getTags().stream()
+                .map(Tag::getId)
+                .collect(Collectors.toSet());
+        dto.setIdsTags(idsTags);
+        return dto;
+    }
+
+    private Usuario convertToEntity(UsuarioDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
         }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(Usuario) ID Usuario não pode ser nulo.");
+        }
+        Usuario usuario = new Usuario();
+        usuario.setId(dto.getId());
+        usuario.setEmail(dto.getEmail());
+        usuario.setSenha(dto.getSenha());
+        if (dto.getIdPessoa() != null)
+            usuario.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));
+        dto.getIdsTags().stream().forEach(id -> {
+            Tag tag = tagService.findEntityById(id);
+            usuario.addTag(tag);
+        });
+        return usuario;
     }
 
     public Optional<Usuario> validarLogin(LoginDTO loginDTO) {

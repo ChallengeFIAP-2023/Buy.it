@@ -1,11 +1,8 @@
 package br.com.fiap.buy.it.service;
 
+import br.com.fiap.buy.it.dto.FormaContatoDTO;
 import br.com.fiap.buy.it.model.FormaContato;
-import br.com.fiap.buy.it.model.TipoContato;
-import br.com.fiap.buy.it.model.Pessoa;
 import br.com.fiap.buy.it.repository.FormaContatoRepository;
-import br.com.fiap.buy.it.repository.TipoContatoRepository;
-import br.com.fiap.buy.it.repository.PessoaRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -14,6 +11,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
+
 @Service
 public class FormaContatoService {
 
@@ -21,53 +20,74 @@ public class FormaContatoService {
     private FormaContatoRepository formaContatoRepository;
 
     @Autowired
-    private TipoContatoRepository tipoContatoRepository;
+    private TipoContatoService tipoContatoService;
 
     @Autowired
-    private PessoaRepository pessoaRepository;
+    private PessoaService pessoaService;
 
-    public Page<FormaContato> listAll(Pageable pageRequest) {
-        return formaContatoRepository.findAll(pageRequest);
+    public Page<FormaContatoDTO> listAll(Pageable pageRequest) {
+        return formaContatoRepository.findAll(pageRequest).map(this::convertToDto);
     }
 
-    public FormaContato findById(Long id) {
-        return formaContatoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(FormaContato) não encontrado(a) por ID: " + id));
+    public FormaContatoDTO findById(Long id) {
+        FormaContato formaContato = findEntityById(id);
+        return convertToDto(formaContato);
     }
 
-    public FormaContato create(FormaContato newData) {
-        TipoContato tipoContato = tipoContatoRepository.findById(newData.getTipoContato().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(FormaContato) - TipoContato não encontrado(a) por ID: " + newData.getTipoContato().getId()));
-        newData.setTipoContato(tipoContato);
-        Pessoa pessoa = pessoaRepository.findById(newData.getPessoa().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(FormaContato) - Pessoa não encontrado(a) por ID: " + newData.getPessoa().getId()));
-        newData.setPessoa(pessoa);
-        return formaContatoRepository.save(newData);
+    public FormaContatoDTO create(FormaContatoDTO newData) {
+        FormaContato entity = convertToEntity(newData);
+        FormaContato savedEntity = formaContatoRepository.save(entity);
+        return convertToDto(savedEntity);
     }
 
-    public FormaContato update(Long id, FormaContato updatedData) {
-        if (!id.equals(updatedData.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "(FormaContato) ID no corpo da solicitação não corresponde ao ID na URL.");
-        }
-        findById(id);
+    public FormaContatoDTO update(Long id, FormaContatoDTO updatedData) {
+        findEntityById(id);
         updatedData.setId(id);
-        TipoContato tipoContato = tipoContatoRepository.findById(updatedData.getTipoContato().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(FormaContato) - TipoContato não encontrado(a) por ID: "
-                                + updatedData.getTipoContato().getId()));
-        updatedData.setTipoContato(tipoContato);
-        Pessoa pessoa = pessoaRepository.findById(updatedData.getPessoa().getId())
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(FormaContato) - Pessoa não encontrado(a) por ID: " + updatedData.getPessoa().getId()));
-        updatedData.setPessoa(pessoa);
-        return formaContatoRepository.save(updatedData);
+        FormaContato updatedEntity = convertToEntity(updatedData);    
+        FormaContato savedEntity = formaContatoRepository.save(updatedEntity);
+        return convertToDto(savedEntity);
     }
+    
 
     public void delete(Long id) {
-        formaContatoRepository.delete(findById(id));
+        FormaContato entity = findEntityById(id);
+        formaContatoRepository.delete(entity);
+    }
+
+    public FormaContato findEntityById(Long id) {
+        return formaContatoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(FormaContato) - FormaContato não encontrado(a) por ID: " + id));
+    }
+
+    private FormaContatoDTO convertToDto(FormaContato formaContato) {
+        FormaContatoDTO dto = new FormaContatoDTO();
+        dto.setId(formaContato.getId());
+        dto.setIdTipoContato(formaContato.getTipoContato() != null ? formaContato.getTipoContato().getId() : null);
+        dto.setValor(formaContato.getValor());
+        dto.setIdPessoa(formaContato.getPessoa() != null ? formaContato.getPessoa().getId() : null);
+        return dto;
+    }
+
+    private FormaContato convertToEntity(FormaContatoDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(FormaContato) ID FormaContato não pode ser nulo.");
+        }
+        if (dto.getIdTipoContato() == null) {
+            throw new IllegalArgumentException("(FormaContato) ID TipoContato não pode ser nulo.");
+        }
+        if (dto.getIdPessoa() == null) {
+            throw new IllegalArgumentException("(FormaContato) ID Pessoa não pode ser nulo.");
+        }
+        FormaContato formaContato = new FormaContato();
+        formaContato.setId(dto.getId());
+        if (dto.getIdTipoContato() != null)
+            formaContato.setTipoContato(tipoContatoService.findEntityById(dto.getIdTipoContato()));
+        formaContato.setValor(dto.getValor());
+        if (dto.getIdPessoa() != null)
+            formaContato.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));
+        return formaContato;
     }
 }

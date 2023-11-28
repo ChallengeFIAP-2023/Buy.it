@@ -1,5 +1,6 @@
 package br.com.fiap.buy.it.service;
 
+import br.com.fiap.buy.it.dto.PessoaDTO;
 import br.com.fiap.buy.it.model.Pessoa;
 import br.com.fiap.buy.it.repository.PessoaRepository;
 
@@ -10,37 +11,67 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
+
 @Service
 public class PessoaService {
 
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    public Page<Pessoa> listAll(Pageable pageRequest) {
-        return pessoaRepository.findAll(pageRequest);
+    public Page<PessoaDTO> listAll(Pageable pageRequest) {
+        return pessoaRepository.findAll(pageRequest).map(this::convertToDto);
     }
 
-    public Pessoa findById(Long id) {
-        return pessoaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Pessoa) não encontrado(a) por ID: " + id));
+    public PessoaDTO findById(Long id) {
+        Pessoa pessoa = findEntityById(id);
+        return convertToDto(pessoa);
     }
 
-    public Pessoa create(Pessoa newData) {
-        return pessoaRepository.save(newData);
+    public PessoaDTO create(PessoaDTO newData) {
+        Pessoa entity = convertToEntity(newData);
+        Pessoa savedEntity = pessoaRepository.save(entity);
+        return convertToDto(savedEntity);
     }
 
-    public Pessoa update(Long id, Pessoa updatedData) {
-        if (!id.equals(updatedData.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "(Pessoa) ID no corpo da solicitação não corresponde ao ID na URL.");
-        }
-        findById(id);
+    public PessoaDTO update(Long id, PessoaDTO updatedData) {
+        findEntityById(id);
         updatedData.setId(id);
-        return pessoaRepository.save(updatedData);
+        Pessoa updatedEntity = convertToEntity(updatedData);    
+        Pessoa savedEntity = pessoaRepository.save(updatedEntity);
+        return convertToDto(savedEntity);
     }
+    
 
     public void delete(Long id) {
-        pessoaRepository.delete(findById(id));
+        Pessoa entity = findEntityById(id);
+        pessoaRepository.delete(entity);
+    }
+
+    public Pessoa findEntityById(Long id) {
+        return pessoaRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Pessoa) - Pessoa não encontrado(a) por ID: " + id));
+    }
+
+    private PessoaDTO convertToDto(Pessoa pessoa) {
+        PessoaDTO dto = new PessoaDTO();
+        dto.setId(pessoa.getId());
+        dto.setNome(pessoa.getNome());
+        dto.setUrlImagem(pessoa.getUrlImagem());
+        return dto;
+    }
+
+    private Pessoa convertToEntity(PessoaDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(Pessoa) ID Pessoa não pode ser nulo.");
+        }
+        Pessoa pessoa = new Pessoa();
+        pessoa.setId(dto.getId());
+        pessoa.setNome(dto.getNome());
+        pessoa.setUrlImagem(dto.getUrlImagem());
+        return pessoa;
     }
 }

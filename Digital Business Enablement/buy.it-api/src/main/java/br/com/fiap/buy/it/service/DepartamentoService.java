@@ -1,9 +1,9 @@
 package br.com.fiap.buy.it.service;
 
+import br.com.fiap.buy.it.dto.DepartamentoDTO;
 import br.com.fiap.buy.it.model.Departamento;
-import br.com.fiap.buy.it.model.Tag;
 import br.com.fiap.buy.it.repository.DepartamentoRepository;
-import br.com.fiap.buy.it.repository.TagRepository;
+import br.com.fiap.buy.it.model.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -12,7 +12,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartamentoService {
@@ -21,43 +23,68 @@ public class DepartamentoService {
     private DepartamentoRepository departamentoRepository;
 
     @Autowired
-    private TagRepository tagRepository;
+    private TagService tagService;
 
-    public Page<Departamento> listAll(Pageable pageRequest) {
-        return departamentoRepository.findAll(pageRequest);
+    public Page<DepartamentoDTO> listAll(Pageable pageRequest) {
+        return departamentoRepository.findAll(pageRequest).map(this::convertToDto);
     }
 
-    public Departamento findById(Long id) {
-        return departamentoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Departamento) não encontrado(a) por ID: " + id));
+    public DepartamentoDTO findById(Long id) {
+        Departamento departamento = findEntityById(id);
+        return convertToDto(departamento);
     }
 
-    public Departamento create(Departamento newData) {
-        validateTags(newData.getTags());
-        return departamentoRepository.save(newData);
+    public DepartamentoDTO create(DepartamentoDTO newData) {
+        Departamento entity = convertToEntity(newData);
+        Departamento savedEntity = departamentoRepository.save(entity);
+        return convertToDto(savedEntity);
     }
 
-    public Departamento update(Long id, Departamento updatedData) {
-        if (!id.equals(updatedData.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "(Departamento) ID no corpo da solicitação não corresponde ao ID na URL.");
-        }
-        findById(id);
+    public DepartamentoDTO update(Long id, DepartamentoDTO updatedData) {
+        findEntityById(id);
         updatedData.setId(id);
-        validateTags(updatedData.getTags());
-        return departamentoRepository.save(updatedData);
+        Departamento updatedEntity = convertToEntity(updatedData);    
+        Departamento savedEntity = departamentoRepository.save(updatedEntity);
+        return convertToDto(savedEntity);
     }
 
     public void delete(Long id) {
-        departamentoRepository.delete(findById(id));
+        Departamento entity = findEntityById(id);
+        departamentoRepository.delete(entity);
     }
 
-    private void validateTags(Set<Tag> tags) {
-        for (Tag tag : tags) {
-            tagRepository.findById(tag.getId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                            "(Departamento) - Tag não encontrada por ID: " + tag.getId()));
+    public Departamento findEntityById(Long id) {
+        return departamentoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Departamento) - Departamento não encontrado(a) por ID: " + id));
+    }
+
+    private DepartamentoDTO convertToDto(Departamento departamento) {
+        DepartamentoDTO dto = new DepartamentoDTO();
+        dto.setId(departamento.getId());
+        dto.setNome(departamento.getNome());
+        dto.setIcone(departamento.getIcone());
+        Set<Long> idsTags = departamento.getTags().stream()
+                .map(Tag::getId)
+                .collect(Collectors.toSet());
+        dto.setIdsTags(idsTags);
+        return dto;
+    }
+
+    private Departamento convertToEntity(DepartamentoDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
         }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(Departamento) ID Departamento não pode ser nulo.");
+        }
+        Departamento departamento = new Departamento();
+        departamento.setId(dto.getId());
+        departamento.setNome(dto.getNome());
+        departamento.setIcone(dto.getIcone());
+        dto.getIdsTags().stream().forEach(id -> {
+            Tag tag = tagService.findEntityById(id);
+            departamento.addTag(tag);
+        });
+        return departamento;
     }
 }

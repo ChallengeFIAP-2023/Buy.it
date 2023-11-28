@@ -1,13 +1,11 @@
 package br.com.fiap.buy.it.service;
 
-import br.com.fiap.buy.it.model.Tag;
+import br.com.fiap.buy.it.dto.TagDTO;
 import br.com.fiap.buy.it.model.Departamento;
 import br.com.fiap.buy.it.model.Produto;
+import br.com.fiap.buy.it.model.Tag;
 import br.com.fiap.buy.it.model.Usuario;
 import br.com.fiap.buy.it.repository.TagRepository;
-import br.com.fiap.buy.it.repository.DepartamentoRepository;
-import br.com.fiap.buy.it.repository.ProdutoRepository;
-import br.com.fiap.buy.it.repository.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -16,7 +14,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class TagService {
@@ -25,69 +25,89 @@ public class TagService {
     private TagRepository tagRepository;
 
     @Autowired
-    private DepartamentoRepository departamentoRepository;
+    private DepartamentoService departamentoService;
 
     @Autowired
-    private ProdutoRepository produtoRepository;
+    private ProdutoService produtoService;
 
     @Autowired
-    private UsuarioRepository usuarioRepository;
+    private UsuarioService usuarioService;
 
-    public Page<Tag> listAll(Pageable pageRequest) {
-        return tagRepository.findAll(pageRequest);
+    public Page<TagDTO> listAll(Pageable pageRequest) {
+        return tagRepository.findAll(pageRequest).map(this::convertToDto);
     }
 
-    public Tag findById(Long id) {
-        return tagRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Tag) não encontrado(a) por ID: " + id));
+    public TagDTO findById(Long id) {
+        Tag tag = findEntityById(id);
+        return convertToDto(tag);
     }
 
-    public Tag create(Tag newData) {
-        validateDepartamentos(newData.getDepartamentos());
-        validateProdutos(newData.getProdutos());
-        validateUsuarios(newData.getUsuarios());
-        return tagRepository.save(newData);
+    public TagDTO create(TagDTO newData) {
+        Tag entity = convertToEntity(newData);
+        Tag savedEntity = tagRepository.save(entity);
+        return convertToDto(savedEntity);
     }
 
-    public Tag update(Long id, Tag updatedData) {
-        if (!id.equals(updatedData.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "(Tag) ID no corpo da solicitação não corresponde ao ID na URL.");
-        }
-        findById(id);
+    public TagDTO update(Long id, TagDTO updatedData) {
+        findEntityById(id);
         updatedData.setId(id);
-        validateDepartamentos(updatedData.getDepartamentos());
-        validateProdutos(updatedData.getProdutos());
-        validateUsuarios(updatedData.getUsuarios());
-        return tagRepository.save(updatedData);
+        Tag updatedEntity = convertToEntity(updatedData);    
+        Tag savedEntity = tagRepository.save(updatedEntity);
+        return convertToDto(savedEntity);
     }
+    
 
     public void delete(Long id) {
-        tagRepository.delete(findById(id));
+        Tag entity = findEntityById(id);
+        tagRepository.delete(entity);
     }
 
-    private void validateDepartamentos(Set<Departamento> departamentos) {
-        for (Departamento departamento : departamentos) {
-            departamentoRepository.findById(departamento.getId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                            "(Tag) - Departamento não encontrada por ID: " + departamento.getId()));
-        }
+    public Tag findEntityById(Long id) {
+        return tagRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Tag) - Tag não encontrado(a) por ID: " + id));
     }
 
-    private void validateProdutos(Set<Produto> produtos) {
-        for (Produto produto : produtos) {
-            produtoRepository.findById(produto.getId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                            "(Tag) - Produto não encontrada por ID: " + produto.getId()));
-        }
+    private TagDTO convertToDto(Tag tag) {
+        TagDTO dto = new TagDTO();
+        dto.setId(tag.getId());
+        dto.setNome(tag.getNome());
+        Set<Long> idsDepartamentos = tag.getDepartamentos().stream()
+                .map(Departamento::getId)
+                .collect(Collectors.toSet());
+        dto.setIdsDepartamentos(idsDepartamentos);
+        Set<Long> idsProdutos = tag.getProdutos().stream()
+                .map(Produto::getId)
+                .collect(Collectors.toSet());
+        dto.setIdsProdutos(idsProdutos);
+        Set<Long> idsUsuarios = tag.getUsuarios().stream()
+                .map(Usuario::getId)
+                .collect(Collectors.toSet());
+        dto.setIdsUsuarios(idsUsuarios);
+        return dto;
     }
 
-    private void validateUsuarios(Set<Usuario> usuarios) {
-        for (Usuario usuario : usuarios) {
-            usuarioRepository.findById(usuario.getId())
-                    .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                            "(Tag) - Usuario não encontrada por ID: " + usuario.getId()));
+    private Tag convertToEntity(TagDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
         }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(Tag) ID Tag não pode ser nulo.");
+        }
+        Tag tag = new Tag();
+        tag.setId(dto.getId());
+        tag.setNome(dto.getNome());
+        dto.getIdsDepartamentos().stream().forEach(id -> {
+            Departamento departamento = departamentoService.findEntityById(id);
+            tag.addDepartamento(departamento);
+        });
+        dto.getIdsProdutos().stream().forEach(id -> {
+            Produto produto = produtoService.findEntityById(id);
+            tag.addProduto(produto);
+        });
+        dto.getIdsUsuarios().stream().forEach(id -> {
+            Usuario usuario = usuarioService.findEntityById(id);
+            tag.addUsuario(usuario);
+        });
+        return tag;
     }
 }

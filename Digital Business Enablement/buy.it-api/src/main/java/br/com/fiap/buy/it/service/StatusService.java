@@ -1,5 +1,6 @@
 package br.com.fiap.buy.it.service;
 
+import br.com.fiap.buy.it.dto.StatusDTO;
 import br.com.fiap.buy.it.model.Status;
 import br.com.fiap.buy.it.repository.StatusRepository;
 
@@ -10,37 +11,65 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.Objects;
+
 @Service
 public class StatusService {
 
     @Autowired
     private StatusRepository statusRepository;
 
-    public Page<Status> listAll(Pageable pageRequest) {
-        return statusRepository.findAll(pageRequest);
+    public Page<StatusDTO> listAll(Pageable pageRequest) {
+        return statusRepository.findAll(pageRequest).map(this::convertToDto);
     }
 
-    public Status findById(Long id) {
-        return statusRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
-                        "(Status) não encontrado(a) por ID: " + id));
+    public StatusDTO findById(Long id) {
+        Status status = findEntityById(id);
+        return convertToDto(status);
     }
 
-    public Status create(Status newData) {
-        return statusRepository.save(newData);
+    public StatusDTO create(StatusDTO newData) {
+        Status entity = convertToEntity(newData);
+        Status savedEntity = statusRepository.save(entity);
+        return convertToDto(savedEntity);
     }
 
-    public Status update(Long id, Status updatedData) {
-        if (!id.equals(updatedData.getId())) {
-            throw new ResponseStatusException(HttpStatus.BAD_REQUEST,
-                    "(Status) ID no corpo da solicitação não corresponde ao ID na URL.");
-        }
-        findById(id);
+    public StatusDTO update(Long id, StatusDTO updatedData) {
+        findEntityById(id);
         updatedData.setId(id);
-        return statusRepository.save(updatedData);
+        Status updatedEntity = convertToEntity(updatedData);    
+        Status savedEntity = statusRepository.save(updatedEntity);
+        return convertToDto(savedEntity);
     }
+    
 
     public void delete(Long id) {
-        statusRepository.delete(findById(id));
+        Status entity = findEntityById(id);
+        statusRepository.delete(entity);
+    }
+
+    public Status findEntityById(Long id) {
+        return statusRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Status) - Status não encontrado(a) por ID: " + id));
+    }
+
+    private StatusDTO convertToDto(Status status) {
+        StatusDTO dto = new StatusDTO();
+        dto.setId(status.getId());
+        dto.setNome(status.getNome());
+        return dto;
+    }
+
+    private Status convertToEntity(StatusDTO dto) {
+        if (Objects.isNull(dto)) {
+            return null;
+        }
+        if (dto.getId() == null) {
+            throw new IllegalArgumentException("(Status) ID Status não pode ser nulo.");
+        }
+        Status status = new Status();
+        status.setId(dto.getId());
+        status.setNome(dto.getNome());
+        return status;
     }
 }
