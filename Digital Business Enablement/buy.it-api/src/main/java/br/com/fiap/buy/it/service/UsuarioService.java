@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -70,10 +71,12 @@ public class UsuarioService {
         dto.setEmail(usuario.getEmail());
         dto.setSenha(usuario.getSenha());
         dto.setIdPessoa(usuario.getPessoa() != null ? usuario.getPessoa().getId() : null);
-        Set<Long> idsTags = usuario.getTags().stream()
-                .map(Tag::getId)
-                .collect(Collectors.toSet());
-        dto.setIdsTags(idsTags);
+        if (usuario.getTags() != null) {
+            Set<Long> idsTags = usuario.getTags().stream()
+                    .map(Tag::getId)
+                    .collect(Collectors.toSet());
+            dto.setIdsTags(idsTags);
+        }
         return dto;
     }
 
@@ -81,19 +84,21 @@ public class UsuarioService {
         if (Objects.isNull(dto)) {
             return null;
         }
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("(Usuario) ID Usuario não pode ser nulo.");
-        }
         Usuario usuario = new Usuario();
-        usuario.setId(dto.getId());
+        if (dto.getId() != null)
+            usuario.setId(dto.getId());
         usuario.setEmail(dto.getEmail());
         usuario.setSenha(dto.getSenha());
-        if (dto.getIdPessoa() != null)
-            usuario.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));
-        dto.getIdsTags().stream().forEach(id -> {
-            Tag tag = tagService.findEntityById(id);
-            usuario.addTag(tag);
-        });
+        usuario.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));
+        if (dto.getIdsTags() != null) {
+            dto.getIdsTags().stream().forEach(id -> {
+                Tag tag = tagService.findEntityById(id);
+                usuario.addTag(tag);
+            });
+        }
+        else {
+            usuario.setTags(new LinkedHashSet<>());
+        }
         return usuario;
     }
 

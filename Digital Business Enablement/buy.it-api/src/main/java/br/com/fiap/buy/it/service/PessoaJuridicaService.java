@@ -67,11 +67,9 @@ public class PessoaJuridicaService {
         if (Objects.isNull(dto)) {
             return null;
         }
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("(PessoaJuridica) ID PessoaJuridica não pode ser nulo.");
-        }
         PessoaJuridica pessoaJuridica = new PessoaJuridica();
-        pessoaJuridica.setId(dto.getId());
+        if (dto.getId() != null)
+            pessoaJuridica.setId(dto.getId());
         pessoaJuridica.setNome(dto.getNome());
         pessoaJuridica.setUrlImagem(dto.getUrlImagem());
         pessoaJuridica.setCnpj(dto.getCnpj());

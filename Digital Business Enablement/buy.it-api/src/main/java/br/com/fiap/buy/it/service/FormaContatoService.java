@@ -72,9 +72,6 @@ public class FormaContatoService {
         if (Objects.isNull(dto)) {
             return null;
         }
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("(FormaContato) ID FormaContato não pode ser nulo.");
-        }
         if (dto.getIdTipoContato() == null) {
             throw new IllegalArgumentException("(FormaContato) ID TipoContato não pode ser nulo.");
         }
@@ -82,12 +79,11 @@ public class FormaContatoService {
             throw new IllegalArgumentException("(FormaContato) ID Pessoa não pode ser nulo.");
         }
         FormaContato formaContato = new FormaContato();
+        if (dto.getId() != null)
         formaContato.setId(dto.getId());
-        if (dto.getIdTipoContato() != null)
-            formaContato.setTipoContato(tipoContatoService.findEntityById(dto.getIdTipoContato()));
+        formaContato.setTipoContato(tipoContatoService.findEntityById(dto.getIdTipoContato()));
         formaContato.setValor(dto.getValor());
-        if (dto.getIdPessoa() != null)
-            formaContato.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));
+        formaContato.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));
         return formaContato;
     }
 }

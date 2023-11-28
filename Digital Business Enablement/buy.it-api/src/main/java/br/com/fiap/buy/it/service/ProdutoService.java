@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -73,10 +74,12 @@ public class ProdutoService {
         dto.setMaterial(produto.getMaterial());
         dto.setObservacao(produto.getObservacao());
         dto.setIdDepartamento(produto.getDepartamento() != null ? produto.getDepartamento().getId() : null);
-        Set<Long> idsTags = produto.getTags().stream()
-                .map(Tag::getId)
-                .collect(Collectors.toSet());
-        dto.setIdsTags(idsTags);
+        if (produto.getTags() != null) {
+            Set<Long> idsTags = produto.getTags().stream()
+                    .map(Tag::getId)
+                    .collect(Collectors.toSet());
+            dto.setIdsTags(idsTags);
+        }
         return dto;
     }
 
@@ -84,23 +87,25 @@ public class ProdutoService {
         if (Objects.isNull(dto)) {
             return null;
         }
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("(Produto) ID Produto não pode ser nulo.");
-        }
         Produto produto = new Produto();
-        produto.setId(dto.getId());
+        if (dto.getId() != null)
+            produto.setId(dto.getId());
         produto.setNome(dto.getNome());
         produto.setMarca(dto.getMarca());
         produto.setCor(dto.getCor());
         produto.setTamanho(dto.getTamanho());
         produto.setMaterial(dto.getMaterial());
         produto.setObservacao(dto.getObservacao());
-        if (dto.getIdDepartamento() != null)
-            produto.setDepartamento(departamentoService.findEntityById(dto.getIdDepartamento()));
-        dto.getIdsTags().stream().forEach(id -> {
-            Tag tag = tagService.findEntityById(id);
-            produto.addTag(tag);
-        });
+        produto.setDepartamento(departamentoService.findEntityById(dto.getIdDepartamento()));
+        if (dto.getIdsTags() != null) {
+            dto.getIdsTags().stream().forEach(id -> {
+                Tag tag = tagService.findEntityById(id);
+                produto.addTag(tag);
+            });
+        }
+        else {
+            produto.setTags(new LinkedHashSet<>());
+        }
         return produto;
     }
 }

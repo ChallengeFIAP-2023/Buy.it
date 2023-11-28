@@ -45,7 +45,6 @@ public class AvaliacaoService {
         return convertToDto(savedEntity);
     }
     
-
     public void delete(Long id) {
         Avaliacao entity = findEntityById(id);
         avaliacaoRepository.delete(entity);
@@ -72,16 +71,13 @@ public class AvaliacaoService {
         if (Objects.isNull(dto)) {
             return null;
         }
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("(Avaliacao) ID Avaliacao não pode ser nulo.");
-        }
         if (dto.getIdCotacao() == null) {
             throw new IllegalArgumentException("(Avaliacao) ID Cotacao não pode ser nulo.");
         }
         Avaliacao avaliacao = new Avaliacao();
-        avaliacao.setId(dto.getId());
-        if (dto.getIdCotacao() != null)
-            avaliacao.setCotacao(cotacaoService.findEntityById(dto.getIdCotacao()));
+        if (dto.getId() != null)
+            avaliacao.setId(dto.getId());
+        avaliacao.setCotacao(cotacaoService.findEntityById(dto.getIdCotacao()));
         avaliacao.setData(dto.getData());
         avaliacao.setNotaEntrega(dto.getNotaEntrega());
         avaliacao.setNotaQualidade(dto.getNotaQualidade());

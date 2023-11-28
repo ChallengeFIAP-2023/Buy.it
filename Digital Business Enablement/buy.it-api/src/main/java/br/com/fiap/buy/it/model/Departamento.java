@@ -6,12 +6,14 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.Optional;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @Entity
 @Table(name = "DEPARTAMENTO", uniqueConstraints = {
@@ -34,27 +36,17 @@ public class Departamento {
     @Getter @Setter
     private String icone;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "TAG_DEPARTAMENTO",
-            joinColumns = {
-                    @JoinColumn(
-                            name = "ID_DEPARTAMENTO",
-                            referencedColumnName = "ID_DEPARTAMENTO",
-                            foreignKey = @ForeignKey(name = "FK_DEPARTAMENTO_TAG")
-                    )
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(
-                            name = "ID_TAG",
-                            referencedColumnName = "ID_TAG",
-                            foreignKey = @ForeignKey(name = "FK_TAG_DEPARTAMENTO")
-                    )
-            }
-    )
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "TAG_DEPARTAMENTO", joinColumns = {
+            @JoinColumn(name = "ID_DEPARTAMENTO", referencedColumnName = "ID_DEPARTAMENTO", foreignKey = @ForeignKey(name = "FK_DEPARTAMENTO_TAG"))
+    }, inverseJoinColumns = {
+            @JoinColumn(name = "ID_TAG", referencedColumnName = "ID_TAG", foreignKey = @ForeignKey(name = "FK_TAG_DEPARTAMENTO"))
+    })
     private Set<Tag> tags;
 
     public Optional<Departamento> addTag(Tag tag) {
+        if (this.tags == null)
+            this.tags = new LinkedHashSet<>();
         this.tags.add(tag);
         tag.addDepartamento(this);
         return Optional.of(this);
@@ -62,7 +54,8 @@ public class Departamento {
 
     public Departamento removeTag(Tag tag) {
         this.tags.remove(tag);
-        if (tag.getDepartamentos().equals(this)) tag.removeDepartamento(this);
+        if (tag.getDepartamentos().equals(this))
+            tag.removeDepartamento(this);
         return this;
     }
 

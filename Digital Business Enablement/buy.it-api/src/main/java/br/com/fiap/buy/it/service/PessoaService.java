@@ -65,11 +65,9 @@ public class PessoaService {
         if (Objects.isNull(dto)) {
             return null;
         }
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("(Pessoa) ID Pessoa não pode ser nulo.");
-        }
         Pessoa pessoa = new Pessoa();
-        pessoa.setId(dto.getId());
+        if (dto.getId() != null)
+            pessoa.setId(dto.getId());
         pessoa.setNome(dto.getNome());
         pessoa.setUrlImagem(dto.getUrlImagem());
         return pessoa;

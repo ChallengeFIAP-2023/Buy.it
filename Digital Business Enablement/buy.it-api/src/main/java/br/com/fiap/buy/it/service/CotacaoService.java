@@ -82,9 +82,6 @@ public class CotacaoService {
         if (Objects.isNull(dto)) {
             return null;
         }
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("(Cotacao) ID Cotacao não pode ser nulo.");
-        }
         if (dto.getIdComprador() == null) {
             throw new IllegalArgumentException("(Cotacao) ID Comprador não pode ser nulo.");
         }
@@ -95,16 +92,14 @@ public class CotacaoService {
             throw new IllegalArgumentException("(Cotacao) ID Status não pode ser nulo.");
         }
         Cotacao cotacao = new Cotacao();
-        cotacao.setId(dto.getId());
+        if (dto.getId() != null)
+            cotacao.setId(dto.getId());
         cotacao.setDataAbertura(dto.getDataAbertura());
-        if (dto.getIdComprador() != null)
-            cotacao.setComprador(usuarioService.findEntityById(dto.getIdComprador()));
-        if (dto.getIdProduto() != null)
-            cotacao.setProduto(produtoService.findEntityById(dto.getIdProduto()));
+        cotacao.setComprador(usuarioService.findEntityById(dto.getIdComprador()));
+        cotacao.setProduto(produtoService.findEntityById(dto.getIdProduto()));
         cotacao.setQuantidadeProduto(dto.getQuantidadeProduto());
         cotacao.setValorProduto(dto.getValorProduto());
-        if (dto.getIdStatus() != null)
-            cotacao.setStatus(statusService.findEntityById(dto.getIdStatus()));
+        cotacao.setStatus(statusService.findEntityById(dto.getIdStatus()));
         cotacao.setPrioridadeEntrega(dto.getPrioridadeEntrega());
         cotacao.setPrioridadeQualidade(dto.getPrioridadeQualidade());
         cotacao.setPrioridadePreco(dto.getPrioridadePreco());

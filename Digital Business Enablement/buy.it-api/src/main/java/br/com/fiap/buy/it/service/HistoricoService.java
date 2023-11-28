@@ -81,9 +81,6 @@ public class HistoricoService {
         if (Objects.isNull(dto)) {
             return null;
         }
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("(Historico) ID Historico não pode ser nulo.");
-        }
         if (dto.getIdCotacao() == null) {
             throw new IllegalArgumentException("(Historico) ID Cotacao não pode ser nulo.");
         }
@@ -94,13 +91,11 @@ public class HistoricoService {
             throw new IllegalArgumentException("(Historico) ID Status não pode ser nulo.");
         }
         Historico historico = new Historico();
-        historico.setId(dto.getId());
-        if (dto.getIdCotacao() != null)
-            historico.setCotacao(cotacaoService.findEntityById(dto.getIdCotacao()));
-        if (dto.getIdFornecedor() != null)
-            historico.setFornecedor(usuarioService.findEntityById(dto.getIdFornecedor()));
-        if (dto.getIdStatus() != null)
-            historico.setStatus(statusService.findEntityById(dto.getIdStatus()));
+        if (dto.getId() != null)
+            historico.setId(dto.getId());
+        historico.setCotacao(cotacaoService.findEntityById(dto.getIdCotacao()));
+        historico.setFornecedor(usuarioService.findEntityById(dto.getIdFornecedor()));
+        historico.setStatus(statusService.findEntityById(dto.getIdStatus()));
         historico.setRecusadoPorProduto(dto.getRecusadoPorProduto());
         historico.setRecusadoPorQuantidade(dto.getRecusadoPorQuantidade());
         historico.setRecusadoPorPreco(dto.getRecusadoPorPreco());

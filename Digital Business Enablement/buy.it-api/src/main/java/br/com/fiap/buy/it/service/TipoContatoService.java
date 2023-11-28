@@ -64,11 +64,9 @@ public class TipoContatoService {
         if (Objects.isNull(dto)) {
             return null;
         }
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("(TipoContato) ID TipoContato não pode ser nulo.");
-        }
         TipoContato tipoContato = new TipoContato();
-        tipoContato.setId(dto.getId());
+        if (dto.getId() != null)
+            tipoContato.setId(dto.getId());
         tipoContato.setNome(dto.getNome());
         return tipoContato;
     }

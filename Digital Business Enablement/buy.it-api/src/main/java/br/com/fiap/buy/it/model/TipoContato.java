@@ -5,10 +5,12 @@ import jakarta.validation.constraints.*;
 
 import lombok.*;
 
+@Data
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @Entity
 @Table(name = "TIPO_CONTATO", uniqueConstraints = {

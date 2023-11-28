@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -64,10 +65,12 @@ public class DepartamentoService {
         dto.setId(departamento.getId());
         dto.setNome(departamento.getNome());
         dto.setIcone(departamento.getIcone());
-        Set<Long> idsTags = departamento.getTags().stream()
-                .map(Tag::getId)
-                .collect(Collectors.toSet());
-        dto.setIdsTags(idsTags);
+        if (departamento.getTags() != null) {
+            Set<Long> idsTags = departamento.getTags().stream()
+                    .map(Tag::getId)
+                    .collect(Collectors.toSet());
+            dto.setIdsTags(idsTags);
+        }
         return dto;
     }
 
@@ -75,17 +78,20 @@ public class DepartamentoService {
         if (Objects.isNull(dto)) {
             return null;
         }
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("(Departamento) ID Departamento não pode ser nulo.");
-        }
         Departamento departamento = new Departamento();
-        departamento.setId(dto.getId());
+        if (dto.getId() != null)
+            departamento.setId(dto.getId());
         departamento.setNome(dto.getNome());
         departamento.setIcone(dto.getIcone());
-        dto.getIdsTags().stream().forEach(id -> {
-            Tag tag = tagService.findEntityById(id);
-            departamento.addTag(tag);
-        });
+        if (dto.getIdsTags() != null) {
+            dto.getIdsTags().stream().forEach(id -> {
+                Tag tag = tagService.findEntityById(id);
+                departamento.addTag(tag);
+            });
+        }
+        else {
+            departamento.setTags(new LinkedHashSet<>());
+        }
         return departamento;
     }
 }

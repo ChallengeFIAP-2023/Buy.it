@@ -18,6 +18,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -61,7 +62,6 @@ public class TagService {
         return convertToDto(savedEntity);
     }
     
-
     public void delete(Long id) {
         Tag entity = findEntityById(id);
         tagRepository.delete(entity);
@@ -76,18 +76,24 @@ public class TagService {
         TagDTO dto = new TagDTO();
         dto.setId(tag.getId());
         dto.setNome(tag.getNome());
-        Set<Long> idsDepartamentos = tag.getDepartamentos().stream()
-                .map(Departamento::getId)
-                .collect(Collectors.toSet());
-        dto.setIdsDepartamentos(idsDepartamentos);
-        Set<Long> idsProdutos = tag.getProdutos().stream()
-                .map(Produto::getId)
-                .collect(Collectors.toSet());
-        dto.setIdsProdutos(idsProdutos);
-        Set<Long> idsUsuarios = tag.getUsuarios().stream()
-                .map(Usuario::getId)
-                .collect(Collectors.toSet());
-        dto.setIdsUsuarios(idsUsuarios);
+        if (tag.getDepartamentos() != null) {
+            Set<Long> idsDepartamentos = tag.getDepartamentos().stream()
+                    .map(Departamento::getId)
+                    .collect(Collectors.toSet());
+            dto.setIdsDepartamentos(idsDepartamentos);
+        }
+        if (tag.getProdutos() != null) {
+            Set<Long> idsProdutos = tag.getProdutos().stream()
+                    .map(Produto::getId)
+                    .collect(Collectors.toSet());
+            dto.setIdsProdutos(idsProdutos);
+        }
+        if (tag.getUsuarios() != null) {
+            Set<Long> idsUsuarios = tag.getUsuarios().stream()
+                    .map(Usuario::getId)
+                    .collect(Collectors.toSet());
+            dto.setIdsUsuarios(idsUsuarios);
+        }
         return dto;
     }
 
@@ -95,24 +101,37 @@ public class TagService {
         if (Objects.isNull(dto)) {
             return null;
         }
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("(Tag) ID Tag não pode ser nulo.");
-        }
         Tag tag = new Tag();
-        tag.setId(dto.getId());
+        if (dto.getId() != null)
+            tag.setId(dto.getId());
         tag.setNome(dto.getNome());
-        dto.getIdsDepartamentos().stream().forEach(id -> {
-            Optional<Departamento> departamentoOptional = departamentoRepository.findById(id);
-            departamentoOptional.ifPresent(departamento -> tag.addDepartamento(departamento));
-        });
-        dto.getIdsProdutos().stream().forEach(id -> {
-            Optional<Produto> produtoOptional = produtoRepository.findById(id);
-            produtoOptional.ifPresent(produto -> tag.addProduto(produto));
-        });
-        dto.getIdsUsuarios().stream().forEach(id -> {
-            Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
-            usuarioOptional.ifPresent(usuario -> tag.addUsuario(usuario));
-        });
+        if (dto.getIdsDepartamentos() != null) {
+            dto.getIdsDepartamentos().stream().forEach(id -> {
+                Optional<Departamento> departamentoOptional = departamentoRepository.findById(id);
+                departamentoOptional.ifPresent(departamento -> tag.addDepartamento(departamento));
+            });
+        }
+        else {
+            tag.setDepartamentos(new LinkedHashSet<>());
+        }
+        if (dto.getIdsProdutos() != null) {
+            dto.getIdsProdutos().stream().forEach(id -> {
+                Optional<Produto> produtoOptional = produtoRepository.findById(id);
+                produtoOptional.ifPresent(produto -> tag.addProduto(produto));
+            });
+        }
+        else {
+            tag.setProdutos(new LinkedHashSet<>());
+        }
+        if (dto.getIdsUsuarios() != null) {
+            dto.getIdsUsuarios().stream().forEach(id -> {
+                Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+                usuarioOptional.ifPresent(usuario -> tag.addUsuario(usuario));
+            });
+        }
+        else {
+            tag.setUsuarios(new LinkedHashSet<>());
+        }
         return tag;
     }
 }

@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Objects;
-
 @Service
 public class StatusService {
 
@@ -61,14 +59,12 @@ public class StatusService {
     }
 
     private Status convertToEntity(StatusDTO dto) {
-        if (Objects.isNull(dto)) {
+        if (dto == null) {
             return null;
         }
-        if (dto.getId() == null) {
-            throw new IllegalArgumentException("(Status) ID Status não pode ser nulo.");
-        }
         Status status = new Status();
-        status.setId(dto.getId());
+        if (dto.getId() != null)
+            status.setId(dto.getId());
         status.setNome(dto.getNome());
         return status;
     }

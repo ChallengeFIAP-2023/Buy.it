@@ -8,11 +8,12 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+@Data
 @Getter
 @Setter
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
+@EqualsAndHashCode(onlyExplicitlyIncluded = true)
 @ToString
 @Entity
 @Table(name = "HISTORICO")
