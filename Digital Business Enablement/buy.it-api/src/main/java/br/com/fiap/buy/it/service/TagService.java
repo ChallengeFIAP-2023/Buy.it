@@ -1,11 +1,15 @@
 package br.com.fiap.buy.it.service;
 
 import br.com.fiap.buy.it.dto.TagDTO;
-import br.com.fiap.buy.it.model.Departamento;
-import br.com.fiap.buy.it.model.Produto;
 import br.com.fiap.buy.it.model.Tag;
-import br.com.fiap.buy.it.model.Usuario;
 import br.com.fiap.buy.it.repository.TagRepository;
+
+import br.com.fiap.buy.it.model.Departamento;
+import br.com.fiap.buy.it.repository.DepartamentoRepository;
+import br.com.fiap.buy.it.model.Produto;
+import br.com.fiap.buy.it.repository.ProdutoRepository;
+import br.com.fiap.buy.it.model.Usuario;
+import br.com.fiap.buy.it.repository.UsuarioRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
+import java.util.Optional;
 
 @Service
 public class TagService {
@@ -25,13 +30,13 @@ public class TagService {
     private TagRepository tagRepository;
 
     @Autowired
-    private DepartamentoService departamentoService;
+    private DepartamentoRepository departamentoRepository;
 
     @Autowired
-    private ProdutoService produtoService;
+    private ProdutoRepository produtoRepository;
 
     @Autowired
-    private UsuarioService usuarioService;
+    private UsuarioRepository usuarioRepository;
 
     public Page<TagDTO> listAll(Pageable pageRequest) {
         return tagRepository.findAll(pageRequest).map(this::convertToDto);
@@ -97,16 +102,16 @@ public class TagService {
         tag.setId(dto.getId());
         tag.setNome(dto.getNome());
         dto.getIdsDepartamentos().stream().forEach(id -> {
-            Departamento departamento = departamentoService.findEntityById(id);
-            tag.addDepartamento(departamento);
+            Optional<Departamento> departamentoOptional = departamentoRepository.findById(id);
+            departamentoOptional.ifPresent(departamento -> tag.addDepartamento(departamento));
         });
         dto.getIdsProdutos().stream().forEach(id -> {
-            Produto produto = produtoService.findEntityById(id);
-            tag.addProduto(produto);
+            Optional<Produto> produtoOptional = produtoRepository.findById(id);
+            produtoOptional.ifPresent(produto -> tag.addProduto(produto));
         });
         dto.getIdsUsuarios().stream().forEach(id -> {
-            Usuario usuario = usuarioService.findEntityById(id);
-            tag.addUsuario(usuario);
+            Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
+            usuarioOptional.ifPresent(usuario -> tag.addUsuario(usuario));
         });
         return tag;
     }

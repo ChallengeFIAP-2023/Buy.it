@@ -1,10 +1,11 @@
 package br.com.fiap.buy.it.service;
 
-import br.com.fiap.buy.it.dto.LoginDTO;
 import br.com.fiap.buy.it.dto.UsuarioDTO;
 import br.com.fiap.buy.it.model.Usuario;
 import br.com.fiap.buy.it.repository.UsuarioRepository;
+
 import br.com.fiap.buy.it.model.Tag;
+import br.com.fiap.buy.it.dto.LoginDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;

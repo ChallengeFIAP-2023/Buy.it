@@ -51,7 +51,6 @@ public class HistoricoService {
         return convertToDto(savedEntity);
     }
     
-
     public void delete(Long id) {
         Historico entity = findEntityById(id);
         historicoRepository.delete(entity);

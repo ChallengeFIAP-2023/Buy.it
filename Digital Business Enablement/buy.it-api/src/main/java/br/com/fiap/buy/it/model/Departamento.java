@@ -7,6 +7,7 @@ import lombok.*;
 
 import java.util.Collections;
 import java.util.Set;
+import java.util.Optional;
 
 @Data
 @NoArgsConstructor
@@ -53,10 +54,10 @@ public class Departamento {
     )
     private Set<Tag> tags;
 
-    public Departamento addTag(Tag tag) {
+    public Optional<Departamento> addTag(Tag tag) {
         this.tags.add(tag);
         tag.addDepartamento(this);
-        return this;
+        return Optional.of(this);
     }
 
     public Departamento removeTag(Tag tag) {

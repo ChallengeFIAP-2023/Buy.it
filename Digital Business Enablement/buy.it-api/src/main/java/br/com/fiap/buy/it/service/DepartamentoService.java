@@ -3,6 +3,7 @@ package br.com.fiap.buy.it.service;
 import br.com.fiap.buy.it.dto.DepartamentoDTO;
 import br.com.fiap.buy.it.model.Departamento;
 import br.com.fiap.buy.it.repository.DepartamentoRepository;
+
 import br.com.fiap.buy.it.model.Tag;
 
 import org.springframework.beans.factory.annotation.Autowired;
