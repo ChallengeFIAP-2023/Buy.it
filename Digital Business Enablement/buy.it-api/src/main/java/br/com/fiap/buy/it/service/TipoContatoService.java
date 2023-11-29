@@ -50,7 +50,7 @@ public class TipoContatoService {
 
     public TipoContato findEntityById(Long id) {
         return tipoContatoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(TipoContato) - TipoContato não encontrado(a) por ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - TipoContato não encontrado(a) por ID: " + id));
     }
 
     private TipoContatoDTO convertToDto(TipoContato tipoContato) {

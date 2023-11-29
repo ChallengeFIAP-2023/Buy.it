@@ -52,9 +52,9 @@ public class AvaliacaoService {
 
     public Avaliacao findEntityById(Long id) {
         return avaliacaoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Avaliacao) - Avaliacao não encontrado(a) por ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Avaliacao não encontrado(a) por ID: " + id));
     }
-
+    
     private AvaliacaoDTO convertToDto(Avaliacao avaliacao) {
         AvaliacaoDTO dto = new AvaliacaoDTO();
         dto.setId(avaliacao.getId());
@@ -68,15 +68,18 @@ public class AvaliacaoService {
     }
 
     private Avaliacao convertToEntity(AvaliacaoDTO dto) {
+        Avaliacao avaliacao;
+        if (dto.getId() != null) {
+            avaliacao = findEntityById(dto.getId());
+        } else {
+            avaliacao = new Avaliacao();
+        }
         if (Objects.isNull(dto)) {
-            return null;
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - AvaliacaoDTO não pode ser nulo.");
         }
         if (dto.getIdCotacao() == null) {
-            throw new IllegalArgumentException("(Avaliacao) ID Cotacao não pode ser nulo.");
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Cotacao não pode ser nulo.");
         }
-        Avaliacao avaliacao = new Avaliacao();
-        if (dto.getId() != null)
-            avaliacao.setId(dto.getId());
         avaliacao.setCotacao(cotacaoService.findEntityById(dto.getIdCotacao()));
         avaliacao.setData(dto.getData());
         avaliacao.setNotaEntrega(dto.getNotaEntrega());

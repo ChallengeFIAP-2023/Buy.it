@@ -14,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -62,7 +61,7 @@ public class UsuarioService {
 
     public Usuario findEntityById(Long id) {
         return usuarioRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Usuario) - Usuario não encontrado(a) por ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Usuario não encontrado(a) por ID: " + id));
     }
 
     private UsuarioDTO convertToDto(Usuario usuario) {
@@ -85,8 +84,10 @@ public class UsuarioService {
             return null;
         }
         Usuario usuario = new Usuario();
-        if (dto.getId() != null)
+        if (dto.getId() != null) {
             usuario.setId(dto.getId());
+            usuario.getTags().clear();
+        }
         usuario.setEmail(dto.getEmail());
         usuario.setSenha(dto.getSenha());
         usuario.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));
@@ -95,9 +96,6 @@ public class UsuarioService {
                 Tag tag = tagService.findEntityById(id);
                 usuario.addTag(tag);
             });
-        }
-        else {
-            usuario.setTags(new LinkedHashSet<>());
         }
         return usuario;
     }

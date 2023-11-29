@@ -56,7 +56,7 @@ public class FormaContatoService {
 
     public FormaContato findEntityById(Long id) {
         return formaContatoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(FormaContato) - FormaContato não encontrado(a) por ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - FormaContato não encontrado(a) por ID: " + id));
     }
 
     private FormaContatoDTO convertToDto(FormaContato formaContato) {
@@ -69,18 +69,21 @@ public class FormaContatoService {
     }
 
     private FormaContato convertToEntity(FormaContatoDTO dto) {
+        FormaContato formaContato;
+        if (dto.getId() != null) {
+            formaContato = findEntityById(dto.getId());
+        } else {
+            formaContato = new FormaContato();
+        }
         if (Objects.isNull(dto)) {
-            return null;
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - FormaContatoDTO não pode ser nulo.");
         }
         if (dto.getIdTipoContato() == null) {
-            throw new IllegalArgumentException("(FormaContato) ID TipoContato não pode ser nulo.");
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID TipoContato não pode ser nulo.");
         }
         if (dto.getIdPessoa() == null) {
-            throw new IllegalArgumentException("(FormaContato) ID Pessoa não pode ser nulo.");
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Pessoa não pode ser nulo.");
         }
-        FormaContato formaContato = new FormaContato();
-        if (dto.getId() != null)
-        formaContato.setId(dto.getId());
         formaContato.setTipoContato(tipoContatoService.findEntityById(dto.getIdTipoContato()));
         formaContato.setValor(dto.getValor());
         formaContato.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));

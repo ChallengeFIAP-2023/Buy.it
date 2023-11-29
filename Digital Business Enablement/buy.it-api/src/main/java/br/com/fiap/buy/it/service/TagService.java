@@ -69,7 +69,7 @@ public class TagService {
 
     public Tag findEntityById(Long id) {
         return tagRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Tag) - Tag não encontrado(a) por ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Tag não encontrado(a) por ID: " + id));
     }
 
     private TagDTO convertToDto(Tag tag) {
@@ -102,8 +102,11 @@ public class TagService {
             return null;
         }
         Tag tag = new Tag();
-        if (dto.getId() != null)
-            tag.setId(dto.getId());
+        if (dto.getId() != null) {
+            tag.getDepartamentos().clear();
+            tag.getProdutos().clear();
+            tag.getUsuarios().clear();
+        }
         tag.setNome(dto.getNome());
         if (dto.getIdsDepartamentos() != null) {
             dto.getIdsDepartamentos().stream().forEach(id -> {

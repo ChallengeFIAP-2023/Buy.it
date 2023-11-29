@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -57,7 +56,7 @@ public class DepartamentoService {
 
     public Departamento findEntityById(Long id) {
         return departamentoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Departamento) - Departamento não encontrado(a) por ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Departamento não encontrado(a) por ID: " + id));
     }
 
     private DepartamentoDTO convertToDto(Departamento departamento) {
@@ -75,22 +74,27 @@ public class DepartamentoService {
     }
 
     private Departamento convertToEntity(DepartamentoDTO dto) {
-        if (Objects.isNull(dto)) {
-            return null;
-        }
-        Departamento departamento = new Departamento();
-        if (dto.getId() != null)
-            departamento.setId(dto.getId());
-        departamento.setNome(dto.getNome());
-        departamento.setIcone(dto.getIcone());
-        if (dto.getIdsTags() != null) {
-            dto.getIdsTags().stream().forEach(id -> {
-                Tag tag = tagService.findEntityById(id);
-                departamento.addTag(tag);
-            });
-        }
-        else {
-            departamento.setTags(new LinkedHashSet<>());
+        Departamento departamento;
+        if (dto.getId() != null) {
+            departamento = findEntityById(dto.getId());
+            Set<Tag> newTags = new LinkedHashSet<>();
+            if (dto.getIdsTags() != null) {
+                dto.getIdsTags().forEach(id -> {
+                    Tag tag = tagService.findEntityById(id);
+                    newTags.add(tag);
+                });
+            }
+            departamento.setTags(newTags);
+        } else {
+            departamento = new Departamento();
+            departamento.setNome(dto.getNome());
+            departamento.setIcone(dto.getIcone());
+            if (dto.getIdsTags() != null) {
+                dto.getIdsTags().forEach(id -> {
+                    Tag tag = tagService.findEntityById(id);
+                    departamento.addTag(tag);
+                });
+            }
         }
         return departamento;
     }

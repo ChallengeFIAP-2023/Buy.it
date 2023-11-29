@@ -48,7 +48,7 @@ public class StatusService {
 
     public Status findEntityById(Long id) {
         return statusRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Status) - Status não encontrado(a) por ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Status não encontrado(a) por ID: " + id));
     }
 
     private StatusDTO convertToDto(Status status) {
@@ -59,13 +59,16 @@ public class StatusService {
     }
 
     private Status convertToEntity(StatusDTO dto) {
+        Status status;
         if (dto == null) {
-            return null;
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - StatusDTO não pode ser nulo.");
         }
-        Status status = new Status();
-        if (dto.getId() != null)
-            status.setId(dto.getId());
+        if (dto.getId() != null) {
+            status = findEntityById(dto.getId());
+        } else {
+            status = new Status();
+        }
         status.setNome(dto.getNome());
         return status;
-    }
+    }    
 }

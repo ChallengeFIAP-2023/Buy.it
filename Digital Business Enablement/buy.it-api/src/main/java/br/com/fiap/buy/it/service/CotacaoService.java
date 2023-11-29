@@ -56,6 +56,11 @@ public class CotacaoService {
         cotacaoRepository.delete(entity);
     }
 
+    public Cotacao findEntityById(Long id) {
+        return cotacaoRepository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Cotacao não encontrado(a) por ID: " + id));
+    }
+
     private CotacaoDTO convertToDto(Cotacao cotacao) {
         CotacaoDTO dto = new CotacaoDTO();
         dto.setId(cotacao.getId());
@@ -73,27 +78,25 @@ public class CotacaoService {
         return dto;
     }
 
-    public Cotacao findEntityById(Long id) {
-        return cotacaoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Cotacao) - Cotacao não encontrado(a) por ID: " + id));
-    }
-
     private Cotacao convertToEntity(CotacaoDTO dto) {
+        Cotacao cotacao;
+        if (dto.getId() != null) {
+            cotacao = findEntityById(dto.getId());
+        } else {
+            cotacao = new Cotacao();
+        }
         if (Objects.isNull(dto)) {
-            return null;
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - CotacaoDTO não pode ser nulo.");
         }
         if (dto.getIdComprador() == null) {
-            throw new IllegalArgumentException("(Cotacao) ID Comprador não pode ser nulo.");
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Comprador não pode ser nulo.");
         }
         if (dto.getIdProduto() == null) {
-            throw new IllegalArgumentException("(Cotacao) ID Produto não pode ser nulo.");
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Produto não pode ser nulo.");
         }
         if (dto.getIdStatus() == null) {
-            throw new IllegalArgumentException("(Cotacao) ID Status não pode ser nulo.");
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Status não pode ser nulo.");
         }
-        Cotacao cotacao = new Cotacao();
-        if (dto.getId() != null)
-            cotacao.setId(dto.getId());
         cotacao.setDataAbertura(dto.getDataAbertura());
         cotacao.setComprador(usuarioService.findEntityById(dto.getIdComprador()));
         cotacao.setProduto(produtoService.findEntityById(dto.getIdProduto()));

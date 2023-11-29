@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Data
@@ -59,7 +60,7 @@ public class Usuario {
                     )
             }
     )
-    private Set<Tag> tags;
+    private Set<Tag> tags = new LinkedHashSet<>();
 
     public Usuario addTag(Tag tag) {
         this.tags.add(tag);

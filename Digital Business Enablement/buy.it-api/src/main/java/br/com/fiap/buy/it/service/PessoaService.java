@@ -50,7 +50,7 @@ public class PessoaService {
 
     public Pessoa findEntityById(Long id) {
         return pessoaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Pessoa) - Pessoa não encontrado(a) por ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Pessoa não encontrado(a) por ID: " + id));
     }
 
     private PessoaDTO convertToDto(Pessoa pessoa) {
@@ -62,12 +62,15 @@ public class PessoaService {
     }
 
     private Pessoa convertToEntity(PessoaDTO dto) {
+        Pessoa pessoa;
         if (Objects.isNull(dto)) {
-            return null;
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - PessoaDTO não pode ser nulo.");
         }
-        Pessoa pessoa = new Pessoa();
-        if (dto.getId() != null)
-            pessoa.setId(dto.getId());
+        if (dto.getId() != null) {
+            pessoa = findEntityById(dto.getId());
+        } else {
+            pessoa = new Pessoa();
+        }
         pessoa.setNome(dto.getNome());
         pessoa.setUrlImagem(dto.getUrlImagem());
         return pessoa;

@@ -58,7 +58,7 @@ public class HistoricoService {
 
     public Historico findEntityById(Long id) {
         return historicoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Historico) - Historico não encontrado(a) por ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Historico não encontrado(a) por ID: " + id));
     }
 
     private HistoricoDTO convertToDto(Historico historico) {
@@ -78,21 +78,24 @@ public class HistoricoService {
     }
 
     private Historico convertToEntity(HistoricoDTO dto) {
+        Historico historico;
+        if (dto.getId() != null) {
+            historico = findEntityById(dto.getId());
+        } else {
+            historico = new Historico();
+        }
         if (Objects.isNull(dto)) {
-            return null;
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - HistoricoDTO não pode ser nulo.");
         }
         if (dto.getIdCotacao() == null) {
-            throw new IllegalArgumentException("(Historico) ID Cotacao não pode ser nulo.");
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Cotacao não pode ser nulo.");
         }
         if (dto.getIdFornecedor() == null) {
-            throw new IllegalArgumentException("(Historico) ID Fornecedor não pode ser nulo.");
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Fornecedor não pode ser nulo.");
         }
         if (dto.getIdStatus() == null) {
-            throw new IllegalArgumentException("(Historico) ID Status não pode ser nulo.");
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Status não pode ser nulo.");
         }
-        Historico historico = new Historico();
-        if (dto.getId() != null)
-            historico.setId(dto.getId());
         historico.setCotacao(cotacaoService.findEntityById(dto.getIdCotacao()));
         historico.setFornecedor(usuarioService.findEntityById(dto.getIdFornecedor()));
         historico.setStatus(statusService.findEntityById(dto.getIdStatus()));

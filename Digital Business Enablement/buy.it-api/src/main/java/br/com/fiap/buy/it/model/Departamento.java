@@ -42,14 +42,16 @@ public class Departamento {
     }, inverseJoinColumns = {
             @JoinColumn(name = "ID_TAG", referencedColumnName = "ID_TAG", foreignKey = @ForeignKey(name = "FK_TAG_DEPARTAMENTO"))
     })
-    private Set<Tag> tags;
+    private Set<Tag> tags = new LinkedHashSet<>();
 
     public Optional<Departamento> addTag(Tag tag) {
-        if (this.tags == null) this.tags = new LinkedHashSet<>();
+        if (this.tags == null) {
+            this.tags = new LinkedHashSet<>();
+        }
         this.tags.add(tag);
         if (!tag.getDepartamentos().contains(this)) tag.getDepartamentos().add(this);
         return Optional.of(this);
-    }
+    }    
 
     public Departamento removeTag(Tag tag) {
         this.tags.remove(tag);

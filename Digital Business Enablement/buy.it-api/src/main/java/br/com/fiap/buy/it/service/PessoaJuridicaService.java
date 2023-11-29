@@ -50,7 +50,7 @@ public class PessoaJuridicaService {
 
     public PessoaJuridica findEntityById(Long id) {
         return pessoaJuridicaRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(PessoaJuridica) - PessoaJuridica não encontrado(a) por ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - PessoaJuridica não encontrado(a) por ID: " + id));
     }
 
     private PessoaJuridicaDTO convertToDto(PessoaJuridica pessoaJuridica) {
@@ -64,16 +64,20 @@ public class PessoaJuridicaService {
     }
 
     private PessoaJuridica convertToEntity(PessoaJuridicaDTO dto) {
+        PessoaJuridica pessoaJuridica;
         if (Objects.isNull(dto)) {
-            return null;
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - PessoaJuridicaDTO não pode ser nulo.");
         }
-        PessoaJuridica pessoaJuridica = new PessoaJuridica();
-        if (dto.getId() != null)
-            pessoaJuridica.setId(dto.getId());
+        if (dto.getId() != null) {
+            pessoaJuridica = findEntityById(dto.getId());
+        } else {
+            pessoaJuridica = new PessoaJuridica();
+        }
         pessoaJuridica.setNome(dto.getNome());
         pessoaJuridica.setUrlImagem(dto.getUrlImagem());
         pessoaJuridica.setCnpj(dto.getCnpj());
         pessoaJuridica.setIsFornecedor(dto.getIsFornecedor());
+    
         return pessoaJuridica;
     }
 }

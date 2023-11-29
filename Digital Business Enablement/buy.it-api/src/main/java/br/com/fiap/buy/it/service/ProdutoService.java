@@ -14,7 +14,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -61,7 +60,7 @@ public class ProdutoService {
 
     public Produto findEntityById(Long id) {
         return produtoRepository.findById(id)
-                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(Produto) - Produto não encontrado(a) por ID: " + id));
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Produto não encontrado(a) por ID: " + id));
     }
 
     private ProdutoDTO convertToDto(Produto produto) {
@@ -84,27 +83,32 @@ public class ProdutoService {
     }
 
     private Produto convertToEntity(ProdutoDTO dto) {
-        if (Objects.isNull(dto)) {
-            return null;
-        }
-        Produto produto = new Produto();
-        if (dto.getId() != null)
-            produto.setId(dto.getId());
-        produto.setNome(dto.getNome());
-        produto.setMarca(dto.getMarca());
-        produto.setCor(dto.getCor());
-        produto.setTamanho(dto.getTamanho());
-        produto.setMaterial(dto.getMaterial());
-        produto.setObservacao(dto.getObservacao());
-        produto.setDepartamento(departamentoService.findEntityById(dto.getIdDepartamento()));
-        if (dto.getIdsTags() != null) {
-            dto.getIdsTags().stream().forEach(id -> {
-                Tag tag = tagService.findEntityById(id);
-                produto.addTag(tag);
-            });
-        }
-        else {
-            produto.setTags(new LinkedHashSet<>());
+        Produto produto;
+        if (dto.getId() != null) {
+            produto = findEntityById(dto.getId());
+            Set<Tag> newTags = new LinkedHashSet<>();
+            if (dto.getIdsTags() != null) {
+                dto.getIdsTags().forEach(id -> {
+                    Tag tag = tagService.findEntityById(id);
+                    newTags.add(tag);
+                });
+            }
+            produto.setTags(newTags);
+        } else {
+            produto = new Produto();
+            produto.setNome(dto.getNome());
+            produto.setMarca(dto.getMarca());
+            produto.setCor(dto.getCor());
+            produto.setTamanho(dto.getTamanho());
+            produto.setMaterial(dto.getMaterial());
+            produto.setObservacao(dto.getObservacao());
+            produto.setDepartamento(departamentoService.findEntityById(dto.getIdDepartamento()));
+            if (dto.getIdsTags() != null) {
+                dto.getIdsTags().forEach(id -> {
+                    Tag tag = tagService.findEntityById(id);
+                    produto.addTag(tag);
+                });
+            }
         }
         return produto;
     }

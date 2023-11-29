@@ -6,6 +6,7 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 @Data
@@ -48,7 +49,7 @@ public class Tag {
                     )
             }
     )
-    private Set<Departamento> departamentos;
+    private Set<Departamento> departamentos = new LinkedHashSet<>();
     
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -68,7 +69,7 @@ public class Tag {
                     )
             }
     )
-    private Set<Usuario> usuarios;
+    private Set<Usuario> usuarios = new LinkedHashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
@@ -88,7 +89,7 @@ public class Tag {
                     )
             }
     )
-    private Set<Produto> produtos;
+    private Set<Produto> produtos = new LinkedHashSet<>();
 
     public Tag addDepartamento(Departamento departamento) {
         this.departamentos.add(departamento);
