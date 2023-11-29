@@ -21,6 +21,6 @@ public class PessoaJuridica extends Pessoa {
     private String cnpj;
 
     @Column(name = "IS_FORNECEDOR_PJ", nullable = false)
-    @NotBlank(message = "O isFornecedor da pessoa juridica não pode estar vazio." )
+    @NotNull(message = "O isFornecedor da pessoa juridica não pode estar vazio." )
     private Boolean isFornecedor;
 }
