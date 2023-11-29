@@ -22,8 +22,8 @@ public class StatusService {
     }
 
     public StatusDTO findById(Long id) {
-        Status status = findEntityById(id);
-        return convertToDto(status);
+        Status entity = findEntityById(id);
+        return convertToDto(entity);
     }
 
     public StatusDTO create(StatusDTO newData) {
@@ -51,24 +51,24 @@ public class StatusService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Status não encontrado(a) por ID: " + id));
     }
 
-    private StatusDTO convertToDto(Status status) {
+    private StatusDTO convertToDto(Status entity) {
         StatusDTO dto = new StatusDTO();
-        dto.setId(status.getId());
-        dto.setNome(status.getNome());
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
         return dto;
     }
 
     private Status convertToEntity(StatusDTO dto) {
-        Status status;
         if (dto == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - StatusDTO não pode ser nulo.");
         }
+        Status entity;
         if (dto.getId() != null) {
-            status = findEntityById(dto.getId());
+            entity = findEntityById(dto.getId());
         } else {
-            status = new Status();
+            entity = new Status();
         }
-        status.setNome(dto.getNome());
-        return status;
+        entity.setNome(dto.getNome());
+        return entity;
     }    
 }

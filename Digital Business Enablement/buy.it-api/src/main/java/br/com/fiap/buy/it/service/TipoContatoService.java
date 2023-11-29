@@ -11,8 +11,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Objects;
-
 @Service
 public class TipoContatoService {
 
@@ -24,8 +22,8 @@ public class TipoContatoService {
     }
 
     public TipoContatoDTO findById(Long id) {
-        TipoContato tipoContato = findEntityById(id);
-        return convertToDto(tipoContato);
+        TipoContato entity = findEntityById(id);
+        return convertToDto(entity);
     }
 
     public TipoContatoDTO create(TipoContatoDTO newData) {
@@ -53,21 +51,24 @@ public class TipoContatoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - TipoContato não encontrado(a) por ID: " + id));
     }
 
-    private TipoContatoDTO convertToDto(TipoContato tipoContato) {
+    private TipoContatoDTO convertToDto(TipoContato entity) {
         TipoContatoDTO dto = new TipoContatoDTO();
-        dto.setId(tipoContato.getId());
-        dto.setNome(tipoContato.getNome());
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
         return dto;
     }
 
     private TipoContato convertToEntity(TipoContatoDTO dto) {
-        if (Objects.isNull(dto)) {
-            return null;
+        if (dto == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - TipoContatoDTO não pode ser nulo.");
         }
-        TipoContato tipoContato = new TipoContato();
-        if (dto.getId() != null)
-            tipoContato.setId(dto.getId());
-        tipoContato.setNome(dto.getNome());
-        return tipoContato;
+        TipoContato entity;
+        if (dto.getId() != null) {
+            entity = findEntityById(dto.getId());
+        } else {
+            entity = new TipoContato();
+        }
+        entity.setNome(dto.getNome());
+        return entity;
     }
 }

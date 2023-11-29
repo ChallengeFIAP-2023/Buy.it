@@ -19,10 +19,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.LinkedHashSet;
-import java.util.Objects;
 import java.util.Set;
 import java.util.stream.Collectors;
-import java.util.Optional;
 
 @Service
 public class TagService {
@@ -44,8 +42,8 @@ public class TagService {
     }
 
     public TagDTO findById(Long id) {
-        Tag tag = findEntityById(id);
-        return convertToDto(tag);
+        Tag entity = findEntityById(id);
+        return convertToDto(entity);
     }
 
     public TagDTO create(TagDTO newData) {
@@ -64,6 +62,21 @@ public class TagService {
     
     public void delete(Long id) {
         Tag entity = findEntityById(id);
+        if (entity.getDepartamentos() != null) {
+            for (Departamento departamento : entity.getDepartamentos()) {
+                departamento.removeTag(entity);
+            }
+        }
+        if (entity.getProdutos() != null) {
+            for (Produto produto : entity.getProdutos()) {
+                produto.removeTag(entity);
+            }
+        }
+        if (entity.getUsuarios() != null) {
+            for (Usuario usuario : entity.getUsuarios()) {
+                usuario.removeTag(entity);
+            }
+        }
         tagRepository.delete(entity);
     }
 
@@ -72,24 +85,24 @@ public class TagService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Tag não encontrado(a) por ID: " + id));
     }
 
-    private TagDTO convertToDto(Tag tag) {
+    private TagDTO convertToDto(Tag entity) {
         TagDTO dto = new TagDTO();
-        dto.setId(tag.getId());
-        dto.setNome(tag.getNome());
-        if (tag.getDepartamentos() != null) {
-            Set<Long> idsDepartamentos = tag.getDepartamentos().stream()
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        if (entity.getDepartamentos() != null) {
+            Set<Long> idsDepartamentos = entity.getDepartamentos().stream()
                     .map(Departamento::getId)
                     .collect(Collectors.toSet());
             dto.setIdsDepartamentos(idsDepartamentos);
         }
-        if (tag.getProdutos() != null) {
-            Set<Long> idsProdutos = tag.getProdutos().stream()
+        if (entity.getProdutos() != null) {
+            Set<Long> idsProdutos = entity.getProdutos().stream()
                     .map(Produto::getId)
                     .collect(Collectors.toSet());
             dto.setIdsProdutos(idsProdutos);
         }
-        if (tag.getUsuarios() != null) {
-            Set<Long> idsUsuarios = tag.getUsuarios().stream()
+        if (entity.getUsuarios() != null) {
+            Set<Long> idsUsuarios = entity.getUsuarios().stream()
                     .map(Usuario::getId)
                     .collect(Collectors.toSet());
             dto.setIdsUsuarios(idsUsuarios);
@@ -98,43 +111,40 @@ public class TagService {
     }
 
     private Tag convertToEntity(TagDTO dto) {
-        if (Objects.isNull(dto)) {
-            return null;
+        if (dto == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - TagDTO não pode ser nulo.");
         }
-        Tag tag = new Tag();
+        Tag entity;
         if (dto.getId() != null) {
-            tag.getDepartamentos().clear();
-            tag.getProdutos().clear();
-            tag.getUsuarios().clear();
+            entity = findEntityById(dto.getId());
+        } else {
+            entity = new Tag();
         }
-        tag.setNome(dto.getNome());
+        entity.setNome(dto.getNome());
+        Set<Departamento> newDepartamentos = new LinkedHashSet<>();
+        Set<Produto> newProdutos = new LinkedHashSet<>();
+        Set<Usuario> newUsuarios = new LinkedHashSet<>();
         if (dto.getIdsDepartamentos() != null) {
-            dto.getIdsDepartamentos().stream().forEach(id -> {
-                Optional<Departamento> departamentoOptional = departamentoRepository.findById(id);
-                departamentoOptional.ifPresent(departamento -> tag.addDepartamento(departamento));
+            dto.getIdsDepartamentos().forEach(id -> {
+                Departamento departamento = departamentoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Departamento não encontrado com ID: " + id));
+                newDepartamentos.add(departamento);
             });
         }
-        else {
-            tag.setDepartamentos(new LinkedHashSet<>());
-        }
+        entity.setDepartamentos(newDepartamentos);
         if (dto.getIdsProdutos() != null) {
-            dto.getIdsProdutos().stream().forEach(id -> {
-                Optional<Produto> produtoOptional = produtoRepository.findById(id);
-                produtoOptional.ifPresent(produto -> tag.addProduto(produto));
+            dto.getIdsProdutos().forEach(id -> {
+                Produto produto = produtoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado com ID: " + id));
+                newProdutos.add(produto);
             });
         }
-        else {
-            tag.setProdutos(new LinkedHashSet<>());
-        }
+        entity.setProdutos(newProdutos);
         if (dto.getIdsUsuarios() != null) {
-            dto.getIdsUsuarios().stream().forEach(id -> {
-                Optional<Usuario> usuarioOptional = usuarioRepository.findById(id);
-                usuarioOptional.ifPresent(usuario -> tag.addUsuario(usuario));
+            dto.getIdsUsuarios().forEach(id -> {
+                Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado com ID: " + id));
+                newUsuarios.add(usuario);
             });
         }
-        else {
-            tag.setUsuarios(new LinkedHashSet<>());
-        }
-        return tag;
+        entity.setUsuarios(newUsuarios);
+        return entity;
     }
 }

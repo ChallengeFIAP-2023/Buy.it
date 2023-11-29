@@ -3,7 +3,6 @@ package br.com.fiap.buy.it.service;
 import br.com.fiap.buy.it.dto.UsuarioDTO;
 import br.com.fiap.buy.it.model.Usuario;
 import br.com.fiap.buy.it.repository.UsuarioRepository;
-
 import br.com.fiap.buy.it.model.Tag;
 import br.com.fiap.buy.it.dto.LoginDTO;
 
@@ -14,7 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
-import java.util.Objects;
+import java.util.LinkedHashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 import java.util.Optional;
@@ -36,8 +35,8 @@ public class UsuarioService {
     }
 
     public UsuarioDTO findById(Long id) {
-        Usuario usuario = findEntityById(id);
-        return convertToDto(usuario);
+        Usuario entity = findEntityById(id);
+        return convertToDto(entity);
     }
 
     public UsuarioDTO create(UsuarioDTO newData) {
@@ -56,6 +55,11 @@ public class UsuarioService {
 
     public void delete(Long id) {
         Usuario entity = findEntityById(id);
+        if (entity.getTags() != null) {
+            for (Tag tag : entity.getTags()) {
+                tag.removeUsuario(entity);
+            }
+        }
         usuarioRepository.delete(entity);
     }
 
@@ -64,14 +68,14 @@ public class UsuarioService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Usuario não encontrado(a) por ID: " + id));
     }
 
-    private UsuarioDTO convertToDto(Usuario usuario) {
+    private UsuarioDTO convertToDto(Usuario entity) {
         UsuarioDTO dto = new UsuarioDTO();
-        dto.setId(usuario.getId());
-        dto.setEmail(usuario.getEmail());
-        dto.setSenha(usuario.getSenha());
-        dto.setIdPessoa(usuario.getPessoa() != null ? usuario.getPessoa().getId() : null);
-        if (usuario.getTags() != null) {
-            Set<Long> idsTags = usuario.getTags().stream()
+        dto.setId(entity.getId());
+        dto.setEmail(entity.getEmail());
+        dto.setSenha(entity.getSenha());
+        dto.setIdPessoa(entity.getPessoa() != null ? entity.getPessoa().getId() : null);
+        if (entity.getTags() != null) {
+            Set<Long> idsTags = entity.getTags().stream()
                     .map(Tag::getId)
                     .collect(Collectors.toSet());
             dto.setIdsTags(idsTags);
@@ -80,28 +84,40 @@ public class UsuarioService {
     }
 
     private Usuario convertToEntity(UsuarioDTO dto) {
-        if (Objects.isNull(dto)) {
-            return null;
+        if (dto == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - UsuarioDTO não pode ser nulo.");
         }
-        Usuario usuario = new Usuario();
+        Usuario entity;
         if (dto.getId() != null) {
-            usuario.setId(dto.getId());
-            usuario.getTags().clear();
+            entity = findEntityById(dto.getId());
+            entity.setEmail(dto.getEmail());
+            entity.setSenha(dto.getSenha());
+            entity.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));
+            Set<Tag> newTags = new LinkedHashSet<>();
+            if (dto.getIdsTags() != null) {
+                dto.getIdsTags().forEach(id -> {
+                    Tag tag = tagService.findEntityById(id);
+                    newTags.add(tag);
+                });
+            }
+            entity.setTags(newTags);
+        } else {
+            entity = new Usuario();
+            entity.setEmail(dto.getEmail());
+            entity.setSenha(dto.getSenha());
+            entity.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));
+            if (dto.getIdsTags() != null) {
+                dto.getIdsTags().stream().forEach(id -> {
+                    Tag tag = tagService.findEntityById(id);
+                    entity.addTag(tag);
+                });
+            }
         }
-        usuario.setEmail(dto.getEmail());
-        usuario.setSenha(dto.getSenha());
-        usuario.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));
-        if (dto.getIdsTags() != null) {
-            dto.getIdsTags().stream().forEach(id -> {
-                Tag tag = tagService.findEntityById(id);
-                usuario.addTag(tag);
-            });
-        }
-        return usuario;
+        return entity;
     }
 
     public Optional<Usuario> validarLogin(LoginDTO loginDTO) {
         return usuarioRepository.findByEmail(loginDTO.getEmail())
-                .filter(usuario -> usuario.getSenha().equals(loginDTO.getSenha()));
+                .filter(entity -> entity.getSenha().equals(loginDTO.getSenha()));
     }
 }

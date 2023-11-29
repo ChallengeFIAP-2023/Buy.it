@@ -33,8 +33,8 @@ public class HistoricoService {
     }
 
     public HistoricoDTO findById(Long id) {
-        Historico historico = findEntityById(id);
-        return convertToDto(historico);
+        Historico entity = findEntityById(id);
+        return convertToDto(entity);
     }
 
     public HistoricoDTO create(HistoricoDTO newData) {
@@ -61,31 +61,31 @@ public class HistoricoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Historico não encontrado(a) por ID: " + id));
     }
 
-    private HistoricoDTO convertToDto(Historico historico) {
+    private HistoricoDTO convertToDto(Historico entity) {
         HistoricoDTO dto = new HistoricoDTO();
-        dto.setId(historico.getId());
-        dto.setIdCotacao(historico.getCotacao() != null ? historico.getCotacao().getId() : null);
-        dto.setIdFornecedor(historico.getFornecedor() != null ? historico.getFornecedor().getId() : null);
-        dto.setIdStatus(historico.getStatus() != null ? historico.getStatus().getId() : null);
-        dto.setRecusadoPorProduto(historico.getRecusadoPorProduto());
-        dto.setRecusadoPorQuantidade(historico.getRecusadoPorQuantidade());
-        dto.setRecusadoPorPreco(historico.getRecusadoPorPreco());
-        dto.setRecusadoPorPrazo(historico.getRecusadoPorPrazo());
-        dto.setDescricao(historico.getDescricao());
-        dto.setData(historico.getData());
-        dto.setValorOfertado(historico.getValorOfertado());
+        dto.setId(entity.getId());
+        dto.setIdCotacao(entity.getCotacao() != null ? entity.getCotacao().getId() : null);
+        dto.setIdFornecedor(entity.getFornecedor() != null ? entity.getFornecedor().getId() : null);
+        dto.setIdStatus(entity.getStatus() != null ? entity.getStatus().getId() : null);
+        dto.setRecusadoPorProduto(entity.getRecusadoPorProduto());
+        dto.setRecusadoPorQuantidade(entity.getRecusadoPorQuantidade());
+        dto.setRecusadoPorPreco(entity.getRecusadoPorPreco());
+        dto.setRecusadoPorPrazo(entity.getRecusadoPorPrazo());
+        dto.setDescricao(entity.getDescricao());
+        dto.setData(entity.getData());
+        dto.setValorOfertado(entity.getValorOfertado());
         return dto;
     }
 
     private Historico convertToEntity(HistoricoDTO dto) {
-        Historico historico;
-        if (dto.getId() != null) {
-            historico = findEntityById(dto.getId());
-        } else {
-            historico = new Historico();
-        }
         if (Objects.isNull(dto)) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - HistoricoDTO não pode ser nulo.");
+        }
+        Historico entity;
+        if (dto.getId() != null) {
+            entity = findEntityById(dto.getId());
+        } else {
+            entity = new Historico();
         }
         if (dto.getIdCotacao() == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Cotacao não pode ser nulo.");
@@ -96,16 +96,16 @@ public class HistoricoService {
         if (dto.getIdStatus() == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Status não pode ser nulo.");
         }
-        historico.setCotacao(cotacaoService.findEntityById(dto.getIdCotacao()));
-        historico.setFornecedor(usuarioService.findEntityById(dto.getIdFornecedor()));
-        historico.setStatus(statusService.findEntityById(dto.getIdStatus()));
-        historico.setRecusadoPorProduto(dto.getRecusadoPorProduto());
-        historico.setRecusadoPorQuantidade(dto.getRecusadoPorQuantidade());
-        historico.setRecusadoPorPreco(dto.getRecusadoPorPreco());
-        historico.setRecusadoPorPrazo(dto.getRecusadoPorPrazo());
-        historico.setDescricao(dto.getDescricao());
-        historico.setData(dto.getData());
-        historico.setValorOfertado(dto.getValorOfertado());
-        return historico;
+        entity.setCotacao(cotacaoService.findEntityById(dto.getIdCotacao()));
+        entity.setFornecedor(usuarioService.findEntityById(dto.getIdFornecedor()));
+        entity.setStatus(statusService.findEntityById(dto.getIdStatus()));
+        entity.setRecusadoPorProduto(dto.getRecusadoPorProduto());
+        entity.setRecusadoPorQuantidade(dto.getRecusadoPorQuantidade());
+        entity.setRecusadoPorPreco(dto.getRecusadoPorPreco());
+        entity.setRecusadoPorPrazo(dto.getRecusadoPorPrazo());
+        entity.setDescricao(dto.getDescricao());
+        entity.setData(dto.getData());
+        entity.setValorOfertado(dto.getValorOfertado());
+        return entity;
     }
 }

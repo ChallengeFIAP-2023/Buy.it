@@ -24,8 +24,8 @@ public class PessoaService {
     }
 
     public PessoaDTO findById(Long id) {
-        Pessoa pessoa = findEntityById(id);
-        return convertToDto(pessoa);
+        Pessoa entity = findEntityById(id);
+        return convertToDto(entity);
     }
 
     public PessoaDTO create(PessoaDTO newData) {
@@ -53,26 +53,26 @@ public class PessoaService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Pessoa não encontrado(a) por ID: " + id));
     }
 
-    private PessoaDTO convertToDto(Pessoa pessoa) {
+    private PessoaDTO convertToDto(Pessoa entity) {
         PessoaDTO dto = new PessoaDTO();
-        dto.setId(pessoa.getId());
-        dto.setNome(pessoa.getNome());
-        dto.setUrlImagem(pessoa.getUrlImagem());
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setUrlImagem(entity.getUrlImagem());
         return dto;
     }
 
     private Pessoa convertToEntity(PessoaDTO dto) {
-        Pessoa pessoa;
         if (Objects.isNull(dto)) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - PessoaDTO não pode ser nulo.");
         }
+        Pessoa entity;
         if (dto.getId() != null) {
-            pessoa = findEntityById(dto.getId());
+            entity = findEntityById(dto.getId());
         } else {
-            pessoa = new Pessoa();
+            entity = new Pessoa();
         }
-        pessoa.setNome(dto.getNome());
-        pessoa.setUrlImagem(dto.getUrlImagem());
-        return pessoa;
+        entity.setNome(dto.getNome());
+        entity.setUrlImagem(dto.getUrlImagem());
+        return entity;
     }
 }

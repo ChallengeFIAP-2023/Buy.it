@@ -24,8 +24,8 @@ public class PessoaJuridicaService {
     }
 
     public PessoaJuridicaDTO findById(Long id) {
-        PessoaJuridica pessoaJuridica = findEntityById(id);
-        return convertToDto(pessoaJuridica);
+        PessoaJuridica entity = findEntityById(id);
+        return convertToDto(entity);
     }
 
     public PessoaJuridicaDTO create(PessoaJuridicaDTO newData) {
@@ -53,31 +53,31 @@ public class PessoaJuridicaService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - PessoaJuridica não encontrado(a) por ID: " + id));
     }
 
-    private PessoaJuridicaDTO convertToDto(PessoaJuridica pessoaJuridica) {
+    private PessoaJuridicaDTO convertToDto(PessoaJuridica entity) {
         PessoaJuridicaDTO dto = new PessoaJuridicaDTO();
-        dto.setId(pessoaJuridica.getId());
-        dto.setNome(pessoaJuridica.getNome());
-        dto.setUrlImagem(pessoaJuridica.getUrlImagem());
-        dto.setCnpj(pessoaJuridica.getCnpj());
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setUrlImagem(entity.getUrlImagem());
+        dto.setCnpj(entity.getCnpj());
         dto.setIsFornecedor(dto.getIsFornecedor());
         return dto;
     }
 
     private PessoaJuridica convertToEntity(PessoaJuridicaDTO dto) {
-        PessoaJuridica pessoaJuridica;
         if (Objects.isNull(dto)) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - PessoaJuridicaDTO não pode ser nulo.");
         }
+        PessoaJuridica entity;
         if (dto.getId() != null) {
-            pessoaJuridica = findEntityById(dto.getId());
+            entity = findEntityById(dto.getId());
         } else {
-            pessoaJuridica = new PessoaJuridica();
+            entity = new PessoaJuridica();
         }
-        pessoaJuridica.setNome(dto.getNome());
-        pessoaJuridica.setUrlImagem(dto.getUrlImagem());
-        pessoaJuridica.setCnpj(dto.getCnpj());
-        pessoaJuridica.setIsFornecedor(dto.getIsFornecedor());
+        entity.setNome(dto.getNome());
+        entity.setUrlImagem(dto.getUrlImagem());
+        entity.setCnpj(dto.getCnpj());
+        entity.setIsFornecedor(dto.getIsFornecedor());
     
-        return pessoaJuridica;
+        return entity;
     }
 }

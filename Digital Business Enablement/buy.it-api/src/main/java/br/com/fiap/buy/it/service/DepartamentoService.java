@@ -31,8 +31,8 @@ public class DepartamentoService {
     }
 
     public DepartamentoDTO findById(Long id) {
-        Departamento departamento = findEntityById(id);
-        return convertToDto(departamento);
+        Departamento entity = findEntityById(id);
+        return convertToDto(entity);
     }
 
     public DepartamentoDTO create(DepartamentoDTO newData) {
@@ -51,6 +51,11 @@ public class DepartamentoService {
 
     public void delete(Long id) {
         Departamento entity = findEntityById(id);
+        if (entity.getTags() != null) {
+            for (Tag tag : entity.getTags()) {
+                tag.removeDepartamento(entity);
+            }
+        }
         departamentoRepository.delete(entity);
     }
 
@@ -59,13 +64,13 @@ public class DepartamentoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Departamento não encontrado(a) por ID: " + id));
     }
 
-    private DepartamentoDTO convertToDto(Departamento departamento) {
+    private DepartamentoDTO convertToDto(Departamento entity) {
         DepartamentoDTO dto = new DepartamentoDTO();
-        dto.setId(departamento.getId());
-        dto.setNome(departamento.getNome());
-        dto.setIcone(departamento.getIcone());
-        if (departamento.getTags() != null) {
-            Set<Long> idsTags = departamento.getTags().stream()
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setIcone(entity.getIcone());
+        if (entity.getTags() != null) {
+            Set<Long> idsTags = entity.getTags().stream()
                     .map(Tag::getId)
                     .collect(Collectors.toSet());
             dto.setIdsTags(idsTags);
@@ -74,9 +79,14 @@ public class DepartamentoService {
     }
 
     private Departamento convertToEntity(DepartamentoDTO dto) {
-        Departamento departamento;
+        if (dto == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - DepartamentoDTO não pode ser nulo.");
+        }
+        Departamento entity;
         if (dto.getId() != null) {
-            departamento = findEntityById(dto.getId());
+            entity = findEntityById(dto.getId());
+            entity.setNome(dto.getNome());
+            entity.setIcone(dto.getIcone());
             Set<Tag> newTags = new LinkedHashSet<>();
             if (dto.getIdsTags() != null) {
                 dto.getIdsTags().forEach(id -> {
@@ -84,18 +94,18 @@ public class DepartamentoService {
                     newTags.add(tag);
                 });
             }
-            departamento.setTags(newTags);
+            entity.setTags(newTags);
         } else {
-            departamento = new Departamento();
-            departamento.setNome(dto.getNome());
-            departamento.setIcone(dto.getIcone());
+            entity = new Departamento();
+            entity.setNome(dto.getNome());
+            entity.setIcone(dto.getIcone());
             if (dto.getIdsTags() != null) {
                 dto.getIdsTags().forEach(id -> {
                     Tag tag = tagService.findEntityById(id);
-                    departamento.addTag(tag);
+                    entity.addTag(tag);
                 });
             }
         }
-        return departamento;
+        return entity;
     }
 }

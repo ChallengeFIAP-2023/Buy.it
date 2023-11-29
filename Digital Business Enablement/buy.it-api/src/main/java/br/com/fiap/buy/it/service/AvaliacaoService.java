@@ -27,8 +27,8 @@ public class AvaliacaoService {
     }
 
     public AvaliacaoDTO findById(Long id) {
-        Avaliacao avaliacao = findEntityById(id);
-        return convertToDto(avaliacao);
+        Avaliacao entity = findEntityById(id);
+        return convertToDto(entity);
     }
 
     public AvaliacaoDTO create(AvaliacaoDTO newData) {
@@ -55,37 +55,37 @@ public class AvaliacaoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Avaliacao não encontrado(a) por ID: " + id));
     }
     
-    private AvaliacaoDTO convertToDto(Avaliacao avaliacao) {
+    private AvaliacaoDTO convertToDto(Avaliacao entity) {
         AvaliacaoDTO dto = new AvaliacaoDTO();
-        dto.setId(avaliacao.getId());
-        dto.setIdCotacao(avaliacao.getCotacao() != null ? avaliacao.getCotacao().getId() : null);
-        dto.setData(avaliacao.getData());
-        dto.setNotaEntrega(avaliacao.getNotaEntrega());
-        dto.setNotaQualidade(avaliacao.getNotaQualidade());
-        dto.setNotaPreco(avaliacao.getNotaPreco());
-        dto.setDescricao(avaliacao.getDescricao());
+        dto.setId(entity.getId());
+        dto.setIdCotacao(entity.getCotacao() != null ? entity.getCotacao().getId() : null);
+        dto.setData(entity.getData());
+        dto.setNotaEntrega(entity.getNotaEntrega());
+        dto.setNotaQualidade(entity.getNotaQualidade());
+        dto.setNotaPreco(entity.getNotaPreco());
+        dto.setDescricao(entity.getDescricao());
         return dto;
     }
 
     private Avaliacao convertToEntity(AvaliacaoDTO dto) {
-        Avaliacao avaliacao;
-        if (dto.getId() != null) {
-            avaliacao = findEntityById(dto.getId());
-        } else {
-            avaliacao = new Avaliacao();
-        }
         if (Objects.isNull(dto)) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - AvaliacaoDTO não pode ser nulo.");
+        }
+        Avaliacao entity;
+        if (dto.getId() != null) {
+            entity = findEntityById(dto.getId());
+        } else {
+            entity = new Avaliacao();
         }
         if (dto.getIdCotacao() == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Cotacao não pode ser nulo.");
         }
-        avaliacao.setCotacao(cotacaoService.findEntityById(dto.getIdCotacao()));
-        avaliacao.setData(dto.getData());
-        avaliacao.setNotaEntrega(dto.getNotaEntrega());
-        avaliacao.setNotaQualidade(dto.getNotaQualidade());
-        avaliacao.setNotaPreco(dto.getNotaPreco());
-        avaliacao.setDescricao(dto.getDescricao());
-        return avaliacao;
+        entity.setCotacao(cotacaoService.findEntityById(dto.getIdCotacao()));
+        entity.setData(dto.getData());
+        entity.setNotaEntrega(dto.getNotaEntrega());
+        entity.setNotaQualidade(dto.getNotaQualidade());
+        entity.setNotaPreco(dto.getNotaPreco());
+        entity.setDescricao(dto.getDescricao());
+        return entity;
     }
 }

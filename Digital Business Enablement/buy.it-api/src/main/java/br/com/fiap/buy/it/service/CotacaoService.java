@@ -33,8 +33,8 @@ public class CotacaoService {
     }
 
     public CotacaoDTO findById(Long id) {
-        Cotacao cotacao = findEntityById(id);
-        return convertToDto(cotacao);
+        Cotacao entity = findEntityById(id);
+        return convertToDto(entity);
     }
 
     public CotacaoDTO create(CotacaoDTO newData) {
@@ -61,32 +61,32 @@ public class CotacaoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Cotacao não encontrado(a) por ID: " + id));
     }
 
-    private CotacaoDTO convertToDto(Cotacao cotacao) {
+    private CotacaoDTO convertToDto(Cotacao entity) {
         CotacaoDTO dto = new CotacaoDTO();
-        dto.setId(cotacao.getId());
-        dto.setDataAbertura(cotacao.getDataAbertura());
-        dto.setIdComprador(cotacao.getComprador() != null ? cotacao.getComprador().getId() : null);
-        dto.setIdProduto(cotacao.getProduto() != null ? cotacao.getProduto().getId() : null);
-        dto.setQuantidadeProduto(cotacao.getQuantidadeProduto());
-        dto.setValorProduto(cotacao.getValorProduto());
-        dto.setIdStatus(cotacao.getStatus() != null ? cotacao.getStatus().getId() : null);
-        dto.setPrioridadeEntrega(cotacao.getPrioridadeEntrega());
-        dto.setPrioridadeQualidade(cotacao.getPrioridadeQualidade());
-        dto.setPrioridadePreco(cotacao.getPrioridadePreco());
-        dto.setPrazo(cotacao.getPrazo());
-        dto.setDataFechamento(cotacao.getDataFechamento());
+        dto.setId(entity.getId());
+        dto.setDataAbertura(entity.getDataAbertura());
+        dto.setIdComprador(entity.getComprador() != null ? entity.getComprador().getId() : null);
+        dto.setIdProduto(entity.getProduto() != null ? entity.getProduto().getId() : null);
+        dto.setQuantidadeProduto(entity.getQuantidadeProduto());
+        dto.setValorProduto(entity.getValorProduto());
+        dto.setIdStatus(entity.getStatus() != null ? entity.getStatus().getId() : null);
+        dto.setPrioridadeEntrega(entity.getPrioridadeEntrega());
+        dto.setPrioridadeQualidade(entity.getPrioridadeQualidade());
+        dto.setPrioridadePreco(entity.getPrioridadePreco());
+        dto.setPrazo(entity.getPrazo());
+        dto.setDataFechamento(entity.getDataFechamento());
         return dto;
     }
 
     private Cotacao convertToEntity(CotacaoDTO dto) {
-        Cotacao cotacao;
-        if (dto.getId() != null) {
-            cotacao = findEntityById(dto.getId());
-        } else {
-            cotacao = new Cotacao();
-        }
         if (Objects.isNull(dto)) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - CotacaoDTO não pode ser nulo.");
+        }
+        Cotacao entity;
+        if (dto.getId() != null) {
+            entity = findEntityById(dto.getId());
+        } else {
+            entity = new Cotacao();
         }
         if (dto.getIdComprador() == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Comprador não pode ser nulo.");
@@ -97,17 +97,17 @@ public class CotacaoService {
         if (dto.getIdStatus() == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID Status não pode ser nulo.");
         }
-        cotacao.setDataAbertura(dto.getDataAbertura());
-        cotacao.setComprador(usuarioService.findEntityById(dto.getIdComprador()));
-        cotacao.setProduto(produtoService.findEntityById(dto.getIdProduto()));
-        cotacao.setQuantidadeProduto(dto.getQuantidadeProduto());
-        cotacao.setValorProduto(dto.getValorProduto());
-        cotacao.setStatus(statusService.findEntityById(dto.getIdStatus()));
-        cotacao.setPrioridadeEntrega(dto.getPrioridadeEntrega());
-        cotacao.setPrioridadeQualidade(dto.getPrioridadeQualidade());
-        cotacao.setPrioridadePreco(dto.getPrioridadePreco());
-        cotacao.setPrazo(dto.getPrazo());
-        cotacao.setDataFechamento(dto.getDataFechamento());
-        return cotacao;
+        entity.setDataAbertura(dto.getDataAbertura());
+        entity.setComprador(usuarioService.findEntityById(dto.getIdComprador()));
+        entity.setProduto(produtoService.findEntityById(dto.getIdProduto()));
+        entity.setQuantidadeProduto(dto.getQuantidadeProduto());
+        entity.setValorProduto(dto.getValorProduto());
+        entity.setStatus(statusService.findEntityById(dto.getIdStatus()));
+        entity.setPrioridadeEntrega(dto.getPrioridadeEntrega());
+        entity.setPrioridadeQualidade(dto.getPrioridadeQualidade());
+        entity.setPrioridadePreco(dto.getPrioridadePreco());
+        entity.setPrazo(dto.getPrazo());
+        entity.setDataFechamento(dto.getDataFechamento());
+        return entity;
     }
 }

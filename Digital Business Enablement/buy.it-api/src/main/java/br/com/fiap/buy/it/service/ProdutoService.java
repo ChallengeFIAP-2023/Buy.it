@@ -34,8 +34,8 @@ public class ProdutoService {
     }
 
     public ProdutoDTO findById(Long id) {
-        Produto produto = findEntityById(id);
-        return convertToDto(produto);
+        Produto entity = findEntityById(id);
+        return convertToDto(entity);
     }
 
     public ProdutoDTO create(ProdutoDTO newData) {
@@ -55,6 +55,11 @@ public class ProdutoService {
 
     public void delete(Long id) {
         Produto entity = findEntityById(id);
+        if (entity.getTags() != null) {
+            for (Tag tag : entity.getTags()) {
+                tag.removeProduto(entity);
+            }
+        }
         produtoRepository.delete(entity);
     }
 
@@ -63,18 +68,18 @@ public class ProdutoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Produto não encontrado(a) por ID: " + id));
     }
 
-    private ProdutoDTO convertToDto(Produto produto) {
+    private ProdutoDTO convertToDto(Produto entity) {
         ProdutoDTO dto = new ProdutoDTO();
-        dto.setId(produto.getId());
-        dto.setNome(produto.getNome());
-        dto.setMarca(produto.getMarca());
-        dto.setCor(produto.getCor());
-        dto.setTamanho(produto.getTamanho());
-        dto.setMaterial(produto.getMaterial());
-        dto.setObservacao(produto.getObservacao());
-        dto.setIdDepartamento(produto.getDepartamento() != null ? produto.getDepartamento().getId() : null);
-        if (produto.getTags() != null) {
-            Set<Long> idsTags = produto.getTags().stream()
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setMarca(entity.getMarca());
+        dto.setCor(entity.getCor());
+        dto.setTamanho(entity.getTamanho());
+        dto.setMaterial(entity.getMaterial());
+        dto.setObservacao(entity.getObservacao());
+        dto.setIdDepartamento(entity.getDepartamento() != null ? entity.getDepartamento().getId() : null);
+        if (entity.getTags() != null) {
+            Set<Long> idsTags = entity.getTags().stream()
                     .map(Tag::getId)
                     .collect(Collectors.toSet());
             dto.setIdsTags(idsTags);
@@ -83,9 +88,19 @@ public class ProdutoService {
     }
 
     private Produto convertToEntity(ProdutoDTO dto) {
-        Produto produto;
+        if (dto == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ProdutoDTO não pode ser nulo.");
+        }
+        Produto entity;
         if (dto.getId() != null) {
-            produto = findEntityById(dto.getId());
+            entity = findEntityById(dto.getId());
+            entity.setNome(dto.getNome());
+            entity.setMarca(dto.getMarca());
+            entity.setCor(dto.getCor());
+            entity.setTamanho(dto.getTamanho());
+            entity.setMaterial(dto.getMaterial());
+            entity.setObservacao(dto.getObservacao());
+            entity.setDepartamento(departamentoService.findEntityById(dto.getIdDepartamento()));
             Set<Tag> newTags = new LinkedHashSet<>();
             if (dto.getIdsTags() != null) {
                 dto.getIdsTags().forEach(id -> {
@@ -93,23 +108,23 @@ public class ProdutoService {
                     newTags.add(tag);
                 });
             }
-            produto.setTags(newTags);
+            entity.setTags(newTags);
         } else {
-            produto = new Produto();
-            produto.setNome(dto.getNome());
-            produto.setMarca(dto.getMarca());
-            produto.setCor(dto.getCor());
-            produto.setTamanho(dto.getTamanho());
-            produto.setMaterial(dto.getMaterial());
-            produto.setObservacao(dto.getObservacao());
-            produto.setDepartamento(departamentoService.findEntityById(dto.getIdDepartamento()));
+            entity = new Produto();
+            entity.setNome(dto.getNome());
+            entity.setMarca(dto.getMarca());
+            entity.setCor(dto.getCor());
+            entity.setTamanho(dto.getTamanho());
+            entity.setMaterial(dto.getMaterial());
+            entity.setObservacao(dto.getObservacao());
+            entity.setDepartamento(departamentoService.findEntityById(dto.getIdDepartamento()));
             if (dto.getIdsTags() != null) {
                 dto.getIdsTags().forEach(id -> {
                     Tag tag = tagService.findEntityById(id);
-                    produto.addTag(tag);
+                    entity.addTag(tag);
                 });
             }
         }
-        return produto;
+        return entity;
     }
 }
