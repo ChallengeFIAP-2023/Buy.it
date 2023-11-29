@@ -92,13 +92,13 @@ public class Tag {
 
     public Tag addDepartamento(Departamento departamento) {
         this.departamentos.add(departamento);
-        departamento.addTag(this);
+        if (!departamento.getTags().contains(this)) departamento.getTags().add(this);
         return this;
     }
 
     public Tag removeDepartamento(Departamento departamento) {
         this.departamentos.remove(departamento);
-        if (departamento.getTags().equals(this)) departamento.removeTag(this);
+        if (departamento.getTags().contains(this)) departamento.removeTag(this);
         return this;
     }
 

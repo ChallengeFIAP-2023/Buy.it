@@ -45,17 +45,15 @@ public class Departamento {
     private Set<Tag> tags;
 
     public Optional<Departamento> addTag(Tag tag) {
-        if (this.tags == null)
-            this.tags = new LinkedHashSet<>();
+        if (this.tags == null) this.tags = new LinkedHashSet<>();
         this.tags.add(tag);
-        tag.addDepartamento(this);
+        if (!tag.getDepartamentos().contains(this)) tag.getDepartamentos().add(this);
         return Optional.of(this);
     }
 
     public Departamento removeTag(Tag tag) {
         this.tags.remove(tag);
-        if (tag.getDepartamentos().equals(this))
-            tag.removeDepartamento(this);
+        if (tag.getDepartamentos().contains(this)) tag.removeDepartamento(this);
         return this;
     }
 
