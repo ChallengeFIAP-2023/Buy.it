@@ -5,7 +5,6 @@ import jakarta.validation.constraints.*;
 
 import lombok.*;
 
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -14,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 @Entity
 @Table(name = "PRODUTO")
 public class Produto {
@@ -23,32 +20,25 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_PRODUTO")
     @SequenceGenerator(name = "SQ_PRODUTO", sequenceName = "SQ_PRODUTO", allocationSize = 1)
     @Column(name = "ID_PRODUTO")
-    @Getter @Setter
     private Long id;
 
     @Column(name = "NOME_PRODUTO",nullable = false)
-    @NotBlank(message = "O nome do produto não pode estar vazio.")
-    @Getter @Setter
+    @NotBlank(message = "O campo nome não pode estar vazio.")
     private String nome;
 
     @Column(name = "MARCA_PRODUTO")
-    @Getter @Setter
     private String marca;
 
     @Column(name = "COR_PRODUTO")
-    @Getter @Setter
     private String cor;
 
     @Column(name = "TAMANHO_PRODUTO")
-    @Getter @Setter
     private String tamanho;
 
     @Column(name = "MATERIAL_PRODUTO")
-    @Getter @Setter
     private String material;
 
     @Column(name = "OBSERVACAO_PRODUTO", length = 500)
-    @Getter @Setter
     private String observacao;
     
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -57,7 +47,6 @@ public class Produto {
             referencedColumnName = "ID_DEPARTAMENTO",
             foreignKey = @ForeignKey(name = "FK_DEPARTAMENTO_PRODUTO")
     )
-    @Getter @Setter
     private Departamento departamento;
 
     @JsonManagedReference
@@ -91,9 +80,5 @@ public class Produto {
         this.tags.remove(tag);
         if (tag.getProdutos().equals(this)) tag.removeProduto(this);
         return this;
-    }
-
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
     }
 }

@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
@@ -37,12 +38,14 @@ public class HistoricoService {
         return entity;
     }
 
+    @Transactional
     public Historico create(HistoricoDTO newData) {
         Historico entity = convertToEntity(newData);
         Historico savedEntity = historicoRepository.save(entity);
         return savedEntity;
     }
 
+    @Transactional
     public Historico update(Long id, HistoricoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
@@ -51,6 +54,7 @@ public class HistoricoService {
         return savedEntity;
     }
     
+    @Transactional
     public void delete(Long id) {
         Historico entity = findEntityById(id);
         historicoRepository.delete(entity);
@@ -61,21 +65,21 @@ public class HistoricoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Historico não encontrado(a) por ID: " + id));
     }
 
-    private HistoricoDTO convertToDto(Historico entity) {
-        HistoricoDTO dto = new HistoricoDTO();
-        dto.setId(entity.getId());
-        dto.setIdCotacao(entity.getCotacao() != null ? entity.getCotacao().getId() : null);
-        dto.setIdFornecedor(entity.getFornecedor() != null ? entity.getFornecedor().getId() : null);
-        dto.setIdStatus(entity.getStatus() != null ? entity.getStatus().getId() : null);
-        dto.setRecusadoPorProduto(entity.getRecusadoPorProduto());
-        dto.setRecusadoPorQuantidade(entity.getRecusadoPorQuantidade());
-        dto.setRecusadoPorPreco(entity.getRecusadoPorPreco());
-        dto.setRecusadoPorPrazo(entity.getRecusadoPorPrazo());
-        dto.setDescricao(entity.getDescricao());
-        dto.setData(entity.getData());
-        dto.setValorOfertado(entity.getValorOfertado());
-        return dto;
-    }
+    // private HistoricoDTO convertToDto(Historico entity) {
+    //     HistoricoDTO dto = new HistoricoDTO();
+    //     dto.setId(entity.getId());
+    //     dto.setIdCotacao(entity.getCotacao() != null ? entity.getCotacao().getId() : null);
+    //     dto.setIdFornecedor(entity.getFornecedor() != null ? entity.getFornecedor().getId() : null);
+    //     dto.setIdStatus(entity.getStatus() != null ? entity.getStatus().getId() : null);
+    //     dto.setRecusadoPorProduto(entity.getRecusadoPorProduto());
+    //     dto.setRecusadoPorQuantidade(entity.getRecusadoPorQuantidade());
+    //     dto.setRecusadoPorPreco(entity.getRecusadoPorPreco());
+    //     dto.setRecusadoPorPrazo(entity.getRecusadoPorPrazo());
+    //     dto.setDescricao(entity.getDescricao());
+    //     dto.setData(entity.getData());
+    //     dto.setValorOfertado(entity.getValorOfertado());
+    //     return dto;
+    // }
 
     private Historico convertToEntity(HistoricoDTO dto) {
         if (Objects.isNull(dto)) {

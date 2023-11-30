@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
@@ -37,12 +38,14 @@ public class CotacaoService {
         return entity;
     }
 
+    @Transactional
     public Cotacao create(CotacaoDTO newData) {
         Cotacao entity = convertToEntity(newData);
         Cotacao savedEntity = cotacaoRepository.save(entity);
         return savedEntity;
     }
 
+    @Transactional
     public Cotacao update(Long id, CotacaoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
@@ -51,6 +54,7 @@ public class CotacaoService {
         return savedEntity;
     }
 
+    @Transactional
     public void delete(Long id) {
         Cotacao entity = findEntityById(id);
         cotacaoRepository.delete(entity);
@@ -61,22 +65,22 @@ public class CotacaoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Cotacao não encontrado(a) por ID: " + id));
     }
 
-    private CotacaoDTO convertToDto(Cotacao entity) {
-        CotacaoDTO dto = new CotacaoDTO();
-        dto.setId(entity.getId());
-        dto.setDataAbertura(entity.getDataAbertura());
-        dto.setIdComprador(entity.getComprador() != null ? entity.getComprador().getId() : null);
-        dto.setIdProduto(entity.getProduto() != null ? entity.getProduto().getId() : null);
-        dto.setQuantidadeProduto(entity.getQuantidadeProduto());
-        dto.setValorProduto(entity.getValorProduto());
-        dto.setIdStatus(entity.getStatus() != null ? entity.getStatus().getId() : null);
-        dto.setPrioridadeEntrega(entity.getPrioridadeEntrega());
-        dto.setPrioridadeQualidade(entity.getPrioridadeQualidade());
-        dto.setPrioridadePreco(entity.getPrioridadePreco());
-        dto.setPrazo(entity.getPrazo());
-        dto.setDataFechamento(entity.getDataFechamento());
-        return dto;
-    }
+    // private CotacaoDTO convertToDto(Cotacao entity) {
+    //     CotacaoDTO dto = new CotacaoDTO();
+    //     dto.setId(entity.getId());
+    //     dto.setDataAbertura(entity.getDataAbertura());
+    //     dto.setIdComprador(entity.getComprador() != null ? entity.getComprador().getId() : null);
+    //     dto.setIdProduto(entity.getProduto() != null ? entity.getProduto().getId() : null);
+    //     dto.setQuantidadeProduto(entity.getQuantidadeProduto());
+    //     dto.setValorProduto(entity.getValorProduto());
+    //     dto.setIdStatus(entity.getStatus() != null ? entity.getStatus().getId() : null);
+    //     dto.setPrioridadeEntrega(entity.getPrioridadeEntrega());
+    //     dto.setPrioridadeQualidade(entity.getPrioridadeQualidade());
+    //     dto.setPrioridadePreco(entity.getPrioridadePreco());
+    //     dto.setPrazo(entity.getPrazo());
+    //     dto.setDataFechamento(entity.getDataFechamento());
+    //     return dto;
+    // }
 
     private Cotacao convertToEntity(CotacaoDTO dto) {
         if (Objects.isNull(dto)) {

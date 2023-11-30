@@ -6,12 +6,8 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 @Entity
 @Table(name = "TIPO_CONTATO", uniqueConstraints = {
         @UniqueConstraint(name = "UK_NM_TIPO_CONTATO", columnNames = "NOME_TIPO_CONTATO")
@@ -23,7 +19,7 @@ public class TipoContato {
     @Column(name = "ID_TIPO_CONTATO")
     private Long id;
 
-    @NotBlank(message = "O nome do tipo de contato é obrigatório.")
     @Column(name = "NOME_TIPO_CONTATO", nullable = false)
+    @NotBlank(message = "O campo nome não pode estar vazio.")
     private String nome;
 }

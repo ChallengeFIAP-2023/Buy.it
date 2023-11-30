@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
@@ -28,12 +29,14 @@ public class PessoaJuridicaService {
         return entity;
     }
 
+    @Transactional
     public PessoaJuridica create(PessoaJuridicaDTO newData) {
         PessoaJuridica entity = convertToEntity(newData);
         PessoaJuridica savedEntity = pessoaJuridicaRepository.save(entity);
         return savedEntity;
     }
 
+    @Transactional
     public PessoaJuridica update(Long id, PessoaJuridicaDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
@@ -42,6 +45,7 @@ public class PessoaJuridicaService {
         return savedEntity;
     }
     
+    @Transactional
     public void delete(Long id) {
         PessoaJuridica entity = findEntityById(id);
         pessoaJuridicaRepository.delete(entity);
@@ -52,15 +56,15 @@ public class PessoaJuridicaService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - PessoaJuridica não encontrado(a) por ID: " + id));
     }
 
-    private PessoaJuridicaDTO convertToDto(PessoaJuridica entity) {
-        PessoaJuridicaDTO dto = new PessoaJuridicaDTO();
-        dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
-        dto.setUrlImagem(entity.getUrlImagem());
-        dto.setCnpj(entity.getCnpj());
-        dto.setIsFornecedor(dto.getIsFornecedor());
-        return dto;
-    }
+    // private PessoaJuridicaDTO convertToDto(PessoaJuridica entity) {
+    //     PessoaJuridicaDTO dto = new PessoaJuridicaDTO();
+    //     dto.setId(entity.getId());
+    //     dto.setNome(entity.getNome());
+    //     dto.setUrlImagem(entity.getUrlImagem());
+    //     dto.setCnpj(entity.getCnpj());
+    //     dto.setIsFornecedor(dto.getIsFornecedor());
+    //     return dto;
+    // }
 
     private PessoaJuridica convertToEntity(PessoaJuridicaDTO dto) {
         if (Objects.isNull(dto)) {

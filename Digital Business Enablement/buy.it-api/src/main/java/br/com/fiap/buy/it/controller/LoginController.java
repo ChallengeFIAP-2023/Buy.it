@@ -24,7 +24,7 @@ public class LoginController {
         Optional<Usuario> usuario = usuarioService.validarLogin(loginDTO);
 
         if (usuario.isPresent()) {
-            return ResponseEntity.ok(usuario.get().getId());
+            return ResponseEntity.ok(usuario);
         } else {
             return ResponseEntity.status(401).body("Falha na autenticação: credenciais inválidas.");
         }

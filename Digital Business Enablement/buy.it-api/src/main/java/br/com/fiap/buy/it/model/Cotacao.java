@@ -9,12 +9,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 @Entity
 @Table(name = "COTACAO")
 public class Cotacao {
@@ -25,10 +21,13 @@ public class Cotacao {
     private Long id;
 
     @Column(name = "DATA_ABERTURA_COTACAO", nullable = false)
+    @NotNull(message = "O campo data não pode estar vazio.")
+    @PastOrPresent
     @Temporal(TemporalType.DATE)
     private Date dataAbertura;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @NotNull(message = "O campo comprador não pode estar vazio.")
     @JoinColumn(
             name = "ID_COMPRADOR",
             referencedColumnName = "ID_USUARIO",
@@ -38,6 +37,7 @@ public class Cotacao {
     private Usuario comprador;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @NotNull(message = "O campo produto não pode estar vazio.")
     @JoinColumn(
             name = "ID_PRODUTO",
             referencedColumnName = "ID_PRODUTO",
@@ -47,14 +47,17 @@ public class Cotacao {
     private Produto produto;
 
     @Column(name = "QUANTIDADE_PRODUTO", nullable = false)
+    @NotNull(message = "O campo quantidadeProduto não pode estar vazio.")
     @Positive
     private BigDecimal quantidadeProduto;
 
     @Column(name = "VALOR_PRODUTO", nullable = false)
+    @NotNull(message = "O campo valorProduto não pode estar vazio.")
     @Positive
     private BigDecimal valorProduto;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @NotNull(message = "O campo status não pode estar vazio.")
     @JoinColumn(
             name = "ID_STATUS",
             referencedColumnName = "ID_STATUS",
@@ -64,20 +67,27 @@ public class Cotacao {
     private Status status;
 
     @Column(name = "PRIORIDADE_ENTREGA", nullable = false)
+    @NotNull(message = "O campo prioridadeEntrega não pode estar vazio.")
+    @Positive
     @Min(1) @Max(3)
-    private Integer prioridadeEntrega;
+    private Long prioridadeEntrega;
 
     @Column(name = "PRIORIDADE_QUALIDADE", nullable = false)
+    @NotNull(message = "O campo prioridadeQualidade não pode estar vazio.")
+    @Positive
     @Min(1) @Max(3)
-    private Integer prioridadeQualidade;
+    private Long prioridadeQualidade;
 
     @Column(name = "PRIORIDADE_PRECO", nullable = false)
+    @NotNull(message = "O campo prioridadePreco não pode estar vazio.")
+    @Positive
     @Min(1) @Max(3)
-    private Integer prioridadePreco;
+    private Long prioridadePreco;
 
     @Column(name = "PRAZO_COTACAO", nullable = false)
+    @NotNull(message = "O campo prazo não pode estar vazio.")
     @PositiveOrZero
-    private Integer prazo;
+    private Long prazo;
 
     @Column(name = "DATA_FECHAMENTO_COTACAO")
     @PastOrPresent

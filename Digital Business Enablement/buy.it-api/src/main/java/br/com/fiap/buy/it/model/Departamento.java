@@ -5,7 +5,6 @@ import jakarta.validation.constraints.*;
 
 import lombok.*;
 
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -16,8 +15,6 @@ import java.util.Optional;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 @Entity
 @Table(name = "DEPARTAMENTO", uniqueConstraints = {
         @UniqueConstraint(name = "UK_NOME_DEPARTAMENTO", columnNames = "NOME_DEPARTAMENTO")
@@ -27,16 +24,13 @@ public class Departamento {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_DEPARTAMENTO")
     @SequenceGenerator(name = "SQ_DEPARTAMENTO", sequenceName = "SQ_DEPARTAMENTO", allocationSize = 1)
     @Column(name = "ID_DEPARTAMENTO")
-    @Getter @Setter
     private Long id;
 
     @Column(name = "NOME_DEPARTAMENTO", nullable = false)
-    @NotBlank(message = "O nome do departamento não pode estar vazio.")
-    @Getter @Setter
+    @NotBlank(message = "O campo nome não pode estar vazio.")
     private String nome;
 
     @Column(name = "ICONE_DEPARTAMENTO")
-    @Getter @Setter
     private String icone;
 
     @JsonManagedReference
@@ -61,9 +55,5 @@ public class Departamento {
         this.tags.remove(tag);
         if (tag.getDepartamentos().contains(this)) tag.removeDepartamento(this);
         return this;
-    }
-
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
     }
 }

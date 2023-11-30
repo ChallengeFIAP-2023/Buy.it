@@ -1,14 +1,16 @@
 package br.com.fiap.buy.it.dto;
 
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
-@Getter
-@Setter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class StatusDTO {
+
     private Long id;
+    
+    @NotBlank(message = "O campo nome não pode estar vazio.")
     private String nome;
 }

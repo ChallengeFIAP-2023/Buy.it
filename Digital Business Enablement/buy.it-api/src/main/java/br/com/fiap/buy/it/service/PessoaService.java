@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
@@ -28,12 +29,14 @@ public class PessoaService {
         return entity;
     }
 
+    @Transactional
     public Pessoa create(PessoaDTO newData) {
         Pessoa entity = convertToEntity(newData);
         Pessoa savedEntity = pessoaRepository.save(entity);
         return savedEntity;
     }
 
+    @Transactional
     public Pessoa update(Long id, PessoaDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
@@ -42,6 +45,7 @@ public class PessoaService {
         return savedEntity;
     }
     
+    @Transactional
     public void delete(Long id) {
         Pessoa entity = findEntityById(id);
         pessoaRepository.delete(entity);
@@ -52,13 +56,13 @@ public class PessoaService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Pessoa não encontrado(a) por ID: " + id));
     }
 
-    private PessoaDTO convertToDto(Pessoa entity) {
-        PessoaDTO dto = new PessoaDTO();
-        dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
-        dto.setUrlImagem(entity.getUrlImagem());
-        return dto;
-    }
+    // private PessoaDTO convertToDto(Pessoa entity) {
+    //     PessoaDTO dto = new PessoaDTO();
+    //     dto.setId(entity.getId());
+    //     dto.setNome(entity.getNome());
+    //     dto.setUrlImagem(entity.getUrlImagem());
+    //     return dto;
+    // }
 
     private Pessoa convertToEntity(PessoaDTO dto) {
         if (Objects.isNull(dto)) {

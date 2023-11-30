@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -26,12 +27,14 @@ public class StatusService {
         return entity;
     }
 
+    @Transactional
     public Status create(StatusDTO newData) {
         Status entity = convertToEntity(newData);
         Status savedEntity = statusRepository.save(entity);
         return savedEntity;
     }
 
+    @Transactional
     public Status update(Long id, StatusDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
@@ -40,6 +43,7 @@ public class StatusService {
         return savedEntity;
     }
     
+    @Transactional
     public void delete(Long id) {
         Status entity = findEntityById(id);
         statusRepository.delete(entity);
@@ -50,12 +54,12 @@ public class StatusService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Status não encontrado(a) por ID: " + id));
     }
 
-    private StatusDTO convertToDto(Status entity) {
-        StatusDTO dto = new StatusDTO();
-        dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
-        return dto;
-    }
+    // private StatusDTO convertToDto(Status entity) {
+    //     StatusDTO dto = new StatusDTO();
+    //     dto.setId(entity.getId());
+    //     dto.setNome(entity.getNome());
+    //     return dto;
+    // }
 
     private Status convertToEntity(StatusDTO dto) {
         if (dto == null) {

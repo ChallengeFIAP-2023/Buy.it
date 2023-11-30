@@ -6,12 +6,8 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 @Entity
 @Table(name = "STATUS", uniqueConstraints = {
         @UniqueConstraint(name = "UK_NOME_STATUS", columnNames = "NOME_STATUS")
@@ -24,6 +20,6 @@ public class Status {
     private Long id;
 
     @Column(name = "NOME_STATUS", nullable = false)
-    @NotBlank(message = "O nome do status não pode estar vazio.")
+    @NotBlank(message = "O campo nome não pode estar vazio.")
     private String nome;
 }

@@ -6,12 +6,8 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 @Entity
 @Table(name = "PESSOA")
 @Inheritance(strategy = InheritanceType.JOINED)
@@ -24,7 +20,7 @@ public class Pessoa {
     private Long id;
 
     @Column(name = "NOME_PESSOA", nullable = false)
-    @NotBlank(message = "O nome da pessoa não pode estar vazio.")
+    @NotBlank(message = "O campo nome não pode estar vazio.")
     private String nome;
 
     @Column(name = "IMAGEM_PESSOA")

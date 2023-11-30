@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 @Service
@@ -26,12 +27,14 @@ public class TipoContatoService {
         return entity;
     }
 
+    @Transactional
     public TipoContato create(TipoContatoDTO newData) {
         TipoContato entity = convertToEntity(newData);
         TipoContato savedEntity = tipoContatoRepository.save(entity);
         return savedEntity;
     }
 
+    @Transactional
     public TipoContato update(Long id, TipoContatoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
@@ -40,6 +43,7 @@ public class TipoContatoService {
         return savedEntity;
     }
     
+    @Transactional
     public void delete(Long id) {
         TipoContato entity = findEntityById(id);
         tipoContatoRepository.delete(entity);
@@ -50,12 +54,12 @@ public class TipoContatoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - TipoContato não encontrado(a) por ID: " + id));
     }
 
-    private TipoContatoDTO convertToDto(TipoContato entity) {
-        TipoContatoDTO dto = new TipoContatoDTO();
-        dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
-        return dto;
-    }
+    // private TipoContatoDTO convertToDto(TipoContato entity) {
+    //     TipoContatoDTO dto = new TipoContatoDTO();
+    //     dto.setId(entity.getId());
+    //     dto.setNome(entity.getNome());
+    //     return dto;
+    // }
 
     private TipoContato convertToEntity(TipoContatoDTO dto) {
         if (dto == null) {

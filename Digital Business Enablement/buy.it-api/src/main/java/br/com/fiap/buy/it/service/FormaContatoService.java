@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
@@ -34,12 +35,14 @@ public class FormaContatoService {
         return entity;
     }
 
+    @Transactional
     public FormaContato create(FormaContatoDTO newData) {
         FormaContato entity = convertToEntity(newData);
         FormaContato savedEntity = formaContatoRepository.save(entity);
         return savedEntity;
     }
 
+    @Transactional
     public FormaContato update(Long id, FormaContatoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
@@ -48,6 +51,7 @@ public class FormaContatoService {
         return savedEntity;
     }
     
+    @Transactional
     public void delete(Long id) {
         FormaContato entity = findEntityById(id);
         formaContatoRepository.delete(entity);
@@ -58,14 +62,14 @@ public class FormaContatoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - FormaContato não encontrado(a) por ID: " + id));
     }
 
-    private FormaContatoDTO convertToDto(FormaContato entity) {
-        FormaContatoDTO dto = new FormaContatoDTO();
-        dto.setId(entity.getId());
-        dto.setIdTipoContato(entity.getTipoContato() != null ? entity.getTipoContato().getId() : null);
-        dto.setValor(entity.getValor());
-        dto.setIdPessoa(entity.getPessoa() != null ? entity.getPessoa().getId() : null);
-        return dto;
-    }
+    // private FormaContatoDTO convertToDto(FormaContato entity) {
+    //     FormaContatoDTO dto = new FormaContatoDTO();
+    //     dto.setId(entity.getId());
+    //     dto.setIdTipoContato(entity.getTipoContato() != null ? entity.getTipoContato().getId() : null);
+    //     dto.setValor(entity.getValor());
+    //     dto.setIdPessoa(entity.getPessoa() != null ? entity.getPessoa().getId() : null);
+    //     return dto;
+    // }
 
     private FormaContato convertToEntity(FormaContatoDTO dto) {
         if (Objects.isNull(dto)) {

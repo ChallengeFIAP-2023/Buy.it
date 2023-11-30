@@ -11,11 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
+// import java.util.stream.Collectors;
 import java.util.Optional;
 
 @Service
@@ -39,12 +40,14 @@ public class UsuarioService {
         return entity;
     }
 
+    @Transactional
     public Usuario create(UsuarioDTO newData) {
         Usuario entity = convertToEntity(newData);
         Usuario savedEntity = usuarioRepository.save(entity);
         return savedEntity;
     }
 
+    @Transactional
     public Usuario update(Long id, UsuarioDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
@@ -53,6 +56,7 @@ public class UsuarioService {
         return savedEntity;
     }
 
+    @Transactional
     public void delete(Long id) {
         Usuario entity = findEntityById(id);
         if (entity.getTags() != null) {
@@ -68,20 +72,20 @@ public class UsuarioService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Usuario não encontrado(a) por ID: " + id));
     }
 
-    private UsuarioDTO convertToDto(Usuario entity) {
-        UsuarioDTO dto = new UsuarioDTO();
-        dto.setId(entity.getId());
-        dto.setEmail(entity.getEmail());
-        dto.setSenha(entity.getSenha());
-        dto.setIdPessoa(entity.getPessoa() != null ? entity.getPessoa().getId() : null);
-        if (entity.getTags() != null) {
-            Set<Long> idsTags = entity.getTags().stream()
-                    .map(Tag::getId)
-                    .collect(Collectors.toSet());
-            dto.setIdsTags(idsTags);
-        }
-        return dto;
-    }
+    // private UsuarioDTO convertToDto(Usuario entity) {
+    //     UsuarioDTO dto = new UsuarioDTO();
+    //     dto.setId(entity.getId());
+    //     dto.setEmail(entity.getEmail());
+    //     dto.setSenha(entity.getSenha());
+    //     dto.setIdPessoa(entity.getPessoa() != null ? entity.getPessoa().getId() : null);
+    //     if (entity.getTags() != null) {
+    //         Set<Long> idsTags = entity.getTags().stream()
+    //                 .map(Tag::getId)
+    //                 .collect(Collectors.toSet());
+    //         dto.setIdsTags(idsTags);
+    //     }
+    //     return dto;
+    // }
 
     private Usuario convertToEntity(UsuarioDTO dto) {
         if (dto == null) {

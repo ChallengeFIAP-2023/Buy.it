@@ -6,12 +6,8 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 @Entity
 @Table(name = "FORMA_CONTATO")
 public class FormaContato {
@@ -21,8 +17,8 @@ public class FormaContato {
     @Column(name = "ID_FORMA_CONTATO")
     private Long id;
 
-    @NotBlank(message = "O id tipo contato é obrigatório.")
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @NotNull(message = "O campo tipoContato não pode estar vazio.")
     @JoinColumn(
             name = "ID_TIPO_CONTATO",
             referencedColumnName = "ID_TIPO_CONTATO",
@@ -31,12 +27,12 @@ public class FormaContato {
     )
     private TipoContato tipoContato;
 
-    @NotBlank(message = "O valor da forma de contato é obrigatório.")
     @Column(name = "VALOR_FORMA_CONTATO", nullable = false)
+    @NotBlank(message = "O campo valor não pode estar vazio.")
     private String valor;
 
-    @NotBlank(message = "O id de pessoa é obrigatório.")
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @NotNull(message = "O campo pessoa não pode estar vazio.")
     @JoinColumn(
             name = "ID_PESSOA",
             referencedColumnName = "ID_PESSOA",

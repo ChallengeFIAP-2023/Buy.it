@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Objects;
@@ -31,12 +32,14 @@ public class AvaliacaoService {
         return entity;
     }
 
+    @Transactional
     public Avaliacao create(AvaliacaoDTO newData) {
         Avaliacao entity = convertToEntity(newData);
         Avaliacao savedEntity = avaliacaoRepository.save(entity);
         return savedEntity;
     }
 
+    @Transactional
     public Avaliacao update(Long id, AvaliacaoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
@@ -45,6 +48,7 @@ public class AvaliacaoService {
         return savedEntity;
     }
     
+    @Transactional
     public void delete(Long id) {
         Avaliacao entity = findEntityById(id);
         avaliacaoRepository.delete(entity);
@@ -55,17 +59,17 @@ public class AvaliacaoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Avaliacao não encontrado(a) por ID: " + id));
     }
     
-    private AvaliacaoDTO convertToDto(Avaliacao entity) {
-        AvaliacaoDTO dto = new AvaliacaoDTO();
-        dto.setId(entity.getId());
-        dto.setIdCotacao(entity.getCotacao() != null ? entity.getCotacao().getId() : null);
-        dto.setData(entity.getData());
-        dto.setNotaEntrega(entity.getNotaEntrega());
-        dto.setNotaQualidade(entity.getNotaQualidade());
-        dto.setNotaPreco(entity.getNotaPreco());
-        dto.setDescricao(entity.getDescricao());
-        return dto;
-    }
+    // private AvaliacaoDTO convertToDto(Avaliacao entity) {
+    //     AvaliacaoDTO dto = new AvaliacaoDTO();
+    //     dto.setId(entity.getId());
+    //     dto.setIdCotacao(entity.getCotacao() != null ? entity.getCotacao().getId() : null);
+    //     dto.setData(entity.getData());
+    //     dto.setNotaEntrega(entity.getNotaEntrega());
+    //     dto.setNotaQualidade(entity.getNotaQualidade());
+    //     dto.setNotaPreco(entity.getNotaPreco());
+    //     dto.setDescricao(entity.getDescricao());
+    //     return dto;
+    // }
 
     private Avaliacao convertToEntity(AvaliacaoDTO dto) {
         if (Objects.isNull(dto)) {

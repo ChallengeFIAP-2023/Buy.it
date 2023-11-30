@@ -11,11 +11,12 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
+// import java.util.stream.Collectors;
 
 @Service
 public class DepartamentoService {
@@ -35,12 +36,14 @@ public class DepartamentoService {
         return entity;
     }
 
+    @Transactional
     public Departamento create(DepartamentoDTO newData) {
         Departamento entity = convertToEntity(newData);
         Departamento savedEntity = departamentoRepository.save(entity);
         return savedEntity;
     }
 
+    @Transactional
     public Departamento update(Long id, DepartamentoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
@@ -49,6 +52,7 @@ public class DepartamentoService {
         return savedEntity;
     }
 
+    @Transactional
     public void delete(Long id) {
         Departamento entity = findEntityById(id);
         if (entity.getTags() != null) {
@@ -64,19 +68,19 @@ public class DepartamentoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Departamento não encontrado(a) por ID: " + id));
     }
 
-    private DepartamentoDTO convertToDto(Departamento entity) {
-        DepartamentoDTO dto = new DepartamentoDTO();
-        dto.setId(entity.getId());
-        dto.setNome(entity.getNome());
-        dto.setIcone(entity.getIcone());
-        if (entity.getTags() != null) {
-            Set<Long> idsTags = entity.getTags().stream()
-                    .map(Tag::getId)
-                    .collect(Collectors.toSet());
-            dto.setIdsTags(idsTags);
-        }
-        return dto;
-    }
+    // private DepartamentoDTO convertToDto(Departamento entity) {
+    //     DepartamentoDTO dto = new DepartamentoDTO();
+    //     dto.setId(entity.getId());
+    //     dto.setNome(entity.getNome());
+    //     dto.setIcone(entity.getIcone());
+    //     if (entity.getTags() != null) {
+    //         Set<Long> idsTags = entity.getTags().stream()
+    //                 .map(Tag::getId)
+    //                 .collect(Collectors.toSet());
+    //         dto.setIdsTags(idsTags);
+    //     }
+    //     return dto;
+    // }
 
     private Departamento convertToEntity(DepartamentoDTO dto) {
         if (dto == null) {

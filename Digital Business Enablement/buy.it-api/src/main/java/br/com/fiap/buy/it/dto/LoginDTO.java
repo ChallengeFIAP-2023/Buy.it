@@ -1,13 +1,18 @@
 package br.com.fiap.buy.it.dto;
 
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 public class LoginDTO {
+
+    @NotBlank(message = "O campo idCotacao não pode estar vazio.")
+    @Email(message = "Endereço de e-mail inválido.")
     private String email;
+
+    @NotBlank(message = "O campo idCotacao não pode estar vazio.")
     private String senha;
 }

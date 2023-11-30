@@ -1,6 +1,7 @@
 package br.com.fiap.buy.it.controller;
 
 import br.com.fiap.buy.it.dto.PessoaJuridicaDTO;
+import br.com.fiap.buy.it.model.PessoaJuridica;
 import br.com.fiap.buy.it.service.PessoaJuridicaService;
 
 import org.springframework.beans.factory.annotation.Autowired;

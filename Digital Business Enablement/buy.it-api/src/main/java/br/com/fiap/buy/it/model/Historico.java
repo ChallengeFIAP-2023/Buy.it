@@ -9,12 +9,8 @@ import java.math.BigDecimal;
 import java.util.Date;
 
 @Data
-@Getter
-@Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 @Entity
 @Table(name = "HISTORICO")
 public class Historico {
@@ -25,6 +21,7 @@ public class Historico {
     private Long id;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @NotNull(message = "O campo cotacao não pode estar vazio.")
     @JoinColumn(
             name = "ID_COTACAO",
             referencedColumnName = "ID_COTACAO",
@@ -33,8 +30,8 @@ public class Historico {
     )
     private Cotacao cotacao;
 
-    @NotBlank(message = "O id do fornecedor não pode estar vazio.")
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @NotNull(message = "O campo fornecedor não pode estar vazio.")
     @JoinColumn(
             name = "ID_FORNECEDOR",
             referencedColumnName = "ID_USUARIO",
@@ -43,8 +40,8 @@ public class Historico {
     )
     private Usuario fornecedor;
 
-    @NotBlank(message = "O id do status não pode estar vazio.")
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @NotNull(message = "O campo status não pode estar vazio.")
     @JoinColumn(
             name = "ID_STATUS",
             referencedColumnName = "ID_STATUS",
@@ -54,21 +51,26 @@ public class Historico {
     private Status status;
 
     @Column(name = "RECUSADO_POR_PRODUTO", nullable = false)
+    @NotNull(message = "O campo recusadoPorProduto não pode estar vazio.")
     private Boolean recusadoPorProduto;
 
     @Column(name = "RECUSADO_POR_QUANTIDADE", nullable = false)
+    @NotNull(message = "O campo recusadoPorQuantidade não pode estar vazio.")
     private Boolean recusadoPorQuantidade;
 
     @Column(name = "RECUSADO_POR_PRECO", nullable = false)
+    @NotNull(message = "O campo recusadoPorPreco não pode estar vazio.")
     private Boolean recusadoPorPreco;
 
     @Column(name = "RECUSADO_POR_PRAZO", nullable = false)
+    @NotNull(message = "O campo recusadoPorPrazo não pode estar vazio.")
     private Boolean recusadoPorPrazo;
 
     @Column(name = "DESCRICAO_HISTORICO", length = 400)
     private String descricao;
 
     @Column(name = "DATA_HISTORICO", nullable = false)
+    @NotNull(message = "O campo data não pode estar vazio.")
     @PastOrPresent
     private Date data;
 

@@ -5,7 +5,6 @@ import jakarta.validation.constraints.*;
 
 import lombok.*;
 
-import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
@@ -14,8 +13,6 @@ import com.fasterxml.jackson.annotation.JsonBackReference;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@EqualsAndHashCode(onlyExplicitlyIncluded = true)
-@ToString
 @Entity
 @Table(name = "TAG", uniqueConstraints = {
         @UniqueConstraint(name = "UK_NOME_TAG", columnNames = "NOME_TAG")
@@ -25,12 +22,10 @@ public class Tag {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_TAG")
     @SequenceGenerator(name = "SQ_TAG", sequenceName = "SQ_TAG", allocationSize = 1)
     @Column(name = "ID_TAG")
-    @Getter @Setter
     private Long id;
 
     @Column(name = "NOME_TAG", nullable = false)
-    @NotBlank(message = "O nome da tag não pode estar vazio.")
-    @Getter @Setter
+    @NotBlank(message = "O campo nome não pode estar vazio.")
     private String nome;
 
     @JsonBackReference
@@ -108,10 +103,6 @@ public class Tag {
         return this;
     }
 
-    public Set<Departamento> getDepartamentos() {
-        return Collections.unmodifiableSet(departamentos);
-    }
-
     public Tag addUsuario(Usuario usuario) {
         this.usuarios.add(usuario);
         usuario.addTag(this);
@@ -124,10 +115,6 @@ public class Tag {
         return this;
     }
 
-    public Set<Usuario> getUsuarios() {
-        return Collections.unmodifiableSet(usuarios);
-    }
-
     public Tag addProduto(Produto produto) {
         this.produtos.add(produto);
         produto.addTag(this);
@@ -138,9 +125,5 @@ public class Tag {
         this.produtos.remove(produto);
         if (produto.getTags().equals(this)) produto.removeTag(this);
         return this;
-    }
-
-    public Set<Produto> getProdutos() {
-        return Collections.unmodifiableSet(produtos);
     }
 }
