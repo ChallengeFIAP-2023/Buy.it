@@ -19,30 +19,29 @@ public class PessoaJuridicaService {
     @Autowired
     private PessoaJuridicaRepository pessoaJuridicaRepository;
 
-    public Page<PessoaJuridicaDTO> listAll(Pageable pageRequest) {
-        return pessoaJuridicaRepository.findAll(pageRequest).map(this::convertToDto);
+    public Page<PessoaJuridica> listAll(Pageable pageRequest) {
+        return pessoaJuridicaRepository.findAll(pageRequest);
     }
 
-    public PessoaJuridicaDTO findById(Long id) {
+    public PessoaJuridica findById(Long id) {
         PessoaJuridica entity = findEntityById(id);
-        return convertToDto(entity);
+        return entity;
     }
 
-    public PessoaJuridicaDTO create(PessoaJuridicaDTO newData) {
+    public PessoaJuridica create(PessoaJuridicaDTO newData) {
         PessoaJuridica entity = convertToEntity(newData);
         PessoaJuridica savedEntity = pessoaJuridicaRepository.save(entity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
-    public PessoaJuridicaDTO update(Long id, PessoaJuridicaDTO updatedData) {
+    public PessoaJuridica update(Long id, PessoaJuridicaDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         PessoaJuridica updatedEntity = convertToEntity(updatedData);    
         PessoaJuridica savedEntity = pessoaJuridicaRepository.save(updatedEntity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
     
-
     public void delete(Long id) {
         PessoaJuridica entity = findEntityById(id);
         pessoaJuridicaRepository.delete(entity);

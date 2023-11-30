@@ -9,6 +9,9 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -32,6 +35,7 @@ public class Usuario {
     @Getter @Setter
     private String email;
 
+    @JsonIgnore
     @Column(name = "SENHA_USUARIO", nullable = false)
     @NotBlank(message = "A senha não pode estar vazia.")
     @Getter @Setter
@@ -42,6 +46,7 @@ public class Usuario {
     @Getter @Setter
     private Pessoa pessoa;
 
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "USUARIO_TAG",

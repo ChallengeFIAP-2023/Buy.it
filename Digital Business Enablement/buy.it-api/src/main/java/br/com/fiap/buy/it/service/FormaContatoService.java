@@ -25,30 +25,29 @@ public class FormaContatoService {
     @Autowired
     private PessoaService pessoaService;
 
-    public Page<FormaContatoDTO> listAll(Pageable pageRequest) {
-        return formaContatoRepository.findAll(pageRequest).map(this::convertToDto);
+    public Page<FormaContato> listAll(Pageable pageRequest) {
+        return formaContatoRepository.findAll(pageRequest);
     }
 
-    public FormaContatoDTO findById(Long id) {
+    public FormaContato findById(Long id) {
         FormaContato entity = findEntityById(id);
-        return convertToDto(entity);
+        return entity;
     }
 
-    public FormaContatoDTO create(FormaContatoDTO newData) {
+    public FormaContato create(FormaContatoDTO newData) {
         FormaContato entity = convertToEntity(newData);
         FormaContato savedEntity = formaContatoRepository.save(entity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
-    public FormaContatoDTO update(Long id, FormaContatoDTO updatedData) {
+    public FormaContato update(Long id, FormaContatoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         FormaContato updatedEntity = convertToEntity(updatedData);    
         FormaContato savedEntity = formaContatoRepository.save(updatedEntity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
     
-
     public void delete(Long id) {
         FormaContato entity = findEntityById(id);
         formaContatoRepository.delete(entity);

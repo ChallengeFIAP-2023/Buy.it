@@ -17,30 +17,29 @@ public class TipoContatoService {
     @Autowired
     private TipoContatoRepository tipoContatoRepository;
 
-    public Page<TipoContatoDTO> listAll(Pageable pageRequest) {
-        return tipoContatoRepository.findAll(pageRequest).map(this::convertToDto);
+    public Page<TipoContato> listAll(Pageable pageRequest) {
+        return tipoContatoRepository.findAll(pageRequest);
     }
 
-    public TipoContatoDTO findById(Long id) {
+    public TipoContato findById(Long id) {
         TipoContato entity = findEntityById(id);
-        return convertToDto(entity);
+        return entity;
     }
 
-    public TipoContatoDTO create(TipoContatoDTO newData) {
+    public TipoContato create(TipoContatoDTO newData) {
         TipoContato entity = convertToEntity(newData);
         TipoContato savedEntity = tipoContatoRepository.save(entity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
-    public TipoContatoDTO update(Long id, TipoContatoDTO updatedData) {
+    public TipoContato update(Long id, TipoContatoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         TipoContato updatedEntity = convertToEntity(updatedData);    
         TipoContato savedEntity = tipoContatoRepository.save(updatedEntity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
     
-
     public void delete(Long id) {
         TipoContato entity = findEntityById(id);
         tipoContatoRepository.delete(entity);

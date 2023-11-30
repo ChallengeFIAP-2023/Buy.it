@@ -17,30 +17,29 @@ public class StatusService {
     @Autowired
     private StatusRepository statusRepository;
 
-    public Page<StatusDTO> listAll(Pageable pageRequest) {
-        return statusRepository.findAll(pageRequest).map(this::convertToDto);
+    public Page<Status> listAll(Pageable pageRequest) {
+        return statusRepository.findAll(pageRequest);
     }
 
-    public StatusDTO findById(Long id) {
+    public Status findById(Long id) {
         Status entity = findEntityById(id);
-        return convertToDto(entity);
+        return entity;
     }
 
-    public StatusDTO create(StatusDTO newData) {
+    public Status create(StatusDTO newData) {
         Status entity = convertToEntity(newData);
         Status savedEntity = statusRepository.save(entity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
-    public StatusDTO update(Long id, StatusDTO updatedData) {
+    public Status update(Long id, StatusDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Status updatedEntity = convertToEntity(updatedData);    
         Status savedEntity = statusRepository.save(updatedEntity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
     
-
     public void delete(Long id) {
         Status entity = findEntityById(id);
         statusRepository.delete(entity);

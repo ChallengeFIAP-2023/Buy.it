@@ -1,6 +1,7 @@
 package br.com.fiap.buy.it.controller;
 
 import br.com.fiap.buy.it.dto.ProdutoDTO;
+import br.com.fiap.buy.it.model.Produto;
 import br.com.fiap.buy.it.service.ProdutoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,25 +26,25 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping
-    public ResponseEntity<Page<ProdutoDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<Produto>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(produtoService.listAll(pageable));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ProdutoDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<Produto> findById(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
         return ResponseEntity.ok(produtoService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<ProdutoDTO> create(@RequestBody @Valid ProdutoDTO newData) {
+    public ResponseEntity<Produto> create(@RequestBody @Valid ProdutoDTO newData) {
         log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
         return ResponseEntity.status(HttpStatus.CREATED).body(produtoService.create(newData));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<ProdutoDTO> update(@PathVariable Long id, @RequestBody @Valid ProdutoDTO updatedData) {
+    public ResponseEntity<Produto> update(@PathVariable Long id, @RequestBody @Valid ProdutoDTO updatedData) {
         log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
         return ResponseEntity.ok(produtoService.update(id, updatedData));
     }

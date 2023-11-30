@@ -19,30 +19,29 @@ public class PessoaService {
     @Autowired
     private PessoaRepository pessoaRepository;
 
-    public Page<PessoaDTO> listAll(Pageable pageRequest) {
-        return pessoaRepository.findAll(pageRequest).map(this::convertToDto);
+    public Page<Pessoa> listAll(Pageable pageRequest) {
+        return pessoaRepository.findAll(pageRequest);
     }
 
-    public PessoaDTO findById(Long id) {
+    public Pessoa findById(Long id) {
         Pessoa entity = findEntityById(id);
-        return convertToDto(entity);
+        return entity;
     }
 
-    public PessoaDTO create(PessoaDTO newData) {
+    public Pessoa create(PessoaDTO newData) {
         Pessoa entity = convertToEntity(newData);
         Pessoa savedEntity = pessoaRepository.save(entity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
-    public PessoaDTO update(Long id, PessoaDTO updatedData) {
+    public Pessoa update(Long id, PessoaDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Pessoa updatedEntity = convertToEntity(updatedData);    
         Pessoa savedEntity = pessoaRepository.save(updatedEntity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
     
-
     public void delete(Long id) {
         Pessoa entity = findEntityById(id);
         pessoaRepository.delete(entity);

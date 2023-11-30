@@ -9,6 +9,8 @@ import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -31,6 +33,7 @@ public class Tag {
     @Getter @Setter
     private String nome;
 
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "TAG_DEPARTAMENTO",
@@ -51,6 +54,7 @@ public class Tag {
     )
     private Set<Departamento> departamentos = new LinkedHashSet<>();
     
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "USUARIO_TAG",
@@ -70,7 +74,8 @@ public class Tag {
             }
     )
     private Set<Usuario> usuarios = new LinkedHashSet<>();
-
+        
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "PRODUTO_TAG",

@@ -28,27 +28,27 @@ public class CotacaoService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Page<CotacaoDTO> listAll(Pageable pageRequest) {
-        return cotacaoRepository.findAll(pageRequest).map(this::convertToDto);
+    public Page<Cotacao> listAll(Pageable pageRequest) {
+        return cotacaoRepository.findAll(pageRequest);
     }
 
-    public CotacaoDTO findById(Long id) {
+    public Cotacao findById(Long id) {
         Cotacao entity = findEntityById(id);
-        return convertToDto(entity);
+        return entity;
     }
 
-    public CotacaoDTO create(CotacaoDTO newData) {
+    public Cotacao create(CotacaoDTO newData) {
         Cotacao entity = convertToEntity(newData);
         Cotacao savedEntity = cotacaoRepository.save(entity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
-    public CotacaoDTO update(Long id, CotacaoDTO updatedData) {
+    public Cotacao update(Long id, CotacaoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Cotacao updatedEntity = convertToEntity(updatedData);    
         Cotacao savedEntity = cotacaoRepository.save(updatedEntity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
     public void delete(Long id) {

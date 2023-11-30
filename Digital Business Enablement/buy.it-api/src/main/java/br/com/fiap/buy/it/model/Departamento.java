@@ -8,6 +8,9 @@ import lombok.*;
 import java.util.Collections;
 import java.util.LinkedHashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.util.Optional;
 
 @Data
@@ -36,6 +39,7 @@ public class Departamento {
     @Getter @Setter
     private String icone;
 
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
     @JoinTable(name = "TAG_DEPARTAMENTO", joinColumns = {
             @JoinColumn(name = "ID_DEPARTAMENTO", referencedColumnName = "ID_DEPARTAMENTO", foreignKey = @ForeignKey(name = "FK_DEPARTAMENTO_TAG"))

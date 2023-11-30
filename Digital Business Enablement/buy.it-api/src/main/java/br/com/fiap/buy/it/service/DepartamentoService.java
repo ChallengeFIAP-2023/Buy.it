@@ -26,27 +26,27 @@ public class DepartamentoService {
     @Autowired
     private TagService tagService;
 
-    public Page<DepartamentoDTO> listAll(Pageable pageRequest) {
-        return departamentoRepository.findAll(pageRequest).map(this::convertToDto);
+    public Page<Departamento> listAll(Pageable pageRequest) {
+        return departamentoRepository.findAll(pageRequest);
     }
 
-    public DepartamentoDTO findById(Long id) {
+    public Departamento findById(Long id) {
         Departamento entity = findEntityById(id);
-        return convertToDto(entity);
+        return entity;
     }
 
-    public DepartamentoDTO create(DepartamentoDTO newData) {
+    public Departamento create(DepartamentoDTO newData) {
         Departamento entity = convertToEntity(newData);
         Departamento savedEntity = departamentoRepository.save(entity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
-    public DepartamentoDTO update(Long id, DepartamentoDTO updatedData) {
+    public Departamento update(Long id, DepartamentoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Departamento updatedEntity = convertToEntity(updatedData);    
         Departamento savedEntity = departamentoRepository.save(updatedEntity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
     public void delete(Long id) {

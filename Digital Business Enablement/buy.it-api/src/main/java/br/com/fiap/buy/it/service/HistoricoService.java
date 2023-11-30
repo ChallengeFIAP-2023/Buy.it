@@ -28,27 +28,27 @@ public class HistoricoService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Page<HistoricoDTO> listAll(Pageable pageRequest) {
-        return historicoRepository.findAll(pageRequest).map(this::convertToDto);
+    public Page<Historico> listAll(Pageable pageRequest) {
+        return historicoRepository.findAll(pageRequest);
     }
 
-    public HistoricoDTO findById(Long id) {
+    public Historico findById(Long id) {
         Historico entity = findEntityById(id);
-        return convertToDto(entity);
+        return entity;
     }
 
-    public HistoricoDTO create(HistoricoDTO newData) {
+    public Historico create(HistoricoDTO newData) {
         Historico entity = convertToEntity(newData);
         Historico savedEntity = historicoRepository.save(entity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
-    public HistoricoDTO update(Long id, HistoricoDTO updatedData) {
+    public Historico update(Long id, HistoricoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Historico updatedEntity = convertToEntity(updatedData);    
         Historico savedEntity = historicoRepository.save(updatedEntity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
     
     public void delete(Long id) {

@@ -1,6 +1,7 @@
 package br.com.fiap.buy.it.controller;
 
 import br.com.fiap.buy.it.dto.HistoricoDTO;
+import br.com.fiap.buy.it.model.Historico;
 import br.com.fiap.buy.it.service.HistoricoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,25 +26,25 @@ public class HistoricoController {
     private HistoricoService historicoService;
 
     @GetMapping
-    public ResponseEntity<Page<HistoricoDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<Historico>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(historicoService.listAll(pageable));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<HistoricoDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<Historico> findById(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
         return ResponseEntity.ok(historicoService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<HistoricoDTO> create(@RequestBody @Valid HistoricoDTO newData) {
+    public ResponseEntity<Historico> create(@RequestBody @Valid HistoricoDTO newData) {
         log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
         return ResponseEntity.status(HttpStatus.CREATED).body(historicoService.create(newData));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<HistoricoDTO> update(@PathVariable Long id, @RequestBody @Valid HistoricoDTO updatedData) {
+    public ResponseEntity<Historico> update(@PathVariable Long id, @RequestBody @Valid HistoricoDTO updatedData) {
         log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
         return ResponseEntity.ok(historicoService.update(id, updatedData));
     }

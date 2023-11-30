@@ -1,6 +1,7 @@
 package br.com.fiap.buy.it.controller;
 
 import br.com.fiap.buy.it.dto.DepartamentoDTO;
+import br.com.fiap.buy.it.model.Departamento;
 import br.com.fiap.buy.it.service.DepartamentoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,25 +26,25 @@ public class DepartamentoController {
     private DepartamentoService departamentoService;
 
     @GetMapping
-    public ResponseEntity<Page<DepartamentoDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<Departamento>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(departamentoService.listAll(pageable));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<DepartamentoDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<Departamento> findById(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
         return ResponseEntity.ok(departamentoService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<DepartamentoDTO> create(@RequestBody @Valid DepartamentoDTO newData) {
+    public ResponseEntity<Departamento> create(@RequestBody @Valid DepartamentoDTO newData) {
         log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
         return ResponseEntity.status(HttpStatus.CREATED).body(departamentoService.create(newData));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<DepartamentoDTO> update(@PathVariable Long id, @RequestBody @Valid DepartamentoDTO updatedData) {
+    public ResponseEntity<Departamento> update(@PathVariable Long id, @RequestBody @Valid DepartamentoDTO updatedData) {
         log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
         return ResponseEntity.ok(departamentoService.update(id, updatedData));
     }

@@ -30,27 +30,27 @@ public class UsuarioService {
     @Autowired
     private TagService tagService;
 
-    public Page<UsuarioDTO> listAll(Pageable pageRequest) {
-        return usuarioRepository.findAll(pageRequest).map(this::convertToDto);
+    public Page<Usuario> listAll(Pageable pageRequest) {
+        return usuarioRepository.findAll(pageRequest);
     }
 
-    public UsuarioDTO findById(Long id) {
+    public Usuario findById(Long id) {
         Usuario entity = findEntityById(id);
-        return convertToDto(entity);
+        return entity;
     }
 
-    public UsuarioDTO create(UsuarioDTO newData) {
+    public Usuario create(UsuarioDTO newData) {
         Usuario entity = convertToEntity(newData);
         Usuario savedEntity = usuarioRepository.save(entity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
-    public UsuarioDTO update(Long id, UsuarioDTO updatedData) {
+    public Usuario update(Long id, UsuarioDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Usuario updatedEntity = convertToEntity(updatedData);    
         Usuario savedEntity = usuarioRepository.save(updatedEntity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
     public void delete(Long id) {

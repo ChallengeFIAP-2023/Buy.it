@@ -22,27 +22,27 @@ public class AvaliacaoService {
     @Autowired
     private CotacaoService cotacaoService;
 
-    public Page<AvaliacaoDTO> listAll(Pageable pageRequest) {
-        return avaliacaoRepository.findAll(pageRequest).map(this::convertToDto);
+    public Page<Avaliacao> listAll(Pageable pageRequest) {
+        return avaliacaoRepository.findAll(pageRequest);
     }
 
-    public AvaliacaoDTO findById(Long id) {
+    public Avaliacao findById(Long id) {
         Avaliacao entity = findEntityById(id);
-        return convertToDto(entity);
+        return entity;
     }
 
-    public AvaliacaoDTO create(AvaliacaoDTO newData) {
+    public Avaliacao create(AvaliacaoDTO newData) {
         Avaliacao entity = convertToEntity(newData);
         Avaliacao savedEntity = avaliacaoRepository.save(entity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
-    public AvaliacaoDTO update(Long id, AvaliacaoDTO updatedData) {
+    public Avaliacao update(Long id, AvaliacaoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Avaliacao updatedEntity = convertToEntity(updatedData);    
         Avaliacao savedEntity = avaliacaoRepository.save(updatedEntity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
     
     public void delete(Long id) {

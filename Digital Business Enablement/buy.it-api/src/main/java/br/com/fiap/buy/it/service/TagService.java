@@ -37,27 +37,27 @@ public class TagService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public Page<TagDTO> listAll(Pageable pageRequest) {
-        return tagRepository.findAll(pageRequest).map(this::convertToDto);
+    public Page<Tag> listAll(Pageable pageRequest) {
+        return tagRepository.findAll(pageRequest);
     }
 
-    public TagDTO findById(Long id) {
+    public Tag findById(Long id) {
         Tag entity = findEntityById(id);
-        return convertToDto(entity);
+        return entity;
     }
 
-    public TagDTO create(TagDTO newData) {
+    public Tag create(TagDTO newData) {
         Tag entity = convertToEntity(newData);
         Tag savedEntity = tagRepository.save(entity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
-    public TagDTO update(Long id, TagDTO updatedData) {
+    public Tag update(Long id, TagDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Tag updatedEntity = convertToEntity(updatedData);    
         Tag savedEntity = tagRepository.save(updatedEntity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
     
     public void delete(Long id) {

@@ -1,6 +1,7 @@
 package br.com.fiap.buy.it.controller;
 
 import br.com.fiap.buy.it.dto.FormaContatoDTO;
+import br.com.fiap.buy.it.model.FormaContato;
 import br.com.fiap.buy.it.service.FormaContatoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,25 +26,25 @@ public class FormaContatoController {
     private FormaContatoService formaContatoService;
 
     @GetMapping
-    public ResponseEntity<Page<FormaContatoDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<FormaContato>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(formaContatoService.listAll(pageable));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<FormaContatoDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<FormaContato> findById(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
         return ResponseEntity.ok(formaContatoService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<FormaContatoDTO> create(@RequestBody @Valid FormaContatoDTO newData) {
+    public ResponseEntity<FormaContato> create(@RequestBody @Valid FormaContatoDTO newData) {
         log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
         return ResponseEntity.status(HttpStatus.CREATED).body(formaContatoService.create(newData));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<FormaContatoDTO> update(@PathVariable Long id, @RequestBody @Valid FormaContatoDTO updatedData) {
+    public ResponseEntity<FormaContato> update(@PathVariable Long id, @RequestBody @Valid FormaContatoDTO updatedData) {
         log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
         return ResponseEntity.ok(formaContatoService.update(id, updatedData));
     }

@@ -25,25 +25,25 @@ public class PessoaJuridicaController {
     private PessoaJuridicaService pessoaJuridicaService;
 
     @GetMapping
-    public ResponseEntity<Page<PessoaJuridicaDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<PessoaJuridica>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(pessoaJuridicaService.listAll(pageable));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<PessoaJuridicaDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<PessoaJuridica> findById(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
         return ResponseEntity.ok(pessoaJuridicaService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<PessoaJuridicaDTO> create(@RequestBody @Valid PessoaJuridicaDTO newData) {
+    public ResponseEntity<PessoaJuridica> create(@RequestBody @Valid PessoaJuridicaDTO newData) {
         log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
         return ResponseEntity.status(HttpStatus.CREATED).body(pessoaJuridicaService.create(newData));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<PessoaJuridicaDTO> update(@PathVariable Long id, @RequestBody @Valid PessoaJuridicaDTO updatedData) {
+    public ResponseEntity<PessoaJuridica> update(@PathVariable Long id, @RequestBody @Valid PessoaJuridicaDTO updatedData) {
         log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
         return ResponseEntity.ok(pessoaJuridicaService.update(id, updatedData));
     }

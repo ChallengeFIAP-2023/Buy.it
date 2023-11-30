@@ -29,30 +29,29 @@ public class ProdutoService {
     @Autowired
     private TagService tagService;
 
-    public Page<ProdutoDTO> listAll(Pageable pageRequest) {
-        return produtoRepository.findAll(pageRequest).map(this::convertToDto);
+    public Page<Produto> listAll(Pageable pageRequest) {
+        return produtoRepository.findAll(pageRequest);
     }
 
-    public ProdutoDTO findById(Long id) {
+    public Produto findById(Long id) {
         Produto entity = findEntityById(id);
-        return convertToDto(entity);
+        return entity;
     }
 
-    public ProdutoDTO create(ProdutoDTO newData) {
+    public Produto create(ProdutoDTO newData) {
         Produto entity = convertToEntity(newData);
         Produto savedEntity = produtoRepository.save(entity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
 
-    public ProdutoDTO update(Long id, ProdutoDTO updatedData) {
+    public Produto update(Long id, ProdutoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Produto updatedEntity = convertToEntity(updatedData);    
         Produto savedEntity = produtoRepository.save(updatedEntity);
-        return convertToDto(savedEntity);
+        return savedEntity;
     }
     
-
     public void delete(Long id) {
         Produto entity = findEntityById(id);
         if (entity.getTags() != null) {
