@@ -122,8 +122,6 @@ public class TagService {
         }
         entity.setNome(dto.getNome());
         Set<Departamento> newDepartamentos = new LinkedHashSet<>();
-        Set<Produto> newProdutos = new LinkedHashSet<>();
-        Set<Usuario> newUsuarios = new LinkedHashSet<>();
         if (dto.getIdsDepartamentos() != null) {
             dto.getIdsDepartamentos().forEach(id -> {
                 Departamento departamento = departamentoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Departamento não encontrado com ID: " + id));
@@ -131,6 +129,7 @@ public class TagService {
             });
         }
         entity.setDepartamentos(newDepartamentos);
+        Set<Produto> newProdutos = new LinkedHashSet<>();
         if (dto.getIdsProdutos() != null) {
             dto.getIdsProdutos().forEach(id -> {
                 Produto produto = produtoRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Produto não encontrado com ID: " + id));
@@ -138,6 +137,7 @@ public class TagService {
             });
         }
         entity.setProdutos(newProdutos);
+        Set<Usuario> newUsuarios = new LinkedHashSet<>();
         if (dto.getIdsUsuarios() != null) {
             dto.getIdsUsuarios().forEach(id -> {
                 Usuario usuario = usuarioRepository.findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Usuario não encontrado com ID: " + id));
