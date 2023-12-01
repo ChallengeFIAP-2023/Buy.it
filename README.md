@@ -176,8 +176,14 @@ Siga as instruções abaixo para gerar o arquivo JAR a partir do código-fonte e
 
 1. Clone o repositório ou baixe o código-fonte do projeto para o seu computador.
 2. Navegue até a raiz do projeto, onde o arquivo `pom.xml` está localizado.
-3. Abra o terminal ou prompt de comando nesta localização.
-4. Execute o seguinte comando para compilar o projeto e gerar o arquivo JAR:
+3. Nesta pasta você encontrará o arquivo applicattion.properties.
+4. Caso queira testar com o banco H2, deixe a linha spring.profiles.active=${PROFILE:dev}, caso deseje testar com o banco Oracle, deixa a linha spring.profiles.active=${PROFILE:prod}
+5. Caso escolha o Oracle, adicionar as variáveis de ambiente em sua máquina, sendo que os campos e valores são:
+   5.1. DB_URL: url do banco oracle
+   5.2. DB_USER: usuario do banco oracle
+   5.3. DB_PASS: senha do banco oracle
+7. Abra o terminal ou prompt de comando nesta mesma localização (onde contém o pom.xml).
+8. Execute o seguinte comando para compilar o projeto e gerar o arquivo JAR:
    
 ```bash
 $ mvn clean package
@@ -185,19 +191,20 @@ $ mvn clean package
 
 Este comando irá limpar o projeto (remove arquivos compilados anteriores), compila o código-fonte e empacota o resultado em um arquivo JAR dentro do diretório `target`.
 
-5. Após a conclusão do processo, você encontrará o arquivo JAR gerado no diretório `target`.
+9. Após a conclusão do processo, você encontrará o arquivo JAR gerado no diretório `target`.
 
 Executando o Arquivo JAR
-6. Navegue até o diretório `target` que contém o novo arquivo JAR.
-7. Execute o arquivo JAR usando o comando:
+10. Navegue até o diretório `target` que contém o novo arquivo JAR.
+11. Execute o arquivo JAR usando o comando:
 
 ```bash
-$ java -jar nome-do-seu-arquivo.jar
+$ java -jar nome-arquivo-jar.jar
 ```
 
 Solução de Problemas:
 - Se ocorrerem erros durante a compilação ou geração do JAR, verifique se todas as dependências estão corretas e disponíveis.
 - Caso receba mensagens de erro ao tentar executar o arquivo JAR, assegure-se de que está utilizando a versão correta do Java e que todas as variáveis de ambiente estão devidamente configuradas.
+
 
 #### Opção 02:
 Navegue até o projeto maven:
