@@ -198,7 +198,7 @@ Executando o Arquivo JAR
 11. Execute o arquivo JAR usando o comando:
 
 ```bash
-$ java -jar nome-arquivo-jar.jar
+$ java -jar buy.it-0.0.1-SNAPSHOT.jar.jar
 ```
 
 Solução de Problemas:
