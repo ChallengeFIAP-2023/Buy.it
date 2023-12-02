@@ -574,7 +574,7 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_tag('Tag Exemplo');
+    insert_tag('Tag Exemplo Procedure');
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
