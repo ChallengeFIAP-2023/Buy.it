@@ -330,7 +330,7 @@ $ yarn start
   <summary><h4><u>Diagrama de Classes (UML)</u></h4></summary>
   <br />
   <p align="center">
-    <img src="Documentação/UML.png" alt="MER">
+    <img src="Digital Business Enablement/UML.png" alt="UML">
   </p>
   <br />
   </details>
