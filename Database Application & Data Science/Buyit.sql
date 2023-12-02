@@ -1,41 +1,53 @@
+-- SELECTS CASO NECESSÁRIO:
+SELECT * FROM usuario;
+SELECT * FROM contato;
+SELECT * FROM tag;
+SELECT * FROM usuario_tag;
+SELECT * FROM departamento;
+SELECT * FROM tag_departamento;
+SELECT * FROM produto;
+SELECT * FROM produto_tag;
+SELECT * FROM status;
+SELECT * FROM cotacao;
+SELECT * FROM avaliacao;
+SELECT * FROM historico;
+
+-- DROP TABLES CASO NECESSÁRIO:
+DROP TABLE usuario CASCADE CONSTRAINTS;
+DROP TABLE contato CASCADE CONSTRAINTS;
+DROP TABLE tag CASCADE CONSTRAINTS;
+DROP TABLE usuario_tag CASCADE CONSTRAINTS;
+DROP TABLE departamento CASCADE CONSTRAINTS;
+DROP TABLE tag_departamento CASCADE CONSTRAINTS;
+DROP TABLE produto CASCADE CONSTRAINTS;
+DROP TABLE produto_tag CASCADE CONSTRAINTS;
+DROP TABLE status CASCADE CONSTRAINTS;
+DROP TABLE cotacao CASCADE CONSTRAINTS;
+DROP TABLE avaliacao CASCADE CONSTRAINTS;
+DROP TABLE historico CASCADE CONSTRAINTS;
+
 -- SPRINT 01
-
 -- 01. CRIAÇÃO DAS TABELAS:
-CREATE TABLE pessoa (
-    id_pessoa NUMBER(9) CONSTRAINT pk_id_pessoa PRIMARY KEY,
-    nome_pessoa VARCHAR2(255) CONSTRAINT nn_nm_pessoa NOT NULL,
-    imagem_pessoa VARCHAR2(255)
-);
-
-CREATE TABLE pessoa_juridica (
-    id_pj NUMBER(9) CONSTRAINT pk_id_pj PRIMARY KEY,
-    cnpj_pj CHAR(18) CONSTRAINT uk_cnpj_pj UNIQUE CONSTRAINT nn_cnpj_pj NOT NULL,
-    is_fornecedor NUMBER(1) CONSTRAINT nn_is_fornecedor_pj NOT NULL,
-    id_pessoa NUMBER(9) CONSTRAINT fk_pessoa_pj REFERENCES pessoa(id_pessoa) CONSTRAINT uk_pessoa_pj UNIQUE CONSTRAINT nn_pessoa_pj NOT NULL
-);
-
 CREATE TABLE usuario (
     id_usuario NUMBER(9) CONSTRAINT pk_id_usuario PRIMARY KEY,
+    nome_usuario VARCHAR2(255) CONSTRAINT nn_nome_usuario NOT NULL,
     email_usuario VARCHAR2(255) CONSTRAINT uk_email_usuario UNIQUE CONSTRAINT nn_email_usuario NOT NULL,
     senha_usuario VARCHAR2(255) CONSTRAINT nn_senha_usuario NOT NULL,
-    id_pessoa NUMBER(9) CONSTRAINT fk_pessoa_usuario REFERENCES pessoa(id_pessoa) CONSTRAINT uk_pessoa_usuario UNIQUE CONSTRAINT nn_pessoa_usuario NOT NULL
+    cnpj_usuario CHAR(14) CONSTRAINT uk_cnpj_usuario UNIQUE CONSTRAINT nn_cnpj_usuario NOT NULL,
+    is_fornecedor NUMBER(1) CONSTRAINT nn_is_fornecedor NOT NULL,
+    imagem_usuario VARCHAR2(255)
 );
 
-CREATE TABLE tipo_contato (
-    id_tipo_contato NUMBER(9) CONSTRAINT pk_id_tipo_contato PRIMARY KEY,
-    nome_tipo_contato VARCHAR2(255) CONSTRAINT uk_nm_tipo_contato UNIQUE CONSTRAINT nn_nm_tipo_contato NOT NULL
-);
-
-CREATE TABLE forma_contato (
-    id_forma_contato NUMBER(9) CONSTRAINT pk_id_forma_contato PRIMARY KEY,
-    id_tipo_contato NUMBER(9) CONSTRAINT fk_tp_ctt_forma_contato REFERENCES tipo_contato(id_tipo_contato) CONSTRAINT nn_tp_ctt_forma_contato NOT NULL,
-    valor_forma_contato VARCHAR2(255) CONSTRAINT nn_vlr_forma_contato NOT NULL,
-    id_pessoa NUMBER(9) CONSTRAINT fk_pessoa_forma_contato REFERENCES pessoa(id_pessoa) CONSTRAINT nn_pessoa_forma_contato NOT NULL
+CREATE TABLE contato (
+    id_contato NUMBER(9) CONSTRAINT pk_id_contato PRIMARY KEY,
+    tipo_contato VARCHAR2(255) CONSTRAINT nn_tipo_contato NOT NULL,
+    valor_contato VARCHAR2(255) CONSTRAINT nn_valor_contato NOT NULL,
+    id_usuario NUMBER(9) CONSTRAINT fk_id_usuario_contato REFERENCES usuario(id_usuario) CONSTRAINT nn_usuario_contato NOT NULL
 );
 
 CREATE TABLE tag (
     id_tag NUMBER(9) CONSTRAINT pk_id_tag PRIMARY KEY,
-    nome_tag VARCHAR2(255) CONSTRAINT uk_nm_tag UNIQUE CONSTRAINT nn_nm_tag NOT NULL
+    nome_tag VARCHAR2(255) CONSTRAINT uk_nome_tag UNIQUE CONSTRAINT nn_nome_tag NOT NULL
 );
 
 CREATE TABLE usuario_tag (
@@ -45,7 +57,7 @@ CREATE TABLE usuario_tag (
 
 CREATE TABLE departamento (
     id_departamento NUMBER(9) CONSTRAINT pk_id_departamento PRIMARY KEY,
-    nome_departamento VARCHAR2(255) CONSTRAINT uk_nm_departamento UNIQUE CONSTRAINT nn_nm_departamento NOT NULL,
+    nome_departamento VARCHAR2(255) CONSTRAINT uk_nome_departamento UNIQUE CONSTRAINT nn_nome_departamento NOT NULL,
     icone_departamento VARCHAR2(255)
 );
 
@@ -56,8 +68,8 @@ CREATE TABLE tag_departamento (
 
 CREATE TABLE produto (
     id_produto NUMBER(9) CONSTRAINT pk_id_produto PRIMARY KEY,
-    id_departamento NUMBER(9) CONSTRAINT fk_departamento_produto REFERENCES departamento(id_departamento),
-    nome_produto VARCHAR2(255) CONSTRAINT nn_nm_produto NOT NULL,
+    id_departamento NUMBER(9) CONSTRAINT fk_id_departamento_produto REFERENCES departamento(id_departamento),
+    nome_produto VARCHAR2(255) CONSTRAINT nn_nome_produto NOT NULL,
     marca_produto VARCHAR2(255),
     cor_produto VARCHAR2(255),
     tamanho_produto VARCHAR2(255),
@@ -72,17 +84,17 @@ CREATE TABLE produto_tag (
 
 CREATE TABLE status (
     id_status NUMBER(9) CONSTRAINT pk_id_status PRIMARY KEY,
-    nome_status VARCHAR2(255) CONSTRAINT uk_nm_status UNIQUE CONSTRAINT nn_nm_status NOT NULL
+    nome_status VARCHAR2(255) CONSTRAINT uk_nome_status UNIQUE CONSTRAINT nn_nome_status NOT NULL
 );
 
 CREATE TABLE cotacao (
     id_cotacao NUMBER(9) CONSTRAINT pk_id_cotacao PRIMARY KEY,
-    data_abertura_cotacao DATE CONSTRAINT nn_dt_cotacao NOT NULL,
-    id_comprador NUMBER(9) CONSTRAINT fk_comprador_cotacao REFERENCES usuario(id_usuario) CONSTRAINT nn_comprador_cotacao NOT NULL,
-    id_produto NUMBER(9) CONSTRAINT fk_produto_cotacao REFERENCES produto(id_produto) CONSTRAINT nn_produto_cotacao NOT NULL,
-    quantidade_produto NUMBER(8,2) CONSTRAINT nn_qtd_produto NOT NULL,
-    valor_produto NUMBER(8,2) CONSTRAINT nn_vlr_produto NOT NULL,
-    id_status NUMBER(9) CONSTRAINT fk_status_cotacao REFERENCES status(id_status) CONSTRAINT nn_status_cotacao NOT NULL,
+    data_abertura_cotacao DATE CONSTRAINT nn_data_cotacao NOT NULL,
+    id_usuario NUMBER(9) CONSTRAINT fk_id_usuario_cotacao REFERENCES usuario(id_usuario) CONSTRAINT nn_usuario_cotacao NOT NULL,
+    id_produto NUMBER(9) CONSTRAINT fk_id_produto_cotacao REFERENCES produto(id_produto) CONSTRAINT nn_produto_cotacao NOT NULL,
+    quantidade_produto NUMBER(8,2) CONSTRAINT nn_quantidade_produto NOT NULL,
+    valor_produto NUMBER(8,2) CONSTRAINT nn_valor_produto NOT NULL,
+    id_status NUMBER(9) CONSTRAINT fk_id_status_cotacao REFERENCES status(id_status) CONSTRAINT nn_status_cotacao NOT NULL,
     prioridade_entrega NUMBER(1) CONSTRAINT nn_pri_entr_cotacao NOT NULL,
     prioridade_qualidade NUMBER(1) CONSTRAINT nn_pri_qual_cotacao NOT NULL,
     prioridade_preco NUMBER(1) CONSTRAINT nn_pri_prec_cotacao NOT NULL,
@@ -92,20 +104,20 @@ CREATE TABLE cotacao (
 
 CREATE TABLE avaliacao (
     id_avaliacao NUMBER(9) CONSTRAINT pk_id_avaliacao PRIMARY KEY,
-    id_cotacao NUMBER(9) CONSTRAINT fk_cotacao_avaliacao REFERENCES cotacao(id_cotacao) CONSTRAINT uk_cotacao_avaliacao UNIQUE CONSTRAINT nn_cotacao_avaliacao NOT NULL,
+    id_cotacao NUMBER(9) CONSTRAINT fk_id_cotacao_avaliacao REFERENCES cotacao(id_cotacao) CONSTRAINT uk_cotacao_avaliacao UNIQUE CONSTRAINT nn_cotacao_avaliacao NOT NULL,
     data_avaliacao DATE CONSTRAINT nn_dt_avaliacao NOT NULL,
     nota_entrega_avaliacao NUMBER(1) CONSTRAINT nn_nota_entr_avaliacao NOT NULL, 
     nota_qualidade_avaliacao NUMBER(1) CONSTRAINT nn_nota_qual_avaliacao NOT NULL,
-    nota_preco_avaliacao NUMBER(1) CONSTRAINT nn_nota_prec_avaliacao NOT NULL,
+    nota_preco_avaliacao NUMBER(1) CONSTRAINT nn_nota_preco_avaliacao NOT NULL,
     descricao_avaliacao VARCHAR2(255)
 );
 
 CREATE TABLE historico (
     id_historico NUMBER(9) CONSTRAINT pk_id_historico PRIMARY KEY,
-    id_cotacao NUMBER(9) CONSTRAINT fk_cotacao_historico REFERENCES cotacao(id_cotacao) CONSTRAINT nn_cotacao_historico NOT NULL,
-    data_historico DATE CONSTRAINT nn_dt_historico NOT NULL,
-    id_status NUMBER(9) CONSTRAINT fk_status_historico REFERENCES status(id_status) CONSTRAINT nn_status_historico NOT NULL,
-    id_fornecedor NUMBER(9) CONSTRAINT fk_fornecedor_historico REFERENCES usuario(id_usuario) CONSTRAINT nn_fornecedor_historico NOT NULL,
+    id_cotacao NUMBER(9) CONSTRAINT fk_id_cotacao_historico REFERENCES cotacao(id_cotacao) CONSTRAINT nn_cotacao_historico NOT NULL,
+    data_historico DATE CONSTRAINT nn_data_historico NOT NULL,
+    id_status NUMBER(9) CONSTRAINT fk_id_status_historico REFERENCES status(id_status) CONSTRAINT nn_status_historico NOT NULL,
+    id_fornecedor NUMBER(9) CONSTRAINT fk_id_fornecedor_historico REFERENCES usuario(id_usuario) CONSTRAINT nn_fornecedor_historico NOT NULL,
     valor_ofertado_historico NUMBER(8,2),
     recusado_por_produto NUMBER(1) CONSTRAINT nn_rec_prod_historico NOT NULL,
     recusado_por_quantidade NUMBER(1) CONSTRAINT nn_rec_qtd_historico NOT NULL,
@@ -115,35 +127,17 @@ CREATE TABLE historico (
 );
 
 -- 02. INSERTS NAS TABELAS:
-INSERT INTO pessoa VALUES (1, 'One Serviços Administrativos LTDA.', NULL);
-INSERT INTO pessoa VALUES (2, 'Kalunga Comércio e Indústria Gráfica LTDA.', 'https://iguatemi.com.br/brasilia/sites/brasilia/files/2020-01/Kalunga_logo.png');
-INSERT INTO pessoa VALUES (3, 'Kabum S.A.', NULL);
-INSERT INTO pessoa VALUES (4, 'Kuará Capital Gestora de Recursos LTDA.', NULL);
-INSERT INTO pessoa VALUES (5, 'Magazine Luiza S.A.', 'https://logodownload.org/wp-content/uploads/2014/06/magalu-logo-0.png');
+INSERT INTO usuario VALUES (1, 'One Serviços Administrativos LTDA.', 'comercial@oneservicos.com.br', 'oneserv123', '28434667000111', 0, NULL);
+INSERT INTO usuario VALUES (2, 'Kalunga Comércio e Indústria Gráfica LTDA.', 'vendas@kalunga.com.br', 'kalung4', '43283811000150', 1, 'https://iguatemi.com.br/brasilia/sites/brasilia/files/2020-01/Kalunga_logo.png');
+INSERT INTO usuario VALUES (3, 'Kabum S.A.', 'adm@kabum.com.br', 'kabuuuuum', '05570714000159', 1, NULL);
+INSERT INTO usuario VALUES (4, 'Kuará Capital Gestora de Recursos LTDA.', 'operacional@kuaracapital.com', 'farialima', '41179663000100', 0, NULL);
+INSERT INTO usuario VALUES (5, 'Magazine Luiza S.A.', 'magalu@magalu.com.br', 'vempromagalu', '47960950000121', 1, 'https://logodownload.org/wp-content/uploads/2014/06/magalu-logo-0.png');
 
-INSERT INTO pessoa_juridica VALUES (1, '28.434.667/0001-11', 0, 1);
-INSERT INTO pessoa_juridica VALUES (2, '43.283.811/0001-50', 1, 2);
-INSERT INTO pessoa_juridica VALUES (3, '05.570.714/0001-59', 1, 3);
-INSERT INTO pessoa_juridica VALUES (4, '41.179.663/0001-00', 0, 4);
-INSERT INTO pessoa_juridica VALUES (5, '47.960.950/0001-21', 1, 5);
-
-INSERT INTO usuario VALUES (1, 'comercial@oneservicos.com.br', 'oneserv123', 1);
-INSERT INTO usuario VALUES (2, 'vendas@kalunga.com.br', 'kalung4', 2);
-INSERT INTO usuario VALUES (3, 'adm@kabum.com.br', 'kabuuuuum', 3);
-INSERT INTO usuario VALUES (4, 'operacional@kuaracapital.com', 'farialima', 4);
-INSERT INTO usuario VALUES (5, 'magalu@magalu.com.br', 'vempromagalu', 5);
-
-INSERT INTO tipo_contato VALUES (1, 'Email');
-INSERT INTO tipo_contato VALUES (2, 'Telefone');
-INSERT INTO tipo_contato VALUES (3, 'Celular');
-INSERT INTO tipo_contato VALUES (4, 'Whatsapp');
-INSERT INTO tipo_contato VALUES (5, 'Fax');
-
-INSERT INTO forma_contato VALUES (1, 1, 'kaue@oneservicos.com.br', 1);
-INSERT INTO forma_contato VALUES (2, 1, 'vendas@kalunga.com.br', 2);
-INSERT INTO forma_contato VALUES (3, 2, '(11) 3200-0000', 2);
-INSERT INTO forma_contato VALUES (4, 3, '(11) 98282-0000', 2);
-INSERT INTO forma_contato VALUES (5, 4, '(11) 98585-0000', 3);
+INSERT INTO contato VALUES (1, 'Email', 'kaue@oneservicos.com.br', 1);
+INSERT INTO contato VALUES (2, 'Email', 'vendas@kalunga.com.br', 2);
+INSERT INTO contato VALUES (3, 'Telefone', '(11) 3200-0000', 2);
+INSERT INTO contato VALUES (4, 'Telefone', '(11) 98282-0000', 2);
+INSERT INTO contato VALUES (5, 'Whatsapp', '(11) 98585-0000', 3);
 
 INSERT INTO tag VALUES (1, 'Periféricos');
 INSERT INTO tag VALUES (2, 'Calças');
@@ -357,194 +351,33 @@ BEGIN
 END;
 
 -- 02. PROCEDURES DE INSERT, UPDATE e DELETE:
+-- 02.01. USUARIO:
+DROP SEQUENCE seq_usuario;
+CREATE SEQUENCE seq_usuario START WITH 6 INCREMENT BY 1;
 
--- 02.01. PESSOA:
 -- 02.01.01. INSERT E TESTE:
-CREATE OR REPLACE PROCEDURE insert_pessoa(
-    p_id_pessoa IN pessoa.id_pessoa%TYPE,
-    p_nome_pessoa IN pessoa.nome_pessoa%TYPE,
-    p_imagem_pessoa IN pessoa.imagem_pessoa%TYPE
-) AS
-BEGIN
-    INSERT INTO pessoa (id_pessoa, nome_pessoa, imagem_pessoa)
-    VALUES (p_id_pessoa, p_nome_pessoa, p_imagem_pessoa);
-
-EXCEPTION
-    WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20001, 'Erro de valor na inserção');
-    WHEN DUP_VAL_ON_INDEX THEN
-        RAISE_APPLICATION_ERROR(-20002, 'ID duplicado');
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20003, SQLERRM);
-END;
-
-BEGIN
-    insert_pessoa(6, 'Nome Teste', 'imagem_teste.jpg');
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
-END;
-
--- 02.01.02. UPDATE E TESTE:
-CREATE OR REPLACE PROCEDURE update_pessoa(
-    p_id_pessoa IN pessoa.id_pessoa%TYPE,
-    p_nome_pessoa IN pessoa.nome_pessoa%TYPE,
-    p_imagem_pessoa IN pessoa.imagem_pessoa%TYPE
-) AS
-BEGIN
-    UPDATE pessoa
-    SET nome_pessoa = p_nome_pessoa, imagem_pessoa = p_imagem_pessoa
-    WHERE id_pessoa = p_id_pessoa;
-
-    IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20004, 'Registro não encontrado para atualização');
-    END IF;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20005, SQLERRM);
-END;
-
-BEGIN
-    update_pessoa(6, 'Nome Atualizado', 'imagem_atualizada.jpg');
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
-END;
-
--- 02.01.03. DELETE E TESTE:
-CREATE OR REPLACE PROCEDURE delete_pessoa(
-    p_id_pessoa IN pessoa.id_pessoa%TYPE
-) AS
-BEGIN
-    DELETE FROM pessoa
-    WHERE id_pessoa = p_id_pessoa;
-
-    IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20006, 'Registro não encontrado para exclusão');
-    END IF;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20007, SQLERRM);
-END;
-
-BEGIN
-    delete_pessoa(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
-END;
-
--- 02.02. PESSOA_JURIDICA:
--- 02.02.01. INSERT E TESTE:
-CREATE OR REPLACE PROCEDURE insert_pessoa_juridica(
-    p_id_pj IN pessoa_juridica.id_pj%TYPE,
-    p_cnpj_pj IN pessoa_juridica.cnpj_pj%TYPE,
-    p_is_fornecedor IN pessoa_juridica.is_fornecedor%TYPE,
-    p_id_pessoa IN pessoa_juridica.id_pessoa%TYPE
-) AS
-BEGIN
-    IF NOT is_cnpj_valid(p_cnpj_pj) THEN
-        RAISE_APPLICATION_ERROR(-20015, 'CNPJ inválido');
-    END IF;
-
-    INSERT INTO pessoa_juridica (id_pj, cnpj_pj, is_fornecedor, id_pessoa)
-    VALUES (p_id_pj, p_cnpj_pj, p_is_fornecedor, p_id_pessoa);
-
-EXCEPTION
-    WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20008, 'Erro de valor na inserção');
-    WHEN DUP_VAL_ON_INDEX THEN
-        RAISE_APPLICATION_ERROR(-20009, 'Chave duplicada');
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20010, SQLERRM);
-END;
-
-BEGIN
-    insert_pessoa_juridica(6, '59291534000167', 1, 6);
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
-END;
-
--- 02.02.02. UPDATE E TESTE:
-CREATE OR REPLACE PROCEDURE update_pessoa_juridica(
-    p_id_pj IN pessoa_juridica.id_pj%TYPE,
-    p_cnpj_pj IN pessoa_juridica.cnpj_pj%TYPE,
-    p_is_fornecedor IN pessoa_juridica.is_fornecedor%TYPE,
-    p_id_pessoa IN pessoa_juridica.id_pessoa%TYPE
-) AS
-BEGIN
-    IF NOT is_cnpj_valid(p_cnpj_pj) THEN
-        RAISE_APPLICATION_ERROR(-20016, 'CNPJ inválido');
-    END IF;
-
-    UPDATE pessoa_juridica
-    SET cnpj_pj = p_cnpj_pj, is_fornecedor = p_is_fornecedor, id_pessoa = p_id_pessoa
-    WHERE id_pj = p_id_pj;
-
-    IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20011, 'Registro não encontrado para atualização');
-    END IF;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20012, SQLERRM);
-END;
-
-BEGIN
-    update_pessoa_juridica(6, '59291534000167', 0, 6);
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
-END;
-
--- 02.02.03. DELETE E TESTE:
-CREATE OR REPLACE PROCEDURE delete_pessoa_juridica(
-    p_id_pj IN pessoa_juridica.id_pj%TYPE
-) AS
-BEGIN
-    DELETE FROM pessoa_juridica
-    WHERE id_pj = p_id_pj;
-
-    IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20013, 'Registro não encontrado para exclusão');
-    END IF;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20014, SQLERRM);
-END;
-
-BEGIN
-    delete_pessoa_juridica(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
-END;
-
--- 02.03. USUARIO:
--- 02.03.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_usuario(
-    p_id_usuario IN usuario.id_usuario%TYPE,
+    p_nome_usuario IN usuario.nome_usuario%TYPE,
     p_email_usuario IN usuario.email_usuario%TYPE,
     p_senha_usuario IN usuario.senha_usuario%TYPE,
-    p_id_pessoa IN usuario.id_pessoa%TYPE
+    p_cnpj_usuario IN usuario.cnpj_usuario%TYPE,
+    p_is_fornecedor IN usuario.is_fornecedor%TYPE,
+    p_imagem_usuario IN usuario.imagem_usuario%TYPE
 ) AS
+    v_id_usuario usuario.id_usuario%TYPE;
 BEGIN
+    SELECT seq_usuario.NEXTVAL INTO v_id_usuario FROM DUAL;
+
     IF NOT is_email_valid(p_email_usuario) THEN
         RAISE_APPLICATION_ERROR(-20024, 'E-mail inválido');
     END IF;
+    
+    IF NOT is_cnpj_valid(p_cnpj_usuario) THEN
+        RAISE_APPLICATION_ERROR(-20024, 'Cnpj inválido');
+    END IF;
 
-    INSERT INTO usuario (id_usuario, email_usuario, senha_usuario, id_pessoa)
-    VALUES (p_id_usuario, p_email_usuario, p_senha_usuario, p_id_pessoa);
+    INSERT INTO usuario (id_usuario, nome_usuario, email_usuario, senha_usuario, cnpj_usuario, is_fornecedor, imagem_usuario)
+    VALUES (v_id_usuario, p_nome_usuario, p_email_usuario, p_senha_usuario, p_cnpj_usuario, p_is_fornecedor, p_imagem_usuario);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -556,28 +389,34 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_usuario(6, 'teste@exemplo.com', 'senha123', 6);
+    insert_usuario('Usuario Cadastrado por Procedure','email@email.com', 'senha123', '02647408000185', 1, NULL);
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
-
 -- 02.03.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_usuario(
     p_id_usuario IN usuario.id_usuario%TYPE,
+    p_nome_usuario IN usuario.nome_usuario%TYPE,
     p_email_usuario IN usuario.email_usuario%TYPE,
     p_senha_usuario IN usuario.senha_usuario%TYPE,
-    p_id_pessoa IN usuario.id_pessoa%TYPE
+    p_cnpj_usuario IN usuario.cnpj_usuario%TYPE,
+    p_is_fornecedor IN usuario.is_fornecedor%TYPE,
+    p_imagem_usuario IN usuario.imagem_usuario%TYPE
 ) AS
 BEGIN
     IF NOT is_email_valid(p_email_usuario) THEN
         RAISE_APPLICATION_ERROR(-20025, 'E-mail inválido');
     END IF;
+    
+    IF NOT is_cnpj_valid(p_cnpj_usuario) THEN
+        RAISE_APPLICATION_ERROR(-20024, 'Cnpj inválido');
+    END IF;
 
     UPDATE usuario
-    SET email_usuario = p_email_usuario, senha_usuario = p_senha_usuario, id_pessoa = p_id_pessoa
+    SET nome_usuario = p_nome_usuario, email_usuario = p_email_usuario, senha_usuario = p_senha_usuario, cnpj_usuario = p_cnpj_usuario, is_fornecedor = p_is_fornecedor, imagem_usuario = p_imagem_usuario
     WHERE id_usuario = p_id_usuario;
 
     IF SQL%ROWCOUNT = 0 THEN
@@ -590,7 +429,7 @@ EXCEPTION
 END;
 
 BEGIN
-    update_usuario(6, 'atualizado@exemplo.com', 'senhaNova123', 6);
+    update_usuario(6, 'Usuario Editado por Procedure','gmail@gmail.com', '123senha', '15436940000103', 0, NULL);
     DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
@@ -622,15 +461,22 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.04. TIPO_CONTATO:
--- 02.04.01. INSERT E TESTE:
-CREATE OR REPLACE PROCEDURE insert_tipo_contato(
-    p_id_tipo_contato IN tipo_contato.id_tipo_contato%TYPE,
-    p_nome_tipo_contato IN tipo_contato.nome_tipo_contato%TYPE
+-- 02.02. CONTATO:
+DROP SEQUENCE seq_contato;
+CREATE SEQUENCE seq_contato START WITH 6 INCREMENT BY 1;
+
+-- 02.02.01. INSERT E TESTE:
+CREATE OR REPLACE PROCEDURE insert_contato(
+    p_tipo_contato IN contato.tipo_contato%TYPE,
+    p_valor_contato IN contato.valor_contato%TYPE,
+    p_id_usuario IN contato.id_usuario%TYPE
 ) AS
-BEGIN    
-    INSERT INTO tipo_contato (id_tipo_contato, nome_tipo_contato)
-    VALUES (p_id_tipo_contato, p_nome_tipo_contato);
+    v_id_contato contato.id_contato%TYPE;
+BEGIN
+    SELECT seq_contato.NEXTVAL INTO v_id_contato FROM DUAL;
+    
+    INSERT INTO contato (id_contato, tipo_contato, valor_contato, id_usuario)
+    VALUES (v_id_contato, p_tipo_contato, p_valor_contato, p_id_usuario);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -642,22 +488,24 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_tipo_contato(6, 'Caixa Postal');
+    insert_contato('Whatsapp', '(21) 98383-0000', 3);
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.04.02. UPDATE E TESTE:
-CREATE OR REPLACE PROCEDURE update_tipo_contato(
-    p_id_tipo_contato IN tipo_contato.id_tipo_contato%TYPE,
-    p_nome_tipo_contato IN tipo_contato.nome_tipo_contato%TYPE
+-- 02.02.02. UPDATE E TESTE:
+CREATE OR REPLACE PROCEDURE update_contato(
+    p_id_contato IN contato.id_contato%TYPE,
+    p_tipo_contato IN contato.tipo_contato%TYPE,
+    p_valor_contato IN contato.valor_contato%TYPE,
+    p_id_usuario IN contato.id_usuario%TYPE
 ) AS
 BEGIN
-    UPDATE tipo_contato
-    SET nome_tipo_contato = p_nome_tipo_contato
-    WHERE id_tipo_contato = p_id_tipo_contato;
+    UPDATE contato
+    SET tipo_contato = p_tipo_contato, valor_contato = p_valor_contato, id_usuario = p_id_usuario
+    WHERE id_contato = p_id_contato;
 
     IF SQL%ROWCOUNT = 0 THEN
         RAISE_APPLICATION_ERROR(-20029, 'Registro não encontrado para atualização');
@@ -669,20 +517,20 @@ EXCEPTION
 END;
 
 BEGIN
-    update_tipo_contato(6, 'Tipo de Contato Atualizado');
+    update_contato(6, 'Whatsapp Editado', '(21) 00000-1111', 2);
     DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.04.03. DELETE E TESTE:
-CREATE OR REPLACE PROCEDURE delete_tipo_contato(
-    p_id_tipo_contato IN tipo_contato.id_tipo_contato%TYPE
+-- 02.02.03. DELETE E TESTE:
+CREATE OR REPLACE PROCEDURE delete_contato(
+    p_id_contato IN contato.id_contato%TYPE
 ) AS
 BEGIN
-    DELETE FROM tipo_contato
-    WHERE id_tipo_contato = p_id_tipo_contato;
+    DELETE FROM contato
+    WHERE id_contato = p_id_contato;
 
     IF SQL%ROWCOUNT = 0 THEN
         RAISE_APPLICATION_ERROR(-20031, 'Registro não encontrado para exclusão');
@@ -694,117 +542,27 @@ EXCEPTION
 END;
 
 BEGIN
-    delete_tipo_contato(6);
+    delete_contato(6);
     DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.05. FORMA_CONTATO:
--- 02.05.01. INSERT E TESTE:
-CREATE OR REPLACE PROCEDURE insert_forma_contato(
-    p_id_forma_contato IN forma_contato.id_forma_contato%TYPE,
-    p_id_tipo_contato IN forma_contato.id_tipo_contato%TYPE,
-    p_valor_forma_contato IN forma_contato.valor_forma_contato%TYPE,
-    p_id_pessoa IN forma_contato.id_pessoa%TYPE
-) AS
-BEGIN
-    IF p_id_tipo_contato = 1 THEN
-        IF NOT is_email_valid(p_valor_forma_contato) THEN
-            RAISE_APPLICATION_ERROR(-20025, 'E-mail inválido');
-        END IF;
-    END IF;
-    
-    INSERT INTO forma_contato (id_forma_contato, id_tipo_contato, valor_forma_contato, id_pessoa)
-    VALUES (p_id_forma_contato, p_id_tipo_contato, p_valor_forma_contato, p_id_pessoa);
+-- 02.03. TAG:
+DROP SEQUENCE seq_tag;
+CREATE SEQUENCE seq_tag START WITH 6 INCREMENT BY 1;
 
-EXCEPTION
-    WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20026, 'Erro de valor na inserção');
-    WHEN DUP_VAL_ON_INDEX THEN
-        RAISE_APPLICATION_ERROR(-20027, 'Chave duplicada');
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20028, SQLERRM);
-END;
-
-BEGIN
-    insert_forma_contato(6, 1, 'kaue@kaue.com', 1);
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
-END;
-
--- 02.05.02. UPDATE E TESTE:
-CREATE OR REPLACE PROCEDURE update_forma_contato(
-    p_id_forma_contato IN forma_contato.id_forma_contato%TYPE,
-    p_id_tipo_contato IN forma_contato.id_tipo_contato%TYPE,
-    p_valor_forma_contato IN forma_contato.valor_forma_contato%TYPE,
-    p_id_pessoa IN forma_contato.id_pessoa%TYPE
-) AS
-BEGIN
-    IF p_id_tipo_contato = 1 THEN
-        IF NOT is_email_valid(p_valor_forma_contato) THEN
-            RAISE_APPLICATION_ERROR(-20025, 'E-mail inválido');
-        END IF;
-    END IF;
-    
-    UPDATE forma_contato
-    SET id_tipo_contato = p_id_tipo_contato, valor_forma_contato = p_valor_forma_contato, id_pessoa = p_id_pessoa
-    WHERE id_forma_contato = p_id_forma_contato;
-
-    IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20029, 'Registro não encontrado para atualização');
-    END IF;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20030, SQLERRM);
-END;
-
-BEGIN
-    update_forma_contato(6, 1, 'Contatoatualizado@email.com', 1);
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
-END;
-
--- 02.05.03. DELETE E TESTE:
-CREATE OR REPLACE PROCEDURE delete_forma_contato(
-    p_id_forma_contato IN forma_contato.id_forma_contato%TYPE
-) AS
-BEGIN
-    DELETE FROM forma_contato
-    WHERE id_forma_contato = p_id_forma_contato;
-
-    IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20031, 'Registro não encontrado para exclusão');
-    END IF;
-
-EXCEPTION
-    WHEN OTHERS THEN
-        RAISE_APPLICATION_ERROR(-20032, SQLERRM);
-END;
-
-BEGIN
-    delete_forma_contato(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
-EXCEPTION
-    WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
-END;
-
--- 02.06. TAG:
--- 02.06.01. INSERT E TESTE:
+-- 02.03.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_tag(
-    p_id_tag IN tag.id_tag%TYPE,
     p_nome_tag IN tag.nome_tag%TYPE
 ) AS
+    v_id_tag tag.id_tag%TYPE;
 BEGIN
+    SELECT seq_tag.NEXTVAL INTO v_id_tag FROM DUAL;
+    
     INSERT INTO tag (id_tag, nome_tag)
-    VALUES (p_id_tag, p_nome_tag);
+    VALUES (v_id_tag, p_nome_tag);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -816,14 +574,14 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_tag(6, 'Tag Exemplo');
+    insert_tag('Tag Exemplo');
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.06.02. UPDATE E TESTE:
+-- 02.03.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_tag(
     p_id_tag IN tag.id_tag%TYPE,
     p_nome_tag IN tag.nome_tag%TYPE
@@ -850,7 +608,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.06.03. DELETE E TESTE:
+-- 02.03.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_tag(
     p_id_tag IN tag.id_tag%TYPE
 ) AS
@@ -875,8 +633,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.07. USUARIO_TAG:
--- 02.07.01. INSERT E TESTE:
+-- 02.04. USUARIO_TAG:
+-- 02.04.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_usuario_tag(
     p_id_usuario IN usuario_tag.id_usuario%TYPE,
     p_id_tag IN usuario_tag.id_tag%TYPE
@@ -902,7 +660,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.07.02. UPDATE E TESTE:
+-- 02.04.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_usuario_tag(
     p_id_usuario_antigo IN usuario_tag.id_usuario%TYPE,
     p_id_tag_antigo IN usuario_tag.id_tag%TYPE,
@@ -931,7 +689,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.07.03. DELETE E TESTE:
+-- 02.04.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_usuario_tag(
     p_id_usuario IN usuario_tag.id_usuario%TYPE,
     p_id_tag IN usuario_tag.id_tag%TYPE
@@ -957,16 +715,21 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.08. DEPARTAMENTO:
--- 02.08.01. INSERT E TESTE:
+-- 02.05. DEPARTAMENTO:
+DROP SEQUENCE seq_departamento;
+CREATE SEQUENCE seq_departamento START WITH 6 INCREMENT BY 1;
+
+-- 02.05.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_departamento(
-    p_id_departamento IN departamento.id_departamento%TYPE,
     p_nome_departamento IN departamento.nome_departamento%TYPE,
     p_icone_departamento IN departamento.icone_departamento%TYPE
 ) AS
+    v_id_departamento departamento.id_departamento%TYPE;
 BEGIN
+    SELECT seq_departamento.NEXTVAL INTO v_id_departamento FROM DUAL;
+    
     INSERT INTO departamento (id_departamento, nome_departamento, icone_departamento)
-    VALUES (p_id_departamento, p_nome_departamento, p_icone_departamento);
+    VALUES (v_id_departamento, p_nome_departamento, p_icone_departamento);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -978,14 +741,14 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_departamento(6, 'TI', 'icone_ti.png');
+    insert_departamento('TI', 'icone_ti.png');
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.08.02. UPDATE E TESTE:
+-- 02.05.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_departamento(
     p_id_departamento IN departamento.id_departamento%TYPE,
     p_nome_departamento IN departamento.nome_departamento%TYPE,
@@ -1013,7 +776,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.08.03. DELETE E TESTE:
+-- 02.05.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_departamento(
     p_id_departamento IN departamento.id_departamento%TYPE
 ) AS
@@ -1038,8 +801,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.09. TAG_DEPARTAMENTO:
--- 02.09.01. INSERT E TESTE:
+-- 02.06. TAG_DEPARTAMENTO:
+-- 02.06.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_tag_departamento(
     p_id_tag IN tag_departamento.id_tag%TYPE,
     p_id_departamento IN tag_departamento.id_departamento%TYPE
@@ -1065,7 +828,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.09.02. UPDATE E TESTE:
+-- 02.06.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_tag_departamento(
     p_id_tag_antigo IN tag_departamento.id_tag%TYPE,
     p_id_departamento_antigo IN tag_departamento.id_departamento%TYPE,
@@ -1094,7 +857,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.09.03. DELETE E TESTE:
+-- 02.06.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_tag_departamento(
     p_id_tag IN tag_departamento.id_tag%TYPE,
     p_id_departamento IN tag_departamento.id_departamento%TYPE
@@ -1120,10 +883,12 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.10. PRODUTO:
--- 02.10.01. INSERT E TESTE:
+-- 02.07. PRODUTO:
+DROP SEQUENCE seq_produto;
+CREATE SEQUENCE seq_produto START WITH 6 INCREMENT BY 1;
+
+-- 02.07.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_produto(
-    p_id_produto IN produto.id_produto%TYPE,
     p_id_departamento IN produto.id_departamento%TYPE,
     p_nome_produto IN produto.nome_produto%TYPE,
     p_marca_produto IN produto.marca_produto%TYPE,
@@ -1132,9 +897,12 @@ CREATE OR REPLACE PROCEDURE insert_produto(
     p_material_produto IN produto.material_produto%TYPE,
     p_observacao_produto IN produto.observacao_produto%TYPE
 ) AS
+    v_id_produto produto.id_produto%TYPE;
 BEGIN
+    SELECT seq_produto.NEXTVAL INTO v_id_produto FROM DUAL;
+    
     INSERT INTO produto (id_produto, id_departamento, nome_produto, marca_produto, cor_produto, tamanho_produto, material_produto, observacao_produto)
-    VALUES (p_id_produto, p_id_departamento, p_nome_produto, p_marca_produto, p_cor_produto, p_tamanho_produto, p_material_produto, p_observacao_produto);
+    VALUES (v_id_produto, p_id_departamento, p_nome_produto, p_marca_produto, p_cor_produto, p_tamanho_produto, p_material_produto, p_observacao_produto);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -1146,14 +914,14 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_produto(6, 1, 'Produto Teste', 'Marca Teste', 'Azul', 'M', 'Algodão', 'Sem observações');
+    insert_produto(1, 'Produto Teste', 'Marca Teste', 'Azul', 'M', 'Algodão', 'Sem observações');
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.10.02. UPDATE E TESTE:
+-- 02.07.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_produto(
     p_id_produto IN produto.id_produto%TYPE,
     p_id_departamento IN produto.id_departamento%TYPE,
@@ -1186,7 +954,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.10.03. DELETE E TESTE:
+-- 02.07.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_produto(
     p_id_produto IN produto.id_produto%TYPE
 ) AS
@@ -1723,37 +1491,3 @@ BEGIN
 END;
 
 --------------------------------------------------------------------------------
--- SELECTS CASO NECESSÁRIO:
-SELECT * FROM avaliacao;
-SELECT * FROM cotacao;
-SELECT * FROM departamento;
-SELECT * FROM forma_contato;
-SELECT * FROM historico;
-SELECT * FROM pessoa;
-SELECT * FROM pessoa_juridica;
-SELECT * FROM produto;
-SELECT * FROM produto_tag;
-SELECT * FROM status;
-SELECT * FROM tag;
-SELECT * FROM tag_departamento;
-SELECT * FROM tipo_contato;
-SELECT * FROM usuario;
-SELECT * FROM usuario_tag;
-
--- DROP TABLES CASO NECESSÁRIO:
-
-DROP TABLE avaliacao CASCADE CONSTRAINTS;
-DROP TABLE cotacao CASCADE CONSTRAINTS;
-DROP TABLE departamento CASCADE CONSTRAINTS;
-DROP TABLE forma_contato CASCADE CONSTRAINTS;
-DROP TABLE historico CASCADE CONSTRAINTS;
-DROP TABLE pessoa CASCADE CONSTRAINTS;
-DROP TABLE pessoa_juridica CASCADE CONSTRAINTS;
-DROP TABLE produto CASCADE CONSTRAINTS;
-DROP TABLE produto_tag CASCADE CONSTRAINTS;
-DROP TABLE status CASCADE CONSTRAINTS;
-DROP TABLE tag CASCADE CONSTRAINTS;
-DROP TABLE tag_departamento CASCADE CONSTRAINTS;
-DROP TABLE tipo_contato CASCADE CONSTRAINTS;
-DROP TABLE usuario CASCADE CONSTRAINTS;
-DROP TABLE usuario_tag CASCADE CONSTRAINTS;
