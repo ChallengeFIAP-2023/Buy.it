@@ -193,9 +193,9 @@ Este comando irá limpar o projeto (remove arquivos compilados anteriores), comp
 
 9. Após a conclusão do processo, você encontrará o arquivo JAR gerado no diretório `target`.
 
-Executando o Arquivo JAR
-10. Navegue até o diretório `target` que contém o novo arquivo JAR.
-11. Execute o arquivo JAR usando o comando:
+Executando o Arquivo JAR:<br>
+10. Navegue até o diretório `target` que contém o novo arquivo JAR.<br>
+11. Execute o arquivo JAR usando o comando:<br>
 
 ```bash
 $ java -jar buy.it-0.0.1-SNAPSHOT.jar
