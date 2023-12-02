@@ -1,41 +1,64 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
-import java.util.Collections;
-import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "USUARIO", uniqueConstraints = {
-        @UniqueConstraint(name = "UK_EMAIL_USUARIO", columnNames = "EMAIL_USUARIO")
+        @UniqueConstraint(name = "UK_EMAIL_USUARIO", columnNames = "EMAIL_USUARIO"),
+        @UniqueConstraint(name = "UK_CNPJ_USUARIO", columnNames = "CNPJ_USUARIO")
 })
 public class Usuario {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_USUARIO")
     @SequenceGenerator(name = "SQ_USUARIO", sequenceName = "SQ_USUARIO", allocationSize = 1)
     @Column(name = "ID_USUARIO")
+    @Getter @Setter
     private Long id;
 
     @Column(name = "EMAIL_USUARIO", nullable = false)
-    @NotBlank(message = "O endereço de e-mail não pode estar vazio.")
+    @NotBlank(message = "O campo email não pode estar vazio.")
     @Email(message = "Endereço de e-mail inválido.")
+    @Getter @Setter
     private String email;
 
+    @JsonIgnore
     @Column(name = "SENHA_USUARIO", nullable = false)
-    @NotBlank(message = "A senha não pode estar vazia.")
+    @NotBlank(message = "O campo senha não pode estar vazio.")
+    @Getter @Setter
     private String senha;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "ID_PESSOA", referencedColumnName = "ID_PESSOA", foreignKey = @ForeignKey(name = "FK_PESSOA_USUARIO"))
-    private Pessoa pessoa;
+    @Column(name = "NOME_USUARIO", nullable = false)
+    @NotBlank(message = "O campo nome não pode estar vazio.")
+    @Getter @Setter
+    private String nome;
 
+    @Column(name = "IMAGEM_USUARIO")
+    @Getter @Setter
+    private String urlImagem;
+
+    @Column(name = "CNPJ_USUARIO", nullable = false)
+    @NotBlank(message = "O campo cnpj não pode estar vazio.")
+    @Getter @Setter
+    private String cnpj;
+
+    @Column(name = "IS_FORNECEDOR", nullable = false)
+    @NotNull(message = "O campo isFornecedor não pode estar vazio.")
+    @Getter @Setter
+    private Boolean isFornecedor;
+
+    @JsonManagedReference
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "USUARIO_TAG",
@@ -54,44 +77,7 @@ public class Usuario {
                     )
             }
     )
-    private Set<Tag> tags = new HashSet<>();
-
-
-    public Long getId() {
-        return id;
-    }
-
-    public Usuario setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public Usuario setEmail(String email) {
-        this.email = email;
-        return this;
-    }
-
-    public String getSenha() {
-        return senha;
-    }
-
-    public Usuario setSenha(String senha) {
-        this.senha = senha;
-        return this;
-    }
-
-    public Pessoa getPessoa() {
-        return pessoa;
-    }
-
-    public Usuario setPessoa(Pessoa pessoa) {
-        this.pessoa = pessoa;
-        return this;
-    }
+    private Set<Tag> tags = new LinkedHashSet<>();
 
     public Usuario addTag(Tag tag) {
         this.tags.add(tag);
@@ -104,9 +90,4 @@ public class Usuario {
         if (tag.getUsuarios().equals(this)) tag.removeUsuario(this);
         return this;
     }
-
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
-    }
 }
-

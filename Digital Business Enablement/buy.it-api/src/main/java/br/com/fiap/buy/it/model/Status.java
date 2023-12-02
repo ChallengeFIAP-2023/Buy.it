@@ -1,14 +1,13 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
-@Getter
-@Setter
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "STATUS", uniqueConstraints = {
         @UniqueConstraint(name = "UK_NOME_STATUS", columnNames = "NOME_STATUS")
@@ -21,7 +20,6 @@ public class Status {
     private Long id;
 
     @Column(name = "NOME_STATUS", nullable = false)
-    @NotBlank(message = "O nome do status não pode estar vazio.")
+    @NotBlank(message = "O campo nome não pode estar vazio.")
     private String nome;
-
 }

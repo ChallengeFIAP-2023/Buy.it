@@ -1,15 +1,20 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
-import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
+import java.util.Optional;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "DEPARTAMENTO", uniqueConstraints = {
         @UniqueConstraint(name = "UK_NOME_DEPARTAMENTO", columnNames = "NOME_DEPARTAMENTO")
@@ -22,73 +27,33 @@ public class Departamento {
     private Long id;
 
     @Column(name = "NOME_DEPARTAMENTO", nullable = false)
-    @NotBlank(message = "O nome do departamento não pode estar vazio.")
+    @NotBlank(message = "O campo nome não pode estar vazio.")
     private String nome;
 
     @Column(name = "ICONE_DEPARTAMENTO")
     private String icone;
 
-    @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinTable(
-            name = "TAG_DEPARTAMENTO",
-            joinColumns = {
-                    @JoinColumn(
-                            name = "ID_DEPARTAMENTO",
-                            referencedColumnName = "ID_DEPARTAMENTO",
-                            foreignKey = @ForeignKey(name = "FK_DEPARTAMENTO_TAG")
-                    )
-            },
-            inverseJoinColumns = {
-                    @JoinColumn(
-                            name = "ID_TAG",
-                            referencedColumnName = "ID_TAG",
-                            foreignKey = @ForeignKey(name = "FK_TAG_DEPARTAMENTO")
-                    )
-            }
-    )
-    private Set<Tag> tags;
+    @JsonManagedReference
+    @ManyToMany(fetch = FetchType.EAGER, cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+    @JoinTable(name = "TAG_DEPARTAMENTO", joinColumns = {
+            @JoinColumn(name = "ID_DEPARTAMENTO", referencedColumnName = "ID_DEPARTAMENTO", foreignKey = @ForeignKey(name = "FK_DEPARTAMENTO_TAG"))
+    }, inverseJoinColumns = {
+            @JoinColumn(name = "ID_TAG", referencedColumnName = "ID_TAG", foreignKey = @ForeignKey(name = "FK_TAG_DEPARTAMENTO"))
+    })
+    private Set<Tag> tags = new LinkedHashSet<>();
 
-    public Long getId() {
-        return id;
-    }
-
-    public Departamento setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public Departamento setNome(String nome) {
-        this.nome = nome;
-        return this;
-    }
-
-    public String getIcone() {
-        return icone;
-    }
-
-    public Departamento setIcone(String icone) {
-        this.icone = icone;
-        return this;
-    }
-
-    public Departamento addTag(Tag tag) {
+    public Optional<Departamento> addTag(Tag tag) {
+        if (this.tags == null) {
+            this.tags = new LinkedHashSet<>();
+        }
         this.tags.add(tag);
-        tag.addDepartamento(this);
-        return this;
-    }
+        if (!tag.getDepartamentos().contains(this)) tag.getDepartamentos().add(this);
+        return Optional.of(this);
+    }    
 
     public Departamento removeTag(Tag tag) {
         this.tags.remove(tag);
-        if (tag.getDepartamentos().equals(this)) tag.removeDepartamento(this);
+        if (tag.getDepartamentos().contains(this)) tag.removeDepartamento(this);
         return this;
     }
-
-    public Set<Tag> getTags() {
-        return Collections.unmodifiableSet(tags);
-    }
 }
-

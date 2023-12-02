@@ -171,10 +171,46 @@ O projeto é divido em duas partes:
 
 ##### 👉 **_Backend:_**
 
+#### Opção 01:
+Siga as instruções abaixo para gerar o arquivo JAR a partir do código-fonte e executá-lo.
+
+1. Clone o repositório ou baixe o código-fonte do projeto para o seu computador.
+2. Navegue até a raiz do projeto, onde o arquivo `pom.xml` está localizado.
+3. Nesta pasta você encontrará o arquivo applicattion.properties.
+4. Caso queira testar com o banco H2, deixe a linha spring.profiles.active=${PROFILE:dev}, caso deseje testar com o banco Oracle, deixa a linha spring.profiles.active=${PROFILE:prod}
+5. Caso escolha o Oracle, adicionar as variáveis de ambiente em sua máquina, sendo que os campos e valores são:
+   5.1. DB_URL: url do banco oracle
+   5.2. DB_USER: usuario do banco oracle
+   5.3. DB_PASS: senha do banco oracle
+7. Abra o terminal ou prompt de comando nesta mesma localização (onde contém o pom.xml).
+8. Execute o seguinte comando para compilar o projeto e gerar o arquivo JAR:
+   
+```bash
+$ mvn clean package
+```
+
+Este comando irá limpar o projeto (remove arquivos compilados anteriores), compila o código-fonte e empacota o resultado em um arquivo JAR dentro do diretório `target`.
+
+9. Após a conclusão do processo, você encontrará o arquivo JAR gerado no diretório `target`.
+
+Executando o Arquivo JAR:<br>
+10. Navegue até o diretório `target` que contém o novo arquivo JAR.<br>
+11. Execute o arquivo JAR usando o comando:<br>
+
+```bash
+$ java -jar buy.it-0.0.1-SNAPSHOT.jar
+```
+
+Solução de Problemas:
+- Se ocorrerem erros durante a compilação ou geração do JAR, verifique se todas as dependências estão corretas e disponíveis.
+- Caso receba mensagens de erro ao tentar executar o arquivo JAR, assegure-se de que está utilizando a versão correta do Java e que todas as variáveis de ambiente estão devidamente configuradas.
+
+
+#### Opção 02:
 Navegue até o projeto maven:
 
 ```bash
-$ cd Entregas/Sprint\ 1/Enterprise\ Application\ Development\buyit
+$ cd Digital Business Enablement\buy.it-api
 ```
 
 Abra o projeto maven em seu editor e execute o arquivo main: BuyitApplicattion.java
@@ -218,80 +254,62 @@ $ yarn start
 
   ### Tabelas e Relacionamentos
   
-  #### 1. Pessoa
-  - **Descrição**: Armazena informações básicas das pessoas.
-  - **Chave primária**: `id_pessoa`
-  - **Restrição**: `nome_pessoa` não pode ser nulo.
-  
-  #### 2. Pessoa Jurídica
-  - **Descrição**: Representa uma pessoa jurídica, que pode ser um fornecedor.
-  - **Chave primária**: `id_pj`
-  - **Relacionamento**: Cada `id_pessoa` de `Pessoa` corresponde a um `id_pj` em `Pessoa Jurídica`.
-  - **Restrições**: `cnpj_pj` e `id_pessoa` devem ser únicos e não nulos; `is_fornecedor` não pode ser nulos.
-  
-  #### 3. Usuário
+  #### 1. Usuário
   - **Descrição**: Armazena informações dos usuários.
   - **Chave primária**: `id_usuario`
-  - **Relacionamento**: Cada `id_pessoa` de `Pessoa` corresponde a um `id_usuario` em `Usuário`.
-  - **Restrições**: `id_pessoa` e  `email_usuario` devem ser únicos e não nulos; `senha_usuario` não pode ser nulo.
+  - **Restrições**: `email_usuario` e  `cnpj_usuario` devem ser únicos e não nulos; `senha_usuario` não pode ser nulo.
 
-  #### 4. Tipo_Contato
-  - **Descrição**: Armazena informações do tipo de contato.
-  - **Chave primária**: `id_tipo_contato`
-  - **Restrição**: `nome_tipo_contato` deve ser único e não nulo.
+  #### 2. Contato
+  - **Descrição**: Armazena informações de contato.
+  - **Chave primária**: `id_contato`
+  - **Relacionamento**: Relacionado com `Usuario` através de `id_usuario`.
   
-  #### 5. Forma_Contato
-  - **Descrição**: Armazena informações de formas de contato.
-  - **Chave primária**: `id_forma_contato`
-  - **Relacionamento**: Relacionado com `Pessoa` e `Tipo_Contato`.
-  - **Restrição**:  `id_tipo_contato` deve ser único e não nulo; `id_pessoa` e `valor_forma_contato` não podem ser nulos.
-  
-  #### 6. Tag
+  #### 3. Tag
   - **Descrição**: Armazena etiquetas para categorização.
   - **Chave primária**: `id_tag`
   - **Restrição**: `nome_tag` deve ser único e não nulo.
   
-  #### 7. Usuário Tag
+  #### 4. Usuário Tag
   - **Descrição**: Associa usuários a tags.
   - **Relacionamento**: Relaciona `Usuário` com `Tag`.
   
-  #### 8. Departamento
+  #### 5. Departamento
   - **Descrição**: Armazena informações dos departamentos.
   - **Chave primária**: `id_departamento`
   - **Restrição**: `nome_departamento` deve ser único e não nulo.
   
-  #### 9. Tag Departamento
+  #### 6. Tag Departamento
   - **Descrição**: Associa tags a departamentos.
   - **Relacionamento**: Relaciona `Tag` com `Departamento`.
   
-  #### 10. Produto
+  #### 7. Produto
   - **Descrição**: Armazena informações dos produtos.
   - **Chave primária**: `id_produto`
   - **Relacionamento**: Relacionado com `Departamento` através de `id_departamento`.
   - **Restrição**: `nome_produto` não pode ser nulo.
   
-  #### 11. Produto Tag
+  #### 8. Produto Tag
   - **Descrição**: Associa produtos a tags.
   - **Relacionamento**: Relaciona `Produto` com `Tag`.
   
-  #### 12. Status
+  #### 9. Status
   - **Descrição**: Armazena diferentes estados para cotações e históricos.
   - **Chave primária**: `id_status`
   - **Restrição**: `nome_status` deve ser único e não nulo.
   
-  #### 13. Cotação
+  #### 10. Cotação
   - **Descrição**: Armazena informações de cotações.
   - **Chave primária**: `id_cotacao`
   - **Relacionamentos**: Relacionado com `Usuário`, `Produto` e `Status`.
   - **Restrições**: Nenhuma informação pode ser nula, com exceção da `data_fechamento_cotacao`.
   
-  #### 14. Avaliação
+  #### 11. Avaliação
   - **Descrição**: Armazena avaliações das cotações.
   - **Chave primária**: `id_avaliacao`
   - **Relacionamento**: Relacionado com `Cotação` através de `id_cotacao`.
   - **Restrições**: `id_cotacao` deve ser único e não nulo; `data_avaliacao` e notas de avaliação não podem ser nulos.
   
-  #### 15. Histórico
+  #### 12. Histórico
   - **Descrição**: Armazena o histórico das cotações.
   - **Chave primária**: `id_historico`
   - **Relacionamento**: Relacionado com `Usuario`, `Cotação` e `Status`.
@@ -312,7 +330,7 @@ $ yarn start
   <summary><h4><u>Diagrama de Classes (UML)</u></h4></summary>
   <br />
   <p align="center">
-    <img src="Documentação/UML.png" alt="MER">
+    <img src="Digital Business Enablement/UML.png" alt="UML">
   </p>
   <br />
   </details>

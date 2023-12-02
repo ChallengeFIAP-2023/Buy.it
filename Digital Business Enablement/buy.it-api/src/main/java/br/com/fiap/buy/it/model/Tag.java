@@ -1,15 +1,18 @@
 package br.com.fiap.buy.it.model;
+
 import jakarta.persistence.*;
-import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.*;
+
 import lombok.*;
 
-import java.util.Collections;
+import java.util.LinkedHashSet;
 import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-@ToString
 @Entity
 @Table(name = "TAG", uniqueConstraints = {
         @UniqueConstraint(name = "UK_NOME_TAG", columnNames = "NOME_TAG")
@@ -22,9 +25,10 @@ public class Tag {
     private Long id;
 
     @Column(name = "NOME_TAG", nullable = false)
-    @NotBlank(message = "O nome da tag não pode estar vazio.")
+    @NotBlank(message = "O campo nome não pode estar vazio.")
     private String nome;
 
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "TAG_DEPARTAMENTO",
@@ -43,8 +47,9 @@ public class Tag {
                     )
             }
     )
-    private Set<Departamento> departamentos;
+    private Set<Departamento> departamentos = new LinkedHashSet<>();
     
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "USUARIO_TAG",
@@ -63,8 +68,9 @@ public class Tag {
                     )
             }
     )
-    private Set<Usuario> usuarios;
-
+    private Set<Usuario> usuarios = new LinkedHashSet<>();
+        
+    @JsonBackReference
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "PRODUTO_TAG",
@@ -83,41 +89,18 @@ public class Tag {
                     )
             }
     )
-    private Set<Produto> produtos;
-
-    public Long getId() {
-        return id;
-    }
-
-    public Tag setId(Long id) {
-        this.id = id;
-        return this;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public Tag setNome(String nome) {
-        this.nome = nome;
-        return this;
-    }
+    private Set<Produto> produtos = new LinkedHashSet<>();
 
     public Tag addDepartamento(Departamento departamento) {
         this.departamentos.add(departamento);
-        departamento.addTag(this);
+        if (!departamento.getTags().contains(this)) departamento.getTags().add(this);
         return this;
     }
 
     public Tag removeDepartamento(Departamento departamento) {
         this.departamentos.remove(departamento);
-        if (departamento.getTags().equals(this)) departamento.removeTag(this);
+        if (departamento.getTags().contains(this)) departamento.removeTag(this);
         return this;
-    }
-
-
-    public Set<Departamento> getDepartamentos() {
-        return Collections.unmodifiableSet(departamentos);
     }
 
     public Tag addUsuario(Usuario usuario) {
@@ -132,10 +115,6 @@ public class Tag {
         return this;
     }
 
-    public Set<Usuario> getUsuarios() {
-        return Collections.unmodifiableSet(usuarios);
-    }
-
     public Tag addProduto(Produto produto) {
         this.produtos.add(produto);
         produto.addTag(this);
@@ -146,10 +125,5 @@ public class Tag {
         this.produtos.remove(produto);
         if (produto.getTags().equals(this)) produto.removeTag(this);
         return this;
-    }
-
-
-    public Set<Produto> getProdutos() {
-        return Collections.unmodifiableSet(produtos);
     }
 }
