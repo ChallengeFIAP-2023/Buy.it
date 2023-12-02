@@ -1,17 +1,17 @@
 package br.com.fiap.buy.it.dto;
 
-import jakarta.validation.constraints.*;
+        import jakarta.validation.constraints.*;
 
-import lombok.*;
+        import lombok.*;
 
-import java.util.Date;
-import java.math.BigDecimal;
+        import java.util.Date;
+        import java.math.BigDecimal;
 
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
 public class CotacaoDTO {
-    
+
     private Long id;
 
     @NotNull(message = "O campo data não pode estar vazio.")

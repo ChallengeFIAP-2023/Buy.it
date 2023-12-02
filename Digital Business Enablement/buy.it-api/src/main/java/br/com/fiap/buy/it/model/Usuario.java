@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 @Entity
 @Table(name = "USUARIO", uniqueConstraints = {
         @UniqueConstraint(name = "UK_EMAIL_USUARIO", columnNames = "EMAIL_USUARIO"),
-        @UniqueConstraint(name = "UK_CNPJ_PJ", columnNames = "CNPJ_PJ")
+        @UniqueConstraint(name = "UK_CNPJ_USUARIO", columnNames = "CNPJ_USUARIO")
 })
 public class Usuario {
     @Id
@@ -39,21 +39,21 @@ public class Usuario {
     @Getter @Setter
     private String senha;
 
-    @Column(name = "NOME_PESSOA", nullable = false)
+    @Column(name = "NOME_USUARIO", nullable = false)
     @NotBlank(message = "O campo nome não pode estar vazio.")
     @Getter @Setter
     private String nome;
 
-    @Column(name = "IMAGEM_PESSOA")
+    @Column(name = "IMAGEM_USUARIO")
     @Getter @Setter
     private String urlImagem;
 
-    @Column(name = "CNPJ_PJ", nullable = false)
+    @Column(name = "CNPJ_USUARIO", nullable = false)
     @NotBlank(message = "O campo cnpj não pode estar vazio.")
     @Getter @Setter
     private String cnpj;
 
-    @Column(name = "IS_FORNECEDOR_PJ", nullable = false)
+    @Column(name = "IS_FORNECEDOR", nullable = false)
     @NotNull(message = "O campo isFornecedor não pode estar vazio.")
     @Getter @Setter
     private Boolean isFornecedor;
