@@ -20,8 +20,17 @@ public class UsuarioDTO {
     @NotBlank(message = "O campo senha não pode estar vazio.")
     private String senha;
 
-    @NotNull(message = "O campo idPessoa não pode estar vazio.")
-    private Long idPessoa;
+    @NotNull(message = "O campo nome não pode estar vazio.")
+    private String nome;
+
+    @NotNull(message = "O campo urlImagem não pode estar vazio.")
+    private String urlImagem;
+
+    @NotNull(message = "O campo cnpj não pode estar vazio.")
+    private String cnpj;
+
+    @NotNull(message = "O campo isFornecedor não pode estar vazio.")
+    private Boolean isFornecedor;
 
     private Set<Long> idsTags;
 }

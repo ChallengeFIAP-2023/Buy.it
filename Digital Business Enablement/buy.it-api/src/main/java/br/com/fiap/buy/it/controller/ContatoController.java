@@ -1,8 +1,8 @@
 package br.com.fiap.buy.it.controller;
 
-import br.com.fiap.buy.it.dto.PessoaDTO;
-import br.com.fiap.buy.it.model.Pessoa;
-import br.com.fiap.buy.it.service.PessoaService;
+import br.com.fiap.buy.it.dto.ContatoDTO;
+import br.com.fiap.buy.it.model.Contato;
+import br.com.fiap.buy.it.service.ContatoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,41 +18,41 @@ import lombok.extern.slf4j.Slf4j;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("pessoas")
+@RequestMapping("contatos")
 @Slf4j
-public class PessoaController {
+public class ContatoController {
 
     @Autowired
-    private PessoaService pessoaService;
+    private ContatoService formaContatoService;
 
     @GetMapping
-    public ResponseEntity<Page<Pessoa>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<Contato>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
-        return ResponseEntity.ok(pessoaService.listAll(pageable));
+        return ResponseEntity.ok(formaContatoService.listAll(pageable));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Pessoa> findById(@PathVariable Long id) {
+    public ResponseEntity<Contato> findById(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
-        return ResponseEntity.ok(pessoaService.findById(id));
+        return ResponseEntity.ok(formaContatoService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Pessoa> create(@RequestBody @Valid PessoaDTO newData) {
+    public ResponseEntity<Contato> create(@RequestBody @Valid ContatoDTO newData) {
         log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(pessoaService.create(newData));
+        return ResponseEntity.status(HttpStatus.CREATED).body(formaContatoService.create(newData));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Pessoa> update(@PathVariable Long id, @RequestBody @Valid PessoaDTO updatedData) {
+    public ResponseEntity<Contato> update(@PathVariable Long id, @RequestBody @Valid ContatoDTO updatedData) {
         log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
-        return ResponseEntity.ok(pessoaService.update(id, updatedData));
+        return ResponseEntity.ok(formaContatoService.update(id, updatedData));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Deletando por ID: " + id);
-        pessoaService.delete(id);
+        formaContatoService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

@@ -26,9 +26,6 @@ public class UsuarioService {
     private UsuarioRepository usuarioRepository;
 
     @Autowired
-    private PessoaService pessoaService;
-
-    @Autowired
     private TagService tagService;
 
     public Page<Usuario> listAll(Pageable pageRequest) {
@@ -96,7 +93,10 @@ public class UsuarioService {
             entity = findEntityById(dto.getId());
             entity.setEmail(dto.getEmail());
             entity.setSenha(dto.getSenha());
-            entity.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));
+            entity.setNome(dto.getNome());
+            entity.setUrlImagem(dto.getUrlImagem());
+            entity.setCnpj(dto.getCnpj());
+            entity.setIsFornecedor(dto.getIsFornecedor());
             Set<Tag> newTags = new LinkedHashSet<>();
             if (dto.getIdsTags() != null) {
                 dto.getIdsTags().forEach(id -> {
@@ -109,7 +109,10 @@ public class UsuarioService {
             entity = new Usuario();
             entity.setEmail(dto.getEmail());
             entity.setSenha(dto.getSenha());
-            entity.setPessoa(pessoaService.findEntityById(dto.getIdPessoa()));
+            entity.setNome(dto.getNome());
+            entity.setUrlImagem(dto.getUrlImagem());
+            entity.setCnpj(dto.getCnpj());
+            entity.setIsFornecedor(dto.getIsFornecedor());
             if (dto.getIdsTags() != null) {
                 dto.getIdsTags().stream().forEach(id -> {
                     Tag tag = tagService.findEntityById(id);

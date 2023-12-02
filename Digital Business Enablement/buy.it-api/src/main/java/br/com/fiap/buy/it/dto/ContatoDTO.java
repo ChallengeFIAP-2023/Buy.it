@@ -7,16 +7,16 @@ import lombok.*;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FormaContatoDTO {
+public class ContatoDTO {
     
     private Long id;
 
-    @NotNull(message = "O campo idTipoContato não pode estar vazio.")
-    private Long idTipoContato;
+    @NotNull(message = "O campo tipo não pode estar vazio.")
+    private String tipo;
 
     @NotBlank(message = "O campo valor não pode estar vazio.")
     private String valor;
 
-    @NotNull(message = "O campo idPessoa não pode estar vazio.")
-    private Long idPessoa;
+    @NotNull(message = "O campo idUsuario não pode estar vazio.")
+    private Long idUsuario;
 }
