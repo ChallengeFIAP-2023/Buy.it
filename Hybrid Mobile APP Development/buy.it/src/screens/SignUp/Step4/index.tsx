@@ -1,81 +1,64 @@
+import { useState } from "react";
+import { ImageSourcePropType } from "react-native";
+import { ArrowRight } from "phosphor-react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { CompositeScreenProps } from "@react-navigation/native";
+
 // Component import
 import {
   DecreasingContainer,
-  StatusBar,
-  Header,
-  Highlight,
   Button,
+  DefaultComponent,
+  UserAvatar
 } from "@components/index";
 
-// Style import
-import { Container, Pic, WrapPic, IconPic } from './styles';
-import { ArrowRight, Image } from "phosphor-react-native";
-import { useState } from "react";
+// Type import
+import { MainNavigationRoutes } from "@routes/index";
+import { SignUpRoutes } from "..";
 
-import * as ImagePicker from 'expo-image-picker';
-
+// Theme import
 import theme from "@theme/index";
 
-export function Step4({ navigation }: any) {
+// Style import
+import { Container, AvatarWrapper } from './styles';
 
-  const [logo, setLogo] = useState<string | null>(null);
+export const Step4: React.FC<
+  CompositeScreenProps<
+    NativeStackScreenProps<SignUpRoutes, 'Step4'>,
+    NativeStackScreenProps<MainNavigationRoutes>
+  >
+> = ({ navigation }) => {
+  // State
+  const [avatar, setAvatar] = useState<string | null>(null);
 
-  const pickImage = async () => {
-
-    let result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      allowsEditing: true,
-      aspect: [5,5],
-      quality: 1,
-      base64: true,
-    });
-
-    console.log(result);
-
-    if (!result.canceled) {
-      setLogo(result.assets[0].uri);
-    }
-  };
+  const imageSource: ImageSourcePropType =
+    avatar ? { uri: avatar } : require('../../../assets/default_avatar.png');
 
   return (
     <Container>
-      {/* Arrumar esse dois componentes abaixo */}
-      {/* <StatusBar /> */}
-      <Header />
-
-      <Highlight
-        title="Logo da empresa"
-        subtitle="Passo 4 de 5"
+      <DefaultComponent
+        headerProps={{ goBack: () => navigation.goBack() }}
+        highlightProps={{
+          subtitle: "Passo 4 de 5",
+          title: "Logo da empresa"
+        }}
+        key="default-component-step4"
       />
 
       <DecreasingContainer>
-
-        <WrapPic>
-          {!logo ? (
-            <Pic
-              source={require('../../../assets/logo_default.png')}
-            />
-          ) : (
-            <Pic
-              source={{ uri: logo }}
-            />
-          )}
-          <IconPic onPress={pickImage}>
-            <Image size={theme.FONT_SIZE.XXL} color={theme.COLORS.WHITE} weight="bold" />
-          </IconPic>
-        </WrapPic>
-
-        <Button 
-          label="Escolher"
-          onPress={pickImage}
-          backgroundColor={theme.COLORS.GRAY_400}
-        />
+        <AvatarWrapper>
+          <UserAvatar
+            imageSource={imageSource}
+            handleSetAvatar={setAvatar}
+            size="XLL"
+          />
+        </AvatarWrapper>
       </DecreasingContainer>
 
-      <Button 
+      <Button
         label="Continuar"
         size="XL"
-        icon={<ArrowRight color={'#fff'} weight="bold" />}
+        icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
         onPress={() => navigation.navigate("Step5")}
       />

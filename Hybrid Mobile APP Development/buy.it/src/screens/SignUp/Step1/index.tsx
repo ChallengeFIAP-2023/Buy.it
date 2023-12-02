@@ -1,50 +1,79 @@
+import { useState } from "react";
+import { ArrowRight, IconProps } from "phosphor-react-native";
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { CompositeScreenProps } from "@react-navigation/native";
+
+// Type import
+import { MainNavigationRoutes } from "@routes/index";
+import { SignUpRoutes } from "..";
+
+// Theme import
+import theme from "@theme/index";
+
 // Component import
-import {
-    Highlight,
-    Button,
-    StatusBar,
-    Header
-} from "@components/index";
+import { Button, DefaultComponent } from "@components/index";
 
 // Style import
-import { Container, Content, Option, OptionText } from './styles';
-import { useState } from "react";
+import { Container, Content, Option, OptionText, AlertText } from './styles';
 
-import { ArrowRight } from "phosphor-react-native";
-  
-  export function Step1({ navigation }: any) {
+type CompanySegment = "SUPPLIER" | "BUYER";
 
-    const [isSupplier, setSupplier] = useState(false)
+export const Step1: React.FC<
+  CompositeScreenProps<
+    NativeStackScreenProps<SignUpRoutes, 'Step1'>,
+    NativeStackScreenProps<MainNavigationRoutes>
+  >
+> = ({ navigation }) => {
+  // State
+  const [companySegment, setCompanySegment] =
+    useState<CompanySegment | undefined>(undefined);
 
-    return (
-      <Container>
-        {/* Arrumar esse dois componentes abaixo */}
-        {/* <StatusBar /> */}
-        <Header />
-  
-        <Highlight
-          title="Qual a intenção da sua empresa?"
-          subtitle="Passo 1 de 5"
-        />
-
-        <Content>
-            <Option onPress={() => setSupplier(false)} active={!isSupplier}>
-                <OptionText active={!isSupplier}> Comprar </OptionText>
-            </Option>
-
-            <Option onPress={() => setSupplier(true)} active={isSupplier}>
-                <OptionText active={isSupplier}> Fornecer </OptionText>
-            </Option>
-        </Content>
-
-        <Button 
-            label="Continuar"
-            size="XL"
-            icon={<ArrowRight color={'#fff'} weight="bold" />}
-            bottom
-            onPress={() => navigation.navigate("Step2")}
-        />
-      </Container>
-    );
+  const icon: IconProps = {
+    color: companySegment === undefined ?
+      theme.COLORS.GRAY_300 :
+      theme.COLORS.WHITE,
+    weight: companySegment === undefined ? "regular" : "bold"
   }
-  
+
+  return (
+    <Container>
+      <DefaultComponent
+        headerProps={{ goBack: () => navigation.goBack() }}
+        highlightProps={{
+          title: "Qual a principal intenção da sua empresa?",
+          subtitle: "Passo 1 de 5",
+        }}
+        key="default-component-sing-in"
+      />
+
+      <Content>
+        <AlertText>Lembrando que se você é um fornecedor, você também poderá realizar compras 😉</AlertText>
+
+        <Option
+          onPress={() => setCompanySegment('BUYER')}
+          active={companySegment === 'BUYER'}
+        >
+          <OptionText active={companySegment === 'BUYER'}>Comprar</OptionText>
+        </Option>
+
+        <Option
+          onPress={() => setCompanySegment('SUPPLIER')}
+          active={companySegment === 'SUPPLIER'}
+        >
+          <OptionText active={companySegment === 'SUPPLIER'}>
+            Fornecer
+          </OptionText>
+        </Option>
+      </Content>
+
+      <Button
+        label="Continuar"
+        size="XL"
+        icon={<ArrowRight color={icon.color} weight={icon.weight} />}
+        bottom
+        onPress={() => navigation.navigate("Step2")}
+        disabled={companySegment === undefined}
+      />
+    </Container>
+  );
+}

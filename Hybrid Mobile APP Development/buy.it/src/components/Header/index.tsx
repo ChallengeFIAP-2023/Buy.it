@@ -1,23 +1,22 @@
 // Style import
-import { Container, Logo, BackButton, BackIcon } from './styles';
+import { Container, Logo, BackButton, BackIcon, Empty } from './styles';
 
-import { useNavigation } from '@react-navigation/native';
+export interface Props {
+  goBack?: () => void;
+}
 
-export function Header() {
-
-  const navigation = useNavigation();
-
-  const handleGoBack = () => {
-    navigation.goBack();
-  };
-
+export function Header({ goBack }: Props) {
   return (
     <Container>
-      <BackButton onPress={handleGoBack}>
-        <BackIcon />
+      <BackButton onPress={goBack}>
+        {typeof goBack === 'function' && (
+          <BackIcon />
+        )}
       </BackButton>
 
-      {/* <Logo /> */}
+      <Logo />
+
+      <Empty />
     </Container>
   );
 }

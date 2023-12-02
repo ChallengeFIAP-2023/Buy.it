@@ -3,11 +3,9 @@ import Dropdown from 'react-native-input-select';
 // Style import
 import { DisplayContainer, Label, Value } from './styles';
 
-import { CaretDown } from "phosphor-react-native";
-
 interface Props {
-    label: string;
-    value: string;
+  label: string;
+  value: string;
 }
 
 export function Display({ label, value, ...rest }: Props) {

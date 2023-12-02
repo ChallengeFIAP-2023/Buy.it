@@ -1,23 +1,25 @@
-import React from 'react';
 import {
   Platform,
   View,
   StatusBar as RNStatusBar,
-  StatusBarProps,
+  StatusBarProps as RNStatusBarProps,
   StyleSheet,
 } from 'react-native';
+
+// Theme import
+import theme from "@theme/index";
 
 // Util import
 import { getStatusBarHeight } from '@utils/getStatusBarHeight';
 
-// Interfaces
-export interface Props extends StatusBarProps {
+export interface Props extends RNStatusBarProps {
   /** skips iOS */
   noForce?: boolean;
+  backgroundColor?: string;
   dark?: boolean;
 }
 
-// Style import
+// Styles
 const style = StyleSheet.create({
   statusBar: {
     height: getStatusBarHeight(),
@@ -25,16 +27,17 @@ const style = StyleSheet.create({
   },
 });
 
-export function StatusBar({
+export const StatusBar: React.FC<Props> = ({
   noForce,
-  backgroundColor,
+  backgroundColor = theme.COLORS.GRAY_700,
   dark,
   ...rest
-}: Props) {
+}) => {
   return (
     <>
       <RNStatusBar
         animated
+        backgroundColor={backgroundColor}
         barStyle={dark ? 'dark-content' : 'light-content'}
         {...(Platform.OS === 'ios' && {
           translucent: true,

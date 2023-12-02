@@ -9,6 +9,8 @@ export const Container = styled.View`
   background-color: ${({ theme }) => theme.COLORS.GRAY_700};
 `;
 
-export const AvatarWrapper = styled.View`
-  margin-top: 30px;
+export const Fieldset = styled.View`
+  width: 100%;
+
+  margin-bottom: 45px;
 `;

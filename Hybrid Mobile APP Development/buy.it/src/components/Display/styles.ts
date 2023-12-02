@@ -1,7 +1,7 @@
 import styled from 'styled-components/native';
 
 export const DisplayContainer = styled.View`
-  margin-bottom: 10px;
+  margin: 10px 0;
 `;
 
 export const Label = styled.Text`

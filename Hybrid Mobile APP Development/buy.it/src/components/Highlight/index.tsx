@@ -2,7 +2,7 @@
 import { Container, Subtitle, Flex, Title, HighlightedText } from "./styles";
 
 // Interfaces
-interface Props {
+export interface Props {
   title: string;
   subtitle?: string;
   highlightedText?: string;

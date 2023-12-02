@@ -18,11 +18,15 @@ export const Container = styled.View`
 export const Logo = styled.Image.attrs({
   source: LogoImage
 })`
-  width: 40px;
-  height: 45px;
+  width: 80px;
+  height: 80px;
 `;
 
 export const BackButton = styled.TouchableOpacity`
+  flex: 1;
+`;
+
+export const Empty = styled.View`
   flex: 1;
 `;
 
@@ -30,3 +34,4 @@ export const BackIcon = styled(ArrowLeft).attrs(({ theme }) => ({
   size: theme.FONT_SIZE.XXL,
   color: theme.COLORS.GRAY_300
 }))``;
+

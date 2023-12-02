@@ -12,14 +12,14 @@ interface Props extends TouchableOpacityProps {
   backgroundColor?: string;
 }
 
-export function Button({ 
-  label, 
-  size = 'MD', 
-  icon, 
-  bottom = false, 
+export function Button({
+  label,
+  size = 'MD',
+  icon,
+  bottom = false,
   backgroundColor = theme.COLORS.PRIMARY,
-   ...rest 
-  }: Props) {
+  ...rest
+}: Props) {
   return (
     <ButtonContainer
       {...rest}
@@ -28,9 +28,7 @@ export function Button({
       bottom={bottom}
       backgroundColor={backgroundColor}
     >
-      <ButtonText 
-        size={size}
-      >
+      <ButtonText size={size}>
         {label}
       </ButtonText>
 

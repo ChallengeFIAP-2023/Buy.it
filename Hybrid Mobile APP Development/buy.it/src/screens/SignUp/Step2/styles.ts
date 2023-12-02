@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 
 export const Container = styled.View`
-  padding-top: 50px; // REMOVER ISSO (VOU ADICIONAR HEADER E STATUS BAR)
+  padding-top: 20px;
 
   width: 100%;
   height: 100%;
@@ -28,7 +28,7 @@ export const WrapChip = styled.View`
   display: flex;
   flex-direction: row;
   gap: 7px;
-  flex-wrap: wrap
+  flex-wrap: wrap;
   margin-top: 15px;
   margin-bottom: 45px;
 `;

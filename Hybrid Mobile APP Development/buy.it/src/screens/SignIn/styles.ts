@@ -1,7 +1,7 @@
 import styled from "styled-components/native";
 
 export const Container = styled.View`
-  padding-top: 50px; // REMOVER ISSO (VOU ADICIONAR HEADER E STATUS BAR)
+  padding-top: 20px;
 
   width: 100%;
   height: 100%;
@@ -21,17 +21,17 @@ export const Touchable = styled.TouchableOpacity`
   gap: 5px;
   justify-content: center;
 
-  margin-top: 65px;
+  margin-top: 45px;
 `;
 
 export const RegisterText = styled.Text`
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
-  color: ${({ theme }) => theme.COLORS.GRAY_300};
+  color: ${({ theme }) => theme.COLORS.WHITE};
   font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.REGULAR};
 `;
 
 export const RegisterTextBold = styled.Text`
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
-  color: ${({ theme }) => theme.COLORS.GRAY_300};
+  color: ${({ theme }) => theme.COLORS.WHITE};
   font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.BOLD};
 `;

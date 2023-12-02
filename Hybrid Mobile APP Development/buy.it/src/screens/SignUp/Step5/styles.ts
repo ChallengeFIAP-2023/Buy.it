@@ -5,7 +5,7 @@ interface Props {
   }
 
 export const Container = styled.View`
-  padding-top: 50px; // REMOVER ISSO (VOU ADICIONAR HEADER E STATUS BAR)
+  padding-top: 20px;
 
   width: 100%;
   height: 100%;
