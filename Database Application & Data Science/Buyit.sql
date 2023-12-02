@@ -979,8 +979,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.11. PRODUTO_TAG:
--- 02.11.01. INSERT E TESTE:
+-- 02.08. PRODUTO_TAG:
+-- 02.08.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_produto_tag(
     p_id_produto IN produto_tag.id_produto%TYPE,
     p_id_tag IN produto_tag.id_tag%TYPE
@@ -1006,7 +1006,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.11.02. UPDATE E TESTE:
+-- 02.08.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_produto_tag(
     p_id_produto_antigo IN produto_tag.id_produto%TYPE,
     p_id_tag_antigo IN produto_tag.id_tag%TYPE,
@@ -1035,7 +1035,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.11.03. DELETE E TESTE:
+-- 02.08.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_produto_tag(
     p_id_produto IN produto_tag.id_produto%TYPE,
     p_id_tag IN produto_tag.id_tag%TYPE
@@ -1061,15 +1061,20 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.12. STATUS:
--- 02.12.01. INSERT E TESTE:
+-- 02.09. STATUS:
+DROP SEQUENCE seq_status;
+CREATE SEQUENCE seq_status START WITH 6 INCREMENT BY 1;
+
+-- 02.09.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_status(
-    p_id_status IN status.id_status%TYPE,
     p_nome_status IN status.nome_status%TYPE
 ) AS
+    v_id_status status.id_status%TYPE;
 BEGIN
+    SELECT seq_status.NEXTVAL INTO v_id_status FROM DUAL;
+
     INSERT INTO status (id_status, nome_status)
-    VALUES (p_id_status, p_nome_status);
+    VALUES (v_id_status, p_nome_status);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -1081,14 +1086,14 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_status(6, 'Em Processamento');
+    insert_status('Em Processamento');
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.12.02. UPDATE E TESTE:
+-- 02.09.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_status(
     p_id_status IN status.id_status%TYPE,
     p_nome_status IN status.nome_status%TYPE
@@ -1115,7 +1120,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.12.03. DELETE E TESTE:
+-- 02.09.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_status(
     p_id_status IN status.id_status%TYPE
 ) AS
@@ -1140,12 +1145,14 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.13. COTACAO:
--- 02.13.01. INSERT E TESTE:
+-- 02.10. COTACAO:
+DROP SEQUENCE seq_cotacao;
+CREATE SEQUENCE seq_cotacao START WITH 6 INCREMENT BY 1;
+
+-- 02.10.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_cotacao(
-    p_id_cotacao IN cotacao.id_cotacao%TYPE,
     p_data_abertura_cotacao IN cotacao.data_abertura_cotacao%TYPE,
-    p_id_comprador IN cotacao.id_comprador%TYPE,
+    p_id_usuario IN cotacao.id_usuario%TYPE,
     p_id_produto IN cotacao.id_produto%TYPE,
     p_quantidade_produto IN cotacao.quantidade_produto%TYPE,
     p_valor_produto IN cotacao.valor_produto%TYPE,
@@ -1156,9 +1163,12 @@ CREATE OR REPLACE PROCEDURE insert_cotacao(
     p_prazo_cotacao IN cotacao.prazo_cotacao%TYPE,
     p_data_fechamento_cotacao IN cotacao.data_fechamento_cotacao%TYPE
 ) AS
+    v_id_cotacao cotacao.id_cotacao%TYPE;
 BEGIN
-    INSERT INTO cotacao (id_cotacao, data_abertura_cotacao, id_comprador, id_produto, quantidade_produto, valor_produto, id_status, prioridade_entrega, prioridade_qualidade, prioridade_preco, prazo_cotacao, data_fechamento_cotacao)
-    VALUES (p_id_cotacao, p_data_abertura_cotacao, p_id_comprador, p_id_produto, p_quantidade_produto, p_valor_produto, p_id_status, p_prioridade_entrega, p_prioridade_qualidade, p_prioridade_preco, p_prazo_cotacao, p_data_fechamento_cotacao);
+    SELECT seq_cotacao.NEXTVAL INTO v_id_cotacao FROM DUAL;
+    
+    INSERT INTO cotacao (id_cotacao, data_abertura_cotacao, id_usuario, id_produto, quantidade_produto, valor_produto, id_status, prioridade_entrega, prioridade_qualidade, prioridade_preco, prazo_cotacao, data_fechamento_cotacao)
+    VALUES (v_id_cotacao, p_data_abertura_cotacao, p_id_usuario, p_id_produto, p_quantidade_produto, p_valor_produto, p_id_status, p_prioridade_entrega, p_prioridade_qualidade, p_prioridade_preco, p_prazo_cotacao, p_data_fechamento_cotacao);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -1170,18 +1180,18 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_cotacao(6, SYSDATE, 1, 1, 100, 500, 1, 1, 1, 1, 30, SYSDATE);
+    insert_cotacao(SYSDATE, 1, 1, 100, 500, 1, 1, 1, 1, 30, SYSDATE);
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.13.02. UPDATE E TESTE:
+-- 02.10.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_cotacao(
     p_id_cotacao IN cotacao.id_cotacao%TYPE,
     p_data_abertura_cotacao IN cotacao.data_abertura_cotacao%TYPE,
-    p_id_comprador IN cotacao.id_comprador%TYPE,
+    p_id_usuario IN cotacao.id_usuario%TYPE,
     p_id_produto IN cotacao.id_produto%TYPE,
     p_quantidade_produto IN cotacao.quantidade_produto%TYPE,
     p_valor_produto IN cotacao.valor_produto%TYPE,
@@ -1194,7 +1204,7 @@ CREATE OR REPLACE PROCEDURE update_cotacao(
 ) AS
 BEGIN
     UPDATE cotacao
-    SET data_abertura_cotacao = p_data_abertura_cotacao, id_comprador = p_id_comprador, id_produto = p_id_produto, quantidade_produto = p_quantidade_produto, valor_produto = p_valor_produto, id_status = p_id_status, prioridade_entrega = p_prioridade_entrega, prioridade_qualidade = p_prioridade_qualidade, prioridade_preco = p_prioridade_preco, prazo_cotacao = p_prazo_cotacao, data_fechamento_cotacao = p_data_fechamento_cotacao
+    SET data_abertura_cotacao = p_data_abertura_cotacao, id_usuario = p_id_usuario, id_produto = p_id_produto, quantidade_produto = p_quantidade_produto, valor_produto = p_valor_produto, id_status = p_id_status, prioridade_entrega = p_prioridade_entrega, prioridade_qualidade = p_prioridade_qualidade, prioridade_preco = p_prioridade_preco, prazo_cotacao = p_prazo_cotacao, data_fechamento_cotacao = p_data_fechamento_cotacao
     WHERE id_cotacao = p_id_cotacao;
 
     IF SQL%ROWCOUNT = 0 THEN
@@ -1214,7 +1224,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.13.03. DELETE E TESTE:
+-- 02.10.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_cotacao(
     p_id_cotacao IN cotacao.id_cotacao%TYPE
 ) AS
@@ -1239,10 +1249,13 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.14. AVALIACAO:
--- 02.14.01. INSERT E TESTE:
+-- 02.11. AVALIACAO:
+-- POR SER 1 ÚNICA AVALIAÇÃO POR COTAÇÃO, INSIRA UMA COTAÇÃO DE ID 6 PARA REALIZAR ESSE TESTE
+DROP SEQUENCE seq_avaliacao;
+CREATE SEQUENCE seq_avaliacao START WITH 6 INCREMENT BY 1;
+
+-- 02.11.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_avaliacao(
-    p_id_avaliacao IN avaliacao.id_avaliacao%TYPE,
     p_id_cotacao IN avaliacao.id_cotacao%TYPE,
     p_data_avaliacao IN avaliacao.data_avaliacao%TYPE,
     p_nota_entrega_avaliacao IN avaliacao.nota_entrega_avaliacao%TYPE,
@@ -1250,9 +1263,12 @@ CREATE OR REPLACE PROCEDURE insert_avaliacao(
     p_nota_preco_avaliacao IN avaliacao.nota_preco_avaliacao%TYPE,
     p_descricao_avaliacao IN avaliacao.descricao_avaliacao%TYPE
 ) AS
+    v_id_avaliacao avaliacao.id_avaliacao%TYPE;
 BEGIN
+    SELECT seq_avaliacao.NEXTVAL INTO v_id_avaliacao FROM DUAL;
+    
     INSERT INTO avaliacao (id_avaliacao, id_cotacao, data_avaliacao, nota_entrega_avaliacao, nota_qualidade_avaliacao, nota_preco_avaliacao, descricao_avaliacao)
-    VALUES (p_id_avaliacao, p_id_cotacao, p_data_avaliacao, p_nota_entrega_avaliacao, p_nota_qualidade_avaliacao, p_nota_preco_avaliacao, p_descricao_avaliacao);
+    VALUES (v_id_avaliacao, p_id_cotacao, p_data_avaliacao, p_nota_entrega_avaliacao, p_nota_qualidade_avaliacao, p_nota_preco_avaliacao, p_descricao_avaliacao);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -1264,14 +1280,14 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_avaliacao(6, 6, SYSDATE, 4, 5, 4, 'Avaliação positiva');
+    insert_avaliacao(6, SYSDATE, 4, 5, 4, 'Avaliação positiva');
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.14.02. UPDATE E TESTE:
+-- 02.11.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_avaliacao(
     p_id_avaliacao IN avaliacao.id_avaliacao%TYPE,
     p_id_cotacao IN avaliacao.id_cotacao%TYPE,
@@ -1303,7 +1319,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.14.03. DELETE E TESTE:
+-- 02.11.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_avaliacao(
     p_id_avaliacao IN avaliacao.id_avaliacao%TYPE
 ) AS
@@ -1328,10 +1344,12 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.15. HISTORICO (OBS: NÃO FUNCIONA COM NUMERO DECIAL NO VALOR_OFERTADO_HISTORICO. NÃO CONSEGUIMOS RESOLVER)
--- 02.15.01. INSERT E TESTE:
+-- 02.12. HISTORICO (OBS: NÃO FUNCIONA COM NUMERO DECIAL NO VALOR_OFERTADO_HISTORICO. NÃO CONSEGUIMOS RESOLVER)
+DROP SEQUENCE seq_historico;
+CREATE SEQUENCE seq_historico START WITH 6 INCREMENT BY 1;
+
+-- 02.12.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_historico(
-    p_id_historico IN historico.id_historico%TYPE,
     p_id_cotacao IN historico.id_cotacao%TYPE,
     p_data_historico IN historico.data_historico%TYPE,
     p_id_status IN historico.id_status%TYPE,
@@ -1343,10 +1361,12 @@ CREATE OR REPLACE PROCEDURE insert_historico(
     p_recusado_por_prazo IN historico.recusado_por_prazo%TYPE,
     p_descricao_historico IN historico.descricao_historico%TYPE
 ) AS
+    v_id_historico historico.id_historico%TYPE;
 BEGIN
+    SELECT seq_historico.NEXTVAL INTO v_id_historico FROM DUAL;
     
     INSERT INTO historico (id_historico, id_cotacao, data_historico, id_status, id_fornecedor, valor_ofertado_historico, recusado_por_produto, recusado_por_quantidade, recusado_por_preco, recusado_por_prazo, descricao_historico)
-    VALUES (p_id_historico, p_id_cotacao, p_data_historico, p_id_status, p_id_fornecedor, p_valor_ofertado_historico, p_recusado_por_produto, p_recusado_por_quantidade, p_recusado_por_preco, p_recusado_por_prazo, p_descricao_historico);
+    VALUES (v_id_historico, p_id_cotacao, p_data_historico, p_id_status, p_id_fornecedor, p_valor_ofertado_historico, p_recusado_por_produto, p_recusado_por_quantidade, p_recusado_por_preco, p_recusado_por_prazo, p_descricao_historico);
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
@@ -1358,14 +1378,14 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_historico(6, 2, SYSDATE, 1, 2, 15000, 0, 0, 0, 0, 'Histórico inicial da cotação');
+    insert_historico(2, SYSDATE, 1, 2, 15000, 0, 0, 0, 0, 'Histórico inicial da cotação');
     DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.15.02. UPDATE E TESTE:
+-- 02.12.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_historico(
     p_id_historico IN historico.id_historico%TYPE,
     p_id_cotacao IN historico.id_cotacao%TYPE,
@@ -1401,7 +1421,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.15.03. DELETE E TESTE:
+-- 02.12.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_historico(
     p_id_historico IN historico.id_historico%TYPE
 ) AS
@@ -1489,5 +1509,3 @@ END;
 BEGIN
     print_cotacao_report;
 END;
-
---------------------------------------------------------------------------------
