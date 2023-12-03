@@ -8,7 +8,7 @@ export const Header = styled.View`
   margin-top: 25px;
 `;
 
-export const Container = styled.ScrollView`
+export const Container = styled.View`
   flex: 1;
 
   background-color: ${({ theme }) => theme.COLORS.GRAY_600};

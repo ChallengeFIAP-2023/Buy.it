@@ -12,11 +12,14 @@ module.exports = function (api) {
             '@components': './src/components',
             '@routes': './src/routes',
             '@screens': './src/screens',
+            '@services': './src/services',
             '@theme': './src/theme',
             '@utils': './src/utils',
             '@dtos': './src/dtos',
             '@hooks': './src/hooks',
-            '@validations': './src/validations'
+            '@validations': './src/validations',
+            '@global': './src/global',
+            '@storage': './src/storage',
           }
         }
       ]

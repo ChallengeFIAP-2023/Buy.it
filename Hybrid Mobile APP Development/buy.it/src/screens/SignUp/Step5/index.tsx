@@ -14,8 +14,12 @@ import { Step5FormSchema } from "@validations/index";
 // Theme import
 import theme from "@theme/index";
 
+// Type import
+import { User } from "@dtos/user";
+
 // Hook import
 import { useSignUpForm } from "@hooks/useSignUpForm";
+import { useAuth } from "@hooks/useAuth";
 
 // Component import
 import {
@@ -23,10 +27,12 @@ import {
   Input,
   Button,
   DefaultComponent,
+  WrapperPage
 } from "@components/index";
 
 // Style import
-import { Container, Fieldset, Requirement, RequirementText } from './styles';
+import { Fieldset, Requirement, RequirementText, Content } from './styles';
+import { ScrollableContent } from '@global/styles/index';
 
 interface Step5Form {
   senha: string;
@@ -39,7 +45,8 @@ export const Step5: React.FC<
   >
 > = ({ navigation }) => {
   // Hook
-  const { user, setUser } = useSignUpForm();
+  const { user, handleRegisterUser } = useSignUpForm();
+  const { handleSignIn } = useAuth();
   const {
     control,
     handleSubmit,
@@ -48,58 +55,75 @@ export const Step5: React.FC<
     resolver: yupResolver(Step5FormSchema),
   });
 
-  const onSubmit: SubmitHandler<Step5Form> = (data) => {
-    setUser({ ...user, ...data });
+  const onSubmit: SubmitHandler<Step5Form> = async (data) => {
+    const email = user.email;
+    const senha = data.senha;
 
-    return navigation.navigate("Profile");
+    const finalUserData: User = Object.assign(user, { senha });
+
+    try {
+      console.log("\n\n dados do usuário: ", finalUserData)
+      await handleRegisterUser(finalUserData);
+
+      if (!email || !senha) return;
+
+      await handleSignIn({ email, password: senha })
+      return navigation.navigate("Profile");
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   return (
-    <Container>
-      <DefaultComponent
-        headerProps={{ goBack: () => navigation.goBack() }}
-        highlightProps={{
-          subtitle: "Passo 5 de 5",
-          title: "Defina uma",
-          highlightedText: "senha"
-        }}
-        key="default-component-step5"
-      />
+    <WrapperPage>
+      <ScrollableContent>
+        <DefaultComponent
+          headerProps={{ goBack: () => navigation.goBack() }}
+          highlightProps={{
+            subtitle: "Passo 5 de 5",
+            title: "Defina uma",
+            highlightedText: "senha"
+          }}
+          key="default-component-step5"
+        />
 
-      <DecreasingContainer>
-        <Fieldset>
-          <Controller
-            control={control}
-            name="senha"
-            render={({ field: { value, onChange } }) => (
-              <Input
-                value={value}
-                onChangeText={onChange}
-                label="Senha"
-                placeholder="********"
-                secureTextEntry
-                error={errors.senha?.message}
+        <DecreasingContainer>
+          <Content>
+            <Fieldset>
+              <Controller
+                control={control}
+                name="senha"
+                render={({ field: { value, onChange } }) => (
+                  <Input
+                    value={value}
+                    onChangeText={onChange}
+                    label="Senha"
+                    placeholder="********"
+                    secureTextEntry
+                    error={errors.senha?.message}
+                  />
+                )}
               />
-            )}
-          />
-        </Fieldset>
+            </Fieldset>
 
-        <Requirement>
-          <Check color={theme.COLORS.GREEN_700} weight="bold" size={theme.FONT_SIZE.MD} />
-          <RequirementText fulfilled>8 caracteres</RequirementText>
-        </Requirement>
+            <Requirement>
+              <Check color={theme.COLORS.GREEN_700} weight="bold" size={theme.FONT_SIZE.MD} />
+              <RequirementText fullFilled>8 caracteres</RequirementText>
+            </Requirement>
 
-        <Requirement>
-          <Check color={theme.COLORS.GREEN_700} weight="bold" size={theme.FONT_SIZE.MD} />
-          <RequirementText fulfilled>pelo menos uma letra minúscula</RequirementText>
-        </Requirement>
+            <Requirement>
+              <Check color={theme.COLORS.GREEN_700} weight="bold" size={theme.FONT_SIZE.MD} />
+              <RequirementText fullFilled>pelo menos uma letra minúscula</RequirementText>
+            </Requirement>
 
-        <Requirement>
-          <X color={theme.COLORS.RED} weight="bold" size={theme.FONT_SIZE.MD} />
-          <RequirementText>pelo menos uma letra minúscula</RequirementText>
-        </Requirement>
+            <Requirement>
+              <X color={theme.COLORS.RED} weight="bold" size={theme.FONT_SIZE.MD} />
+              <RequirementText>pelo menos uma letra minúscula</RequirementText>
+            </Requirement>
+          </Content>
 
-      </DecreasingContainer>
+        </DecreasingContainer>
+      </ScrollableContent>
 
       <Button
         label="Criar conta"
@@ -108,6 +132,6 @@ export const Step5: React.FC<
         bottom
         onPress={handleSubmit(onSubmit)}
       />
-    </Container>
+    </WrapperPage>
   );
 }

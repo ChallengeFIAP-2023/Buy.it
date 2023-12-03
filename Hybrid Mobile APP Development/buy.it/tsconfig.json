@@ -16,8 +16,8 @@
       "@screens/*": [
         "./src/screens/*"
       ],
-      "@storage/*": [
-        "./src/storage/*"
+      "@services/*": [
+        "./src/services/*"
       ],
       "@theme/*": [
         "./src/theme/*"
@@ -33,7 +33,13 @@
       ],
       "@validations/*": [
         "./src/validations/*"
-      ]
+      ],
+      "@global/*": [
+        "./src/global/*"
+      ],
+      "@storage/*": [
+        "./src/storage/*"
+      ],
     }
   },
   "exclude": ["node_modules", ".vscode"],
