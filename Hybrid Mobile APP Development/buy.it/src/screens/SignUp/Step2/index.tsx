@@ -3,7 +3,8 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { ArrowRight } from "phosphor-react-native";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useLayoutEffect, useState } from "react";
+import { api } from '@services/api';
 
 // Component import
 import {
@@ -13,7 +14,8 @@ import {
   Chip,
   DefaultComponent,
   CustomDropdown,
-  WrapperPage
+  WrapperPage,
+  Loading
 } from "@components/index";
 
 // Type import
@@ -35,6 +37,10 @@ import { useSignUpForm } from "@hooks/useSignUpForm";
 // Style import
 import { Fieldset, WrapChip } from './styles';
 import { ScrollableContent } from "@global/styles/index";
+
+// Type import
+import { Department } from "@dtos/department";
+import { Tag } from "@dtos/tag";
 
 interface Step2Form {
   nome: string;
@@ -82,8 +88,29 @@ export const Step2: React.FC<
   }
 
   // State
-  const [department, setDepartment] = useState(1);
-  const [tags, setTags] = useState([1]);
+  const [departments, setDepartments] = useState<Department[]>([] as Department[]);
+  const [department, setDepartment] = useState<Department | null>(null);
+  const [tags, setTags] = useState<Tag[]>([] as Tag[]);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useLayoutEffect(() => {
+    const fetchData = async () => {
+      try {
+
+        const departmentsData = await api.get('/departamentos');
+        setDepartments(departmentsData.data.content);
+        
+      } catch (error) {
+        console.error('Erro ao buscar dados: ', error);
+      } finally {
+        setIsLoading(false)
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (isLoading) return <Loading />;
 
   return (
     <WrapperPage>
@@ -148,34 +175,31 @@ export const Step2: React.FC<
             />
           </Fieldset>
 
-          <Fieldset>
+          { departments && (
+            <Fieldset>
             <CustomDropdown
               label="Departamento"
               placeholder="Selecione uma opção"
-              options={departmentsExample}
-              selectedValue={department}
-              onValueChange={(value: number) => setDepartment(value)}
+              options={departments.map(dep => ({ label: dep.nome, value: dep.id}))}
+              selectedValue={department ? department.id : undefined}
+              onValueChange={(value: number) =>
+                setDepartment(departments.find((dep) => dep.id === String(value)) || null)
+              }
             />
           </Fieldset>
+          ) }
 
-          <Fieldset>
+          { department && department.tags.length > 0 && (
+            <Fieldset>
             <CustomDropdown
               label="Tags relacionadas"
-              placeholder="Selecione uma opção"
-              options={tagsExample}
-              selectedValue={tags}
-              isMultiple
-              isSearchable
-              onValueChange={(value: any) => setTags(value)}
+              placeholder="Selecione as tags relacionadas"
+              options={department.tags.map(tag => ({ label: tag.nome, value: tag.id}))}
+              selectedValue={tags.map(tag => tag.id)}
+              onValueChange={(value: []) => setTags(value.map(value => ({ id: value, nome: ''}) ))}
             />
           </Fieldset>
-
-          {/* <Input label="Tags relacionadas" placeholder="Papelaria" />
-        <WrapChip>
-          <Chip value="material escolar" removable />
-          <Chip value="suprimento" removable />
-          <Chip value="papelaria" removable />
-        </WrapChip> */}
+          ) }
 
           <WrapChip>
             <Chip value="material escolar" removable />

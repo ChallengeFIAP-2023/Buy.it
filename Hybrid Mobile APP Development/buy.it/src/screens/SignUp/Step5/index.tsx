@@ -1,6 +1,6 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CompositeScreenProps } from "@react-navigation/native";
-import { ArrowRight, Check, X } from "phosphor-react-native";
+import { ArrowRight, Check, Password, X } from "phosphor-react-native";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -27,12 +27,14 @@ import {
   Input,
   Button,
   DefaultComponent,
-  WrapperPage
+  WrapperPage,
+  Requirement
 } from "@components/index";
 
 // Style import
-import { Fieldset, Requirement, RequirementText, Content } from './styles';
+import { Fieldset, Content } from './styles';
 import { ScrollableContent } from '@global/styles/index';
+import { useState } from "react";
 
 interface Step5Form {
   senha: string;
@@ -47,17 +49,18 @@ export const Step5: React.FC<
   // Hook
   const { user, handleRegisterUser } = useSignUpForm();
   const { handleSignIn } = useAuth();
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<Step5Form>({
-    resolver: yupResolver(Step5FormSchema),
-  });
 
-  const onSubmit: SubmitHandler<Step5Form> = async (data) => {
+  // State
+  const [hasEnoughCharacters, setHasEnoughCharacters] = useState(false);
+  const [hasUppercase, setHasUppercase] = useState(false);
+  const [hasLowercase, setHasLowercase] = useState(false);
+  const [password, setPassword] = useState('');
+
+  const isValid = hasEnoughCharacters && hasUppercase && hasLowercase;
+
+  const onSubmit = async () => {
     const email = user.email;
-    const senha = data.senha;
+    const senha = password;
 
     const finalUserData: User = Object.assign(user, { senha });
 
@@ -72,6 +75,12 @@ export const Step5: React.FC<
     } catch (error) {
       console.log(error);
     }
+  }
+
+  function validatePassword(password: string){
+    setHasEnoughCharacters(password.length >= 8);
+    setHasUppercase(/[A-Z]/.test(password));
+    setHasLowercase(/[a-z]/.test(password));
   }
 
   return (
@@ -90,36 +99,32 @@ export const Step5: React.FC<
         <DecreasingContainer>
           <Content>
             <Fieldset>
-              <Controller
-                control={control}
-                name="senha"
-                render={({ field: { value, onChange } }) => (
-                  <Input
-                    value={value}
-                    onChangeText={onChange}
-                    label="Senha"
-                    placeholder="********"
-                    secureTextEntry
-                    error={errors.senha?.message}
-                  />
-                )}
+              <Input
+                value={password}
+                onChangeText={(text) => {
+                  setPassword(text);
+                  validatePassword(text);
+                }}
+                label="Senha"
+                placeholder="********"
+                secureTextEntry
               />
             </Fieldset>
 
-            <Requirement>
-              <Check color={theme.COLORS.GREEN_700} weight="bold" size={theme.FONT_SIZE.MD} />
-              <RequirementText fullFilled>8 caracteres</RequirementText>
-            </Requirement>
+            <Requirement
+              label="pelo menos 8 caracteres"
+              fulfilled={hasEnoughCharacters}
+            />
 
-            <Requirement>
-              <Check color={theme.COLORS.GREEN_700} weight="bold" size={theme.FONT_SIZE.MD} />
-              <RequirementText fullFilled>pelo menos uma letra minúscula</RequirementText>
-            </Requirement>
+            <Requirement
+              label="pelo menos uma letra minúscula"
+              fulfilled={hasLowercase}
+            />
 
-            <Requirement>
-              <X color={theme.COLORS.RED} weight="bold" size={theme.FONT_SIZE.MD} />
-              <RequirementText>pelo menos uma letra minúscula</RequirementText>
-            </Requirement>
+            <Requirement
+              label="pelo menos uma letra maiúscula"
+              fulfilled={hasUppercase}
+            />
           </Content>
 
         </DecreasingContainer>
@@ -130,7 +135,8 @@ export const Step5: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        onPress={handleSubmit(onSubmit)}
+        disabled={!isValid}
+        onPress={onSubmit}
       />
     </WrapperPage>
   );
