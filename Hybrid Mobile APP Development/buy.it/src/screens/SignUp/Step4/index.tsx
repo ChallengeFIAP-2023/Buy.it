@@ -74,7 +74,6 @@ export const Step4: React.FC<
           />
         </AvatarWrapper>
       </DecreasingContainer>
-
       <Button
         label="Continuar"
         size="XL"

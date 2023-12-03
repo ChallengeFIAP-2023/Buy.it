@@ -1,6 +1,9 @@
 import { useMemo } from "react";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
+// Hook import
+import { AuthProvider } from "@hooks/useAuth";
+
 // Screen import
 import { SignIn } from "@screens/SignIn";
 import { SignUp } from "@screens/SignUp";
@@ -44,8 +47,8 @@ export default function Routes() {
   }, [initialMainRoute]);
 
   return (
-    <>
+    <AuthProvider>
       {MainNavigation}
-    </>
+    </AuthProvider>
   );
 }

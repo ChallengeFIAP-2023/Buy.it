@@ -11,6 +11,7 @@ export { CustomDropdown } from './Dropdown';
 export { Display } from './Display';
 export { DefaultComponent } from './DefaultComponent';
 export { UserAvatar } from './UserAvatar';
+export { WrapperPage } from './WrapperPage';
 
 // Type export
 export type { Props as HeaderProps } from "./Header"

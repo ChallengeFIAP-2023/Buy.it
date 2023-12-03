@@ -1,16 +1,12 @@
 import styled from "styled-components/native";
 
 interface Props {
-    fulfilled?: boolean;
-  }
+  fullFilled?: boolean;
+}
 
-export const Container = styled.View`
-  padding-top: 20px;
-
-  width: 100%;
-  height: 100%;
-
-  background-color: ${({ theme }) => theme.COLORS.GRAY_700};
+export const Content = styled.View`
+  flex: 1;
+  height: 400px;
 `;
 
 export const Fieldset = styled.View`
@@ -28,6 +24,6 @@ export const Requirement = styled.View`
 export const RequirementText = styled.Text<Props>`
   font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.BOLD};
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
-  color: ${({ theme, fulfilled }) => fulfilled ? theme.COLORS.WHITE : theme.COLORS.GRAY_300};
+  color: ${({ theme, fullFilled }) => fullFilled ? theme.COLORS.WHITE : theme.COLORS.GRAY_300};
   margin-bottom: 5px;
 `;

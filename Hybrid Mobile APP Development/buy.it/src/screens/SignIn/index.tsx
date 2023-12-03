@@ -6,6 +6,9 @@ import Toast from 'react-native-toast-message';
 // Type import
 import { MainNavigationRoutes } from "@routes/index";
 
+// Hook import
+import { useAuth } from "@hooks/useAuth";
+
 // Validation import
 import { SignInFormSchema } from "@validations/index";
 
@@ -17,17 +20,19 @@ import {
   DecreasingContainer,
   Input,
   Button,
-  DefaultComponent
+  DefaultComponent,
+  WrapperPage
 } from "@components/index";
 
 // Style import
 import {
-  Container,
+  Content,
   Fieldset,
   RegisterText,
   Touchable,
   RegisterTextBold
 } from './styles';
+import { ScrollableContent } from "@global/styles/index";
 
 interface SignInForm {
   email: string;
@@ -38,6 +43,7 @@ export function SignIn({
   navigation
 }: NativeStackScreenProps<MainNavigationRoutes, 'SignIn'>) {
   // Hook
+  const { handleSignIn } = useAuth();
   const {
     control,
     handleSubmit,
@@ -46,10 +52,10 @@ export function SignIn({
     resolver: yupResolver(SignInFormSchema),
   });
 
-  const onSubmit: SubmitHandler<SignInForm> = (data) => {
+  const onSubmit: SubmitHandler<SignInForm> = async (data) => {
     try {
-      console.log(data)
-      throw new Error();
+      const { email, senha } = data;
+      await handleSignIn({ email, password: senha });
     } catch (error) {
       Toast.show({
         type: 'error',
@@ -60,55 +66,59 @@ export function SignIn({
   }
 
   return (
-    <Container>
-      <DefaultComponent
-        highlightProps={{ title: "Acesse sua conta", subtitle: "Bem vindo!" }}
-        statusBarProps={{ backgroundColor: theme.COLORS.GRAY_700 }}
-        key="default-component-sing-in"
-      />
+    <WrapperPage>
+      <ScrollableContent>
+        <DefaultComponent
+          highlightProps={{ title: "Acesse sua conta", subtitle: "Bem vindo!" }}
+          statusBarProps={{ backgroundColor: theme.COLORS.GRAY_700 }}
+          key="default-component-sing-in"
+        />
 
-      <DecreasingContainer>
-        <Fieldset>
-          <Controller
-            control={control}
-            name="email"
-            render={({ field: { value, onChange } }) => (
-              <Input
-                value={value}
-                onChangeText={onChange}
-                label="E-mail"
-                keyboardType="email-address"
-                placeholder="Johndoe@example.com"
-                error={errors.email?.message}
+        <DecreasingContainer>
+          <Content>
+            <Fieldset>
+              <Controller
+                control={control}
+                name="email"
+                render={({ field: { value, onChange } }) => (
+                  <Input
+                    value={value}
+                    onChangeText={onChange}
+                    label="E-mail"
+                    keyboardType="email-address"
+                    placeholder="Johndoe@example.com"
+                    error={errors.email?.message}
+                  />
+                )}
               />
-            )}
-          />
-        </Fieldset>
+            </Fieldset>
 
-        <Fieldset>
-          <Controller
-            control={control}
-            name="senha"
-            render={({ field: { value, onChange } }) => (
-              <Input
-                value={value}
-                onChangeText={onChange}
-                label="Senha"
-                placeholder="****"
-                secureTextEntry
-                error={errors.senha?.message}
+            <Fieldset>
+              <Controller
+                control={control}
+                name="senha"
+                render={({ field: { value, onChange } }) => (
+                  <Input
+                    value={value}
+                    onChangeText={onChange}
+                    label="Senha"
+                    placeholder="****"
+                    secureTextEntry
+                    error={errors.senha?.message}
+                  />
+                )}
               />
-            )}
-          />
-        </Fieldset>
+            </Fieldset>
 
-        <Button label="Entrar" onPress={handleSubmit(onSubmit)} />
+            <Button label="Entrar" onPress={handleSubmit(onSubmit)} />
 
-        <Touchable onPress={() => navigation.navigate("SignUp")}>
-          <RegisterText>Novo por aqui?</RegisterText>
-          <RegisterTextBold>Criar uma conta</RegisterTextBold>
-        </Touchable>
-      </DecreasingContainer>
-    </Container>
+            <Touchable onPress={() => navigation.navigate("SignUp")}>
+              <RegisterText>Novo por aqui?</RegisterText>
+              <RegisterTextBold>Criar uma conta</RegisterTextBold>
+            </Touchable>
+          </Content>
+        </DecreasingContainer>
+      </ScrollableContent>
+    </WrapperPage>
   );
 }

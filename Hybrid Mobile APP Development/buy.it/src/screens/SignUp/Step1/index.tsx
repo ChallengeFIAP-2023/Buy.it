@@ -17,7 +17,11 @@ import { useSignUpForm } from "../../../hooks/useSignUpForm";
 import { Button, DefaultComponent } from "@components/index";
 
 // Style import
-import { Container, Content, Option, OptionText, AlertText } from './styles';
+import { Container, Content, Option, OptionText } from './styles';
+import {
+  // Container, ScrollableContent,
+  AlertText } from "@global/styles";
+
 
 type CompanySegment = "SUPPLIER" | "BUYER";
 
