@@ -1,1 +1,2 @@
-export { User } from './user';
+export { UserQuery, User } from './user';
+export { Tag } from './tag';
