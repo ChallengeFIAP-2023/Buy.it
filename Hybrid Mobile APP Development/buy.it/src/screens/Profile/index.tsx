@@ -87,7 +87,7 @@ export function Profile({
   }
 
   const imageSource: ImageSourcePropType =
-    avatar ? { uri: user.urlImagem } : require('../../assets/default_avatar.png');
+    avatar ? { uri: avatar } : require('../../assets/default_avatar.png');
 
   return (
     <WrapperPage>

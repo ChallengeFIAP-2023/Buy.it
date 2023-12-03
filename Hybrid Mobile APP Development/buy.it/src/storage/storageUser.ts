@@ -1,7 +1,7 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Type import
-import { UserQuery } from '@dtos/index';
+import { UserQuery, User } from '@dtos/index';
 
 // Storage import
 import { USER_STORAGE } from '@storage/storageConfig';
@@ -12,7 +12,7 @@ export const storageUserSave = async (user: UserQuery) =>
 export async function storageUserGet() {
   const storage = await AsyncStorage.getItem(USER_STORAGE);
 
-  const user: UserQuery = storage ? JSON.parse(storage) : ({} as UserQuery);
+  const user: User = storage ? JSON.parse(storage) : ({} as User);
 
   return user;
 }

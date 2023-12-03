@@ -1,9 +1,12 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
 
 // Type import
 import { AppNavigatorRoutesProps } from "@routes/index";
+
+// Storage import
+import { storageUserGet } from '@storage/storageUser';
 
 // Service import
 import { api } from "@services/api";
@@ -37,6 +40,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();
 
   // State
+  // const [user, setUser] = useState<User>({} as User);
   const [user, setUser] = useState<User>({} as User);
   const [sigInLoading, setSignInLoading] = useState(false);
   const [updateLoading, setUpdateLoading] = useState(false);
@@ -116,6 +120,16 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
       setUpdateLoading(false);
     }
   }, [])
+
+  useEffect(() => {
+    async function verifyIfUserIsLogged() {
+      const user = await storageUserGet();
+
+      if (user) return setUser(user);
+    }
+
+    verifyIfUserIsLogged();
+  }, []);
 
   return (
     <AuthContext.Provider value={{
