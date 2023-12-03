@@ -3,6 +3,7 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { ArrowRight } from "phosphor-react-native";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { useState } from "react";
 
 // Component import
 import {
@@ -11,6 +12,7 @@ import {
   Button,
   Chip,
   DefaultComponent,
+  CustomDropdown,
   WrapperPage
 } from "@components/index";
 
@@ -40,6 +42,20 @@ interface Step2Form {
   cnpj: string;
 }
 
+const departmentsExample = [
+  { label: 'Escritório', value: 1 },
+  { label: 'Informática', value: 2 },
+  { label: 'Têxtil', value: 3 },
+]
+
+const tagsExample = [
+  { label: 'Periféricos', value: 1 },
+  { label: 'Eletrônicos', value: 2 },
+  { label: 'Papelaria', value: 3 },
+  { label: 'Roupas e acessórios', value: 4 },
+  { label: 'Tecidos', value: 5 },
+]
+
 export const Step2: React.FC<
   CompositeScreenProps<
     NativeStackScreenProps<SignUpRoutes, 'Step2'>,
@@ -64,6 +80,10 @@ export const Step2: React.FC<
 
     return navigation.navigate("Step3");
   }
+
+  // State
+  const [department, setDepartment] = useState(1);
+  const [tags, setTags] = useState([1]);
 
   return (
     <WrapperPage>
@@ -126,14 +146,36 @@ export const Step2: React.FC<
                 />
               )}
             />
-
           </Fieldset>
 
           <Fieldset>
-            <Input label="Departamento" placeholder="Escritório" />
+            <CustomDropdown
+              label="Departamento"
+              placeholder="Selecione uma opção"
+              options={departmentsExample}
+              selectedValue={department}
+              onValueChange={(value: number) => setDepartment(value)}
+            />
           </Fieldset>
 
-          <Input label="Tags relacionadas" placeholder="Papelaria" />
+          <Fieldset>
+            <CustomDropdown
+              label="Tags relacionadas"
+              placeholder="Selecione uma opção"
+              options={tagsExample}
+              selectedValue={tags}
+              isMultiple
+              isSearchable
+              onValueChange={(value: any) => setTags(value)}
+            />
+          </Fieldset>
+
+          {/* <Input label="Tags relacionadas" placeholder="Papelaria" />
+        <WrapChip>
+          <Chip value="material escolar" removable />
+          <Chip value="suprimento" removable />
+          <Chip value="papelaria" removable />
+        </WrapChip> */}
 
           <WrapChip>
             <Chip value="material escolar" removable />

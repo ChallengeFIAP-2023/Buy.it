@@ -24,38 +24,31 @@ public class Usuario {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_USUARIO")
     @SequenceGenerator(name = "SQ_USUARIO", sequenceName = "SQ_USUARIO", allocationSize = 1)
     @Column(name = "ID_USUARIO")
-    @Getter @Setter
     private Long id;
+
+    @Column(name = "NOME_USUARIO", nullable = false)
+    @NotBlank(message = "O campo nome não pode estar vazio.")
+    private String nome;
 
     @Column(name = "EMAIL_USUARIO", nullable = false)
     @NotBlank(message = "O campo email não pode estar vazio.")
     @Email(message = "Endereço de e-mail inválido.")
-    @Getter @Setter
     private String email;
 
     @JsonIgnore
     @Column(name = "SENHA_USUARIO", nullable = false)
     @NotBlank(message = "O campo senha não pode estar vazio.")
-    @Getter @Setter
     private String senha;
 
-    @Column(name = "NOME_USUARIO", nullable = false)
-    @NotBlank(message = "O campo nome não pode estar vazio.")
-    @Getter @Setter
-    private String nome;
-
     @Column(name = "IMAGEM_USUARIO")
-    @Getter @Setter
     private String urlImagem;
 
     @Column(name = "CNPJ_USUARIO", nullable = false)
     @NotBlank(message = "O campo cnpj não pode estar vazio.")
-    @Getter @Setter
     private String cnpj;
 
     @Column(name = "IS_FORNECEDOR", nullable = false)
     @NotNull(message = "O campo isFornecedor não pode estar vazio.")
-    @Getter @Setter
     private Boolean isFornecedor;
 
     @JsonManagedReference

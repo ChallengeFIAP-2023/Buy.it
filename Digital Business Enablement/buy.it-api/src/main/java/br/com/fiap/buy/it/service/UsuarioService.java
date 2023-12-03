@@ -91,9 +91,9 @@ public class UsuarioService {
         Usuario entity;
         if (dto.getId() != null) {
             entity = findEntityById(dto.getId());
+            entity.setNome(dto.getNome());
             entity.setEmail(dto.getEmail());
             entity.setSenha(dto.getSenha());
-            entity.setNome(dto.getNome());
             entity.setUrlImagem(dto.getUrlImagem());
             entity.setCnpj(dto.getCnpj());
             entity.setIsFornecedor(dto.getIsFornecedor());
@@ -107,9 +107,9 @@ public class UsuarioService {
             entity.setTags(newTags);
         } else {
             entity = new Usuario();
+            entity.setNome(dto.getNome());
             entity.setEmail(dto.getEmail());
             entity.setSenha(dto.getSenha());
-            entity.setNome(dto.getNome());
             entity.setUrlImagem(dto.getUrlImagem());
             entity.setCnpj(dto.getCnpj());
             entity.setIsFornecedor(dto.getIsFornecedor());

@@ -2,25 +2,6 @@
 
 Este documento descreve as classes (tabelas) e seus atributos para o sistema definido pelo DDL fornecido.
 
-## Classe `Pessoa`
-
-Representa uma pessoa no sistema.
-
-**Atributos:**
-- `id_pessoa` (NUMBER(9)): Identificador único da pessoa.
-- `nome_pessoa` (VARCHAR2(255)): Nome da pessoa.
-- `imagem_pessoa` (VARCHAR2(255)): URL da imagem da pessoa.
-
-## Classe `Pessoa_Juridica`
-
-Representa uma entidade jurídica no sistema.
-
-**Atributos:**
-- `id_pj` (NUMBER(9)): Identificador único da pessoa jurídica.
-- `cnpj_pj` (CHAR(18)): CNPJ da pessoa jurídica.
-- `is_fornecedor` (NUMBER(1)): Indicador se a entidade é fornecedora (0 = não, 1 = sim).
-- `id_pessoa` (NUMBER(9)): Identificador da pessoa associada.
-
 ## Classe `Usuario`
 
 Representa um usuário do sistema.
@@ -29,7 +10,10 @@ Representa um usuário do sistema.
 - `id_usuario` (NUMBER(9)): Identificador único do usuário.
 - `email_usuario` (VARCHAR2(255)): Endereço de e-mail do usuário.
 - `senha_usuario` (VARCHAR2(255)): Senha do usuário.
-- `id_pessoa` (NUMBER(9)): Identificador da pessoa associada ao usuário.
+- `nome_usuario` (VARCHAR2(255)): Nome da pessoa.
+- `imagem_usuario` (VARCHAR2(255)): URL da imagem da pessoa.
+- `cnpj_pj` (CHAR(18)): CNPJ da pessoa jurídica.
+- `is_fornecedor` (NUMBER(1)): Indicador se a entidade é fornecedora (0 = não, 1 = sim).
 
 ## Classe `Usuario_Tag`
 
@@ -39,23 +23,16 @@ Representa a associação entre um usuário e suas tags no sistema.
 - `id_usuario` (NUMBER(9)): Identificador do usuário.
 - `id_tag` (NUMBER(9)): Identificador da tag.
 
-## Classe `Tipo_Contato`
+## Classe `Contato`
 
 Representa um tipo de contato no sistema.
 
 **Atributos:**
-- `id_tipo_contato` (NUMBER(9)): Identificador único do tipo de contato.
-- `nome_tipo_contato` (VARCHAR2(255)): Nome do tipo de contato.
-
-## Classe `Forma_Contato`
-
-Representa uma forma de contato associada a uma pessoa.
-
-**Atributos:**
-- `id_forma_contato` (NUMBER(9)): Identificador único da forma de contato.
-- `id_tipo_contato` (NUMBER(9)): Identificador do tipo de contato relacionado.
+- `id_contato` (NUMBER(9)): Identificador único do tipo de contato.
+- `tipo_contato` (VARCHAR2(255)): Nome do tipo de contato.
 - `valor_forma_contato` (VARCHAR2(255)): Valor da forma de contato.
-- `id_pessoa` (NUMBER(9)): Identificador da pessoa associada.
+- `id_usuario` (NUMBER(9)): Identificador da usuário associada.
+
 
 ## Classe `Tag`
 
@@ -151,70 +128,6 @@ Representa o histórico de cotações no sistema.
 Aqui estão exemplos de como interagir com a API usando os métodos HTTP (GET, POST, PUT, DELETE):
 
 ---
-## Endpoint **Telefone**
-
-
-#### `GET /telefones`
-
-Lista todos os telefones.
-
-**Exemplo de retorno:**
-```json
-[
-    {
-        "id_telefone": 1,
-        "ddi_telefone": "55",
-        "ddd_telefone": "11",
-        "numero_telefone": "999999999",
-        "id_contato": 10,
-    },
-    {
-        "id_telefone": 2,
-        "ddi_telefone": "55",
-        "ddd_telefone": "11",
-        "numero_telefone": "999999998",
-        "id_contato": 4,
-    }
-]
-```
-
-
-#### `POST /tipoContato`
-
-Cadastra um tipoContato.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "ddi_telefone": "55",
-    "ddd_telefone": "21",
-    "numero_telefone": "888888888",
-    "id_contato": 20
-}
-
-```
-
-#### `UPDATE /tipoContato/{id}`
-
-Atualiza um tipoContato.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "ddi_telefone": "55",
-    "ddd_telefone": "11",
-    "numero_telefone": "777777777"
-}
-
-```
-
-#### `DELETE /tipoContato/{id}`
-
-Deleta um tipoContato.
-
----
-
----
 ## Endpoint **Contato**
 
 
@@ -226,212 +139,50 @@ Lista todos os contatos.
 ```json
 [
     {
-        "id_contato": 1,
-        "nome_contato": "Mariana",
-        "id_usuario": 5,
+        "tipo": "Email",
+        "valor": "exemplo@email.com",
+        "idUsuario": 1
     },
     {
-        "id_contato": 2,
-        "nome_contato": "Mario",
-        "id_usuario": 6,
+        "tipo": "Telefone",
+        "valor": "11987361034",
+        "idUsuario": 2
     }
 ]
-
 ```
 
 
-#### `POST /contato`
+#### `POST /contatos`
 
 Cadastra um contato.
 
 **Exemplo do body da requisição:**
 ```json
 {
-    "nome_contato": "Novo Contato",
-    "id_usuario": 6
+    "tipo": "Email",
+    "valor": "exemplo@email.com",
+    "idUsuario": 1
 }
 
 ```
 
-#### `UPDATE /contato/{id}`
+#### `UPDATE /contatos/{id}`
 
 Atualiza um contato.
 
 **Exemplo do body da requisição:**
 ```json
 {
-    "nome_contato": "Contato Atualizado"
+    "tipo": "Telefone",
+    "valor": "123456789",
+    "idUsuario": 1
 }
 
 ```
 
-#### `DELETE /contato/{id}`
+#### `DELETE /contatos/{id}`
 
 Deleta um contato.
-
----
-
-## Endpoint **Email**
-
-
-#### `GET /emails`
-
-Lista todos os emails.
-
-**Exemplo de retorno:**
-```json
-[
-    {
-        "id_email": 1,
-        "endereco_email": "exemplo@email.com",
-        "id_contato": 5,
-    },
-    {
-        "id_email": 2,
-        "endereco_email": "exemplo2@email.com",
-        "id_contato": 6,
-    }
-]
-```
-
-
-#### `POST /email`
-
-Cadastra um email.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "endereco_email": "novoemail@email.com",
-    "id_contato": 10
-}
-```
-
-#### `UPDATE /email/{id}`
-
-Atualiza um email.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "endereco_email": "emailatualizado@email.com"
-}
-```
-
-#### `DELETE /email/{id}`
-
-Deleta um email.
-
----
-
-## Endpoint **Pessoa_Juridica**
-
-
-#### `GET /pessoas_juridicas`
-
-Lista todos as pessoas jurídicas..
-
-**Exemplo de retorno:**
-```json
-[
-    {
-        "id_pj": 1,
-        "is_fornecedor_pj": 1,
-        "cnpj_pj": "00.000.000/0001-00",
-        "fk_Pessoa_id_pessoa": 2
-    },
-    {
-        "id_pj": 2,
-        "is_fornecedor_pj": 0,
-        "cnpj_pj": "00.000.000/0002-00",
-        "fk_Pessoa_id_pessoa": 1
-    }
-]
-
-```
-
-#### `POST /pessoa_juridica`
-
-Cadastra uma pessoa jurídica.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "is_fornecedor_pj": 1,
-    "cnpj_pj": "11.111.111/1111-11",
-    "fk_Pessoa_id_pessoa": 3
-}
-```
-
-#### `UPDATE /pessoa_juridica/{id}`
-
-Atualiza uma pessoa jurídica.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "is_fornecedor_pj": 0,
-    "cnpj_pj": "22.222.222/2222-22"
-}
-```
-
-#### `DELETE /pessoa_juridica/{id}`
-
-Deleta uma pessoa jurídica.
-
----
-
-## Endpoint **Pessoa**
-
-
-#### `GET /pessoas`
-
-Lista todas as pessoas.
-
-**Exemplo de retorno:**
-```json
-[
-    {
-        "id_pessoa": 1,
-        "nome_pessoa": "João da Silva",
-        "imagem_pessoa": "https://imagem-pessoa1.png"
-    },
-    {
-        "id_pessoa": 2,
-        "nome_pessoa": "João da Costa",
-        "imagem_pessoa": "https://imagem-pessoa2.png"
-    }
-]
-```
-
-
-#### `POST /pessoa`
-
-Cadastra uma pessoa.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "nome_pessoa": "Maria de Souza",
-    "imagem_pessoa": "https://imagem-pessoa3.png"
-}
-```
-
-#### `UPDATE /pessoa/{id}`
-
-Atualiza uma pessoa.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "nome_pessoa": "Maria de Souza Atualizada",
-    "imagem_pessoa": "https://imagem-pessoa3-atualizada.png"
-}
-```
-
-#### `DELETE /pessoa/{id}`
-
-Deleta uma pessoa.
 
 ---
 
@@ -446,16 +197,22 @@ Lista todos os usuarios.
 ```json
 [
     {
-        "id_usuario": 1,
-        "email_usuario": "usuario1@email.com",
-        "senha_usuario": "senha1",
-        "id_pessoa": 2
+			"id": 1,
+			"email": "novopemail@email.com",
+			"nome": "Novo Nome do Usuário",
+			"urlImagem": "https://novosite.com/imagem.jpg",
+			"cnpj": "98765432109876",
+			"isFornecedor": false,
+			"tags": []
     },
     {
-        "id_usuario": 2,
-        "email_usuario": "usuario2@email.com",
-        "senha_usuario": "senha2",
-        "id_pessoa": 1
+			"id": 2,
+			"email": "novopemail2@email.com",
+			"nome": "Novo Nome do Usuário2",
+			"urlImagem": "https://novosite2.com/imagem.jpg",
+			"cnpj": "98765432109877",
+			"isFornecedor": true,
+			"tags": []
     }
 ]
 ```
@@ -468,9 +225,13 @@ Cadastra um usuario.
 **Exemplo do body da requisição:**
 ```json
 {
-    "email_usuario": "novousuario@email.com",
-    "senha_usuario": "novasenha",
-    "id_pessoa": 3
+    "email": "exemplo@email.com",
+    "senha": "senha123",
+    "nome": "Nome do Usuário",
+    "urlImagem": "https://exemplo.com/imagem.jpg",
+    "cnpj": "12345678901234",
+    "isFornecedor": true,
+    "idsTags": []
 }
 ```
 
@@ -481,66 +242,19 @@ Atualiza um usuario.
 **Exemplo do body da requisição:**
 ```json
 {
-    "email_usuario": "emailatualizado@email.com",
-    "senha_usuario": "senhaatualizada"
+    "email": "novopemail@email.com",
+    "senha": "novasenha456",
+    "nome": "Novo Nome do Usuário",
+    "urlImagem": "https://novosite.com/imagem.jpg",
+    "cnpj": "98765432109876",
+    "isFornecedor": false,
+    "idsTags": []
 }
 ```
 
 #### `DELETE /usuario/{id}`
 
 Deleta um usuario.
-
----
-
-## Endpoint **Usuario_Tag**
-
-
-#### `GET /usuario_tags`
-
-Lista todas as relações entre usuários e tags.
-
-**Exemplo de retorno:**
-```json
-[
-    {
-        "fk_Usuario_id_usuario": 1,
-        "fk_Tag_id_tag": 2
-    },
-    {
-        "fk_Usuario_id_usuario": 2,
-        "fk_Tag_id_tag": 1
-    }
-]
-```
-
-
-#### `POST /usuario_tag`
-
-Cria uma relação entre um usuário e uma tag.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "fk_Usuario_id_usuario": 3,
-    "fk_Tag_id_tag": 4
-}
-```
-
-#### `UPDATE /usuario_tag/{id}`
-
-Atualiza uma relação entre um usuário e uma tag.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "fk_Usuario_id_usuario": 3,
-    "fk_Tag_id_tag": 5
-}
-```
-
-#### `DELETE /usuario_tag/{id}`
-
-Deleta uma relação entre um usuário e uma tag.
 
 ---
 
@@ -574,7 +288,7 @@ Cadastra uma nova tag.
 **Exemplo do body da requisição:**
 ```json
 {
-    "nome_tag": "Nova Tag"
+  "nome": "Cadastrando Nova Tag"
 }
 ```
 
@@ -584,66 +298,14 @@ Atualiza uma tag.
 
 **Exemplo do body da requisição:**
 ```json
-{ 
-    "nome_tag": "TagAtualizada"
+{
+  "nome": "Editando Tag Cadastrada"
 }
 ```
 
 #### `DELETE /tag/{id}`
 
 Deleta uma tag.
-
----
-
-## Endpoint **Tag_Departamento**
-
-
-#### `GET /tag_departamentos`
-
-Lista todas as relações entre tags e departamentos.
-
-**Exemplo de retorno:**
-```json
-[
-    {
-        "fk_Departamento_id_departamento": 1,
-        "fk_Tag_id_tag": 2
-    },
-    {
-        "fk_Departamento_id_departamento": 2,
-        "fk_Tag_id_tag": 1
-    }
-]
-```
-
-
-#### `POST /tag_departamento`
-
-Cria uma relação entre uma tag e um departamento.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "fk_Departamento_id_departamento": 3,
-    "fk_Tag_id_tag": 4
-}
-```
-
-#### `UPDATE /tag_departamento/{id}`
-
-Atualiza uma relação entre uma tag e um departamento.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "fk_Departamento_id_departamento": 3,
-    "fk_Tag_id_tag": 5
-}
-```
-
-#### `DELETE /tag_departamento/{id}`
-
-Deleta uma relação entre uma tag e um departamento.
 
 ---
 
@@ -678,8 +340,8 @@ Cadastra um departamento.
 **Exemplo do body da requisição:**
 ```json
 {
-    "nome_departamento": "Novo Departamento",
-    "icone_departamento": "https://icone-novo-departamento.png"
+    "nome": "Cadastrando Novo Departamento",
+	"icone": "novo_icone.png"
 }
 ```
 
@@ -690,66 +352,15 @@ Atualiza um departamento.
 **Exemplo do body da requisição:**
 ```json
 {
-    "nome_departamento": "Departamento Atualizado",
-    "icone_departamento": "https://icone-departamento-atualizado.png"
+    "nome": "Editando Departamento",
+	"icone": "icone_editado.png",
+	"idsTags": [1]
 }
 ```
 
 #### `DELETE /departamento/{id}`
 
 Deleta um departamento.
-
----
-
-## Endpoint **Produto_Departamento**
-
-
-#### `GET /produto_departamentos`
-
-Lista todas as relações entre produtos e departamentos.
-
-**Exemplo de retorno:**
-```json
-[
-    {
-        "fk_Produto_id_produto": 1,
-        "fk_Departamento_id_departamento": 2
-    },
-    {
-        "fk_Produto_id_produto": 2,
-        "fk_Departamento_id_departamento": 1
-    }
-]
-```
-
-
-#### `POST /produto_departamento`
-
-Cria uma relação entre um produto e um departamento.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "fk_Produto_id_produto": 3,
-    "fk_Departamento_id_departamento": 4
-}
-```
-
-#### `UPDATE /produto_departamento/{id}`
-
-Atualiza uma relação entre um produto e um departamento.
-
-**Exemplo do body da requisição:**
-```json
-{
-    "fk_Produto_id_produto": 3,
-    "fk_Departamento_id_departamento": 5
-}
-```
-
-#### `DELETE /produto_departamento/{id}`
-
-Deleta uma relação entre um produto e um departamento.
 
 ---
 
@@ -771,6 +382,8 @@ Lista todos os produtos.
         "tamanho_produto": "Pequeno",
         "material_produto": "Poliester",
         "observação_produto": "Perfeito para casas pequenas",
+        "idDepartamento": 1,
+        "idsTags": []
     },
     {
         "id_produto": 2,
@@ -780,6 +393,8 @@ Lista todos os produtos.
         "tamanho_produto": "Grande",
         "material_produto": "Ferro",
         "observação_produto": "Perfeito para casas grandes",
+        "idDepartamento": 2,
+        "idsTags": []
     }
 ]
 ```
@@ -792,13 +407,14 @@ Cadastra um produto.
 **Exemplo do body da requisição:**
 ```json
 {
-    "id_produto": 3,
-    "nome_produto": "Produto 3",
-    "marca_produto": "Marca 3",
-    "cor_produto": "Roxo",
-    "tamanho_produto": "Médio",
-    "material_produto": "Ouro",
-    "observação_produto": "Sem observação",
+    "nome": "Nome do Produto",
+    "marca": "Marca X",
+    "cor": "Azul",
+    "tamanho": "M",
+    "material": "Algodão",
+    "observacao": "Observações sobre o produto",
+    "idDepartamento": 1,
+    "idsTags": []
 }
 ```
 
@@ -809,13 +425,14 @@ Atualiza um produto.
 **Exemplo do body da requisição:**
 ```json
 {
-    "id_produto": 3,
-    "nome_produto": "Produto Atualizado",
-    "marca_produto": "Marca Atualizado",
-    "cor_produto": "Amarelo",
-    "tamanho_produto": "Médio",
-    "material_produto": "Ouro",
-    "observação_produto": "Observações atualizadas"
+    "nome": "Novo Nome do Produto",
+    "marca": "Nova Marca",
+    "cor": "Vermelho",
+    "tamanho": "G",
+    "material": "Linho",
+    "observacao": "Novas observações sobre o produto",
+    "idDepartamento": 2,
+    "idsTags": []
 }
 ```
 
@@ -835,37 +452,44 @@ Lista todos as cotacoes.
 ```json
 [
     {
-        "id_cotacao": 1,
-        "data_abertura_cotacao": "2023-01-01",
-        "id_usuario": 2,
-        "id_fornecedor": 3,
-        "id_produto": 4,
-        "quantidade_produto": 100,
-        "valor_cotacao": 500.00,
-        "id_status": 1,
-        "prioridade_entrega": 1,
-        "prioridade_qualidade": 2,
-        "prioridade_preco": 3,
-        "prazo_cotacao": 30,
-        "data_fechamento_cotacao": "2024-01-31",
-        "fk_Usuario_id_usuario": 5,
-        "fk_Status_id_status": 1,
-        "fk_Produto_id_produto": 4
-    },
-    {
-        "id_cotacao": 2,
-        "data_abertura_cotacao": "2023-12-01",
-        "id_usuario": 1,
-        "id_fornecedor": 2,
-        "id_produto": 3,
-        "quantidade_produto": 50,
-        "valor_cotacao": 400.00,
-        "id_status": 2,
-        "prioridade_entrega": 3,
-        "prioridade_qualidade": 2,
-        "prioridade_preco": 1,
-        "prazo_cotacao": 10,
-        "data_fechamento_cotacao": "2024-01-31",
+    	"id": 1,
+    	"dataAbertura": "2023-12-01T09:00:00.000+00:00",
+    	"comprador": {
+    		"id": 1,
+    		"email": "exemplo@email.com",
+    		"nome": "Nome do Usuário",
+    		"urlImagem": "https://exemplo.com/imagem.jpg",
+    		"cnpj": "12345678901234",
+    		"isFornecedor": true,
+    		"tags": []
+    	},
+    	"produto": {
+    		"id": 1,
+    		"nome": "Nome do Produto",
+    		"marca": "Marca X",
+    		"cor": "Azul",
+    		"tamanho": "M",
+    		"material": "Algodão",
+    		"observacao": "Observações sobre o produto",
+    		"departamento": {
+    			"id": 1,
+    			"nome": "Cadastrando Novo Departamento",
+    			"icone": "novo_icone.png",
+    			"tags": []
+    		},
+    		"tags": []
+    	},
+    	"quantidadeProduto": 100,
+    	"valorProduto": 150.50,
+    	"status": {
+    		"id": 1,
+    		"nome": "Cadastrando Novo Status"
+    	},
+    	"prioridadeEntrega": 2,
+    	"prioridadeQualidade": 1,
+    	"prioridadePreco": 3,
+    	"prazo": 7,
+    	"dataFechamento": null
     }
 ]
 ```
@@ -878,18 +502,16 @@ Cadastra uma cotação.
 **Exemplo do body da requisição:**
 ```json
 {
-    "data_abertura_cotacao": "2023-02-01",
-    "id_usuario": 5,
-    "id_fornecedor": 6,
-    "id_produto": 7,
-    "quantidade_produto": 200,
-    "valor_cotacao": 1000.00,
-    "id_status": 2,
-    "prioridade_entrega": 2,
-    "prioridade_qualidade": 2,
-    "prioridade_preco": 2,
-    "prazo_cotacao": 60,
-    "data_fechamento_cotacao": "2023-03-02",
+    "dataAbertura": "2023-12-01T09:00:00Z",
+    "idComprador": 1,
+    "idProduto": 1,
+    "quantidadeProduto": 100,
+    "valorProduto": 150.50,
+    "idStatus": 1,
+    "prioridadeEntrega": 2,
+    "prioridadeQualidade": 1,
+    "prioridadePreco": 3,
+    "prazo": 7
 }
 
 ```
@@ -901,18 +523,17 @@ Atualiza uma cotação.
 **Exemplo do body da requisição:**
 ```json
 {
-    "data_abertura_cotacao": "2023-02-01",
-    "id_usuario": 5,
-    "id_fornecedor": 6,
-    "id_produto": 7,
-    "quantidade_produto": 200,
-    "valor_cotacao": 2000.00,
-    "id_status": 2,
-    "prioridade_entrega": 2,
-    "prioridade_qualidade": 2,
-    "prioridade_preco": 2,
-    "prazo_cotacao": 60,
-    "data_fechamento_cotacao": "2023-03-04",
+    "dataAbertura": "2023-12-01T10:30:00Z",
+    "idComprador": 1,
+    "idProduto": 1,
+    "quantidadeProduto": 200,
+    "valorProduto": 180.25,
+    "idStatus": 1,
+    "prioridadeEntrega": 3,
+    "prioridadeQualidade": 2,
+    "prioridadePreco": 1,
+    "prazo": 5,
+    "dataFechamento": "2023-12-01T15:45:00Z"
 }
 ```
 
@@ -986,28 +607,69 @@ Lista todos os registros históricos das cotações.
 **Exemplo de retorno:**
 ```json
 [
-    {
-        "id_historico": 1,
-        "id_cotacao": 1,
-        "id_status": 1,
-        "recusado_por_produto": 0,
-        "recusado_por_quantidade": 0,
-        "recusado_por_preco": 0,
-        "recusado_por_prazo": 0,
-        "descricao_historico": "Descrição do histórico",
-        "data_historico": "2023-01-01"
-    },
-    {
-        "id_historico": 2,
-        "id_cotacao": 2,
-        "id_status": 2,
-        "recusado_por_produto": 1,
-        "recusado_por_quantidade": 1,
-        "recusado_por_preco": 1,
-        "recusado_por_prazo": 1,
-        "descricao_historico": "Descrição do histórico",
-        "data_historico": "2023-01-08"
-    }
+   {
+			"id": 1,
+			"cotacao": {
+				"id": 1,
+				"dataAbertura": "2023-12-01",
+				"comprador": {
+					"id": 1,
+					"email": "novopemail@email.com",
+					"nome": "Novo Nome do Usuário",
+					"urlImagem": "https://novosite.com/imagem.jpg",
+					"cnpj": "98765432109876",
+					"isFornecedor": false,
+					"tags": []
+				},
+				"produto": {
+					"id": 1,
+					"nome": "Nome do Produto",
+					"marca": "Marca X",
+					"cor": "Azul",
+					"tamanho": "M",
+					"material": "Algodão",
+					"observacao": "Observações sobre o produto",
+					"departamento": {
+						"id": 1,
+						"nome": "Cadastrando Novo Departamento",
+						"icone": "novo_icone.png",
+						"tags": []
+					},
+					"tags": []
+				},
+				"quantidadeProduto": 100,
+				"valorProduto": 150.5,
+				"status": {
+					"id": 1,
+					"nome": "Editando Status"
+				},
+				"prioridadeEntrega": 2,
+				"prioridadeQualidade": 1,
+				"prioridadePreco": 3,
+				"prazo": 7,
+				"dataFechamento": null
+			},
+			"fornecedor": {
+				"id": 1,
+				"email": "novopemail@email.com",
+				"nome": "Novo Nome do Usuário",
+				"urlImagem": "https://novosite.com/imagem.jpg",
+				"cnpj": "98765432109876",
+				"isFornecedor": false,
+				"tags": []
+			},
+			"status": {
+				"id": 1,
+				"nome": "Editando Status"
+			},
+			"recusadoPorProduto": false,
+			"recusadoPorQuantidade": true,
+			"recusadoPorPreco": false,
+			"recusadoPorPrazo": false,
+			"descricao": "Descrição do histórico",
+			"data": "2023-12-01T10:00:00.000+00:00",
+			"valorOfertado": 150.75
+		}
 ]
 
 ```
@@ -1020,15 +682,16 @@ Cadastra um registro histórico de cotação.
 **Exemplo do body da requisição:**
 ```json
 {
-    "id_historico": 3,
-    "id_cotacao": 3,
-    "id_status": 3,
-    "recusado_por_produto": 1,
-    "recusado_por_quantidade": 1,
-    "recusado_por_preco": 0,
-    "recusado_por_prazo": 1,
-    "descricao_historico": "Descrição do histórico",
-    "data_historico": "2024-01-20"
+    "idCotacao": 1,
+    "idFornecedor": 1,
+    "idStatus": 1,
+    "recusadoPorProduto": false,
+    "recusadoPorQuantidade": true,
+    "recusadoPorPreco": false,
+    "recusadoPorPrazo": false,
+    "descricao": "Descrição do histórico",
+    "data": "2023-12-01T10:00:00Z",
+    "valorOfertado": 150.75
 }
 
 ```
@@ -1040,15 +703,16 @@ Atualiza um registro histórico de cotação.
 **Exemplo do body da requisição:**
 ```json
 {
-    "id_historico": 3,
-    "id_cotacao": 3,
-    "id_status": 3,
-    "recusado_por_produto": 0,
-    "recusado_por_quantidade": 0,
-    "recusado_por_preco": 1,
-    "recusado_por_prazo": 0,
-    "descricao_historico": "Descrição do histórico",
-    "data_historico": "2024-01-20"
+    "idCotacao": 1,
+    "idFornecedor": 1,
+    "idStatus": 1,
+    "recusadoPorProduto": false,
+    "recusadoPorQuantidade": false,
+    "recusadoPorPreco": true,
+    "recusadoPorPrazo": false,
+    "descricao": "Nova descrição do histórico",
+    "data": "2023-12-02T08:30:00Z",
+    "valorOfertado": 180.50
 }
 ```
 
@@ -1069,22 +733,52 @@ Lista todas as avaliações.
 ```json
 [
     {
-        "id_avaliacao": 1,
-        "descricao_avaliacao": "Excelente serviço",
-        "nota_qualidade_avaliacao": 5,
-        "nota_preco_avaliacao": 4,
-        "nota_entrega_avaliacao": 5,
-        "id_cotacao": 1,
-        "data_avaliacao": "2023-01-10"
-    },
-    {
-        "id_avaliacao": 2,
-        "descricao_avaliacao": "Serviço ruim",
-        "nota_qualidade_avaliacao": 1,
-        "nota_preco_avaliacao": 2,
-        "nota_entrega_avaliacao": 3,
-        "id_cotacao": 2,
-        "data_avaliacao": "2023-01-10"
+			"id": 1,
+			"cotacao": {
+				"id": 1,
+				"dataAbertura": "2023-12-01",
+				"comprador": {
+					"id": 1,
+					"email": "novopemail@email.com",
+					"nome": "Novo Nome do Usuário",
+					"urlImagem": "https://novosite.com/imagem.jpg",
+					"cnpj": "98765432109876",
+					"isFornecedor": false,
+					"tags": []
+				},
+				"produto": {
+					"id": 1,
+					"nome": "Nome do Produto",
+					"marca": "Marca X",
+					"cor": "Azul",
+					"tamanho": "M",
+					"material": "Algodão",
+					"observacao": "Observações sobre o produto",
+					"departamento": {
+						"id": 1,
+						"nome": "Editando Departamento",
+						"icone": "icone_editado.png",
+						"tags": []
+					},
+					"tags": []
+				},
+				"quantidadeProduto": 100,
+				"valorProduto": 150.5,
+				"status": {
+					"id": 1,
+					"nome": "Editando Status"
+				},
+				"prioridadeEntrega": 2,
+				"prioridadeQualidade": 1,
+				"prioridadePreco": 3,
+				"prazo": 7,
+				"dataFechamento": null
+			},
+			"data": "2023-12-02",
+			"notaEntrega": 1,
+			"notaQualidade": 4,
+			"notaPreco": 2,
+			"descricao": "Nova avaliação sobre a cotação"
     }
 ]
 
@@ -1098,12 +792,12 @@ Cadastra uma avaliação.
 **Exemplo do body da requisição:**
 ```json
 {
-    "descricao_avaliacao": "Bom, mas pode melhorar",
-    "nota_qualidade_avaliacao": 3,
-    "nota_preco_avaliacao": 3,
-    "nota_entrega_avaliacao": 4,
-    "id_cotacao": 3,
-    "data_avaliacao": "2023-02-05"
+    "idCotacao": 1,
+    "data": "2023-12-01T09:00:00Z",
+    "notaEntrega": 4,
+    "notaQualidade": 5,
+    "notaPreco": 3,
+    "descricao": "Avaliação sobre a cotação"
 }
 
 ```
@@ -1115,12 +809,12 @@ Atualiza uma avaliação.
 **Exemplo do body da requisição:**
 ```json
 {
-    "descricao_avaliacao": "Bom, mas pode melhorar",
-    "nota_qualidade_avaliacao": 4,
-    "nota_preco_avaliacao": 3,
-    "nota_entrega_avaliacao": 4,
-    "id_cotacao": 3,
-    "data_avaliacao": "2023-02-06"
+    "idCotacao": 1,
+    "data": "2023-12-02T10:30:00Z",
+    "notaEntrega": 1,
+    "notaQualidade": 4,
+    "notaPreco": 2,
+    "descricao": "Nova avaliação sobre a cotação"
 }
 ```
 
