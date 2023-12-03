@@ -41,7 +41,7 @@ public class UsuarioService {
     public Usuario create(UsuarioDTO newData) {
         Usuario entity = convertToEntity(newData);
         Usuario savedEntity = usuarioRepository.save(entity);
-        return savedEntity;
+        return entity;
     }
 
     @Transactional
