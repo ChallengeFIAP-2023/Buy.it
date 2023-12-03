@@ -1,5 +1,8 @@
 import { useMemo } from "react";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import {
+  NativeStackNavigationProp,
+  createNativeStackNavigator
+} from '@react-navigation/native-stack';
 
 // Hook import
 import { AuthProvider } from "@hooks/useAuth";
@@ -14,6 +17,8 @@ export type MainNavigationRoutes = {
   SignUp: undefined;
   Profile: undefined;
 }
+
+export type AppNavigatorRoutesProps = NativeStackNavigationProp<MainNavigationRoutes>;
 
 export default function Routes() {
   // Navigator instance
