@@ -19,7 +19,11 @@ export function CustomDropdown({ label, ...rest }: DropdownProps) {
         selectedItemStyle={textStyle}
         primaryColor={theme.COLORS.PRIMARY}
         dropdownIcon={
-            <CaretDown color={theme.COLORS.GRAY_200} weight="bold" size={theme.FONT_SIZE.MD} />
+          <CaretDown
+            color={theme.COLORS.GRAY_200}
+            weight="bold"
+            size={theme.FONT_SIZE.MD}
+          />
         }
         modalOptionsContainerStyle={dropdownStyle}
         checkboxLabelStyle={textStyle}

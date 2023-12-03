@@ -1,8 +1,12 @@
 import React from 'react';
 import {
   createNativeStackNavigator,
+  NativeStackNavigationOptions,
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
+
+// Hook import
+import { SignUpFormProvider } from '../../hooks/useSignUpForm'
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -28,20 +32,24 @@ export const SignUp: React.FC<
 > = () => {
   const Stack = createNativeStackNavigator<SignUpRoutes>();
 
+  const screenOptions: NativeStackNavigationOptions = {
+    headerShown: false,
+    gestureEnabled: true,
+    animation: 'slide_from_right'
+  }
+
   return (
-    <Stack.Navigator
-      initialRouteName="Step1"
-      screenOptions={{
-        headerShown: false,
-        gestureEnabled: true,
-        animation: 'slide_from_right',
-      }}
-    >
-      <Stack.Screen name="Step1" component={Step1} />
-      <Stack.Screen name="Step2" component={Step2} />
-      <Stack.Screen name="Step3" component={Step3} />
-      <Stack.Screen name="Step4" component={Step4} />
-      <Stack.Screen name="Step5" component={Step5} />
-    </Stack.Navigator>
+    <SignUpFormProvider>
+      <Stack.Navigator
+        initialRouteName="Step1"
+        screenOptions={screenOptions}
+      >
+        <Stack.Screen name="Step1" component={Step1} />
+        <Stack.Screen name="Step2" component={Step2} />
+        <Stack.Screen name="Step3" component={Step3} />
+        <Stack.Screen name="Step4" component={Step4} />
+        <Stack.Screen name="Step5" component={Step5} />
+      </Stack.Navigator>
+    </SignUpFormProvider>
   );
 };

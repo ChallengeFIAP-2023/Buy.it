@@ -24,7 +24,17 @@
       ],
       "@utils/*": [
         "./src/utils/*"
+      ],
+      "@dtos/*": [
+        "./src/dtos/*"
+      ],
+      "@hooks/*": [
+        "./src/hooks/*"
+      ],
+      "@validations/*": [
+        "./src/validations/*"
       ]
     }
-  }
+  },
+  "exclude": ["node_modules", ".vscode"],
 }

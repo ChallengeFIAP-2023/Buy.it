@@ -12,9 +12,11 @@ module.exports = function (api) {
             '@components': './src/components',
             '@routes': './src/routes',
             '@screens': './src/screens',
-            '@storage': './src/storage',
             '@theme': './src/theme',
             '@utils': './src/utils',
+            '@dtos': './src/dtos',
+            '@hooks': './src/hooks',
+            '@validations': './src/validations'
           }
         }
       ]

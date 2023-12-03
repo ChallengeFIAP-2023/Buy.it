@@ -1,15 +1,17 @@
+import { ScrollViewProps } from 'react-native';
+
 // Style import
 import { Container, Header } from './styles';
 
-interface Props {
+interface Props extends ScrollViewProps {
   children: React.ReactNode;
 }
 
-export function DecreasingContainer({ children }: Props) {
+export function DecreasingContainer({ children, ...rest }: Props) {
   return (
     <>
       <Header />
-      <Container>
+      <Container {...rest}>
         {children}
       </Container>
     </>

@@ -2,11 +2,8 @@ import { ThemeProvider } from "styled-components";
 import { useFonts } from 'expo-font';
 import { Roboto_400Regular, Roboto_700Bold } from "@expo-google-fonts/roboto";
 import { Raleway_700Bold, Raleway_400Regular, Raleway_600SemiBold } from "@expo-google-fonts/raleway";
-
+import Toast from 'react-native-toast-message';
 import { NavigationContainer } from '@react-navigation/native';
-
-// Contexts import
-import { UserProvider } from "src/contexts/UserContext";
 
 // Theme import
 import theme from "@theme/index";
@@ -29,11 +26,11 @@ export default function App() {
 
   return (
     <NavigationContainer>
-      {/* <UserProvider> */}
-        <ThemeProvider theme={theme}>
-          <Routes />
-        </ThemeProvider>
-      {/* </UserProvider> */}
+      <ThemeProvider theme={theme}>
+        <Routes />
+      </ThemeProvider>
+
+      <Toast />
     </NavigationContainer>
   )
 }

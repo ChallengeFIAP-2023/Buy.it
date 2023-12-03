@@ -1,14 +1,21 @@
-import { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { ArrowRight, Check, X } from "phosphor-react-native";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 // Type import
 import { MainNavigationRoutes } from "@routes/index";
 import { SignUpRoutes } from "..";
 
+// Validation import
+import { Step5FormSchema } from "@validations/index";
+
 // Theme import
 import theme from "@theme/index";
+
+// Hook import
+import { useSignUpForm } from "@hooks/useSignUpForm";
 
 // Component import
 import {
@@ -21,14 +28,31 @@ import {
 // Style import
 import { Container, Fieldset, Requirement, RequirementText } from './styles';
 
+interface Step5Form {
+  senha: string;
+}
+
 export const Step5: React.FC<
   CompositeScreenProps<
     NativeStackScreenProps<SignUpRoutes, 'Step5'>,
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
-  // State
-  const [password, setPassword] = useState('')
+  // Hook
+  const { user, setUser } = useSignUpForm();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Step5Form>({
+    resolver: yupResolver(Step5FormSchema),
+  });
+
+  const onSubmit: SubmitHandler<Step5Form> = (data) => {
+    setUser({ ...user, ...data });
+
+    return navigation.navigate("Profile");
+  }
 
   return (
     <Container>
@@ -44,12 +68,19 @@ export const Step5: React.FC<
 
       <DecreasingContainer>
         <Fieldset>
-          <Input
-            label="Senha"
-            placeholder="********"
-            secureTextEntry
-            value={password}
-            onChange={value => console.log(String(value.target))}
+          <Controller
+            control={control}
+            name="senha"
+            render={({ field: { value, onChange } }) => (
+              <Input
+                value={value}
+                onChangeText={onChange}
+                label="Senha"
+                placeholder="********"
+                secureTextEntry
+                error={errors.senha?.message}
+              />
+            )}
           />
         </Fieldset>
 
@@ -75,7 +106,7 @@ export const Step5: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        onPress={() => navigation.navigate("Profile")}
+        onPress={handleSubmit(onSubmit)}
       />
     </Container>
   );

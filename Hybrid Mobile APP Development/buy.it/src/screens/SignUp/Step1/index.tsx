@@ -10,6 +10,9 @@ import { SignUpRoutes } from "..";
 // Theme import
 import theme from "@theme/index";
 
+// Hook import
+import { useSignUpForm } from "../../../hooks/useSignUpForm";
+
 // Component import
 import { Button, DefaultComponent } from "@components/index";
 
@@ -18,12 +21,25 @@ import { Container, Content, Option, OptionText, AlertText } from './styles';
 
 type CompanySegment = "SUPPLIER" | "BUYER";
 
+interface Options {
+  name: "Comprar" | "Fornecer";
+  value: CompanySegment;
+}
+
+const options: Options[] = [
+  { name: "Comprar", value: "BUYER" },
+  { name: "Fornecer", value: "SUPPLIER" },
+]
+
 export const Step1: React.FC<
   CompositeScreenProps<
     NativeStackScreenProps<SignUpRoutes, 'Step1'>,
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
+  // Hook
+  const { user, setUser } = useSignUpForm();
+
   // State
   const [companySegment, setCompanySegment] =
     useState<CompanySegment | undefined>(undefined);
@@ -33,6 +49,11 @@ export const Step1: React.FC<
       theme.COLORS.GRAY_300 :
       theme.COLORS.WHITE,
     weight: companySegment === undefined ? "regular" : "bold"
+  }
+
+  function handleSelectOption(value: CompanySegment) {
+    setCompanySegment(value);
+    setUser(({ ...user, isFornecedor: value === 'SUPPLIER' }));
   }
 
   return (
@@ -49,21 +70,17 @@ export const Step1: React.FC<
       <Content>
         <AlertText>Lembrando que se você é um fornecedor, você também poderá realizar compras 😉</AlertText>
 
-        <Option
-          onPress={() => setCompanySegment('BUYER')}
-          active={companySegment === 'BUYER'}
-        >
-          <OptionText active={companySegment === 'BUYER'}>Comprar</OptionText>
-        </Option>
-
-        <Option
-          onPress={() => setCompanySegment('SUPPLIER')}
-          active={companySegment === 'SUPPLIER'}
-        >
-          <OptionText active={companySegment === 'SUPPLIER'}>
-            Fornecer
-          </OptionText>
-        </Option>
+        {options.map(option => (
+          <Option
+            key={option.value}
+            onPress={() => handleSelectOption(option.value)}
+            active={companySegment === option.value}
+          >
+            <OptionText active={companySegment === option.value}>
+              {option.name}
+            </OptionText>
+          </Option>
+        ))}
       </Content>
 
       <Button

@@ -5,22 +5,31 @@ import { TextInputProps } from "react-native";
 import theme from "@theme/index";
 
 // Style import
-import { Label, InputContainer } from './styles';
+import { Label, InputContainer, ErrorMessage } from './styles';
 
 // Interface
 interface Props extends TextInputProps {
   label?: string;
+  error?: string;
 };
 
-export function Input({ label, ...rest }: Props) {
+export function Input({ label, error, ...rest }: Props) {
+  const isInvalid = Boolean(error);
+  const placeholderTextColor =
+    isInvalid ? theme.COLORS.RED : theme.COLORS.GRAY_200
+
   return (
     <Fragment>
       {Boolean(label) && <Label>{label}</Label>}
+
       <InputContainer
         {...rest}
-        placeholderTextColor={theme.COLORS.GRAY_200}
+        placeholderTextColor={placeholderTextColor}
         underlineColorAndroid="transparent"
+        isInvalid={isInvalid}
       />
+
+      {isInvalid && <ErrorMessage>{error}</ErrorMessage>}
     </Fragment>
   );
 }

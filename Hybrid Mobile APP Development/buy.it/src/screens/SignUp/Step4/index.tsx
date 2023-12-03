@@ -3,6 +3,7 @@ import { ImageSourcePropType } from "react-native";
 import { ArrowRight } from "phosphor-react-native";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CompositeScreenProps } from "@react-navigation/native";
+import Toast from 'react-native-toast-message';
 
 // Component import
 import {
@@ -19,6 +20,9 @@ import { SignUpRoutes } from "..";
 // Theme import
 import theme from "@theme/index";
 
+// Hook import
+import { useSignUpForm } from "@hooks/useSignUpForm";
+
 // Style import
 import { Container, AvatarWrapper } from './styles';
 
@@ -28,11 +32,27 @@ export const Step4: React.FC<
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
+  // Hook
+  const { user, setUser } = useSignUpForm();
+
   // State
   const [avatar, setAvatar] = useState<string | null>(null);
 
   const imageSource: ImageSourcePropType =
     avatar ? { uri: avatar } : require('../../../assets/default_avatar.png');
+
+  function handleContinue() {
+    if (!avatar)
+      return Toast.show({
+        type: 'error',
+        text1: 'Adicione uma imagem',
+        text2: 'Sua identidade visual é importante.'
+      });
+
+    setUser(({ ...user, urlImagem: avatar }))
+
+    return navigation.navigate("Step5");
+  }
 
   return (
     <Container>
@@ -60,7 +80,7 @@ export const Step4: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        onPress={() => navigation.navigate("Step5")}
+        onPress={handleContinue}
       />
     </Container>
   );

@@ -9,16 +9,32 @@ import {
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { ArrowRight } from "phosphor-react-native";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
 
 // Type import
 import { MainNavigationRoutes } from "@routes/index";
 import { SignUpRoutes } from "..";
 
+// Validation import
+import { Step2FormSchema } from "@validations/index";
+
 // Theme import
 import theme from "@theme/index";
 
+// Util import
+import { toMaskedCNPJ, unMask } from "@utils/masks";
+
+// Hook import
+import { useSignUpForm } from "@hooks/useSignUpForm";
+
 // Style import
 import { Container, Fieldset, WrapChip } from './styles';
+
+interface Step2Form {
+  nome: string;
+  cnpj: string;
+}
 
 export const Step2: React.FC<
   CompositeScreenProps<
@@ -26,6 +42,24 @@ export const Step2: React.FC<
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
+  // Hook
+  const { user, setUser } = useSignUpForm();
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Step2Form>({
+    resolver: yupResolver(Step2FormSchema),
+  });
+
+  const onSubmit: SubmitHandler<Step2Form> = (data) => {
+    const cleanCNPJ = unMask(data.cnpj);
+    Object.assign(data, { cnpj: cleanCNPJ });
+
+    setUser({ ...user, ...data });
+
+    return navigation.navigate("Step3");
+  }
 
   return (
     <Container>
@@ -41,11 +75,37 @@ export const Step2: React.FC<
 
       <DecreasingContainer>
         <Fieldset>
-          <Input label="Nome da empresa" placeholder="Buy.it" />
+          <Controller
+            control={control}
+            name="nome"
+            render={({ field: { value, onChange } }) => (
+              <Input
+                value={value}
+                onChangeText={onChange}
+                label="Nome da empresa"
+                placeholder="Carrefour"
+                error={errors.nome?.message}
+              />
+            )}
+          />
         </Fieldset>
 
         <Fieldset>
-          <Input label="CNPJ" placeholder="johndoe@example.com" />
+          <Controller
+            control={control}
+            name="cnpj"
+            render={({ field: { value, onChange } }) => (
+              <Input
+                value={value}
+                onChangeText={(text) => onChange(toMaskedCNPJ(text))}
+                label="CNPJ"
+                placeholder="00.000.000/0001-00"
+                keyboardType="numeric"
+                error={errors.cnpj?.message}
+              />
+            )}
+          />
+
         </Fieldset>
 
         <Fieldset>
@@ -67,7 +127,7 @@ export const Step2: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        onPress={() => navigation.navigate("Step3")}
+        onPress={handleSubmit(onSubmit)}
       />
     </Container>
   );

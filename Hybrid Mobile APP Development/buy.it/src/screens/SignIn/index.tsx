@@ -1,7 +1,13 @@
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import Toast from 'react-native-toast-message';
 
 // Type import
 import { MainNavigationRoutes } from "@routes/index";
+
+// Validation import
+import { SignInFormSchema } from "@validations/index";
 
 // Theme import
 import theme from "@theme/index";
@@ -23,9 +29,36 @@ import {
   RegisterTextBold
 } from './styles';
 
+interface SignInForm {
+  email: string;
+  senha: string;
+}
+
 export function SignIn({
   navigation
 }: NativeStackScreenProps<MainNavigationRoutes, 'SignIn'>) {
+  // Hook
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<SignInForm>({
+    resolver: yupResolver(SignInFormSchema),
+  });
+
+  const onSubmit: SubmitHandler<SignInForm> = (data) => {
+    try {
+      console.log(data)
+      throw new Error();
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Credenciais inválida.'
+      });
+    }
+  }
+
   return (
     <Container>
       <DefaultComponent
@@ -36,21 +69,40 @@ export function SignIn({
 
       <DecreasingContainer>
         <Fieldset>
-          <Input
-            label="E-mail ou CNPJ"
-            placeholder="Johndoe@example.com"
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { value, onChange } }) => (
+              <Input
+                value={value}
+                onChangeText={onChange}
+                label="E-mail"
+                keyboardType="email-address"
+                placeholder="Johndoe@example.com"
+                error={errors.email?.message}
+              />
+            )}
           />
         </Fieldset>
 
         <Fieldset>
-          <Input
-            label="Senha"
-            placeholder="****"
-            secureTextEntry
+          <Controller
+            control={control}
+            name="senha"
+            render={({ field: { value, onChange } }) => (
+              <Input
+                value={value}
+                onChangeText={onChange}
+                label="Senha"
+                placeholder="****"
+                secureTextEntry
+                error={errors.senha?.message}
+              />
+            )}
           />
         </Fieldset>
 
-        <Button label="Entrar" onPress={() => navigation.navigate("Profile")} />
+        <Button label="Entrar" onPress={handleSubmit(onSubmit)} />
 
         <Touchable onPress={() => navigation.navigate("SignUp")}>
           <RegisterText>Novo por aqui?</RegisterText>

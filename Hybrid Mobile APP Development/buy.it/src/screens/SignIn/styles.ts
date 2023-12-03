@@ -12,7 +12,7 @@ export const Container = styled.View`
 export const Fieldset = styled.View`
   width: 100%;
 
-  margin-bottom: 45px;
+  margin-bottom: 25px;
 `;
 
 export const Touchable = styled.TouchableOpacity`
