@@ -29,5 +29,12 @@ export const textStyle: TextStyle = {
 export const checkboxStyle: ViewStyle = {
     borderWidth: 0,
     borderRadius: 15,
-    // TODO: alterar a cor do checkbox quando não está selecionado. Se eu eu altero aqui, ele só altera para o checkbox que está selecionado.
+};
+
+export const searchInputStyle: TextStyle = {
+    backgroundColor: theme.COLORS.GRAY_400,
+    borderRadius: 8,
+    borderWidth: 0,
+    height: 'auto',
+    color: theme.COLORS.WHITE
 };

@@ -3,7 +3,13 @@ import type { DropdownProps } from 'react-native-input-select/lib/typescript/typ
 import Dropdown from 'react-native-input-select';
 
 // Style import
-import { Label, dropdownStyle, textStyle, checkboxStyle } from './styles';
+import { 
+  Label, 
+  dropdownStyle, 
+  textStyle, 
+  checkboxStyle,
+  searchInputStyle
+ } from './styles';
 import theme from "@theme/index";
 
 import { CaretDown } from "phosphor-react-native";
@@ -27,7 +33,23 @@ export function CustomDropdown({ label, ...rest }: DropdownProps) {
         }
         modalOptionsContainerStyle={dropdownStyle}
         checkboxLabelStyle={textStyle}
+        searchControls={
+          { 
+            textInputStyle: searchInputStyle, 
+            textInputContainerStyle: textStyle,
+            textInputProps: {
+              placeholder: 'Pesquise uma opção',
+              placeholderTextColor: theme.COLORS.GRAY_200,
+            },
+          }
+        }
+        searchInputStyle={searchInputStyle}
         checkboxStyle={checkboxStyle}
+        listControls={{
+          selectAllText: 'Selecionar todos',
+          unselectAllText: 'Remover todos',
+          emptyListMessage: 'Nenhum dado encontrado',
+        }}
       />
     </Fragment>
   );
