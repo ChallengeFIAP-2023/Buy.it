@@ -210,7 +210,7 @@ Solução de Problemas:
 Navegue até o projeto maven:
 
 ```bash
-$ cd Digital Business Enablement\buy.it-api
+$ cd '.\Digital Business Enablement\buy.it-api'
 ```
 
 Abra o projeto maven em seu editor e execute o arquivo main: BuyitApplicattion.java
@@ -226,10 +226,16 @@ Abra o seu navegador e navegue até [http://localhost:8080](http://localhost:808
 
 ##### 👉 **_Mobile:_**
 
-Navegue até o projeto mobile:
-
+Antes de mais nada, é necessário alterar o arquivo `Hybrid Mobile App Development/buy.it/src/services/api.ts` na linha 4, trocando para o IP da sua máquina e lembrando-se de manter a porta `8080`:
 ```bash
-$ cd Entregas/Sprint\ 1/Hybrid\ Mobile\ APP\ Development\ buy.it
+export const api = axios.create({
+  baseURL: "http://123.456.78.90:8080"
+});
+```
+
+Depois navegue até a pasta do app:
+```bash
+$ cd '.\Hybrid Mobile APP Development\buy.it\' 
 ```
 
 Instale as dependências
