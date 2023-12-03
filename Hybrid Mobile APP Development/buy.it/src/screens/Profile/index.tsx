@@ -8,6 +8,10 @@ import Toast from 'react-native-toast-message';
 
 // Type import
 import { MainNavigationRoutes } from "@routes/index";
+import { UserQuery } from "@dtos/user";
+
+// Hook import
+import { useAuth } from "@hooks/useAuth";
 
 // Validation import
 import { SignInFormSchema as ProfileFormSchema } from "@validations/index";
@@ -21,11 +25,13 @@ import {
   Input,
   Button,
   DefaultComponent,
-  UserAvatar
+  UserAvatar,
+  WrapperPage
 } from "@components/index";
 
 // Style import
-import { Container, Fieldset } from './styles';
+import { Fieldset } from './styles';
+import { ScrollableContent } from '@global/styles/index';
 
 interface ProfileForm {
   email: string;
@@ -35,19 +41,24 @@ interface ProfileForm {
 export function Profile({
   navigation
 }: NativeStackScreenProps<MainNavigationRoutes, 'Profile'>) {
-  // State
-  const [avatar, setAvatar] = useState<string | null>(null);
-
   // Hook
+  const { user, handleUpdateUser } = useAuth();
   const {
     control,
     handleSubmit,
     formState: { errors },
   } = useForm<ProfileForm>({
     resolver: yupResolver(ProfileFormSchema),
+    defaultValues: {
+      email: user.email,
+      senha: user.senha
+    }
   });
 
-  const onSubmit: SubmitHandler<ProfileForm> = (data) => {
+  // State
+  const [avatar, setAvatar] = useState<string | null>(user?.urlImagem);
+
+  const onSubmit: SubmitHandler<ProfileForm> = async (data) => {
     try {
       if (!avatar)
         return Toast.show({
@@ -56,11 +67,21 @@ export function Profile({
           text2: 'Sua identidade visual é importante.'
         });
 
+      const idsTags = user.tags.map(item => item.id);
+
+      const userUpdated: UserQuery = Object.assign(user, {
+        idsTags,
+        urlImagem: avatar,
+        ...data
+      })
+
+      await handleUpdateUser(userUpdated);
+
     } catch (error) {
       Toast.show({
         type: 'error',
         text1: 'Erro',
-        text2: 'Credenciais inválida.'
+        text2: 'Não foi possível atualizar sua conta.'
       });
     }
   }
@@ -68,60 +89,60 @@ export function Profile({
   const imageSource: ImageSourcePropType =
     avatar ? { uri: avatar } : require('../../assets/default_avatar.png');
 
-  const user = "John Doe";
-
   return (
-    <Container>
-      <DefaultComponent
-        highlightProps={{
-          title: "Gerencie sua conta",
-          subtitle: `Olá, ${user}!`
-        }}
-        headerProps={{ goBack: () => navigation.goBack() }}
-        key="default-component-profile"
-      />
-
-      <DecreasingContainer>
-        <UserAvatar
-          imageSource={imageSource}
-          handleSetAvatar={setAvatar}
-          size="MD"
+    <WrapperPage>
+      <ScrollableContent>
+        <DefaultComponent
+          highlightProps={{
+            title: "Gerencie sua conta",
+            subtitle: `Olá, ${user.nome}!`
+          }}
+          headerProps={{ goBack: () => navigation.goBack() }}
+          key="default-component-profile"
         />
 
-        <Fieldset>
-          <Controller
-            control={control}
-            name="email"
-            render={({ field: { value, onChange } }) => (
-              <Input
-                value={value}
-                onChangeText={onChange}
-                label="E-mail"
-                keyboardType="email-address"
-                placeholder="Johndoe@example.com"
-                error={errors.email?.message}
-              />
-            )}
+        <DecreasingContainer>
+          <UserAvatar
+            imageSource={imageSource}
+            handleSetAvatar={setAvatar}
+            size="MD"
           />
-        </Fieldset>
 
-        <Fieldset style={{ paddingBottom: 75 }}>
-          <Controller
-            control={control}
-            name="senha"
-            render={({ field: { value, onChange } }) => (
-              <Input
-                value={value}
-                onChangeText={onChange}
-                label="Senha"
-                placeholder="****"
-                secureTextEntry
-                error={errors.senha?.message}
-              />
-            )}
-          />
-        </Fieldset>
-      </DecreasingContainer>
+          <Fieldset>
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { value, onChange } }) => (
+                <Input
+                  value={value}
+                  onChangeText={onChange}
+                  label="E-mail"
+                  keyboardType="email-address"
+                  placeholder="Johndoe@example.com"
+                  error={errors.email?.message}
+                />
+              )}
+            />
+          </Fieldset>
+
+          <Fieldset style={{ paddingBottom: 75 }}>
+            <Controller
+              control={control}
+              name="senha"
+              render={({ field: { value, onChange } }) => (
+                <Input
+                  value={value}
+                  onChangeText={onChange}
+                  label="Senha"
+                  placeholder="****"
+                  secureTextEntry
+                  error={errors.senha?.message}
+                />
+              )}
+            />
+          </Fieldset>
+        </DecreasingContainer>
+      </ScrollableContent>
 
       <Button
         label="Salvar"
@@ -130,6 +151,6 @@ export function Profile({
         bottom
         onPress={handleSubmit(onSubmit)}
       />
-    </Container>
+    </WrapperPage>
   );
 }

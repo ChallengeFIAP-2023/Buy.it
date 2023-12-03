@@ -35,6 +35,7 @@ public class ApplicationErrorHandler {
     @ExceptionHandler(Exception.class)
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     public RestValidationError handleGenericException(Exception e) {
-        return new RestValidationError("error", "Ocorreu um erro durante o processamento da solicitação.");
+        e.printStackTrace();
+        return new RestValidationError("error", "Ocorreu um erro durante o processamento da solicitação: " + e.getMessage());
     }
 }

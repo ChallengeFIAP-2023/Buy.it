@@ -15,7 +15,7 @@ import { Step5FormSchema } from "@validations/index";
 import theme from "@theme/index";
 
 // Type import
-import { User } from "@dtos/user";
+import { UserQuery } from "@dtos/user";
 
 // Hook import
 import { useSignUpForm } from "@hooks/useSignUpForm";
@@ -62,16 +62,14 @@ export const Step5: React.FC<
     const email = user.email;
     const senha = password;
 
-    const finalUserData: User = Object.assign(user, { senha });
+    const finalUserData: UserQuery = Object.assign(user, { senha });
 
     try {
-      console.log("\n\n dados do usuário: ", finalUserData)
       await handleRegisterUser(finalUserData);
 
       if (!email || !senha) return;
 
       await handleSignIn({ email, password: senha })
-      return navigation.navigate("Profile");
     } catch (error) {
       console.log(error);
     }

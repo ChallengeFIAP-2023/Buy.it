@@ -43,7 +43,7 @@ export function SignIn({
   navigation
 }: NativeStackScreenProps<MainNavigationRoutes, 'SignIn'>) {
   // Hook
-  const { handleSignIn } = useAuth();
+  const { handleSignIn, sigInLoading } = useAuth();
   const {
     control,
     handleSubmit,
@@ -110,7 +110,10 @@ export function SignIn({
               />
             </Fieldset>
 
-            <Button label="Entrar" onPress={handleSubmit(onSubmit)} />
+            <Button
+              label={sigInLoading ? "Carregando..." : "Entrar"}
+              onPress={handleSubmit(onSubmit)}
+            />
 
             <Touchable onPress={() => navigation.navigate("SignUp")}>
               <RegisterText>Novo por aqui?</RegisterText>

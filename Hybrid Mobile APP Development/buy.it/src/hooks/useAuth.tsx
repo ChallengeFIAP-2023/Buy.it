@@ -1,16 +1,25 @@
-import React, { createContext, useCallback, useContext, useState } from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useState } from 'react';
 import Toast from 'react-native-toast-message';
+import { useNavigation } from '@react-navigation/native';
+
+// Type import
+import { AppNavigatorRoutesProps } from "@routes/index";
+
+// Storage import
+import { storageUserGet } from '@storage/storageUser';
 
 // Service import
 import { api } from "@services/api";
 
 // Type import
-import { User } from "@dtos/index"
+import { User, UserQuery } from "@dtos/index"
 
 interface AuthContextData {
   user: User;
   handleSignIn: ({ email, password }: SignInProps) => Promise<void>
   sigInLoading: boolean;
+  handleUpdateUser: (user: UserQuery) => Promise<void>;
+  updateLoading: boolean;
 }
 
 interface AuthProviderProps {
@@ -27,15 +36,25 @@ const AuthContext = createContext<AuthContextData>({} as AuthContextData);
 const AuthProvider: React.FC<AuthProviderProps> = ({
   children
 }) => {
+  // Hook
+  const { navigate } = useNavigation<AppNavigatorRoutesProps>();
+
+  // State
+  // const [user, setUser] = useState<User>({} as User);
   const [user, setUser] = useState<User>({} as User);
   const [sigInLoading, setSignInLoading] = useState(false);
+  const [updateLoading, setUpdateLoading] = useState(false);
 
   const handleSignIn = useCallback(async ({ email, password }: SignInProps) => {
     try {
       setSignInLoading(true);
 
-      const { data } = await api.post("/usuarios", { email, senha: password });
-      // setUser(data.content)
+      const body = { email, senha: password };
+      const { data } = await api.post("/login", body);
+
+      setUser(data)
+
+      return navigate("Profile");
     } catch (error) {
       Toast.show({
         type: 'error',
@@ -45,15 +64,80 @@ const AuthProvider: React.FC<AuthProviderProps> = ({
 
       throw error;
     } finally {
-      setSignInLoading(true);
+      setSignInLoading(false);
     }
-  }, [user])
+  }, [])
+
+  const handleUpdateUser = useCallback(async (finalUserData: UserQuery) => {
+    try {
+      setUpdateLoading(true);
+
+      const userId = finalUserData.id;
+      const values = Object.values(finalUserData)
+      const insufficientInformation = values.some(value =>
+        typeof value === 'undefined' ||
+        typeof value === undefined ||
+        typeof value === null
+      )
+
+      const parsedUser: UserQuery = {
+        cnpj: finalUserData.cnpj,
+        email: finalUserData.email,
+        idsTags: finalUserData.idsTags,
+        isFornecedor: finalUserData.isFornecedor,
+        nome: finalUserData.nome,
+        senha: finalUserData.senha,
+        urlImagem: finalUserData.urlImagem
+      }
+
+      if (insufficientInformation)
+        throw new Error('Um ou mais atributos estão vazios.');
+
+      if (!userId)
+        throw new Error("É necessário o id do usuário");
+
+      const body = parsedUser;
+
+      const { data } = await api.put(`/usuarios/${userId}`, body);
+
+      setUser(data)
+
+      return Toast.show({
+        type: 'success',
+        text1: 'Editado com sucesso',
+        text2: 'Sua conta foi atualizada.'
+      });
+    } catch (error: any) {
+      console.log("error: ", error.message)
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível atualizar sua conta.'
+      });
+
+      throw error;
+    } finally {
+      setUpdateLoading(false);
+    }
+  }, [])
+
+  useEffect(() => {
+    async function verifyIfUserIsLogged() {
+      const user = await storageUserGet();
+
+      if (user) return setUser(user);
+    }
+
+    verifyIfUserIsLogged();
+  }, []);
 
   return (
     <AuthContext.Provider value={{
       user,
       handleSignIn,
-      sigInLoading
+      sigInLoading,
+      handleUpdateUser,
+      updateLoading
     }}>
       {children}
     </AuthContext.Provider>
