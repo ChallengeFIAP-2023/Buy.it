@@ -1,9 +1,9 @@
 export interface User {
-  nome: string;
-  email: string;
-  senha: string;
-  urlImagem: string;
-  cnpj: string;
-  isFornecedor: boolean;
-  idsTags: number[];
+  nome: string | null;
+  email: string | null;
+  senha: string | null;
+  urlImagem: string | null;
+  cnpj: string | null;
+  isFornecedor: boolean | null;
+  idsTags: number[] | null;
 }

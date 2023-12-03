@@ -2,11 +2,14 @@ import React, { useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { ArrowRight } from "phosphor-react-native";
-import { NativeSyntheticEvent, TextInputChangeEventData } from "react-native";
+import { NativeSyntheticEvent, Platform, TextInputChangeEventData } from "react-native";
 
 // Type import
 import { MainNavigationRoutes } from "@routes/index";
 import { SignUpRoutes } from "..";
+
+// Theme import
+import theme from "@theme/index";
 
 // Component import
 import {
@@ -16,10 +19,18 @@ import {
   CustomDropdown,
   Display,
   DefaultComponent,
+  WrapperPage,
 } from "@components/index";
 
 // Style import
-import { Container, Fieldset, Subtitle, WrapDropdown } from './styles';
+import {
+  Fieldset,
+  Subtitle,
+  WrapDropdown,
+  AlertTextWrapper,
+  ContactsWrapper
+} from './styles';
+import { ScrollableContent, AlertText } from "@global/styles/index";
 
 const contactOptions = [
   { label: 'Whatsapp', value: 'Whatsapp' },
@@ -72,64 +83,70 @@ export const Step3: React.FC<
   const hasContacts = Array.isArray(contacts) && contacts?.length >= 1;
 
   return (
-    <Container>
-      <DefaultComponent
-        headerProps={{ goBack: () => navigation.goBack() }}
-        highlightProps={{
-          title: "Dados de contato",
-          subtitle: "Passo 3 de 5"
-        }}
-        key="default-component-step2"
-      />
-
-      <DecreasingContainer>
-        <WrapDropdown>
-          <CustomDropdown
-            label="Forma de contato"
-            placeholder="Selecione uma opção"
-            options={contactOptions}
-            selectedValue={contactType}
-            onValueChange={(value: string) => setContactType(value)}
-          />
-        </WrapDropdown>
-
-        <Fieldset>
-          <Input
-            label={contactType}
-            placeholder={`Digite seu ${contactType.toLowerCase()}`}
-            onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => setContact(e.nativeEvent.text)}
-            value={contact}
-          />
-        </Fieldset>
-
-        <Button
-          label="Adicionar contato"
-          size="SM"
-          onPress={addContact}
+    <WrapperPage>
+      <ScrollableContent>
+        <DefaultComponent
+          headerProps={{ goBack: () => navigation.goBack() }}
+          highlightProps={{
+            title: "Dados de contato",
+            subtitle: "Passo 3 de 5"
+          }}
+          key="default-component-step2"
         />
 
-        {hasContacts && (
-          <Subtitle>
-            Meus contatos
-          </Subtitle>
-        )}
+        <AlertTextWrapper>
+          <AlertText>Lembre-se de que os emails fornecidos nesta tela não podem ser usados para fazer login. 😉</AlertText>
+        </AlertTextWrapper>
 
-        {hasContacts && contacts.map(contact => (
-          <Display
-            key={contact.id}
-            value={contact.valor_forma_contato}
-            label={contact.forma_contato.nome_tipo_contato}
+        <DecreasingContainer>
+          <WrapDropdown>
+            <CustomDropdown
+              label="Forma de contato"
+              placeholder="Selecione uma opção"
+              options={contactOptions}
+              selectedValue={contactType}
+              onValueChange={(value: string) => setContactType(value)}
+            />
+          </WrapDropdown>
+
+          <Fieldset>
+            <Input
+              label={contactType}
+              placeholder={`Digite seu ${contactType.toLowerCase()}`}
+              onChange={(e: NativeSyntheticEvent<TextInputChangeEventData>) => setContact(e.nativeEvent.text)}
+              value={contact}
+            />
+          </Fieldset>
+
+          <Button
+            label="Adicionar contato"
+            size="SM"
+            onPress={addContact}
           />
-        ))}
-      </DecreasingContainer>
+
+          {hasContacts && (
+            <ContactsWrapper>
+              <Subtitle>Meus contatos</Subtitle>
+
+              {contacts.map(contact => (
+                <Display
+                  key={contact.id}
+                  value={contact.valor_forma_contato}
+                  label={contact.forma_contato.nome_tipo_contato}
+                />
+              ))}
+            </ContactsWrapper>
+          )}
+        </DecreasingContainer>
+      </ScrollableContent>
 
       <Button
         label="Continuar"
         size="XL"
-        icon={<ArrowRight color={'#fff'} weight="bold" />}
+        icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
         onPress={() => navigation.navigate("Step4")}
       />
-    </Container>
+    </WrapperPage>
   );
 }

@@ -8,7 +8,7 @@ interface Props {
   value: string;
 }
 
-export function Display({ label, value, ...rest }: Props) {
+export function Display({ label, value }: Props) {
   return (
     <DisplayContainer>
       <Label>{label}</Label>

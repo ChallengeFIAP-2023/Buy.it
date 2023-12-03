@@ -1,16 +1,18 @@
+import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { CompositeScreenProps } from "@react-navigation/native";
+import { ArrowRight } from "phosphor-react-native";
+import { useForm, SubmitHandler, Controller } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+
 // Component import
 import {
   DecreasingContainer,
   Input,
   Button,
   Chip,
-  DefaultComponent
+  DefaultComponent,
+  WrapperPage
 } from "@components/index";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { CompositeScreenProps } from "@react-navigation/native";
-import { ArrowRight } from "phosphor-react-native";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
 
 // Type import
 import { MainNavigationRoutes } from "@routes/index";
@@ -29,10 +31,12 @@ import { toMaskedCNPJ, unMask } from "@utils/masks";
 import { useSignUpForm } from "@hooks/useSignUpForm";
 
 // Style import
-import { Container, Fieldset, WrapChip } from './styles';
+import { Fieldset, WrapChip } from './styles';
+import { ScrollableContent } from "@global/styles/index";
 
 interface Step2Form {
   nome: string;
+  email: string;
   cnpj: string;
 }
 
@@ -62,65 +66,83 @@ export const Step2: React.FC<
   }
 
   return (
-    <Container>
-      <DefaultComponent
-        headerProps={{ goBack: () => navigation.goBack() }}
-        highlightProps={{
-          title: "Dados da",
-          subtitle: "Passo 2 de 5",
-          highlightedText: "empresa"
-        }}
-        key="default-component-step1"
-      />
+    <WrapperPage>
+      <ScrollableContent>
+        <DefaultComponent
+          headerProps={{ goBack: () => navigation.goBack() }}
+          highlightProps={{
+            title: "Dados da",
+            subtitle: "Passo 2 de 5",
+            highlightedText: "empresa"
+          }}
+          key="default-component-step1"
+        />
 
-      <DecreasingContainer>
-        <Fieldset>
-          <Controller
-            control={control}
-            name="nome"
-            render={({ field: { value, onChange } }) => (
-              <Input
-                value={value}
-                onChangeText={onChange}
-                label="Nome da empresa"
-                placeholder="Carrefour"
-                error={errors.nome?.message}
-              />
-            )}
-          />
-        </Fieldset>
+        <DecreasingContainer>
+          <Fieldset>
+            <Controller
+              control={control}
+              name="nome"
+              render={({ field: { value, onChange } }) => (
+                <Input
+                  value={value}
+                  onChangeText={onChange}
+                  label="Nome da empresa"
+                  placeholder="Carrefour"
+                  error={errors.nome?.message}
+                />
+              )}
+            />
+          </Fieldset>
 
-        <Fieldset>
-          <Controller
-            control={control}
-            name="cnpj"
-            render={({ field: { value, onChange } }) => (
-              <Input
-                value={value}
-                onChangeText={(text) => onChange(toMaskedCNPJ(text))}
-                label="CNPJ"
-                placeholder="00.000.000/0001-00"
-                keyboardType="numeric"
-                error={errors.cnpj?.message}
-              />
-            )}
-          />
+          <Fieldset>
+            <Controller
+              control={control}
+              name="email"
+              render={({ field: { value, onChange } }) => (
+                <Input
+                  value={value}
+                  onChangeText={onChange}
+                  label="Email principal"
+                  placeholder="johndoe@example.com"
+                  error={errors.email?.message}
+                />
+              )}
+            />
+          </Fieldset>
 
-        </Fieldset>
+          <Fieldset>
+            <Controller
+              control={control}
+              name="cnpj"
+              render={({ field: { value, onChange } }) => (
+                <Input
+                  value={value}
+                  onChangeText={(text) => onChange(toMaskedCNPJ(text))}
+                  label="CNPJ"
+                  placeholder="00.000.000/0001-00"
+                  keyboardType="numeric"
+                  error={errors.cnpj?.message}
+                />
+              )}
+            />
 
-        <Fieldset>
-          <Input label="Departamento" placeholder="Escritório" />
-        </Fieldset>
+          </Fieldset>
 
-        <Input label="Tags relacionadas" placeholder="Papelaria" />
+          <Fieldset>
+            <Input label="Departamento" placeholder="Escritório" />
+          </Fieldset>
 
-        <WrapChip>
-          <Chip value="material escolar" removable />
-          <Chip value="suprimento" removable />
-          <Chip value="papelaria" removable />
-        </WrapChip>
+          <Input label="Tags relacionadas" placeholder="Papelaria" />
 
-      </DecreasingContainer>
+          <WrapChip>
+            <Chip value="material escolar" removable />
+            <Chip value="suprimento" removable />
+            <Chip value="papelaria" removable />
+          </WrapChip>
+
+        </DecreasingContainer>
+      </ScrollableContent>
 
       <Button
         label="Continuar"
@@ -129,6 +151,6 @@ export const Step2: React.FC<
         bottom
         onPress={handleSubmit(onSubmit)}
       />
-    </Container>
+    </WrapperPage>
   );
 }

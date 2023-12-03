@@ -4,7 +4,7 @@ interface OptionProps {
   active?: boolean;
 }
 
-export const Container = styled.View`
+export const Container = styled.KeyboardAvoidingView`
   padding-top: 20px;
 
   width: 100%;
@@ -33,10 +33,10 @@ export const OptionText = styled.Text<OptionProps>`
   font-size: ${({ theme }) => theme.FONT_SIZE.XL}px;
 `
 
-export const AlertText = styled.Text<OptionProps>`
-  color: ${({ theme, active }) => active ? theme.COLORS.WHITE : theme.COLORS.GRAY_300};
-  font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.REGULAR};
-  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
+// export const AlertText = styled.Text<OptionProps>`
+//   color: ${({ theme, active }) => active ? theme.COLORS.WHITE : theme.COLORS.GRAY_300};
+//   font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.REGULAR};
+//   font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
 
-  margin-bottom: 30px;
-`
+//   margin-bottom: 30px;
+// `
