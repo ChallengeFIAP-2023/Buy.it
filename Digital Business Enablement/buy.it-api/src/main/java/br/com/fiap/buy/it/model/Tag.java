@@ -6,13 +6,16 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.util.LinkedHashSet;
+import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
-@Data
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@ToString(exclude = {"departamentos", "usuarios", "produtos"})
 @Entity
 @Table(name = "TAG", uniqueConstraints = {
         @UniqueConstraint(name = "UK_NOME_TAG", columnNames = "NOME_TAG")
@@ -125,5 +128,18 @@ public class Tag {
         this.produtos.remove(produto);
         if (produto.getTags().equals(this)) produto.removeTag(this);
         return this;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Tag)) return false;
+        Tag tag = (Tag) o;
+        return Objects.equals(id, tag.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
     }
 }

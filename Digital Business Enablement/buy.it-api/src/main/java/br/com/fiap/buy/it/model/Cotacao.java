@@ -29,7 +29,7 @@ public class Cotacao {
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @NotNull(message = "O campo comprador não pode estar vazio.")
     @JoinColumn(
-            name = "ID_COMPRADOR",
+            name = "ID_USUARIO",
             referencedColumnName = "ID_USUARIO",
             foreignKey = @ForeignKey(name = "FK_COMPRADOR_COTACAO"),
             nullable = false
