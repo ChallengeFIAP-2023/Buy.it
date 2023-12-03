@@ -228,11 +228,12 @@ Abra o seu navegador e navegue até [http://localhost:8080](http://localhost:808
 
 Antes de mais nada, é necessário alterar o arquivo `Hybrid Mobile App Development/buy.it/src/services/api.ts` na linha 4, trocando para o IP da sua máquina e lembrando-se de manter a porta `8080`:
 ```bash
-  export const api = axios.create({
-    baseURL: 'http://192.168.123.45:8080',
-  }) as APIInstanceProps;
+export const api = axios.create({
+  baseURL: "http://123.456.78.90:8080"
+});
 ```
 
+Depois navegue até a pasta do app:
 ```bash
 $ cd '.\Hybrid Mobile APP Development\buy.it\' 
 ```
