@@ -48,20 +48,6 @@ interface Step2Form {
   cnpj: string;
 }
 
-const departmentsExample = [
-  { label: 'Escritório', value: 1 },
-  { label: 'Informática', value: 2 },
-  { label: 'Têxtil', value: 3 },
-]
-
-const tagsExample = [
-  { label: 'Periféricos', value: 1 },
-  { label: 'Eletrônicos', value: 2 },
-  { label: 'Papelaria', value: 3 },
-  { label: 'Roupas e acessórios', value: 4 },
-  { label: 'Tecidos', value: 5 },
-]
-
 export const Step2: React.FC<
   CompositeScreenProps<
     NativeStackScreenProps<SignUpRoutes, 'Step2'>,
@@ -81,6 +67,7 @@ export const Step2: React.FC<
   const onSubmit: SubmitHandler<Step2Form> = (data) => {
     const cleanCNPJ = unMask(data.cnpj);
     Object.assign(data, { cnpj: cleanCNPJ });
+    // Object.assign(data, { idsTags: selectedTags });
 
     setUser({ ...user, ...data });
 
@@ -88,17 +75,18 @@ export const Step2: React.FC<
   }
 
   // State
-  const [departments, setDepartments] = useState<Department[]>([] as Department[]);
-  const [department, setDepartment] = useState<Department | null>(null);
+  // const [departments, setDepartments] = useState<Department[]>([] as Department[]);
+  // const [department, setDepartment] = useState<Department | null>(null);
   const [tags, setTags] = useState<Tag[]>([] as Tag[]);
+  const [selectedTags, setSelectedTags] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useLayoutEffect(() => {
     const fetchData = async () => {
       try {
 
-        const departmentsData = await api.get('/departamentos');
-        setDepartments(departmentsData.data.content);
+        const tagsResponse = await api.get('/tags');
+        setTags(tagsResponse.data.content);
         
       } catch (error) {
         console.error('Erro ao buscar dados: ', error);
@@ -152,6 +140,7 @@ export const Step2: React.FC<
                   onChangeText={onChange}
                   label="Email principal"
                   placeholder="johndoe@example.com"
+                  autoCapitalize='none'
                   error={errors.email?.message}
                 />
               )}
@@ -175,7 +164,9 @@ export const Step2: React.FC<
             />
           </Fieldset>
 
-          { departments && (
+          {/* Por enquanto não precisaremos desse campo, mas em breve ele será utilizado para buscarmos apenas
+              as tags relacionadas ao departamento escolhido */}
+          {/* { departments && (
             <Fieldset>
             <CustomDropdown
               label="Departamento"
@@ -187,25 +178,21 @@ export const Step2: React.FC<
               }
             />
           </Fieldset>
-          ) }
+          ) } */}
 
-          { department && department.tags.length > 0 && (
+          { tags && (
             <Fieldset>
             <CustomDropdown
               label="Tags relacionadas"
+              isSearchable
+              isMultiple
               placeholder="Selecione as tags relacionadas"
-              options={department.tags.map(tag => ({ label: tag.nome, value: tag.id}))}
-              selectedValue={tags.map(tag => tag.id)}
-              onValueChange={(value: []) => setTags(value.map(value => ({ id: value, nome: ''}) ))}
+              options={tags.map(tag => ({ label: tag.nome, value: tag.id}))}
+              selectedValue={selectedTags}
+              onValueChange={(value: []) => setSelectedTags(value)}
             />
           </Fieldset>
           ) }
-
-          <WrapChip>
-            <Chip value="material escolar" removable />
-            <Chip value="suprimento" removable />
-            <Chip value="papelaria" removable />
-          </WrapChip>
 
         </DecreasingContainer>
       </ScrollableContent>

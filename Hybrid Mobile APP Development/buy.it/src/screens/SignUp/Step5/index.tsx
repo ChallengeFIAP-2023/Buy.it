@@ -8,9 +8,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { MainNavigationRoutes } from "@routes/index";
 import { SignUpRoutes } from "..";
 
-// Validation import
-import { Step5FormSchema } from "@validations/index";
-
 // Theme import
 import theme from "@theme/index";
 
@@ -36,10 +33,6 @@ import { Fieldset, Content } from './styles';
 import { ScrollableContent } from '@global/styles/index';
 import { useState } from "react";
 
-interface Step5Form {
-  senha: string;
-}
-
 export const Step5: React.FC<
   CompositeScreenProps<
     NativeStackScreenProps<SignUpRoutes, 'Step5'>,
@@ -63,6 +56,7 @@ export const Step5: React.FC<
     const senha = password;
 
     const finalUserData: UserQuery = Object.assign(user, { senha });
+    console.log(finalUserData)
 
     try {
       await handleRegisterUser(finalUserData);
