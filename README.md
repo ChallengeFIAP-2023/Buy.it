@@ -1,7 +1,7 @@
 # **Challenge 2023 - FIAP & Level Group BR & BUY.it**
 <br />
 <p align="center">
-  <img src="BUYit.png" alt="BUYIt">
+  <img src="BUYitv2.png" width="300" alt="BUYIt">
 </p>
 
 <p align="center">
