@@ -1,18 +1,19 @@
 import { Fragment } from "react";
 import type { DropdownProps } from 'react-native-input-select/lib/typescript/types/index.types';
 import Dropdown from 'react-native-input-select';
+import { CaretDown } from "phosphor-react-native";
 
-// Style import
-import { 
-  Label, 
-  dropdownStyle, 
-  textStyle, 
-  checkboxStyle,
-  searchInputStyle
- } from './styles';
+// Theme import
 import theme from "@theme/index";
 
-import { CaretDown } from "phosphor-react-native";
+// Style import
+import {
+  Label,
+  dropdownStyle,
+  textStyle,
+  checkboxStyle,
+  searchInputStyle
+} from './styles';
 
 export function CustomDropdown({ label, ...rest }: DropdownProps) {
   return (
@@ -34,8 +35,8 @@ export function CustomDropdown({ label, ...rest }: DropdownProps) {
         modalOptionsContainerStyle={dropdownStyle}
         checkboxLabelStyle={textStyle}
         searchControls={
-          { 
-            textInputStyle: searchInputStyle, 
+          {
+            textInputStyle: searchInputStyle,
             textInputContainerStyle: textStyle,
             textInputProps: {
               placeholder: 'Pesquise uma opção',

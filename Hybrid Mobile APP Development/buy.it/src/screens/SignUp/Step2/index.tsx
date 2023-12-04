@@ -1,9 +1,11 @@
+import { useLayoutEffect, useState } from "react";
 import { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { CompositeScreenProps } from "@react-navigation/native";
 import { ArrowRight } from "phosphor-react-native";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useLayoutEffect, useState } from "react";
+
+// Service import
 import { api } from '@services/api';
 
 // Component import
@@ -11,11 +13,9 @@ import {
   DecreasingContainer,
   Input,
   Button,
-  Chip,
   DefaultComponent,
   CustomDropdown,
-  WrapperPage,
-  Loading
+  WrapperPage
 } from "@components/index";
 
 // Type import
@@ -35,12 +35,12 @@ import { toMaskedCNPJ, unMask } from "@utils/masks";
 import { useSignUpForm } from "@hooks/useSignUpForm";
 
 // Style import
-import { Fieldset, WrapChip } from './styles';
+import { Fieldset } from './styles';
 import { ScrollableContent } from "@global/styles/index";
 
 // Type import
-import { Department } from "@dtos/department";
 import { Tag } from "@dtos/tag";
+import { ActivityIndicator } from "react-native";
 
 interface Step2Form {
   nome: string;
@@ -67,7 +67,6 @@ export const Step2: React.FC<
   const onSubmit: SubmitHandler<Step2Form> = (data) => {
     const cleanCNPJ = unMask(data.cnpj);
     Object.assign(data, { cnpj: cleanCNPJ });
-    // Object.assign(data, { idsTags: selectedTags });
 
     setUser({ ...user, ...data });
 
@@ -75,8 +74,6 @@ export const Step2: React.FC<
   }
 
   // State
-  // const [departments, setDepartments] = useState<Department[]>([] as Department[]);
-  // const [department, setDepartment] = useState<Department | null>(null);
   const [tags, setTags] = useState<Tag[]>([] as Tag[]);
   const [selectedTags, setSelectedTags] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
@@ -84,12 +81,10 @@ export const Step2: React.FC<
   useLayoutEffect(() => {
     const fetchData = async () => {
       try {
-
-        const tagsResponse = await api.get('/tags');
-        setTags(tagsResponse.data.content);
-        
+        const { data } = await api.get('/tags');
+        setTags(data.content);
       } catch (error) {
-        console.error('Erro ao buscar dados: ', error);
+        console.log('Erro ao buscar dados: ', error);
       } finally {
         setIsLoading(false)
       }
@@ -97,8 +92,6 @@ export const Step2: React.FC<
 
     fetchData();
   }, []);
-
-  if (isLoading) return <Loading />;
 
   return (
     <WrapperPage>
@@ -180,19 +173,21 @@ export const Step2: React.FC<
           </Fieldset>
           ) } */}
 
-          { tags && (
+          {isLoading && <ActivityIndicator color={theme.COLORS.PRIMARY} />}
+
+          {!isLoading && tags && (
             <Fieldset>
-            <CustomDropdown
-              label="Tags relacionadas"
-              isSearchable
-              isMultiple
-              placeholder="Selecione as tags relacionadas"
-              options={tags.map(tag => ({ label: tag.nome, value: tag.id}))}
-              selectedValue={selectedTags}
-              onValueChange={(value: []) => setSelectedTags(value)}
-            />
-          </Fieldset>
-          ) }
+              <CustomDropdown
+                label="Tags relacionadas"
+                isSearchable
+                isMultiple
+                placeholder="Selecione as tags relacionadas"
+                options={tags.map(tag => ({ label: tag.nome, value: tag.id }))}
+                selectedValue={selectedTags}
+                onValueChange={(value: []) => setSelectedTags(value)}
+              />
+            </Fieldset>
+          )}
 
         </DecreasingContainer>
       </ScrollableContent>
