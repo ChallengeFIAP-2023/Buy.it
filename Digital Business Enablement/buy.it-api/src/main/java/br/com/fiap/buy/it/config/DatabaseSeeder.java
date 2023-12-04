@@ -1,89 +1,55 @@
-// package br.com.fiap.buy.it.config;
+package br.com.fiap.buy.it.config;
 
-// import br.com.fiap.buy.it.model.*;
-// import br.com.fiap.buy.it.repository.*;
-// import org.springframework.beans.factory.annotation.Autowired;
-// import org.springframework.boot.CommandLineRunner;
-// import org.springframework.context.annotation.Configuration;
-// import org.springframework.context.annotation.Profile;
+import br.com.fiap.buy.it.model.Departamento;
+import br.com.fiap.buy.it.model.Tag;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.CommandLineRunner;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 
-// import java.util.Arrays;
-// import java.util.List;
+import br.com.fiap.buy.it.model.Departamento;
+import br.com.fiap.buy.it.model.Tag;
+import br.com.fiap.buy.it.repository.DepartamentoRepository;
+import br.com.fiap.buy.it.repository.TagRepository;
 
-// @Configuration
-// @Profile("dev")
-// public class DatabaseSeeder implements CommandLineRunner {
+import java.util.List;
 
-//     @Autowired
-//     private StatusRepository statusRepository;
-//     @Autowired
-//     private PessoaRepository pessoaRepository;
-//     @Autowired
-//     private PessoaJuridicaRepository pessoaJuridicaRepository;
-//     @Autowired
-//     private ProdutoRepository produtoRepository;
-//     @Autowired
-//     private TipoContatoRepository tipoContatoRepository;
-//     @Autowired
-//     private FormaContatoRepository formaContatoRepository;
+@Configuration
+@Profile("dev")
+public class DatabaseSeeder implements CommandLineRunner {
 
+    @Autowired
+    private TagRepository tagRepository;
 
-//     @Override
-//     public void run(String... args) throws Exception {
-//         List<Status> statusList = Arrays.asList(
-//                 new Status(null, "Em Andamento"),
-//                 new Status(null, "Recusado"),
-//                 new Status(null, "Aprovado"),
-//                 new Status(null, "Fechado"),
-//                 new Status(null, "Concluído")
-//         );
-//         statusRepository.saveAll(statusList);
+    @Autowired
+    private DepartamentoRepository departamentoRepository;
 
-//         List<Pessoa> pessoaList = Arrays.asList(
-//                 new Pessoa(null, "One Serviços Administrativos LTDA.", "url_imagem_1"),
-//                 new Pessoa(null, "Kabum S.A.", "url_imagem_2"),
-//                 new Pessoa(null, "Kuará Capital Gestora de Recursos LTDA.", "url_imagem_3"),
-//                 new Pessoa(null, "Magazine Luiza S.A.", "url_imagem_4"),
-//                 new Pessoa(null, "Kalunga Comércio e Indústria Gráfica LTDA.", "url_imagem_4")
-//         );
-//         pessoaRepository.saveAll(pessoaList);
+    @Override
+    public void run(String... args) throws Exception {
+        Tag tag1 = new Tag();
+        tag1.setNome("Tag 1");
 
-//         /*List<PessoaJuridica> pessoaJuridicaList = Arrays.asList(
-//                 new PessoaJuridica(false, "28.434.667/0001-11"),
-//                 new PessoaJuridica(true, "43.283.811/0001-50"),
-//                 new PessoaJuridica(true, "05.570.714/0001-59"),
-//                 new PessoaJuridica(false, "41.179.663/0001-00"),
-//                 new PessoaJuridica(true, "47.960.950/0001-21")
-//         );
-//         pessoaJuridicaRepository.saveAll(pessoaJuridicaList);*/
+        Tag tag2 = new Tag();
+        tag2.setNome("Tag 2");
 
-//         List<Produto> produtoList = Arrays.asList(
-//                 new Produto(1L, "Mouse", "Logitech", "Preto", null, null, null, null, null),
-//                 new Produto(2L, "Água", "Lindóia", null, "1 Litro", null, null, null, null),
-//                 new Produto(3L, "Celular", "Apple", "Vermelho", null, null, null, null, null),
-//                 new Produto(4L, "Calça", "Hering", "Vermelho", "P", "Jeans", "Modelo XYZ", null, null),
-//                 new Produto(5L, "Geladeira", null, null, null, null, null, null, null)
-//         );
-//         produtoRepository.saveAll(produtoList);
+        Tag tag3 = new Tag();
+        tag3.setNome("Tag 3");
 
-//         List<TipoContato> tipoContatoList = Arrays.asList(
-//                 new TipoContato(1L, "Email"),
-//                 new TipoContato(2L, "Telefone"),
-//                 new TipoContato(3L, "Celular"),
-//                 new TipoContato(4L, "Whatsapp"),
-//                 new TipoContato(5L, "Fax")
-//         );
-//         tipoContatoRepository.saveAll(tipoContatoList);
+        tagRepository.saveAll(List.of(tag1, tag2, tag3));
 
-//         /*List<FormaContato> formaContatoList = Arrays.asList(
-//                 new FormaContato(null, tipoContatoRepository.findById(1L).orElseThrow(() -> new RuntimeException("TipoContato com ID 1 não encontrado")), "kaue@oneservicos.com.br", pessoaRepository.findById(1L).orElseThrow(() -> new RuntimeException("Pessoa com ID 1 não encontrada"))),
-//                 new FormaContato(null, tipoContatoRepository.findById(1L).orElseThrow(() -> new RuntimeException("TipoContato com ID 1 não encontrado")), "vendas@kalunga.com.br", pessoaRepository.findById(2L).orElseThrow(() -> new RuntimeException("Pessoa com ID 1 não encontrada"))),
-//                 new FormaContato(null, tipoContatoRepository.findById(1L).orElseThrow(() -> new RuntimeException("TipoContato com ID 1 não encontrado")), "(11) 3200-0000", pessoaRepository.findById(3L).orElseThrow(() -> new RuntimeException("Pessoa com ID 1 não encontrada"))),
-//                 new FormaContato(null, tipoContatoRepository.findById(1L).orElseThrow(() -> new RuntimeException("TipoContato com ID 1 não encontrado")), "(11) 98282-0000", pessoaRepository.findById(4L).orElseThrow(() -> new RuntimeException("Pessoa com ID 1 não encontrada"))),
-//                 new FormaContato(null, tipoContatoRepository.findById(1L).orElseThrow(() -> new RuntimeException("TipoContato com ID 1 não encontrado")), "(11) 98585-0000", pessoaRepository.findById(5L).orElseThrow(() -> new RuntimeException("Pessoa com ID 1 não encontrada")))
-//         );
+        Departamento departamento1 = new Departamento();
+        departamento1.setNome("Departamento 1");
+        departamento1.setIcone("icone1.png");
 
-//         formaContatoRepository.saveAll(formaContatoList);*/
-//     }
+        Departamento departamento2 = new Departamento();
+        departamento2.setNome("Departamento 2");
+        departamento2.setIcone("icone2.png");
 
-// }
+        Departamento departamento3 = new Departamento();
+        departamento3.setNome("Departamento 3");
+        departamento3.setIcone("icone3.png");
+
+        departamentoRepository.saveAll(List.of(departamento1, departamento2, departamento3));
+
+    }
+}
