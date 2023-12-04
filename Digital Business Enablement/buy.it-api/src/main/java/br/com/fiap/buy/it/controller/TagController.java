@@ -20,6 +20,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("tags")
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class TagController {
 
     @Autowired

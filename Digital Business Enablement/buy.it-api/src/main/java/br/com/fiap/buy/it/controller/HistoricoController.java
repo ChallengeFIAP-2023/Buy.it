@@ -20,6 +20,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("historicos")
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class HistoricoController {
 
     @Autowired

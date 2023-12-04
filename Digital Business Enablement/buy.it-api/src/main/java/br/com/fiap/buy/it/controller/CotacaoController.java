@@ -20,6 +20,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("cotacoes")
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class CotacaoController {
 
     @Autowired

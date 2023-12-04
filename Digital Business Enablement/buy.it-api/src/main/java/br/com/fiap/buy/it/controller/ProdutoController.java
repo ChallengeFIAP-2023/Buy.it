@@ -20,6 +20,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("produtos")
 @Slf4j
+@CrossOrigin(origins = "*", allowedHeaders = "*")
 public class ProdutoController {
 
     @Autowired
