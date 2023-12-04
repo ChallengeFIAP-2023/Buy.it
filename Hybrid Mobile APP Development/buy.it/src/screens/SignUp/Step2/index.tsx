@@ -135,7 +135,8 @@ export const Step2: React.FC<
                 <Input
                   value={value}
                   onChangeText={onChange}
-                  label="Email principal"
+                  label="E-mail principal"
+                  keyboardType="email-address"
                   placeholder="johndoe@example.com"
                   autoCapitalize='none'
                   error={errors.email?.message}
