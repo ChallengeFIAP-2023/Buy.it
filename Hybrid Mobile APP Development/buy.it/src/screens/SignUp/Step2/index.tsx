@@ -41,6 +41,7 @@ import { ScrollableContent, Fieldset } from "@global/styles/index";
 
 // Type import
 import { Tag } from "@dtos/tag";
+import Toast from "react-native-toast-message";
 
 interface Step2Form {
   nome: string;
@@ -83,9 +84,13 @@ export const Step2: React.FC<
       const { data } = await api.get('/tags');
       setTags(data.content);
     } catch (error) {
-      console.log('Erro ao buscar dados: ', error);
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível buscar as tags'
+      });
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
