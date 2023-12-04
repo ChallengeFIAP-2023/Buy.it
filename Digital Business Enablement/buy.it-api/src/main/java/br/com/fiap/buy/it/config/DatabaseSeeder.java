@@ -7,8 +7,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
-import br.com.fiap.buy.it.model.Departamento;
-import br.com.fiap.buy.it.model.Tag;
+
 import br.com.fiap.buy.it.repository.DepartamentoRepository;
 import br.com.fiap.buy.it.repository.TagRepository;
 
