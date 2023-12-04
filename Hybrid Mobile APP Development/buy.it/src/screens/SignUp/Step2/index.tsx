@@ -4,6 +4,7 @@ import { CompositeScreenProps } from "@react-navigation/native";
 import { ArrowRight } from "phosphor-react-native";
 import { useForm, SubmitHandler, Controller } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
+import { ActivityIndicator, RefreshControl } from "react-native";
 
 // Service import
 import { api } from '@services/api';
@@ -35,12 +36,11 @@ import { toMaskedCNPJ, unMask } from "@utils/masks";
 import { useSignUpForm } from "@hooks/useSignUpForm";
 
 // Style import
-import { Fieldset } from './styles';
-import { ScrollableContent } from "@global/styles/index";
+import { WrapperLoading } from './styles';
+import { ScrollableContent, Fieldset } from "@global/styles/index";
 
 // Type import
 import { Tag } from "@dtos/tag";
-import { ActivityIndicator } from "react-native";
 
 interface Step2Form {
   nome: string;
@@ -64,6 +64,11 @@ export const Step2: React.FC<
     resolver: yupResolver(Step2FormSchema),
   });
 
+  // State
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [selectedTags, setSelectedTags] = useState([]);
+  const [isLoading, setIsLoading] = useState(true);
+
   const onSubmit: SubmitHandler<Step2Form> = (data) => {
     const cleanCNPJ = unMask(data.cnpj);
     Object.assign(data, { cnpj: cleanCNPJ });
@@ -73,29 +78,28 @@ export const Step2: React.FC<
     return navigation.navigate("Step3");
   }
 
-  // State
-  const [tags, setTags] = useState<Tag[]>([] as Tag[]);
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const fetchData = async () => {
+    try {
+      const { data } = await api.get('/tags');
+      setTags(data.content);
+    } catch (error) {
+      console.log('Erro ao buscar dados: ', error);
+    } finally {
+      setIsLoading(false)
+    }
+  };
 
   useLayoutEffect(() => {
-    const fetchData = async () => {
-      try {
-        const { data } = await api.get('/tags');
-        setTags(data.content);
-      } catch (error) {
-        console.log('Erro ao buscar dados: ', error);
-      } finally {
-        setIsLoading(false)
-      }
-    };
-
     fetchData();
   }, []);
 
   return (
     <WrapperPage>
-      <ScrollableContent>
+      <ScrollableContent
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={fetchData} />
+        }
+      >
         <DefaultComponent
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
@@ -103,10 +107,10 @@ export const Step2: React.FC<
             subtitle: "Passo 2 de 5",
             highlightedText: "empresa"
           }}
-          key="default-component-step1"
+          key="default-component-step2"
         />
 
-        <DecreasingContainer>
+        <DecreasingContainer scrollable>
           <Fieldset>
             <Controller
               control={control}
@@ -157,24 +161,6 @@ export const Step2: React.FC<
             />
           </Fieldset>
 
-          {/* Por enquanto não precisaremos desse campo, mas em breve ele será utilizado para buscarmos apenas
-              as tags relacionadas ao departamento escolhido */}
-          {/* { departments && (
-            <Fieldset>
-            <CustomDropdown
-              label="Departamento"
-              placeholder="Selecione uma opção"
-              options={departments.map(dep => ({ label: dep.nome, value: dep.id}))}
-              selectedValue={department ? department.id : undefined}
-              onValueChange={(value: number) =>
-                setDepartment(departments.find((dep) => dep.id === String(value)) || null)
-              }
-            />
-          </Fieldset>
-          ) } */}
-
-          {isLoading && <ActivityIndicator color={theme.COLORS.PRIMARY} />}
-
           {!isLoading && tags && (
             <Fieldset>
               <CustomDropdown
@@ -188,7 +174,6 @@ export const Step2: React.FC<
               />
             </Fieldset>
           )}
-
         </DecreasingContainer>
       </ScrollableContent>
 

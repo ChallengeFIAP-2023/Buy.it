@@ -5,13 +5,18 @@ import { Container, Header } from './styles';
 
 interface Props extends ScrollViewProps {
   children: React.ReactNode;
+  scrollable?: boolean;
 }
 
-export function DecreasingContainer({ children, ...rest }: Props) {
+export function DecreasingContainer({
+  children,
+  scrollable = false,
+  ...rest
+}: Props) {
   return (
     <>
       <Header />
-      <Container {...rest}>
+      <Container scrollable={scrollable} {...rest}>
         {children}
       </Container>
     </>

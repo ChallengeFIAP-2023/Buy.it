@@ -1,3 +1,4 @@
+import { css } from 'styled-components';
 import styled from 'styled-components/native';
 
 export const Header = styled.View`
@@ -8,8 +9,12 @@ export const Header = styled.View`
   margin-top: 25px;
 `;
 
-export const Container = styled.View`
+export const Container = styled.View<{ scrollable?: boolean }>`
   flex: 1;
+
+  ${props => props.scrollable && css`
+    min-height: 500px;
+  `}
 
   background-color: ${({ theme }) => theme.COLORS.GRAY_600};
 

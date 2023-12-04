@@ -27,8 +27,7 @@ export const textStyle: TextStyle = {
 };
 
 export const checkboxStyle: ViewStyle = {
-    borderWidth: 0,
-    borderRadius: 15,
+  borderWidth: 0,
 };
 
 export const searchInputStyle: TextStyle = {

@@ -5,13 +5,14 @@ import { Raleway_700Bold, Raleway_400Regular, Raleway_600SemiBold } from "@expo-
 import Toast from 'react-native-toast-message';
 import { NavigationContainer } from '@react-navigation/native';
 
+// Route import
+import Routes from "@routes/index";
+
 // Theme import
 import theme from "@theme/index";
 
 // Component import
 import { Loading } from '@components/Loading';
-
-import Routes from "@routes/index";
 
 export default function App() {
   const [fontsLoaded] = useFonts({
@@ -22,15 +23,13 @@ export default function App() {
     'Raleway-Bold': Raleway_700Bold,
   });
 
-  if (!fontsLoaded) return <Loading />;
-
   return (
     <NavigationContainer>
       <ThemeProvider theme={theme}>
-        <Routes />
-      </ThemeProvider>
+        {!fontsLoaded ? <Loading /> : <Routes />}
 
-      <Toast />
+        <Toast />
+      </ThemeProvider>
     </NavigationContainer>
   )
 }

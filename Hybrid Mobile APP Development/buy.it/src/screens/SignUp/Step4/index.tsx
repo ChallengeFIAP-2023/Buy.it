@@ -10,7 +10,8 @@ import {
   DecreasingContainer,
   Button,
   DefaultComponent,
-  UserAvatar
+  UserAvatar,
+  WrapperPage
 } from "@components/index";
 
 // Type import
@@ -25,6 +26,7 @@ import { useSignUpForm } from "@hooks/useSignUpForm";
 
 // Style import
 import { Container, AvatarWrapper } from './styles';
+import { ScrollableContent } from "@global/styles/index";
 
 export const Step4: React.FC<
   CompositeScreenProps<
@@ -74,6 +76,7 @@ export const Step4: React.FC<
           />
         </AvatarWrapper>
       </DecreasingContainer>
+
       <Button
         label="Continuar"
         size="XL"

@@ -56,7 +56,6 @@ export const Step5: React.FC<
     const senha = password;
 
     const finalUserData: UserQuery = Object.assign(user, { senha });
-    console.log(finalUserData)
 
     try {
       await handleRegisterUser(finalUserData);
