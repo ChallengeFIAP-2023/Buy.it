@@ -117,6 +117,7 @@ export function Profile({
                   value={value}
                   onChangeText={onChange}
                   label="E-mail"
+                  autoCapitalize="none"
                   keyboardType="email-address"
                   placeholder="Johndoe@example.com"
                   error={errors.email?.message}
