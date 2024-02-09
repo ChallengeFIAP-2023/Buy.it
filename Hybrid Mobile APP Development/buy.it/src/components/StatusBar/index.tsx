@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 
 // Theme import
-import theme from "@theme/index";
+import theme from '@theme/index';
 
 // Util import
 import { getStatusBarHeight } from '@utils/getStatusBarHeight';

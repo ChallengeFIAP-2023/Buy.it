@@ -1,24 +1,25 @@
-import { useMemo } from "react";
+import { useMemo } from 'react';
 import {
   NativeStackNavigationProp,
-  createNativeStackNavigator
+  createNativeStackNavigator,
 } from '@react-navigation/native-stack';
 
 // Hook import
-import { AuthProvider, useAuth } from "@hooks/useAuth";
+import { AuthProvider, useAuth } from '@hooks/useAuth';
 
 // Screen import
-import { SignIn } from "@screens/SignIn";
-import { SignUp } from "@screens/SignUp";
-import { Profile } from "@screens/Profile";
+import { SignIn } from '@screens/SignIn';
+import { SignUp } from '@screens/SignUp';
+import { Profile } from '@screens/Profile';
 
 export type MainNavigationRoutes = {
   SignIn: undefined;
   SignUp: undefined;
   Profile: undefined;
-}
+};
 
-export type AppNavigatorRoutesProps = NativeStackNavigationProp<MainNavigationRoutes>;
+export type AppNavigatorRoutesProps =
+  NativeStackNavigationProp<MainNavigationRoutes>;
 
 export default function Routes() {
   // Hook
@@ -51,12 +52,8 @@ export default function Routes() {
       </Stack.Navigator>
     );
 
-    return <Navigator />
+    return <Navigator />;
   }, [initialMainRoute]);
 
-  return (
-    <AuthProvider>
-      {MainNavigation}
-    </AuthProvider>
-  );
+  return <AuthProvider>{MainNavigation}</AuthProvider>;
 }

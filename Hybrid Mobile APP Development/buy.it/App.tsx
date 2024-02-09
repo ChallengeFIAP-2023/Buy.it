@@ -1,15 +1,19 @@
-import { ThemeProvider } from "styled-components";
+import { ThemeProvider } from 'styled-components';
 import { useFonts } from 'expo-font';
-import { Roboto_400Regular, Roboto_700Bold } from "@expo-google-fonts/roboto";
-import { Raleway_700Bold, Raleway_400Regular, Raleway_600SemiBold } from "@expo-google-fonts/raleway";
+import { Roboto_400Regular, Roboto_700Bold } from '@expo-google-fonts/roboto';
+import {
+  Raleway_700Bold,
+  Raleway_400Regular,
+  Raleway_600SemiBold,
+} from '@expo-google-fonts/raleway';
 import Toast from 'react-native-toast-message';
 import { NavigationContainer } from '@react-navigation/native';
 
 // Route import
-import Routes from "@routes/index";
+import Routes from '@routes/index';
 
 // Theme import
-import theme from "@theme/index";
+import theme from '@theme/index';
 
 // Component import
 import { Loading } from '@components/Loading';
@@ -31,5 +35,5 @@ export default function App() {
         <Toast />
       </ThemeProvider>
     </NavigationContainer>
-  )
+  );
 }

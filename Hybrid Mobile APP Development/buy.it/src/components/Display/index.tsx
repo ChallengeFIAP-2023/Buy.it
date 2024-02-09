@@ -1,19 +1,29 @@
-import Dropdown from 'react-native-input-select';
+import { Trash } from 'phosphor-react-native';
+import { TouchableOpacity } from 'react-native';
+
+// Theme import
+import theme from '@theme/index';
 
 // Style import
-import { DisplayContainer, Label, Value } from './styles';
+import { TextWrapper, DisplayContainer, Label, Value } from './styles';
 
 interface Props {
   label: string;
   value: string;
+  handleDelete?: () => void;
 }
 
-export function Display({ label, value }: Props) {
+export function Display({ label, value, handleDelete }: Props) {
   return (
     <DisplayContainer>
-      <Label>{label}</Label>
-      <Value>{value}</Value>
+      <TextWrapper>
+        <Label>{label}</Label>
+        <Value>{value}</Value>
+      </TextWrapper>
+
+      <TouchableOpacity onPress={handleDelete}>
+        <Trash size={theme.FONT_SIZE.XL} color={theme.COLORS.RED} />
+      </TouchableOpacity>
     </DisplayContainer>
   );
 }
-

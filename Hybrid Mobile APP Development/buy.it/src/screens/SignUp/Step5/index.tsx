@@ -1,22 +1,20 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { CompositeScreenProps } from "@react-navigation/native";
-import { ArrowRight, Check, Password, X } from "phosphor-react-native";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { ArrowRight } from 'phosphor-react-native';
 
 // Type import
-import { MainNavigationRoutes } from "@routes/index";
-import { SignUpRoutes } from "..";
+import { MainNavigationRoutes } from '@routes/index';
+import { SignUpRoutes } from '..';
 
 // Theme import
-import theme from "@theme/index";
+import theme from '@theme/index';
 
 // Type import
-import { UserQuery } from "@dtos/user";
+import { UserQuery } from '@dtos/user';
 
 // Hook import
-import { useSignUpForm } from "@hooks/useSignUpForm";
-import { useAuth } from "@hooks/useAuth";
+import { useSignUpForm } from '@hooks/useSignUpForm';
+import { useAuth } from '@hooks/useAuth';
 
 // Component import
 import {
@@ -25,13 +23,13 @@ import {
   Button,
   DefaultComponent,
   WrapperPage,
-  Requirement
-} from "@components/index";
+  Requirement,
+} from '@components/index';
 
 // Style import
 import { Fieldset, Content } from './styles';
 import { ScrollableContent } from '@global/styles/index';
-import { useState } from "react";
+import { useState } from 'react';
 
 export const Step5: React.FC<
   CompositeScreenProps<
@@ -62,13 +60,13 @@ export const Step5: React.FC<
 
       if (!email || !senha) return;
 
-      await handleSignIn({ email, password: senha })
+      await handleSignIn({ email, password: senha });
     } catch (error) {
       console.log(error);
     }
-  }
+  };
 
-  function validatePassword(password: string){
+  function validatePassword(password: string) {
     setHasEnoughCharacters(password.length >= 8);
     setHasUppercase(/[A-Z]/.test(password));
     setHasLowercase(/[a-z]/.test(password));
@@ -80,9 +78,9 @@ export const Step5: React.FC<
         <DefaultComponent
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
-            subtitle: "Passo 5 de 5",
-            title: "Defina uma",
-            highlightedText: "senha"
+            subtitle: 'Passo 5 de 5',
+            title: 'Defina uma',
+            highlightedText: 'senha',
           }}
           key="default-component-step5"
         />
@@ -92,7 +90,7 @@ export const Step5: React.FC<
             <Fieldset>
               <Input
                 value={password}
-                onChangeText={(text) => {
+                onChangeText={text => {
                   setPassword(text);
                   validatePassword(text);
                 }}
@@ -117,7 +115,6 @@ export const Step5: React.FC<
               fulfilled={hasUppercase}
             />
           </Content>
-
         </DecreasingContainer>
       </ScrollableContent>
 
@@ -131,4 +128,4 @@ export const Step5: React.FC<
       />
     </WrapperPage>
   );
-}
+};

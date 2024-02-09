@@ -1,10 +1,10 @@
-import { Fragment } from "react";
+import { Fragment } from 'react';
 import type { DropdownProps } from 'react-native-input-select/lib/typescript/types/index.types';
 import Dropdown from 'react-native-input-select';
-import { CaretDown } from "phosphor-react-native";
+import { CaretDown } from 'phosphor-react-native';
 
 // Theme import
-import theme from "@theme/index";
+import theme from '@theme/index';
 
 // Style import
 import {
@@ -12,7 +12,7 @@ import {
   dropdownStyle,
   textStyle,
   checkboxStyle,
-  searchInputStyle
+  searchInputStyle,
 } from './styles';
 
 export function CustomDropdown({ label, ...rest }: DropdownProps) {
@@ -20,7 +20,6 @@ export function CustomDropdown({ label, ...rest }: DropdownProps) {
     <Fragment>
       {Boolean(label) && <Label>{label}</Label>}
       <Dropdown
-        {...rest}
         dropdownStyle={dropdownStyle}
         placeholderStyle={textStyle}
         selectedItemStyle={textStyle}
@@ -34,25 +33,22 @@ export function CustomDropdown({ label, ...rest }: DropdownProps) {
         }
         modalOptionsContainerStyle={dropdownStyle}
         checkboxLabelStyle={textStyle}
-        searchControls={
-          {
-            textInputStyle: searchInputStyle,
-            textInputContainerStyle: textStyle,
-            textInputProps: {
-              placeholder: 'Pesquise uma opção',
-              placeholderTextColor: theme.COLORS.GRAY_200,
-            },
-          }
-        }
+        searchControls={{
+          textInputStyle: searchInputStyle,
+          textInputContainerStyle: textStyle,
+          textInputProps: {
+            placeholder: 'Pesquise uma opção',
+            placeholderTextColor: theme.COLORS.GRAY_200,
+          },
+        }}
         searchInputStyle={searchInputStyle}
         checkboxStyle={checkboxStyle}
         listControls={{
           selectAllText: 'Selecionar todos',
           unselectAllText: 'Remover todos',
-          emptyListMessage: 'Nenhum dado encontrado',
         }}
+        {...rest}
       />
     </Fragment>
   );
 }
-

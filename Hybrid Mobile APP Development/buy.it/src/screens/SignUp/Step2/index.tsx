@@ -1,10 +1,10 @@
-import { useLayoutEffect, useState } from "react";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { CompositeScreenProps } from "@react-navigation/native";
-import { ArrowRight } from "phosphor-react-native";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
-import { ActivityIndicator, RefreshControl } from "react-native";
+import { useLayoutEffect, useState } from 'react';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { ArrowRight } from 'phosphor-react-native';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { RefreshControl } from 'react-native';
 
 // Service import
 import { api } from '@services/api';
@@ -16,31 +16,30 @@ import {
   Button,
   DefaultComponent,
   CustomDropdown,
-  WrapperPage
-} from "@components/index";
+  WrapperPage,
+} from '@components/index';
 
 // Type import
-import { MainNavigationRoutes } from "@routes/index";
-import { SignUpRoutes } from "..";
+import { MainNavigationRoutes } from '@routes/index';
+import { SignUpRoutes } from '..';
 
 // Validation import
-import { Step2FormSchema } from "@validations/index";
+import { Step2FormSchema } from '@validations/index';
 
 // Theme import
-import theme from "@theme/index";
+import theme from '@theme/index';
 
 // Util import
-import { toMaskedCNPJ, unMask } from "@utils/masks";
+import { toMaskedCNPJ, unMask } from '@utils/masks';
 
 // Hook import
-import { useSignUpForm } from "@hooks/useSignUpForm";
+import { useSignUpForm } from '@hooks/useSignUpForm';
 
 // Style import
-import { WrapperLoading } from './styles';
-import { ScrollableContent, Fieldset } from "@global/styles/index";
+import { ScrollableContent, Fieldset } from '@global/styles/index';
 
 // Type import
-import { Tag } from "@dtos/tag";
+import { Tag } from '@dtos/tag';
 
 interface Step2Form {
   nome: string;
@@ -62,6 +61,11 @@ export const Step2: React.FC<
     formState: { errors },
   } = useForm<Step2Form>({
     resolver: yupResolver(Step2FormSchema),
+    defaultValues: {
+      cnpj: user.cnpj,
+      email: user.email,
+      nome: user.nome,
+    },
   });
 
   // State
@@ -69,14 +73,14 @@ export const Step2: React.FC<
   const [selectedTags, setSelectedTags] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
-  const onSubmit: SubmitHandler<Step2Form> = (data) => {
+  const onSubmit: SubmitHandler<Step2Form> = data => {
     const cleanCNPJ = unMask(data.cnpj);
     Object.assign(data, { cnpj: cleanCNPJ });
 
-    setUser({ ...user, ...data });
+    setUser(prevUserData => ({ ...prevUserData, ...data }));
 
-    return navigation.navigate("Step3");
-  }
+    return navigation.navigate('Step3');
+  };
 
   const fetchData = async () => {
     try {
@@ -85,13 +89,16 @@ export const Step2: React.FC<
     } catch (error) {
       console.log('Erro ao buscar dados: ', error);
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
   };
 
   useLayoutEffect(() => {
     fetchData();
   }, []);
+
+  const hasTag = !isLoading && tags.length >= 1;
+  const tagsOptions = tags.map(tag => ({ label: tag.nome, value: tag.id }));
 
   return (
     <WrapperPage>
@@ -103,9 +110,9 @@ export const Step2: React.FC<
         <DefaultComponent
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
-            title: "Dados da",
-            subtitle: "Passo 2 de 5",
-            highlightedText: "empresa"
+            title: 'Dados da',
+            subtitle: 'Passo 2 de 5',
+            highlightedText: 'empresa',
           }}
           key="default-component-step2"
         />
@@ -136,8 +143,9 @@ export const Step2: React.FC<
                   value={value}
                   onChangeText={onChange}
                   label="Email principal"
+                  keyboardType="email-address"
                   placeholder="johndoe@example.com"
-                  autoCapitalize='none'
+                  autoCapitalize="none"
                   error={errors.email?.message}
                 />
               )}
@@ -151,7 +159,7 @@ export const Step2: React.FC<
               render={({ field: { value, onChange } }) => (
                 <Input
                   value={value}
-                  onChangeText={(text) => onChange(toMaskedCNPJ(text))}
+                  onChangeText={text => onChange(toMaskedCNPJ(text))}
                   label="CNPJ"
                   placeholder="00.000.000/0001-00"
                   keyboardType="numeric"
@@ -165,12 +173,13 @@ export const Step2: React.FC<
             <Fieldset>
               <CustomDropdown
                 label="Tags relacionadas"
-                isSearchable
+                isSearchable={hasTag}
                 isMultiple
                 placeholder="Selecione as tags relacionadas"
-                options={tags.map(tag => ({ label: tag.nome, value: tag.id }))}
+                options={tagsOptions}
                 selectedValue={selectedTags}
                 onValueChange={(value: []) => setSelectedTags(value)}
+                listControls={{ emptyListMessage: 'Nenhum tag encontrada' }}
               />
             </Fieldset>
           )}
@@ -186,4 +195,4 @@ export const Step2: React.FC<
       />
     </WrapperPage>
   );
-}
+};

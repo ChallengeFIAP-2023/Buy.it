@@ -15,7 +15,7 @@ export const AlertText = styled.Text`
   font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
 
   margin-bottom: 30px;
-`
+`;
 
 export const Fieldset = styled.View`
   width: 100%;

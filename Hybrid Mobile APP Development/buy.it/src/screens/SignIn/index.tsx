@@ -1,19 +1,19 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { useForm, SubmitHandler, Controller } from "react-hook-form";
-import { yupResolver } from "@hookform/resolvers/yup";
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { useForm, SubmitHandler, Controller } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
 import Toast from 'react-native-toast-message';
 
 // Type import
-import { MainNavigationRoutes } from "@routes/index";
+import { MainNavigationRoutes } from '@routes/index';
 
 // Hook import
-import { useAuth } from "@hooks/useAuth";
+import { useAuth } from '@hooks/useAuth';
 
 // Validation import
-import { SignInFormSchema } from "@validations/index";
+import { SignInFormSchema } from '@validations/index';
 
 // Theme import
-import theme from "@theme/index";
+import theme from '@theme/index';
 
 // Component import
 import {
@@ -21,8 +21,8 @@ import {
   Input,
   Button,
   DefaultComponent,
-  WrapperPage
-} from "@components/index";
+  WrapperPage,
+} from '@components/index';
 
 // Style import
 import {
@@ -30,9 +30,9 @@ import {
   Fieldset,
   RegisterText,
   Touchable,
-  RegisterTextBold
+  RegisterTextBold,
 } from './styles';
-import { ScrollableContent } from "@global/styles/index";
+import { ScrollableContent } from '@global/styles/index';
 
 interface SignInForm {
   email: string;
@@ -40,7 +40,7 @@ interface SignInForm {
 }
 
 export function SignIn({
-  navigation
+  navigation,
 }: NativeStackScreenProps<MainNavigationRoutes, 'SignIn'>) {
   // Hook
   const { handleSignIn, sigInLoading } = useAuth();
@@ -52,7 +52,7 @@ export function SignIn({
     resolver: yupResolver(SignInFormSchema),
   });
 
-  const onSubmit: SubmitHandler<SignInForm> = async (data) => {
+  const onSubmit: SubmitHandler<SignInForm> = async data => {
     try {
       const { email, senha } = data;
       await handleSignIn({ email, password: senha });
@@ -60,16 +60,16 @@ export function SignIn({
       Toast.show({
         type: 'error',
         text1: 'Erro',
-        text2: 'Credenciais inválida.'
+        text2: 'Credenciais inválida.',
       });
     }
-  }
+  };
 
   return (
     <WrapperPage>
       <ScrollableContent>
         <DefaultComponent
-          highlightProps={{ title: "Acesse sua conta", subtitle: "Bem vindo!" }}
+          highlightProps={{ title: 'Acesse sua conta', subtitle: 'Bem vindo!' }}
           statusBarProps={{ backgroundColor: theme.COLORS.GRAY_700 }}
           key="default-component-sing-in"
         />
@@ -111,11 +111,11 @@ export function SignIn({
             </Fieldset>
 
             <Button
-              label={sigInLoading ? "Carregando..." : "Entrar"}
+              label={sigInLoading ? 'Carregando...' : 'Entrar'}
               onPress={handleSubmit(onSubmit)}
             />
 
-            <Touchable onPress={() => navigation.navigate("SignUp")}>
+            <Touchable onPress={() => navigation.navigate('SignUp')}>
               <RegisterText>Novo por aqui?</RegisterText>
               <RegisterTextBold>Criar uma conta</RegisterTextBold>
             </Touchable>

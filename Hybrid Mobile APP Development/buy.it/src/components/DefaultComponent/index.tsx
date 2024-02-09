@@ -14,7 +14,7 @@ interface Props {
 export function DefaultComponent({
   statusBarProps,
   headerProps,
-  highlightProps
+  highlightProps,
 }: Props) {
   return (
     <>

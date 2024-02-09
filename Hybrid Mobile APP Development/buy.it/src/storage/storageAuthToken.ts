@@ -14,7 +14,7 @@ export async function storageAuthTokenSave({
 }: StorageAuthTokenProps) {
   await AsyncStorage.setItem(
     AUTH_TOKEN_STORAGE,
-    JSON.stringify({ token, refresh_token })
+    JSON.stringify({ token, refresh_token }),
   );
 }
 

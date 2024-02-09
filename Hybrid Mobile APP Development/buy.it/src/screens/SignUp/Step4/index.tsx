@@ -1,8 +1,8 @@
-import { useState } from "react";
-import { ImageSourcePropType } from "react-native";
-import { ArrowRight } from "phosphor-react-native";
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { CompositeScreenProps } from "@react-navigation/native";
+import { useState } from 'react';
+import { ImageSourcePropType } from 'react-native';
+import { ArrowRight } from 'phosphor-react-native';
+import { NativeStackScreenProps } from '@react-navigation/native-stack';
+import { CompositeScreenProps } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
 
 // Component import
@@ -11,22 +11,20 @@ import {
   Button,
   DefaultComponent,
   UserAvatar,
-  WrapperPage
-} from "@components/index";
+} from '@components/index';
 
 // Type import
-import { MainNavigationRoutes } from "@routes/index";
-import { SignUpRoutes } from "..";
+import { MainNavigationRoutes } from '@routes/index';
+import { SignUpRoutes } from '..';
 
 // Theme import
-import theme from "@theme/index";
+import theme from '@theme/index';
 
 // Hook import
-import { useSignUpForm } from "@hooks/useSignUpForm";
+import { useSignUpForm } from '@hooks/useSignUpForm';
 
 // Style import
 import { Container, AvatarWrapper } from './styles';
-import { ScrollableContent } from "@global/styles/index";
 
 export const Step4: React.FC<
   CompositeScreenProps<
@@ -35,25 +33,27 @@ export const Step4: React.FC<
   >
 > = ({ navigation }) => {
   // Hook
-  const { user, setUser } = useSignUpForm();
+  const { setUser } = useSignUpForm();
 
   // State
   const [avatar, setAvatar] = useState<string | null>(null);
 
-  const imageSource: ImageSourcePropType =
-    avatar ? { uri: avatar } : require('../../../assets/default_avatar.png');
+  const imageSource: ImageSourcePropType = avatar
+    ? { uri: avatar }
+    : require('../../../assets/default_avatar.png');
 
   function handleContinue() {
-    if (!avatar)
+    if (!avatar) {
       return Toast.show({
         type: 'error',
         text1: 'Adicione uma imagem',
-        text2: 'Sua identidade visual é importante.'
+        text2: 'Sua identidade visual é importante.',
       });
+    }
 
-    setUser(({ ...user, urlImagem: avatar }))
+    setUser(prevUserData => ({ ...prevUserData, urlImagem: avatar }));
 
-    return navigation.navigate("Step5");
+    return navigation.navigate('Step5');
   }
 
   return (
@@ -61,8 +61,8 @@ export const Step4: React.FC<
       <DefaultComponent
         headerProps={{ goBack: () => navigation.goBack() }}
         highlightProps={{
-          subtitle: "Passo 4 de 5",
-          title: "Logo da empresa"
+          subtitle: 'Passo 4 de 5',
+          title: 'Logo da empresa',
         }}
         key="default-component-step4"
       />
@@ -86,4 +86,4 @@ export const Step4: React.FC<
       />
     </Container>
   );
-}
+};
