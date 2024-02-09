@@ -1,5 +1,5 @@
 // Style import
-import { Container, Subtitle, Flex, Title, HighlightedText } from "./styles";
+import { Container, Subtitle, Flex, Title, HighlightedText } from './styles';
 
 // Interfaces
 export interface Props {

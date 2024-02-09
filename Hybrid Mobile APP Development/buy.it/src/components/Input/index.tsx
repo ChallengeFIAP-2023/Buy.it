@@ -1,8 +1,8 @@
-import { Fragment } from "react";
-import { TextInputProps } from "react-native";
+import { Fragment } from 'react';
+import { TextInputProps } from 'react-native';
 
 // Theme import
-import theme from "@theme/index";
+import theme from '@theme/index';
 
 // Style import
 import { Label, InputContainer, ErrorMessage } from './styles';
@@ -11,12 +11,13 @@ import { Label, InputContainer, ErrorMessage } from './styles';
 interface Props extends TextInputProps {
   label?: string;
   error?: string;
-};
+}
 
 export function Input({ label, error, ...rest }: Props) {
   const isInvalid = Boolean(error);
-  const placeholderTextColor =
-    isInvalid ? theme.COLORS.RED : theme.COLORS.GRAY_200
+  const placeholderTextColor = isInvalid
+    ? theme.COLORS.RED
+    : theme.COLORS.GRAY_200;
 
   return (
     <Fragment>
@@ -33,4 +34,3 @@ export function Input({ label, error, ...rest }: Props) {
     </Fragment>
   );
 }
-

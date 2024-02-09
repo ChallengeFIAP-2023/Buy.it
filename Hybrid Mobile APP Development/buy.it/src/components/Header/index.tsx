@@ -9,9 +9,7 @@ export function Header({ goBack }: Props) {
   return (
     <Container>
       <BackButton onPress={goBack}>
-        {typeof goBack === 'function' && (
-          <BackIcon />
-        )}
+        {typeof goBack === 'function' && <BackIcon />}
       </BackButton>
 
       <Logo />
@@ -20,4 +18,3 @@ export function Header({ goBack }: Props) {
     </Container>
   );
 }
-
