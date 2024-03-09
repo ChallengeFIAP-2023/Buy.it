@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
 
-
 export const Container = styled.TouchableOpacity`
   width: 100%;
   height: auto;
@@ -9,21 +8,21 @@ export const Container = styled.TouchableOpacity`
   justify-content: center;
 `;
 
-export const Image = styled.Image<{ size: "MD" | "XLL" }>`
-  background-color: ${({theme}) => theme.COLORS.GRAY_400};
+export const Image = styled.Image<{ size: 'MD' | 'XLL' }>`
+  background-color: ${({ theme }) => theme.COLORS.GRAY_400};
 
-  width: ${props => props.size === "MD" ? "100px" : "200px"};
-  height: ${props => props.size === "MD" ? "100px" : "200px"};
+  width: ${props => (props.size === 'MD' ? '100px' : '200px')};
+  height: ${props => (props.size === 'MD' ? '100px' : '200px')};
 
   border-radius: 125px;
   border-width: 3px;
-  border-color: ${({theme}) => theme.COLORS.GRAY_300};
+  border-color: ${({ theme }) => theme.COLORS.GRAY_300};
 `;
 
-export const IconPic = styled.View<{ size: "MD" | "XLL" }>`
+export const IconPic = styled.View<{ size: 'MD' | 'XLL' }>`
   position: absolute;
   bottom: 10px;
-  right: ${props => props.size === "MD" ? "105px" : "60px"};
+  right: ${props => (props.size === 'MD' ? '105px' : '60px')};
 
   align-items: center;
   justify-content: center;

@@ -40,7 +40,8 @@ import { ScrollableContent, Fieldset } from '@global/styles/index';
 
 // Type import
 import { Tag } from '@dtos/tag';
-import Toast from "react-native-toast-message";
+import Toast from 'react-native-toast-message';
+import { TFlatList } from 'react-native-input-select/lib/typescript/types/index.types';
 
 interface Step2Form {
   nome: string;
@@ -91,7 +92,7 @@ export const Step2: React.FC<
       Toast.show({
         type: 'error',
         text1: 'Erro',
-        text2: 'Não foi possível buscar as tags'
+        text2: 'Não foi possível buscar as tags',
       });
     } finally {
       setIsLoading(false);
@@ -103,7 +104,10 @@ export const Step2: React.FC<
   }, []);
 
   const hasTag = !isLoading && tags.length >= 1;
-  const tagsOptions = tags.map(tag => ({ label: tag.nome, value: tag.id }));
+  const tagsOptions: TFlatList = tags.map(tag => ({
+    label: tag.nome,
+    value: tag.id,
+  }));
 
   return (
     <WrapperPage>

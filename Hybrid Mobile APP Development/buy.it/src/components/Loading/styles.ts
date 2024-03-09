@@ -20,5 +20,5 @@ export const LoadingText = styled.Text`
 
 export const LoadIndicator = styled.ActivityIndicator.attrs(({ theme }) => ({
   size: '15px',
-  color: theme.COLORS.WHITE
+  color: theme.COLORS.WHITE,
 }))``;

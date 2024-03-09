@@ -20,5 +20,14 @@ export const AlertText = styled.Text`
 export const Fieldset = styled.View`
   width: 100%;
 
-  margin-bottom: 25px;
+  margin-bottom: 20px;
+`;
+
+export const Flex = styled.View`
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  gap: 8px;
 `;

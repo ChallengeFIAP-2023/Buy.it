@@ -1,5 +1,8 @@
+import { Dimensions } from 'react-native';
 import { css } from 'styled-components';
 import styled from 'styled-components/native';
+
+const windowHeight = Dimensions.get('window').height;
 
 export const Header = styled.View`
   height: 60px;
@@ -12,9 +15,11 @@ export const Header = styled.View`
 export const Container = styled.View<{ scrollable?: boolean }>`
   flex: 1;
 
-  ${props => props.scrollable && css`
-    min-height: 500px;
-  `}
+  ${props =>
+    props.scrollable &&
+    css`
+      min-height: 600px;
+    `}
 
   background-color: ${({ theme }) => theme.COLORS.GRAY_600};
 

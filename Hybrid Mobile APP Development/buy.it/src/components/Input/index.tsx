@@ -5,7 +5,7 @@ import { TextInputProps } from 'react-native';
 import theme from '@theme/index';
 
 // Style import
-import { Label, InputContainer, ErrorMessage } from './styles';
+import { InputWrapper, Label, InputContainer, ErrorMessage } from './styles';
 
 // Interface
 interface Props extends TextInputProps {
@@ -20,7 +20,7 @@ export function Input({ label, error, ...rest }: Props) {
     : theme.COLORS.GRAY_200;
 
   return (
-    <Fragment>
+    <InputWrapper>
       {Boolean(label) && <Label>{label}</Label>}
 
       <InputContainer
@@ -31,6 +31,6 @@ export function Input({ label, error, ...rest }: Props) {
       />
 
       {isInvalid && <ErrorMessage>{error}</ErrorMessage>}
-    </Fragment>
+    </InputWrapper>
   );
 }

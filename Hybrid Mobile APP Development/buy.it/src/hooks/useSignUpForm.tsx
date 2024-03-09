@@ -4,7 +4,6 @@ import React, {
   useContext,
   useState,
   Dispatch,
-  useEffect,
 } from 'react';
 import Toast from 'react-native-toast-message';
 

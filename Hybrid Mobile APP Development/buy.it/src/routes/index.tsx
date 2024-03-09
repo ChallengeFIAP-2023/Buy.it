@@ -11,11 +11,13 @@ import { AuthProvider, useAuth } from '@hooks/useAuth';
 import { SignIn } from '@screens/SignIn';
 import { SignUp } from '@screens/SignUp';
 import { Profile } from '@screens/Profile';
+import { QuoteDetails } from '@screens/QuoteDetails';
 
 export type MainNavigationRoutes = {
   SignIn: undefined;
   SignUp: undefined;
   Profile: undefined;
+  QuoteDetails: undefined;
 };
 
 export type AppNavigatorRoutesProps =
@@ -28,10 +30,11 @@ export default function Routes() {
   // Navigator instance
   const Stack = createNativeStackNavigator<MainNavigationRoutes>();
 
-  const logged = !!user?.cnpj;
+  // const logged = !!user?.cnpj;
+  const logged = true;
 
   const initialMainRoute = useMemo<keyof MainNavigationRoutes>(() => {
-    if (logged) return 'Profile';
+    if (logged) return 'QuoteDetails';
 
     return 'SignIn';
   }, [logged]);
@@ -49,6 +52,7 @@ export default function Routes() {
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Profile" component={Profile} />
+        <Stack.Screen name="QuoteDetails" component={QuoteDetails} />
       </Stack.Navigator>
     );
 
