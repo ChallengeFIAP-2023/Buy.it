@@ -1,4 +1,4 @@
-import styled from "styled-components/native";
+import styled from 'styled-components/native';
 
 interface Props {
   fullFilled?: boolean;
@@ -24,6 +24,7 @@ export const Requirement = styled.View`
 export const RequirementText = styled.Text<Props>`
   font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.BOLD};
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
-  color: ${({ theme, fullFilled }) => fullFilled ? theme.COLORS.WHITE : theme.COLORS.GRAY_300};
+  color: ${({ theme, fullFilled }) =>
+    fullFilled ? theme.COLORS.WHITE : theme.COLORS.GRAY_300};
   margin-bottom: 5px;
 `;

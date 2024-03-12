@@ -2,7 +2,7 @@ import { ArrowLeft } from 'phosphor-react-native';
 import styled from 'styled-components/native';
 
 // Asset import
-import LogoImage from "@assets/logo.png"
+import LogoImage from '@assets/logo.png';
 
 export const Container = styled.View`
   width: 100%;
@@ -16,7 +16,7 @@ export const Container = styled.View`
 `;
 
 export const Logo = styled.Image.attrs({
-  source: LogoImage
+  source: LogoImage,
 })`
   width: 80px;
   height: 80px;
@@ -32,6 +32,5 @@ export const Empty = styled.View`
 
 export const BackIcon = styled(ArrowLeft).attrs(({ theme }) => ({
   size: theme.FONT_SIZE.XXL,
-  color: theme.COLORS.GRAY_300
+  color: theme.COLORS.GRAY_300,
 }))``;
-

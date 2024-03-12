@@ -15,6 +15,6 @@ export { WrapperPage } from './WrapperPage';
 export { Requirement } from './Requirement';
 
 // Type export
-export type { Props as HeaderProps } from "./Header"
-export type { Props as StatusBarProps } from "./StatusBar"
-export type { Props as HighlightProps } from "./Highlight"
+export type { Props as HeaderProps } from './Header';
+export type { Props as StatusBarProps } from './StatusBar';
+export type { Props as HighlightProps } from './Highlight';

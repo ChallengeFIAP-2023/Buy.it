@@ -10,20 +10,20 @@ export const Label = styled.Text`
 `;
 
 export const dropdownStyle: ViewStyle = {
-    backgroundColor: theme.COLORS.GRAY_500,
-    paddingHorizontal: 12,
-    // TODO: esse padding vertical por algum motivo não funciona. Fica maior que o padrão. Precisamos investigar
-    paddingVertical: 14,
-    borderRadius: 8,
-    borderWidth: 0,
-    height: 'auto',
-    display: 'flex',
-    flexDirection: 'row'
+  backgroundColor: theme.COLORS.GRAY_500,
+  paddingHorizontal: 12,
+  // TODO: esse padding vertical por algum motivo não funciona. Fica maior que o padrão. Precisamos investigar
+  paddingVertical: 14,
+  borderRadius: 8,
+  borderWidth: 0,
+  height: 'auto',
+  display: 'flex',
+  flexDirection: 'row',
 };
 
 export const textStyle: TextStyle = {
-    color: theme.COLORS.GRAY_200,
-    fontFamily: theme.FONT_FAMILY.ROBOTO.REGULAR
+  color: theme.COLORS.GRAY_200,
+  fontFamily: theme.FONT_FAMILY.ROBOTO.REGULAR,
 };
 
 export const checkboxStyle: ViewStyle = {
@@ -31,9 +31,9 @@ export const checkboxStyle: ViewStyle = {
 };
 
 export const searchInputStyle: TextStyle = {
-    backgroundColor: theme.COLORS.GRAY_400,
-    borderRadius: 8,
-    borderWidth: 0,
-    height: 'auto',
-    color: theme.COLORS.WHITE
+  backgroundColor: theme.COLORS.GRAY_400,
+  borderRadius: 8,
+  borderWidth: 0,
+  height: 'auto',
+  color: theme.COLORS.WHITE,
 };

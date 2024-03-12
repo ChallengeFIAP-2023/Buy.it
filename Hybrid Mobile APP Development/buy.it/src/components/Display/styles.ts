@@ -2,7 +2,13 @@ import styled from 'styled-components/native';
 
 export const DisplayContainer = styled.View`
   margin: 15px 0;
+
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
 `;
+
+export const TextWrapper = styled.View``;
 
 export const Label = styled.Text`
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;

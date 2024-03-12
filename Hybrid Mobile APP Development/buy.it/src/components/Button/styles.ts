@@ -31,5 +31,6 @@ export const ButtonText = styled.Text<Props>`
   font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.BOLD};
   text-align: center;
 
-  color: ${({ disabled, theme }) => (disabled ? theme.COLORS.GRAY_300 : theme.COLORS.WHITE)};
+  color: ${({ disabled, theme }) =>
+    disabled ? theme.COLORS.GRAY_300 : theme.COLORS.WHITE};
 `;

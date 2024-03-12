@@ -15,5 +15,5 @@ export function WrapperPage({ children, ...rest }: Props) {
     <Container behavior={behavior} {...rest}>
       {children}
     </Container>
-  )
+  );
 }

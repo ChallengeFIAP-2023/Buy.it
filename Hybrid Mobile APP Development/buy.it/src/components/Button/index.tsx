@@ -1,8 +1,8 @@
-import { TouchableOpacityProps } from "react-native";
+import { TouchableOpacityProps } from 'react-native';
 
 // Style import
 import { ButtonContainer, ButtonText } from './styles';
-import theme from "@theme/index";
+import theme from '@theme/index';
 
 interface Props extends TouchableOpacityProps {
   label: string;
@@ -28,9 +28,7 @@ export function Button({
       bottom={bottom}
       backgroundColor={backgroundColor}
     >
-      <ButtonText size={size}>
-        {label}
-      </ButtonText>
+      <ButtonText size={size}>{label}</ButtonText>
 
       {icon && icon}
     </ButtonContainer>
