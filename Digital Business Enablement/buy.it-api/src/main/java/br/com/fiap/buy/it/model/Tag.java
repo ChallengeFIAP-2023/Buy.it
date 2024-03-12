@@ -9,7 +9,8 @@ import java.util.LinkedHashSet;
 import java.util.Objects;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Getter
 @Setter
@@ -31,7 +32,7 @@ public class Tag {
     @NotBlank(message = "O campo nome não pode estar vazio.")
     private String nome;
 
-    @JsonBackReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "TAG_DEPARTAMENTO",
@@ -52,7 +53,7 @@ public class Tag {
     )
     private Set<Departamento> departamentos = new LinkedHashSet<>();
     
-    @JsonBackReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "USUARIO_TAG",
@@ -73,7 +74,7 @@ public class Tag {
     )
     private Set<Usuario> usuarios = new LinkedHashSet<>();
         
-    @JsonBackReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "PRODUTO_TAG",

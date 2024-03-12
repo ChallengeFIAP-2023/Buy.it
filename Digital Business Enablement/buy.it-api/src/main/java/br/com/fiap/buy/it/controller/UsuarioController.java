@@ -1,7 +1,12 @@
 package br.com.fiap.buy.it.controller;
 
+import br.com.fiap.buy.it.dto.Credenciais;
+import br.com.fiap.buy.it.dto.Token;
 import br.com.fiap.buy.it.dto.UsuarioDTO;
+import br.com.fiap.buy.it.dto.UsuarioResponse;
 import br.com.fiap.buy.it.model.Usuario;
+import br.com.fiap.buy.it.repository.UsuarioRepository;
+import br.com.fiap.buy.it.service.TokenService;
 import br.com.fiap.buy.it.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +16,8 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import lombok.extern.slf4j.Slf4j;
@@ -26,6 +33,18 @@ public class UsuarioController {
     @Autowired
     private UsuarioService usuarioService;
 
+    @Autowired
+    TokenService tokenService;
+
+    @Autowired
+    UsuarioRepository usuarioRepository;
+
+    @Autowired
+    AuthenticationManager authManager;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
+
     @GetMapping
     public ResponseEntity<Page<Usuario>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
@@ -39,9 +58,11 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<Usuario> create(@RequestBody @Valid UsuarioDTO newData) {
+    public ResponseEntity<UsuarioResponse> create(@RequestBody @Valid Usuario newData) {
         log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.create(newData));
+        newData.setSenha(passwordEncoder.encode(newData.getSenha()));
+        usuarioRepository.save(newData);
+        return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioResponse.fromUsuario(newData));
     }
 
     @PutMapping("{id}")
@@ -55,5 +76,12 @@ public class UsuarioController {
         log.info("(" + getClass().getSimpleName() + ") - Deletando por ID: " + id);
         usuarioService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<Token> login(@RequestBody Credenciais credenciais){
+        log.info("(" + getClass().getSimpleName() + ") - Validando Credenciais: " + credenciais);
+        authManager.authenticate(credenciais.toAuthentication());
+        return ResponseEntity.ok(tokenService.generateToken(credenciais.email()));
     }
 }

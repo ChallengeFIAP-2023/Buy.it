@@ -5,11 +5,19 @@ import jakarta.validation.constraints.*;
 
 import lombok.*;
 
+import java.util.Collection;
+import java.util.List;
 import java.util.LinkedHashSet;
 import java.util.Set;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
+
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
 @Data
 @NoArgsConstructor
@@ -19,7 +27,7 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
         @UniqueConstraint(name = "UK_EMAIL_USUARIO", columnNames = "EMAIL_USUARIO"),
         @UniqueConstraint(name = "UK_CNPJ_USUARIO", columnNames = "CNPJ_USUARIO")
 })
-public class Usuario {
+public class Usuario implements UserDetails{
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "SQ_USUARIO")
     @SequenceGenerator(name = "SQ_USUARIO", sequenceName = "SQ_USUARIO", allocationSize = 1)
@@ -35,7 +43,6 @@ public class Usuario {
     @Email(message = "Endereço de e-mail inválido.")
     private String email;
 
-    @JsonIgnore
     @Column(name = "SENHA_USUARIO", nullable = false)
     @NotBlank(message = "O campo senha não pode estar vazio.")
     private String senha;
@@ -51,7 +58,7 @@ public class Usuario {
     @NotNull(message = "O campo isFornecedor não pode estar vazio.")
     private Boolean isFornecedor;
 
-    @JsonManagedReference
+    @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "USUARIO_TAG",
@@ -82,5 +89,44 @@ public class Usuario {
         this.tags.remove(tag);
         if (tag.getUsuarios().equals(this)) tag.removeUsuario(this);
         return this;
+    }
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		return List.of(new SimpleGrantedAuthority("ROLE_USER"));
+	}
+
+	@Override
+	public String getPassword() {
+		return senha;
+	}
+
+	@Override
+	public String getUsername() {
+		return email;
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		return true;
+	}
+
+	public Authentication toAuthentication() {
+        return new UsernamePasswordAuthenticationToken(email, null, getAuthorities());
     }
 }
