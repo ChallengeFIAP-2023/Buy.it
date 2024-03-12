@@ -23,7 +23,10 @@ public class SecurityConfig {
     public SecurityFilterChain web(HttpSecurity http) throws Exception {
         http
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers(new AntPathRequestMatcher("/usuarios/**")).permitAll()
+                .requestMatchers(
+                    new AntPathRequestMatcher("/usuarios", "POST"),
+                    new AntPathRequestMatcher("/usuarios/login", "POST")
+                ).permitAll()
                 .anyRequest().authenticated()
             )
             .csrf(AbstractHttpConfigurer::disable)
