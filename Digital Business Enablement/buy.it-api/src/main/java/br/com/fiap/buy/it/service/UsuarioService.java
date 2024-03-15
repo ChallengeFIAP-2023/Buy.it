@@ -10,6 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
@@ -27,6 +28,9 @@ public class UsuarioService {
 
     @Autowired
     private TagService tagService;
+
+    @Autowired
+    PasswordEncoder passwordEncoder;
 
     public Page<Usuario> listAll(Pageable pageRequest) {
         return usuarioRepository.findAll(pageRequest);
@@ -48,6 +52,7 @@ public class UsuarioService {
     public Usuario update(Long id, UsuarioDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
+        updatedData.setSenha(passwordEncoder.encode(updatedData.getSenha()));
         Usuario updatedEntity = convertToEntity(updatedData);    
         Usuario savedEntity = usuarioRepository.save(updatedEntity);
         return savedEntity;
