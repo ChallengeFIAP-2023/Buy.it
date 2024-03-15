@@ -68,6 +68,7 @@ public class UsuarioController {
     @PutMapping("{id}")
     public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody @Valid UsuarioDTO updatedData) {
         log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
+        updatedData.setSenha(passwordEncoder.encode(updatedData.getSenha()));
         return ResponseEntity.ok(usuarioService.update(id, updatedData));
     }
 
