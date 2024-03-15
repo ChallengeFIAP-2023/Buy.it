@@ -1,4 +1,6 @@
 {
     "java.configuration.updateBuildConfiguration": "interactive",
-    "java.compile.nullAnalysis.mode": "disabled"
+    "java.compile.nullAnalysis.mode": "disabled",
+    "appService.preDeployTask": "package:buy.it",
+    "appService.deploySubpath": "target/buy.it-0.0.1-SNAPSHOT.jar"
 }

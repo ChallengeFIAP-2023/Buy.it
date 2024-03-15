@@ -1,4 +1,4 @@
 -------------------------------------------------------------------------------
 Test set: br.com.fiap.buy.it.BuyitApplicationTests
 -------------------------------------------------------------------------------
-Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.8 s - in br.com.fiap.buy.it.BuyitApplicationTests
+Tests run: 1, Failures: 0, Errors: 0, Skipped: 0, Time elapsed: 5.488 s - in br.com.fiap.buy.it.BuyitApplicationTests

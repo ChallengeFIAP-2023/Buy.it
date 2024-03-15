@@ -1,6 +1,6 @@
 # Documentação das Classes
 
-Este documento descreve as classes (tabelas) e seus atributos para o sistema definido pelo DDL fornecido.
+Este documento descreve as classes (tabelas), seus atributos e suas devidas requisições.
 
 ## Classe `Usuario`
 
@@ -127,6 +127,10 @@ Representa o histórico de cotações no sistema.
 
 Aqui estão exemplos de como interagir com a API usando os métodos HTTP (GET, POST, PUT, DELETE):
 
+Observação: Todos os Métodos estão protegidos pelo Spring Security e são necessários o envio do TOKEN com o prefixo Bearer através do Header da requisição.
+
+Os únicos endpoints liberados são o de cadastrar usuário e efetuar login (o qual retorna o token necessário para acesso aos outros endpoints)
+
 ---
 ## Endpoint **Contato**
 
@@ -218,7 +222,7 @@ Lista todos os usuarios.
 ```
 
 
-#### `POST /usuario`
+#### `POST /usuarios`
 
 Cadastra um usuario.
 
@@ -235,7 +239,7 @@ Cadastra um usuario.
 }
 ```
 
-#### `UPDATE /usuario/{id}`
+#### `UPDATE /usuarios/{id}`
 
 Atualiza um usuario.
 
@@ -252,11 +256,22 @@ Atualiza um usuario.
 }
 ```
 
-#### `DELETE /usuario/{id}`
+#### `DELETE /usuarios/{id}`
 
 Deleta um usuario.
 
 ---
+
+#### `POST /usuarios/login`
+
+Atualiza um usuario.
+
+**Exemplo do body da requisição:**
+```json
+{
+	"email": "exemplo@email.com",
+    "senha": "senha123"
+}
 
 ## Endpoint **Tag**
 
@@ -281,7 +296,7 @@ Lista todas as tags.
 ```
 
 
-#### `POST /tag`
+#### `POST /tags`
 
 Cadastra uma nova tag.
 
@@ -292,7 +307,7 @@ Cadastra uma nova tag.
 }
 ```
 
-#### `UPDATE /tag/{id}`
+#### `UPDATE /tags/{id}`
 
 Atualiza uma tag.
 
@@ -303,7 +318,7 @@ Atualiza uma tag.
 }
 ```
 
-#### `DELETE /tag/{id}`
+#### `DELETE /tags/{id}`
 
 Deleta uma tag.
 
@@ -333,7 +348,7 @@ Lista todos os departamentos.
 ```
 
 
-#### `POST /departamento`
+#### `POST /departamentos`
 
 Cadastra um departamento.
 
@@ -345,7 +360,7 @@ Cadastra um departamento.
 }
 ```
 
-#### `UPDATE /departamento/{id}`
+#### `UPDATE /departamentos/{id}`
 
 Atualiza um departamento.
 
@@ -358,7 +373,7 @@ Atualiza um departamento.
 }
 ```
 
-#### `DELETE /departamento/{id}`
+#### `DELETE /departamentos/{id}`
 
 Deleta um departamento.
 
@@ -400,7 +415,7 @@ Lista todos os produtos.
 ```
 
 
-#### `POST /produto`
+#### `POST /produtos`
 
 Cadastra um produto.
 
@@ -418,7 +433,7 @@ Cadastra um produto.
 }
 ```
 
-#### `UPDATE /produto/{id}`
+#### `UPDATE /produtos/{id}`
 
 Atualiza um produto.
 
@@ -436,7 +451,7 @@ Atualiza um produto.
 }
 ```
 
-#### `DELETE /produto/{id}`
+#### `DELETE /produtos/{id}`
 
 Deleta um produto.
 
@@ -495,7 +510,7 @@ Lista todos as cotacoes.
 ```
 
 
-#### `POST /cotacao`
+#### `POST /cotacoes`
 
 Cadastra uma cotação.
 
@@ -516,7 +531,7 @@ Cadastra uma cotação.
 
 ```
 
-#### `UPDATE /cotacao/{id}`
+#### `UPDATE /cotacoes/{id}`
 
 Atualiza uma cotação.
 
@@ -537,7 +552,7 @@ Atualiza uma cotação.
 }
 ```
 
-#### `DELETE /cotacao/{id}`
+#### `DELETE /cotacoes/{id}`
 
 Deleta uma cotação.
 
@@ -675,7 +690,7 @@ Lista todos os registros históricos das cotações.
 ```
 
 
-#### `POST /historico`
+#### `POST /historicos`
 
 Cadastra um registro histórico de cotação.
 
@@ -696,7 +711,7 @@ Cadastra um registro histórico de cotação.
 
 ```
 
-#### `UPDATE /historico/{id}`
+#### `UPDATE /historicos/{id}`
 
 Atualiza um registro histórico de cotação.
 
@@ -716,7 +731,7 @@ Atualiza um registro histórico de cotação.
 }
 ```
 
-#### `DELETE /historico/{id}`
+#### `DELETE /historicos/{id}`
 
 Deleta um registro histórico.
 
@@ -785,7 +800,7 @@ Lista todas as avaliações.
 ```
 
 
-#### `POST /avaliacao`
+#### `POST /avaliacoes`
 
 Cadastra uma avaliação.
 
@@ -802,7 +817,7 @@ Cadastra uma avaliação.
 
 ```
 
-#### `UPDATE /avaliacao/{id}`
+#### `UPDATE /avaliacoes/{id}`
 
 Atualiza uma avaliação.
 
@@ -818,7 +833,7 @@ Atualiza uma avaliação.
 }
 ```
 
-#### `DELETE /avaliacao/{id}`
+#### `DELETE /avaliacoes/{id}`
 
 Deleta uma avaliação.
 
