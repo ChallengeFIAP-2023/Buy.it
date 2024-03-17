@@ -7,7 +7,7 @@ export const Step2FormSchema = yup.object().shape({
     .required('Quantidade obrigatória.')
     .positive('Deve ser um número positivo.')
     .integer('Deve ser um número inteiro.')
-    .min(1, 'Mín. 01 produto')
+    .min(5, 'Mín. 05 produtos')
     .typeError('Informe a quantidade'),
   prazo: yup.string().required('Prazo é obrigatório'),
 });

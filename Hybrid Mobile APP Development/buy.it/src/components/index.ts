@@ -8,6 +8,7 @@ export { Highlight } from './Highlight';
 export { Input } from './Input';
 export { Button } from './Button';
 export { CustomDropdown } from './Dropdown';
+export { CustomSlider } from './RangeSlider';
 export { Display } from './Display';
 export { DefaultComponent } from './DefaultComponent';
 export { UserAvatar } from './UserAvatar';
