@@ -16,6 +16,7 @@ import { Step1 } from '@screens/QuoteDetails/Step1';
 import { Step2 } from '@screens/QuoteDetails/Step2';
 import { Step3 } from '@screens/QuoteDetails/Step3';
 import { Step4 } from '@screens/QuoteDetails/Step4';
+import { Step5 } from '@screens/QuoteDetails/Step5';
 
 // Interfaces
 export type QuoteDetailsRoutes = {
@@ -44,6 +45,7 @@ export const QuoteDetails: React.FC<
         <Stack.Screen name="Step2" component={Step2} />
         <Stack.Screen name="Step3" component={Step3} />
         <Stack.Screen name="Step4" component={Step4} />
+        <Stack.Screen name="Step5" component={Step5} />
       </Stack.Navigator>
     </QuoteDetailsProvider>
   );
