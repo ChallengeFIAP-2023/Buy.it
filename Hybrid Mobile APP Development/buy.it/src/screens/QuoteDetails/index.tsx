@@ -15,12 +15,15 @@ import { MainNavigationRoutes } from '@routes/index';
 import { Step1 } from '@screens/QuoteDetails/Step1';
 import { Step2 } from '@screens/QuoteDetails/Step2';
 import { Step3 } from '@screens/QuoteDetails/Step3';
+import { Step4 } from '@screens/QuoteDetails/Step4';
 
 // Interfaces
 export type QuoteDetailsRoutes = {
   Step1: undefined;
   Step2: undefined;
   Step3: undefined;
+  Step4: undefined;
+  Step5: undefined;
 };
 
 export const QuoteDetails: React.FC<
@@ -40,6 +43,7 @@ export const QuoteDetails: React.FC<
         <Stack.Screen name="Step1" component={Step1} />
         <Stack.Screen name="Step2" component={Step2} />
         <Stack.Screen name="Step3" component={Step3} />
+        <Stack.Screen name="Step4" component={Step4} />
       </Stack.Navigator>
     </QuoteDetailsProvider>
   );

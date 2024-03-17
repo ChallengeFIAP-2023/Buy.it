@@ -28,8 +28,6 @@ import {
 import {
   LightText,
   LightBoldText,
-  Value,
-  Label,
 } from './styles';
 import { ScrollableContent, } from '@global/styles/index';
 import { useState } from 'react';
@@ -51,7 +49,6 @@ export const Step3: React.FC<
     handleSubmit,
     formState: { errors },
     setValue,
-    getValues
   } = useForm<Step3Form>({
     resolver: yupResolver(Step3FormSchema),
     defaultValues: {},
@@ -132,7 +129,7 @@ export const Step3: React.FC<
             maximumValue={3}
             onValueChange={handlePricePriority}
           />
-          
+
         </DecreasingContainer>
       </ScrollableContent>
 
@@ -141,7 +138,7 @@ export const Step3: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        onPress={() => navigation.navigate('Step3')}
+        onPress={() => navigation.navigate('Step4')}
       />
     </WrapperPage>
   );

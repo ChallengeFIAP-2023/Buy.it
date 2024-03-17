@@ -5,7 +5,8 @@ export const LightText = styled.Text`
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
   font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.REGULAR};
 
-  margin-top: 15px;
+  margin-top: 5px;
+  margin-bottom: 15px;
 
   text-align: left;
 `;
