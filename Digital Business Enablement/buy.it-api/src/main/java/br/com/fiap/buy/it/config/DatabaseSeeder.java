@@ -329,17 +329,17 @@ public class DatabaseSeeder implements CommandLineRunner {
         List<Contato> contatos = List.of(contato1, contato2, contato3, contato4, contato5);
         contatoRepository.saveAll(contatos);
         
-        List<Historico> historicos = List.of(historico1, historico2);
-        historicoRepository.saveAll(historicos);
+        // List<Historico> historicos = List.of(historico1, historico2);
+        // historicoRepository.saveAll(historicos);
 
-        List<Avaliacao> avaliacoes = List.of(avaliacao1, avaliacao2);
-        avaliacaoRepository.saveAll(avaliacoes);
+        // List<Avaliacao> avaliacoes = List.of(avaliacao1, avaliacao2);
+        // avaliacaoRepository.saveAll(avaliacoes);
 
         List<Tag> tags = List.of(tag1, tag2, tag3, tag4, tag5);
         tagRepository.saveAll(tags);
 
-        List<Cotacao> cotacoes = List.of(cotacao1, cotacao2, cotacao3, cotacao4, cotacao5);
-        cotacaoRepository.saveAll(cotacoes);
+        // List<Cotacao> cotacoes = List.of(cotacao1, cotacao2, cotacao3, cotacao4, cotacao5);
+        // cotacaoRepository.saveAll(cotacoes);
 
         List<Usuario> usuarios = List.of(usuario1, usuario2, usuario3, usuario4, usuario5);
         usuarioRepository.saveAll(usuarios);
