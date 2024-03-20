@@ -1,5 +1,3 @@
-import { Fragment } from 'react';
-import { TouchableOpacity, View } from 'react-native';
 import { ArrowRight, Minus, Plus } from 'phosphor-react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
@@ -68,17 +66,18 @@ export const Step2: React.FC<
   });
 
   const onSubmit: SubmitHandler<Step2Form> = data => {
-    // return navigation.navigate('Step3');
+    return navigation.navigate('Step3');
   };
 
   function handleSubtract(value: number) {
-    if (isNaN(value) || value <= 0) return setValue('quantidade', 0);
+    const badValueConditions = isNaN(value) || value <= 0 || (value - PRODUCT_QUANTITY < 5);
+    if (badValueConditions) return setValue('quantidade', 5);
 
     return setValue('quantidade', value - PRODUCT_QUANTITY);
   }
 
   function handleSum(value: number) {
-    if (isNaN(value)) return setValue('quantidade', 0);
+    if (isNaN(value)) return setValue('quantidade', 5);
 
     return setValue('quantidade', Number(value) + PRODUCT_QUANTITY);
   }
@@ -129,7 +128,7 @@ export const Step2: React.FC<
                       <Input
                         value={value?.toString()}
                         onChangeText={onChange}
-                        placeholder="1"
+                        placeholder="5"
                         keyboardType="number-pad"
                         error={errors.quantidade?.message}
                       />
@@ -162,7 +161,7 @@ export const Step2: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        onPress={handleSubmit(onSubmit)}
+        onPress={() => navigation.navigate('Step3')}
       />
     </WrapperPage>
   );
