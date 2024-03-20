@@ -155,6 +155,20 @@ Lista todos os contatos.
 ]
 ```
 
+#### `GET /contatos/{id}`
+
+Exibe o contato de acordo com seu ID.
+
+**Exemplo de retorno:**
+```json
+[
+    {
+        "tipo": "Email",
+        "valor": "exemplo@email.com",
+        "idUsuario": 1
+    }
+]
+```
 
 #### `POST /contatos`
 
@@ -221,6 +235,24 @@ Lista todos os usuarios.
 ]
 ```
 
+#### `GET /usuarios/{id}`
+
+Exibe o usuário de acordo com seu ID.
+
+**Exemplo de retorno:**
+```json
+[
+    {
+			"id": 1,
+			"email": "novopemail@email.com",
+			"nome": "Novo Nome do Usuário",
+			"urlImagem": "https://novosite.com/imagem.jpg",
+			"cnpj": "98765432109876",
+			"isFornecedor": false,
+			"tags": []
+    }
+]
+```
 
 #### `POST /usuarios`
 
@@ -272,6 +304,7 @@ Atualiza um usuario.
 	"email": "exemplo@email.com",
     "senha": "senha123"
 }
+```
 
 ## Endpoint **Tag**
 
@@ -290,6 +323,21 @@ Lista todas as tags.
     {
         "id_tag": 2,
         "nome_tag": "Fechaduras"
+    }
+]
+
+```
+
+#### `GET /tags/{id}`
+
+Exibe a tag de acordo com seu ID.
+
+**Exemplo de retorno:**
+```json
+[
+    {
+        "id_tag": 1,
+        "nome_tag": "Iluminação "
     }
 ]
 
@@ -347,6 +395,20 @@ Lista todos os departamentos.
 ]
 ```
 
+#### `GET /departamentos/{id}`
+
+Exibe o departamento de acordo com seu ID.
+
+**Exemplo de retorno:**
+```json
+[
+    {
+        "id_departamento": 1,
+        "nome_departamento": "Periféricos",
+        "icone_departamento": "https://icone-departamento-periféricos.png"
+    }
+]
+```
 
 #### `POST /departamentos`
 
@@ -414,6 +476,26 @@ Lista todos os produtos.
 ]
 ```
 
+#### `GET /produtos/{id}`
+
+Exibe o produto de acordo com seu ID.
+
+**Exemplo de retorno:**
+```json
+[
+    {
+        "id_produto": 1,
+        "nome_produto": "Produto 1",
+        "marca_produto": "Marca 1",
+        "cor_produto": "Vermelho",
+        "tamanho_produto": "Pequeno",
+        "material_produto": "Poliester",
+        "observação_produto": "Perfeito para casas pequenas",
+        "idDepartamento": 1,
+        "idsTags": []
+    }
+]
+```
 
 #### `POST /produtos`
 
@@ -505,10 +587,124 @@ Lista todos as cotacoes.
     	"prioridadePreco": 3,
     	"prazo": 7,
     	"dataFechamento": null
+    },...
+]
+```
+
+#### `GET /cotacoes/{id}`
+
+Exibe a cotação de acordo com seu ID.
+
+**Exemplo de retorno:**
+```json
+[
+    {
+    	"id": 1,
+    	"dataAbertura": "2023-12-01T09:00:00.000+00:00",
+    	"comprador": {
+    		"id": 1,
+    		"email": "exemplo@email.com",
+    		"nome": "Nome do Usuário",
+    		"urlImagem": "https://exemplo.com/imagem.jpg",
+    		"cnpj": "12345678901234",
+    		"isFornecedor": true,
+    		"tags": []
+    	},
+    	"produto": {
+    		"id": 1,
+    		"nome": "Nome do Produto",
+    		"marca": "Marca X",
+    		"cor": "Azul",
+    		"tamanho": "M",
+    		"material": "Algodão",
+    		"observacao": "Observações sobre o produto",
+    		"departamento": {
+    			"id": 1,
+    			"nome": "Cadastrando Novo Departamento",
+    			"icone": "novo_icone.png",
+    			"tags": []
+    		},
+    		"tags": []
+    	},
+    	"quantidadeProduto": 100,
+    	"valorProduto": 150.50,
+    	"status": {
+    		"id": 1,
+    		"nome": "Cadastrando Novo Status"
+    	},
+    	"prioridadeEntrega": 2,
+    	"prioridadeQualidade": 1,
+    	"prioridadePreco": 3,
+    	"prazo": 7,
+    	"dataFechamento": null
     }
 ]
 ```
 
+#### `GET /cotacoes/usuario{id}`
+
+Lista todas as cotações de acordo com um ID de usuário.
+
+**Exemplo de retorno:**
+```json
+[
+    {
+    	"id": 1,
+    	"dataAbertura": "2023-12-01T09:00:00.000+00:00",
+    	"comprador": {
+    		"id": 1,
+    		"email": "exemplo@email.com",
+    		"nome": "Nome do Usuário",
+    		"urlImagem": "https://exemplo.com/imagem.jpg",
+    		"cnpj": "12345678901234",
+    		"isFornecedor": true,
+    		"tags": []
+    	},
+    	"produto": {
+    		"id": 1,
+    		"nome": "Nome do Produto",
+    		"marca": "Marca X",
+    		"cor": "Azul",
+    		"tamanho": "M",
+    		"material": "Algodão",
+    		"observacao": "Observações sobre o produto",
+    		"departamento": {
+    			"id": 1,
+    			"nome": "Cadastrando Novo Departamento",
+    			"icone": "novo_icone.png",
+    			"tags": []
+    		},
+    		"tags": []
+    	},
+    	"quantidadeProduto": 100,
+    	"valorProduto": 150.50,
+    	"status": {
+    		"id": 1,
+    		"nome": "Cadastrando Novo Status"
+    	},
+    	"prioridadeEntrega": 2,
+    	"prioridadeQualidade": 1,
+    	"prioridadePreco": 3,
+    	"prazo": 7,
+    	"dataFechamento": null
+    },...
+]
+```
+
+#### `GET /cotacoes/info/{id}`
+
+Exibe informações de valores mínimo, média e máximo para todas as cotações que contém o produto com o ID especificado.
+
+**Exemplo de retorno:**
+```json
+[
+    {
+	"minValor": 69.90,
+	"avgValor": 128.00,
+	"maxValor": 500
+    }
+]
+```
 
 #### `POST /cotacoes`
 
