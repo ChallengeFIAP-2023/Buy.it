@@ -1,6 +1,7 @@
 package br.com.fiap.buy.it.service;
 
 import br.com.fiap.buy.it.dto.CotacaoDTO;
+import br.com.fiap.buy.it.dto.InfoCotacaoDTO;
 import br.com.fiap.buy.it.model.Cotacao;
 import br.com.fiap.buy.it.repository.CotacaoRepository;
 
@@ -12,7 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.math.BigDecimal;
 import java.util.Objects;
+import java.util.Optional;
 
 @Service
 public class CotacaoService {
@@ -65,6 +68,13 @@ public class CotacaoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Cotacao não encontrado(a) por ID: " + id));
     }
 
+    public Page<Cotacao> findByUserId(Long userId, Pageable pageable) {
+        if (userId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
+        }
+        return cotacaoRepository.findByCompradorId(userId, pageable);
+    }
+
     // private CotacaoDTO convertToDto(Cotacao entity) {
     //     CotacaoDTO dto = new CotacaoDTO();
     //     dto.setId(entity.getId());
@@ -113,5 +123,18 @@ public class CotacaoService {
         entity.setPrazo(dto.getPrazo());
         entity.setDataFechamento(dto.getDataFechamento());
         return entity;
+    }
+
+    public InfoCotacaoDTO getInfoByProdutoId(Long idProduto) {
+        Optional<Object> resultadoRaw = cotacaoRepository.getInfoByProdutoId(idProduto);
+        if (resultadoRaw.isPresent()) {
+            Object[] resultado = (Object[]) resultadoRaw.get();
+            BigDecimal minValor = resultado[0] != null ? new BigDecimal(resultado[0].toString()) : null;
+            BigDecimal avgValor = resultado[1] != null ? new BigDecimal(resultado[1].toString()) : null;
+            BigDecimal maxValor = resultado[2] != null ? new BigDecimal(resultado[2].toString()) : null;
+            return new InfoCotacaoDTO(minValor, avgValor, maxValor);
+        } else {
+            return new InfoCotacaoDTO(null, null, null);
+        }
     }
 }

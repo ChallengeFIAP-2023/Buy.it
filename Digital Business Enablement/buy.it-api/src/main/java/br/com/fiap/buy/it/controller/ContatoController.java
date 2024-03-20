@@ -24,36 +24,36 @@ import jakarta.validation.Valid;
 public class ContatoController {
 
     @Autowired
-    private ContatoService formaContatoService;
+    private ContatoService contatoService;
 
     @GetMapping
     public ResponseEntity<Page<Contato>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
-        return ResponseEntity.ok(formaContatoService.listAll(pageable));
+        return ResponseEntity.ok(contatoService.listAll(pageable));
     }
 
     @GetMapping("{id}")
     public ResponseEntity<Contato> findById(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
-        return ResponseEntity.ok(formaContatoService.findById(id));
+        return ResponseEntity.ok(contatoService.findById(id));
     }
 
     @PostMapping
     public ResponseEntity<Contato> create(@RequestBody @Valid ContatoDTO newData) {
         log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(formaContatoService.create(newData));
+        return ResponseEntity.status(HttpStatus.CREATED).body(contatoService.create(newData));
     }
 
     @PutMapping("{id}")
     public ResponseEntity<Contato> update(@PathVariable Long id, @RequestBody @Valid ContatoDTO updatedData) {
         log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
-        return ResponseEntity.ok(formaContatoService.update(id, updatedData));
+        return ResponseEntity.ok(contatoService.update(id, updatedData));
     }
 
     @DeleteMapping("{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Deletando por ID: " + id);
-        formaContatoService.delete(id);
+        contatoService.delete(id);
         return ResponseEntity.noContent().build();
     }
 }

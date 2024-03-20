@@ -18,13 +18,13 @@ import java.util.Objects;
 public class ContatoService {
 
     @Autowired
-    private ContatoRepository formaContatoRepository;
+    private ContatoRepository contatoRepository;
 
     @Autowired
     private UsuarioService usuarioService;
 
     public Page<Contato> listAll(Pageable pageRequest) {
-        return formaContatoRepository.findAll(pageRequest);
+        return contatoRepository.findAll(pageRequest);
     }
 
     public Contato findById(Long id) {
@@ -35,7 +35,7 @@ public class ContatoService {
     @Transactional
     public Contato create(ContatoDTO newData) {
         Contato entity = convertToEntity(newData);
-        Contato savedEntity = formaContatoRepository.save(entity);
+        Contato savedEntity = contatoRepository.save(entity);
         return savedEntity;
     }
 
@@ -44,18 +44,18 @@ public class ContatoService {
         findEntityById(id);
         updatedData.setId(id);
         Contato updatedEntity = convertToEntity(updatedData);    
-        Contato savedEntity = formaContatoRepository.save(updatedEntity);
+        Contato savedEntity = contatoRepository.save(updatedEntity);
         return savedEntity;
     }
     
     @Transactional
     public void delete(Long id) {
         Contato entity = findEntityById(id);
-        formaContatoRepository.delete(entity);
+        contatoRepository.delete(entity);
     }
 
     public Contato findEntityById(Long id) {
-        return formaContatoRepository.findById(id)
+        return contatoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Contato não encontrado(a) por ID: " + id));
     }
 

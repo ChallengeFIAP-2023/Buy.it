@@ -4,7 +4,6 @@ import br.com.fiap.buy.it.dto.UsuarioDTO;
 import br.com.fiap.buy.it.model.Usuario;
 import br.com.fiap.buy.it.repository.UsuarioRepository;
 import br.com.fiap.buy.it.model.Tag;
-import br.com.fiap.buy.it.dto.LoginDTO;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -18,7 +17,6 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 // import java.util.stream.Collectors;
-import java.util.Optional;
 
 @Service
 public class UsuarioService {
@@ -126,10 +124,5 @@ public class UsuarioService {
             }
         }
         return entity;
-    }
-
-    public Optional<Usuario> validarLogin(LoginDTO loginDTO) {
-        return usuarioRepository.findByEmail(loginDTO.getEmail())
-                .filter(entity -> entity.getSenha().equals(loginDTO.getSenha()));
     }
 }

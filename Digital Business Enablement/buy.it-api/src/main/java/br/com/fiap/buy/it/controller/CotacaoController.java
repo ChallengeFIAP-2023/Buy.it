@@ -1,6 +1,7 @@
 package br.com.fiap.buy.it.controller;
 
 import br.com.fiap.buy.it.dto.CotacaoDTO;
+import br.com.fiap.buy.it.dto.InfoCotacaoDTO;
 import br.com.fiap.buy.it.model.Cotacao;
 import br.com.fiap.buy.it.service.CotacaoService;
 
@@ -55,5 +56,20 @@ public class CotacaoController {
         log.info("(" + getClass().getSimpleName() + ") - Deletando por ID: " + id);
         cotacaoService.delete(id);
         return ResponseEntity.noContent().build();
+    }
+
+    @GetMapping("/usuario/{userId}")
+    public ResponseEntity<Page<Cotacao>> findByUserId(@PathVariable Long userId, 
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando cotações pelo ID do usuário: " + userId);
+        Page<Cotacao> cotacoes = cotacaoService.findByUserId(userId, pageable);
+        return ResponseEntity.ok(cotacoes);
+    }
+
+    @GetMapping("/info/{produtoId}")
+    public ResponseEntity<InfoCotacaoDTO> getInfoByProdutoId(@PathVariable Long produtoId) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando informações (min, avg, max) de cotações para o produto ID: " + produtoId);
+        InfoCotacaoDTO info = cotacaoService.getInfoByProdutoId(produtoId);
+        return ResponseEntity.ok(info);
     }
 }
