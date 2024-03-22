@@ -18,29 +18,30 @@ public class StatusService {
     @Autowired
     private StatusRepository statusRepository;
 
-    public Page<Status> listAll(Pageable pageRequest) {
-        return statusRepository.findAll(pageRequest);
+    public Page<StatusDTO> listAll(Pageable pageRequest) {
+        Page<Status> status = statusRepository.findAll(pageRequest);
+        return status.map(this::convertToDto);
     }
 
-    public Status findById(Long id) {
+    public StatusDTO findById(Long id) {
         Status entity = findEntityById(id);
-        return entity;
+        return convertToDto(entity);
     }
 
     @Transactional
-    public Status create(StatusDTO newData) {
+    public StatusDTO create(StatusDTO newData) {
         Status entity = convertToEntity(newData);
         Status savedEntity = statusRepository.save(entity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
 
     @Transactional
-    public Status update(Long id, StatusDTO updatedData) {
+    public StatusDTO update(Long id, StatusDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Status updatedEntity = convertToEntity(updatedData);    
         Status savedEntity = statusRepository.save(updatedEntity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
     
     @Transactional
@@ -54,12 +55,12 @@ public class StatusService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Status não encontrado(a) por ID: " + id));
     }
 
-    // private StatusDTO convertToDto(Status entity) {
-    //     StatusDTO dto = new StatusDTO();
-    //     dto.setId(entity.getId());
-    //     dto.setNome(entity.getNome());
-    //     return dto;
-    // }
+    private StatusDTO convertToDto(Status entity) {
+        StatusDTO dto = new StatusDTO();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        return dto;
+    }
 
     private Status convertToEntity(StatusDTO dto) {
         if (dto == null) {
