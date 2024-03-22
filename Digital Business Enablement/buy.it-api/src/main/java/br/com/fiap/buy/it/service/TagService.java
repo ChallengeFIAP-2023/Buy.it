@@ -21,7 +21,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-// import java.util.stream.Collectors;
+import java.util.stream.Collectors;
 
 @Service
 public class TagService {
@@ -38,29 +38,30 @@ public class TagService {
     @Autowired
     private UsuarioRepository usuarioRepository;
 
-    public Page<Tag> listAll(Pageable pageRequest) {
-        return tagRepository.findAll(pageRequest);
+    public Page<TagDTO> listAll(Pageable pageRequest) {
+        Page<Tag> list = tagRepository.findAll(pageRequest);
+        return list.map(this::convertToDto);
     }
 
-    public Tag findById(Long id) {
+    public TagDTO findById(Long id) {
         Tag entity = findEntityById(id);
-        return entity;
+        return convertToDto(entity);
     }
 
     @Transactional
-    public Tag create(TagDTO newData) {
+    public TagDTO create(TagDTO newData) {
         Tag entity = convertToEntity(newData);
         Tag savedEntity = tagRepository.save(entity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
 
     @Transactional
-    public Tag update(Long id, TagDTO updatedData) {
+    public TagDTO update(Long id, TagDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Tag updatedEntity = convertToEntity(updatedData);    
         Tag savedEntity = tagRepository.save(updatedEntity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
     
     @Transactional
@@ -89,51 +90,54 @@ public class TagService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Tag não encontrado(a) por ID: " + id));
     }
 
-    public Page<Tag> findByDepartamentoId(Long departamentoId, Pageable pageable) {
+    public Page<TagDTO> findByDepartamentoId(Long departamentoId, Pageable pageable) {
         if (departamentoId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Departamento não pode ser nulo.");
         }
-        return tagRepository.findByDepartamentoId(departamentoId, pageable);
+        Page<Tag> list = tagRepository.findByDepartamentoId(departamentoId, pageable);
+        return list.map(this::convertToDto);
     }
 
-    public Page<Tag> findByUsuarioId(Long usuarioId, Pageable pageable) {
+    public Page<TagDTO> findByUsuarioId(Long usuarioId, Pageable pageable) {
         if (usuarioId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuario não pode ser nulo.");
         }
-        return tagRepository.findByUsuarioId(usuarioId, pageable);
+        Page<Tag> list = tagRepository.findByUsuarioId(usuarioId, pageable);
+        return list.map(this::convertToDto);
     }
 
-    public Page<Tag> findByProdutoId(Long produtoId, Pageable pageable) {
+    public Page<TagDTO> findByProdutoId(Long produtoId, Pageable pageable) {
         if (produtoId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Produto não pode ser nulo.");
         }
-        return tagRepository.findByProdutoId(produtoId, pageable);
+        Page<Tag> list = tagRepository.findByProdutoId(produtoId, pageable);
+        return list.map(this::convertToDto);
     }
 
-    // private TagDTO convertToDto(Tag entity) {
-    //     TagDTO dto = new TagDTO();
-    //     dto.setId(entity.getId());
-    //     dto.setNome(entity.getNome());
-    //     if (entity.getDepartamentos() != null) {
-    //         Set<Long> idsDepartamentos = entity.getDepartamentos().stream()
-    //                 .map(Departamento::getId)
-    //                 .collect(Collectors.toSet());
-    //         dto.setIdsDepartamentos(idsDepartamentos);
-    //     }
-    //     if (entity.getProdutos() != null) {
-    //         Set<Long> idsProdutos = entity.getProdutos().stream()
-    //                 .map(Produto::getId)
-    //                 .collect(Collectors.toSet());
-    //         dto.setIdsProdutos(idsProdutos);
-    //     }
-    //     if (entity.getUsuarios() != null) {
-    //         Set<Long> idsUsuarios = entity.getUsuarios().stream()
-    //                 .map(Usuario::getId)
-    //                 .collect(Collectors.toSet());
-    //         dto.setIdsUsuarios(idsUsuarios);
-    //     }
-    //     return dto;
-    // }
+    private TagDTO convertToDto(Tag entity) {
+        TagDTO dto = new TagDTO();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        if (entity.getDepartamentos() != null) {
+            Set<Long> idsDepartamentos = entity.getDepartamentos().stream()
+                    .map(Departamento::getId)
+                    .collect(Collectors.toSet());
+            dto.setIdsDepartamentos(idsDepartamentos);
+        }
+        if (entity.getProdutos() != null) {
+            Set<Long> idsProdutos = entity.getProdutos().stream()
+                    .map(Produto::getId)
+                    .collect(Collectors.toSet());
+            dto.setIdsProdutos(idsProdutos);
+        }
+        if (entity.getUsuarios() != null) {
+            Set<Long> idsUsuarios = entity.getUsuarios().stream()
+                    .map(Usuario::getId)
+                    .collect(Collectors.toSet());
+            dto.setIdsUsuarios(idsUsuarios);
+        }
+        return dto;
+    }
 
     private Tag convertToEntity(TagDTO dto) {
         if (dto == null) {

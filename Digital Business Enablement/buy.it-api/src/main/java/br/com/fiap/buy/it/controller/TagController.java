@@ -1,7 +1,6 @@
 package br.com.fiap.buy.it.controller;
 
 import br.com.fiap.buy.it.dto.TagDTO;
-import br.com.fiap.buy.it.model.Tag;
 import br.com.fiap.buy.it.service.TagService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,25 +26,25 @@ public class TagController {
     private TagService tagService;
 
     @GetMapping
-    public ResponseEntity<Page<Tag>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<TagDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(tagService.listAll(pageable));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Tag> findById(@PathVariable Long id) {
+    public ResponseEntity<TagDTO> findById(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
         return ResponseEntity.ok(tagService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Tag> create(@RequestBody @Valid TagDTO newData) {
+    public ResponseEntity<TagDTO> create(@RequestBody @Valid TagDTO newData) {
         log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
         return ResponseEntity.status(HttpStatus.CREATED).body(tagService.create(newData));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Tag> update(@PathVariable Long id, @RequestBody @Valid TagDTO updatedData) {
+    public ResponseEntity<TagDTO> update(@PathVariable Long id, @RequestBody @Valid TagDTO updatedData) {
         log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
         return ResponseEntity.ok(tagService.update(id, updatedData));
     }
@@ -58,23 +57,23 @@ public class TagController {
     }
 
     @GetMapping("/departamento/{departamentoId}")
-    public ResponseEntity<Page<Tag>> findByDepartamentoId(@PathVariable Long departamentoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<TagDTO>> findByDepartamentoId(@PathVariable Long departamentoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do departamento: " + departamentoId);
-        Page<Tag> tags = tagService.findByDepartamentoId(departamentoId, pageable);
+        Page<TagDTO> tags = tagService.findByDepartamentoId(departamentoId, pageable);
         return ResponseEntity.ok(tags);
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<Page<Tag>> findByUsuarioId(@PathVariable Long usuarioId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<TagDTO>> findByUsuarioId(@PathVariable Long usuarioId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do usuario: " + usuarioId);
-        Page<Tag> tags = tagService.findByUsuarioId(usuarioId, pageable);
+        Page<TagDTO> tags = tagService.findByUsuarioId(usuarioId, pageable);
         return ResponseEntity.ok(tags);
     }
 
     @GetMapping("/produto/{produtoId}")
-    public ResponseEntity<Page<Tag>> findByProdutoId(@PathVariable Long produtoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<TagDTO>> findByProdutoId(@PathVariable Long produtoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do produto: " + produtoId);
-        Page<Tag> tags = tagService.findByProdutoId(produtoId, pageable);
+        Page<TagDTO> tags = tagService.findByProdutoId(produtoId, pageable);
         return ResponseEntity.ok(tags);
     }
 }
