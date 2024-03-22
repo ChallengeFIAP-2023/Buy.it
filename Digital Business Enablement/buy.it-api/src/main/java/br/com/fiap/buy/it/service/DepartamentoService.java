@@ -17,6 +17,7 @@ import org.springframework.web.server.ResponseStatusException;
 import java.util.LinkedHashSet;
 import java.util.Set;
 // import java.util.stream.Collectors;
+import java.util.stream.Collectors;
 
 @Service
 public class DepartamentoService {
@@ -27,29 +28,30 @@ public class DepartamentoService {
     @Autowired
     private TagService tagService;
 
-    public Page<Departamento> listAll(Pageable pageRequest) {
-        return departamentoRepository.findAll(pageRequest);
+    public Page<DepartamentoDTO> listAll(Pageable pageRequest) {
+        Page<Departamento> departamentos = departamentoRepository.findAll(pageRequest);
+        return departamentos.map(this::convertToDto);
     }
 
-    public Departamento findById(Long id) {
+    public DepartamentoDTO findById(Long id) {
         Departamento entity = findEntityById(id);
-        return entity;
+        return convertToDto(entity);
     }
 
     @Transactional
-    public Departamento create(DepartamentoDTO newData) {
+    public DepartamentoDTO create(DepartamentoDTO newData) {
         Departamento entity = convertToEntity(newData);
         Departamento savedEntity = departamentoRepository.save(entity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
 
     @Transactional
-    public Departamento update(Long id, DepartamentoDTO updatedData) {
+    public DepartamentoDTO update(Long id, DepartamentoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Departamento updatedEntity = convertToEntity(updatedData);    
         Departamento savedEntity = departamentoRepository.save(updatedEntity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
 
     @Transactional
@@ -68,26 +70,27 @@ public class DepartamentoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Departamento não encontrado(a) por ID: " + id));
     }
 
-    public Page<Departamento> findByTagId(Long tagId, Pageable pageable) {
+    public Page<DepartamentoDTO> findByTagId(Long tagId, Pageable pageable) {
         if (tagId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID da Tag não pode ser nulo.");
         }
-        return departamentoRepository.findByTagId(tagId, pageable);
+        Page<Departamento> departamentos = departamentoRepository.findByTagId(tagId, pageable);
+        return departamentos.map(this::convertToDto);
     }
 
-    // private DepartamentoDTO convertToDto(Departamento entity) {
-    //     DepartamentoDTO dto = new DepartamentoDTO();
-    //     dto.setId(entity.getId());
-    //     dto.setNome(entity.getNome());
-    //     dto.setIcone(entity.getIcone());
-    //     if (entity.getTags() != null) {
-    //         Set<Long> idsTags = entity.getTags().stream()
-    //                 .map(Tag::getId)
-    //                 .collect(Collectors.toSet());
-    //         dto.setIdsTags(idsTags);
-    //     }
-    //     return dto;
-    // }
+    private DepartamentoDTO convertToDto(Departamento entity) {
+        DepartamentoDTO dto = new DepartamentoDTO();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setIcone(entity.getIcone());
+        if (entity.getTags() != null) {
+            Set<Long> idsTags = entity.getTags().stream()
+                    .map(Tag::getId)
+                    .collect(Collectors.toSet());
+            dto.setIdsTags(idsTags);
+        }
+        return dto;
+    }
 
     private Departamento convertToEntity(DepartamentoDTO dto) {
         if (dto == null) {
