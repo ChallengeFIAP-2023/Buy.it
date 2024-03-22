@@ -24,8 +24,8 @@ public class ContatoService {
     private UsuarioService usuarioService;
 
     public Page<ContatoDTO> listAll(Pageable pageRequest) {
-        Page<Contato> contatos = contatoRepository.findAll(pageRequest);
-        return contatos.map(this::convertToDto);
+        Page<Contato> list = contatoRepository.findAll(pageRequest);
+        return list.map(this::convertToDto);
     }
 
     public ContatoDTO findById(Long id) {
@@ -64,8 +64,8 @@ public class ContatoService {
         if (userId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
         }
-        Page<Contato> contatos = contatoRepository.findByUsuarioId(userId, pageable);
-        return contatos.map(this::convertToDto);
+        Page<Contato> list = contatoRepository.findByUsuarioId(userId, pageable);
+        return list.map(this::convertToDto);
     }
 
     private ContatoDTO convertToDto(Contato entity) {

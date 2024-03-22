@@ -31,8 +31,8 @@ public class ProdutoService {
     private TagService tagService;
 
     public Page<ProdutoDTO> listAll(Pageable pageRequest) {
-        Page<Produto> produtos = produtoRepository.findAll(pageRequest);
-        return produtos.map(this::convertToDto);
+        Page<Produto> list = produtoRepository.findAll(pageRequest);
+        return list.map(this::convertToDto);
     }
 
     public ProdutoDTO findById(Long id) {
@@ -76,16 +76,16 @@ public class ProdutoService {
         if (departamentoId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Departamento não pode ser nulo.");
         }
-        Page<Produto> produtos = produtoRepository.findByDepartamentoId(departamentoId, pageable);
-        return produtos.map(this::convertToDto);
+        Page<Produto> list = produtoRepository.findByDepartamentoId(departamentoId, pageable);
+        return list.map(this::convertToDto);
     }
 
     public Page<ProdutoDTO> findByTagId(Long tagId, Pageable pageable) {
         if (tagId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID da Tag não pode ser nulo.");
         }
-        Page<Produto> produtos = produtoRepository.findByTagId(tagId, pageable);
-        return produtos.map(this::convertToDto);
+        Page<Produto> list = produtoRepository.findByTagId(tagId, pageable);
+        return list.map(this::convertToDto);
     }
 
     private ProdutoDTO convertToDto(Produto entity) {

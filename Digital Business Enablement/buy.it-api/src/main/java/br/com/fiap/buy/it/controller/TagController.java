@@ -59,21 +59,21 @@ public class TagController {
     @GetMapping("/departamento/{departamentoId}")
     public ResponseEntity<Page<TagDTO>> findByDepartamentoId(@PathVariable Long departamentoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do departamento: " + departamentoId);
-        Page<TagDTO> tags = tagService.findByDepartamentoId(departamentoId, pageable);
-        return ResponseEntity.ok(tags);
+        Page<TagDTO> list = tagService.findByDepartamentoId(departamentoId, pageable);
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/usuario/{usuarioId}")
     public ResponseEntity<Page<TagDTO>> findByUsuarioId(@PathVariable Long usuarioId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do usuario: " + usuarioId);
-        Page<TagDTO> tags = tagService.findByUsuarioId(usuarioId, pageable);
-        return ResponseEntity.ok(tags);
+        Page<TagDTO> list = tagService.findByUsuarioId(usuarioId, pageable);
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/produto/{produtoId}")
     public ResponseEntity<Page<TagDTO>> findByProdutoId(@PathVariable Long produtoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do produto: " + produtoId);
-        Page<TagDTO> tags = tagService.findByProdutoId(produtoId, pageable);
-        return ResponseEntity.ok(tags);
+        Page<TagDTO> list = tagService.findByProdutoId(produtoId, pageable);
+        return ResponseEntity.ok(list);
     }
 }

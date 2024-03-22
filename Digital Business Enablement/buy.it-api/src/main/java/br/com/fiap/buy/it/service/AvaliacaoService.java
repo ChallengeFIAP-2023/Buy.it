@@ -24,8 +24,8 @@ public class AvaliacaoService {
     private CotacaoService cotacaoService;
 
     public Page<AvaliacaoDTO> listAll(Pageable pageRequest) {
-        Page<Avaliacao> avaliacoes = avaliacaoRepository.findAll(pageRequest);
-        return avaliacoes.map(this::convertToDto);
+        Page<Avaliacao> list = avaliacaoRepository.findAll(pageRequest);
+        return list.map(this::convertToDto);
     }
 
     public AvaliacaoDTO findById(Long id) {
@@ -64,8 +64,8 @@ public class AvaliacaoService {
         if (cotacaoId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
         }
-        Page<Avaliacao> avaliacoes = avaliacaoRepository.findByCotacaoId(cotacaoId, pageable);
-        return avaliacoes.map(this::convertToDto);
+        Page<Avaliacao> list = avaliacaoRepository.findByCotacaoId(cotacaoId, pageable);
+        return list.map(this::convertToDto);
     }
     
     private AvaliacaoDTO convertToDto(Avaliacao entity) {

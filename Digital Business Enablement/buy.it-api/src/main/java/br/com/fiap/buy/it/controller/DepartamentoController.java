@@ -59,7 +59,7 @@ public class DepartamentoController {
     @GetMapping("/tag/{tagId}")
     public ResponseEntity<Page<DepartamentoDTO>> findByTagId(@PathVariable Long tagId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da tag: " + tagId);
-        Page<DepartamentoDTO> departamentos = departamentoService.findByTagId(tagId, pageable);
-        return ResponseEntity.ok(departamentos);
+        Page<DepartamentoDTO> list = departamentoService.findByTagId(tagId, pageable);
+        return ResponseEntity.ok(list);
     }
 }

@@ -33,8 +33,8 @@ public class CotacaoService {
     private UsuarioService usuarioService;
 
     public Page<CotacaoDTO> listAll(Pageable pageRequest) {
-        Page<Cotacao> cotacoes = cotacaoRepository.findAll(pageRequest);
-        return cotacoes.map(this::convertToDto);
+        Page<Cotacao> list = cotacaoRepository.findAll(pageRequest);
+        return list.map(this::convertToDto);
     }
 
     public CotacaoDTO findById(Long id) {
@@ -73,24 +73,24 @@ public class CotacaoService {
         if (userId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
         }
-        Page<Cotacao> cotacoes = cotacaoRepository.findByCompradorId(userId, pageable);
-        return cotacoes.map(this::convertToDto);
+        Page<Cotacao> list = cotacaoRepository.findByCompradorId(userId, pageable);
+        return list.map(this::convertToDto);
     }
 
     public Page<CotacaoDTO> findByProdutoId(Long produtoId, Pageable pageable) {
         if (produtoId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Produto não pode ser nulo.");
         }
-        Page<Cotacao> cotacoes = cotacaoRepository.findByProdutoId(produtoId, pageable);
-        return cotacoes.map(this::convertToDto);
+        Page<Cotacao> list = cotacaoRepository.findByProdutoId(produtoId, pageable);
+        return list.map(this::convertToDto);
     }
 
     public Page<CotacaoDTO> findByStatusId(Long statusId, Pageable pageable) {
         if (statusId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Status não pode ser nulo.");
         }
-        Page<Cotacao> cotacoes = cotacaoRepository.findByStatusId(statusId, pageable);
-        return cotacoes.map(this::convertToDto);
+        Page<Cotacao> list = cotacaoRepository.findByStatusId(statusId, pageable);
+        return list.map(this::convertToDto);
     }
 
     public InfoCotacaoDTO getInfoByProdutoId(Long idProduto) {

@@ -29,8 +29,8 @@ public class DepartamentoService {
     private TagService tagService;
 
     public Page<DepartamentoDTO> listAll(Pageable pageRequest) {
-        Page<Departamento> departamentos = departamentoRepository.findAll(pageRequest);
-        return departamentos.map(this::convertToDto);
+        Page<Departamento> list = departamentoRepository.findAll(pageRequest);
+        return list.map(this::convertToDto);
     }
 
     public DepartamentoDTO findById(Long id) {
@@ -74,8 +74,8 @@ public class DepartamentoService {
         if (tagId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID da Tag não pode ser nulo.");
         }
-        Page<Departamento> departamentos = departamentoRepository.findByTagId(tagId, pageable);
-        return departamentos.map(this::convertToDto);
+        Page<Departamento> list = departamentoRepository.findByTagId(tagId, pageable);
+        return list.map(this::convertToDto);
     }
 
     private DepartamentoDTO convertToDto(Departamento entity) {

@@ -19,8 +19,8 @@ public class StatusService {
     private StatusRepository statusRepository;
 
     public Page<StatusDTO> listAll(Pageable pageRequest) {
-        Page<Status> status = statusRepository.findAll(pageRequest);
-        return status.map(this::convertToDto);
+        Page<Status> list = statusRepository.findAll(pageRequest);
+        return list.map(this::convertToDto);
     }
 
     public StatusDTO findById(Long id) {

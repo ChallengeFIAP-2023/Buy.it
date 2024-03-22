@@ -16,7 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 
 import java.util.LinkedHashSet;
 import java.util.Set;
-// import java.util.stream.Collectors;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService {
@@ -30,30 +30,31 @@ public class UsuarioService {
     @Autowired
     PasswordEncoder passwordEncoder;
 
-    public Page<Usuario> listAll(Pageable pageRequest) {
-        return usuarioRepository.findAll(pageRequest);
+    public Page<UsuarioDTO> listAll(Pageable pageRequest) {
+        Page<Usuario> list = usuarioRepository.findAll(pageRequest);
+        return list.map(this::convertToDto);
     }
 
-    public Usuario findById(Long id) {
+    public UsuarioDTO findById(Long id) {
         Usuario entity = findEntityById(id);
-        return entity;
+        return convertToDto(entity);
     }
 
     @Transactional
-    public Usuario create(UsuarioDTO newData) {
+    public UsuarioDTO create(UsuarioDTO newData) {
         Usuario entity = convertToEntity(newData);
         Usuario savedEntity = usuarioRepository.save(entity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
 
     @Transactional
-    public Usuario update(Long id, UsuarioDTO updatedData) {
+    public UsuarioDTO update(Long id, UsuarioDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         updatedData.setSenha(passwordEncoder.encode(updatedData.getSenha()));
         Usuario updatedEntity = convertToEntity(updatedData);    
         Usuario savedEntity = usuarioRepository.save(updatedEntity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
 
     @Transactional
@@ -72,27 +73,31 @@ public class UsuarioService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Usuario não encontrado(a) por ID: " + id));
     }
 
-    public Page<Usuario> findByTagId(Long tagId, Pageable pageable) {
+    public Page<UsuarioDTO> findByTagId(Long tagId, Pageable pageable) {
         if (tagId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID da Tag não pode ser nulo.");
         }
-        return usuarioRepository.findByTagId(tagId, pageable);
+        Page<Usuario> list = usuarioRepository.findByTagId(tagId, pageable);
+        return list.map(this::convertToDto);
     }
 
-    // private UsuarioDTO convertToDto(Usuario entity) {
-    //     UsuarioDTO dto = new UsuarioDTO();
-    //     dto.setId(entity.getId());
-    //     dto.setEmail(entity.getEmail());
-    //     dto.setSenha(entity.getSenha());
-    //     dto.setIdPessoa(entity.getPessoa() != null ? entity.getPessoa().getId() : null);
-    //     if (entity.getTags() != null) {
-    //         Set<Long> idsTags = entity.getTags().stream()
-    //                 .map(Tag::getId)
-    //                 .collect(Collectors.toSet());
-    //         dto.setIdsTags(idsTags);
-    //     }
-    //     return dto;
-    // }
+    private UsuarioDTO convertToDto(Usuario entity) {
+        UsuarioDTO dto = new UsuarioDTO();
+        dto.setId(entity.getId());
+        dto.setNome(entity.getNome());
+        dto.setEmail(entity.getEmail());
+        dto.setSenha(null);
+        dto.setUrlImagem(entity.getUrlImagem());
+        dto.setCnpj(entity.getCnpj());
+        dto.setIsFornecedor(entity.getIsFornecedor());
+        if (entity.getTags() != null) {
+            Set<Long> idsTags = entity.getTags().stream()
+                    .map(Tag::getId)
+                    .collect(Collectors.toSet());
+            dto.setIdsTags(idsTags);
+        }
+        return dto;
+    }
 
     private Usuario convertToEntity(UsuarioDTO dto) {
         if (dto == null) {

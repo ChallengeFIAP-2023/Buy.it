@@ -59,21 +59,21 @@ public class HistoricoController {
     @GetMapping("/cotacao/{cotacaoId}")
     public ResponseEntity<Page<HistoricoDTO>> findByCotacaoId(@PathVariable Long cotacaoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da cotacao: " + cotacaoId);
-        Page<HistoricoDTO> historicos = historicoService.findByCotacaoId(cotacaoId, pageable);
-        return ResponseEntity.ok(historicos);
+        Page<HistoricoDTO> list = historicoService.findByCotacaoId(cotacaoId, pageable);
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/usuario/fornecedor/{fornecedorId}")
     public ResponseEntity<Page<HistoricoDTO>> findByFornecedorId(@PathVariable Long fornecedorId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do fornecedor: " + fornecedorId);
-        Page<HistoricoDTO> historicos = historicoService.findByFornecedorId(fornecedorId, pageable);
-        return ResponseEntity.ok(historicos);
+        Page<HistoricoDTO> list = historicoService.findByFornecedorId(fornecedorId, pageable);
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/status/{statusId}")
     public ResponseEntity<Page<HistoricoDTO>> findByStatusId(@PathVariable Long statusId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do status: " + statusId);
-        Page<HistoricoDTO> historicos = historicoService.findByStatusId(statusId, pageable);
-        return ResponseEntity.ok(historicos);
+        Page<HistoricoDTO> list = historicoService.findByStatusId(statusId, pageable);
+        return ResponseEntity.ok(list);
     }
 }

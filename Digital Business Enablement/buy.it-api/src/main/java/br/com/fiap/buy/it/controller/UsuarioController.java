@@ -46,13 +46,13 @@ public class UsuarioController {
     PasswordEncoder passwordEncoder;
 
     @GetMapping
-    public ResponseEntity<Page<Usuario>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<UsuarioDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(usuarioService.listAll(pageable));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Usuario> findById(@PathVariable Long id) {
+    public ResponseEntity<UsuarioDTO> findById(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
         return ResponseEntity.ok(usuarioService.findById(id));
     }
@@ -66,7 +66,7 @@ public class UsuarioController {
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Usuario> update(@PathVariable Long id, @RequestBody @Valid UsuarioDTO updatedData) {
+    public ResponseEntity<UsuarioDTO> update(@PathVariable Long id, @RequestBody @Valid UsuarioDTO updatedData) {
         log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
         return ResponseEntity.ok(usuarioService.update(id, updatedData));
     }
@@ -79,10 +79,10 @@ public class UsuarioController {
     }
 
     @GetMapping("/tag/{tagId}")
-    public ResponseEntity<Page<Usuario>> findByTagId(@PathVariable Long tagId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<UsuarioDTO>> findByTagId(@PathVariable Long tagId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da tag: " + tagId);
-        Page<Usuario> usuarios = usuarioService.findByTagId(tagId, pageable);
-        return ResponseEntity.ok(usuarios);
+        Page<UsuarioDTO> list = usuarioService.findByTagId(tagId, pageable);
+        return ResponseEntity.ok(list);
     }
 
     @PostMapping("/login")

@@ -60,15 +60,15 @@ public class CotacaoController {
     @GetMapping("/usuario/comprador/{userId}")
     public ResponseEntity<Page<CotacaoDTO>> findByCompradorId(@PathVariable Long userId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do usuário: " + userId);
-        Page<CotacaoDTO> cotacoes = cotacaoService.findByCompradorId(userId, pageable);
-        return ResponseEntity.ok(cotacoes);
+        Page<CotacaoDTO> list = cotacaoService.findByCompradorId(userId, pageable);
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/produto/{produtoId}")
     public ResponseEntity<Page<CotacaoDTO>> findByProdutoId(@PathVariable Long produtoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do produto: " + produtoId);
-        Page<CotacaoDTO> cotacoes = cotacaoService.findByProdutoId(produtoId, pageable);
-        return ResponseEntity.ok(cotacoes);
+        Page<CotacaoDTO> list = cotacaoService.findByProdutoId(produtoId, pageable);
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/produto/info/{produtoId}")
@@ -81,7 +81,7 @@ public class CotacaoController {
     @GetMapping("/status/{statusId}")
     public ResponseEntity<Page<CotacaoDTO>> findByStatusId(@PathVariable Long statusId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do status: " + statusId);
-        Page<CotacaoDTO> cotacoes = cotacaoService.findByStatusId(statusId, pageable);
-        return ResponseEntity.ok(cotacoes);
+        Page<CotacaoDTO> list = cotacaoService.findByStatusId(statusId, pageable);
+        return ResponseEntity.ok(list);
     }
 }

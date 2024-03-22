@@ -59,7 +59,7 @@ public class ContatoController {
     @GetMapping("/usuario/{userId}")
     public ResponseEntity<Page<ContatoDTO>> findByUsuarioId(@PathVariable Long userId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do usuário: " + userId);
-        Page<ContatoDTO> contatos = contatoService.findByUsuarioId(userId, pageable);
-        return ResponseEntity.ok(contatos);
+        Page<ContatoDTO> list = contatoService.findByUsuarioId(userId, pageable);
+        return ResponseEntity.ok(list);
     }
 }

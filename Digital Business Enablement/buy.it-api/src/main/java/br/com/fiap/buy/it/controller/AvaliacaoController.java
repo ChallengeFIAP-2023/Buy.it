@@ -59,7 +59,7 @@ public class AvaliacaoController {
     @GetMapping("/cotacao/{cotacaoId}")
     public ResponseEntity<Page<AvaliacaoDTO>> findByCotacaoId(@PathVariable Long cotacaoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da cotação: " + cotacaoId);
-        Page<AvaliacaoDTO> avaliacoes = avaliacaoService.findByCotacaoId(cotacaoId, pageable);
-        return ResponseEntity.ok(avaliacoes);
+        Page<AvaliacaoDTO> list = avaliacaoService.findByCotacaoId(cotacaoId, pageable);
+        return ResponseEntity.ok(list);
     }
 }

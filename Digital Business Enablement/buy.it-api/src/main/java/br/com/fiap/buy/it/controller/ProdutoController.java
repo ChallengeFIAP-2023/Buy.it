@@ -59,14 +59,14 @@ public class ProdutoController {
     @GetMapping("/departamento/{departamentoId}")
     public ResponseEntity<Page<ProdutoDTO>> findByDepartamentoId(@PathVariable Long departamentoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do departamento: " + departamentoId);
-        Page<ProdutoDTO> produtos = produtoService.findByDepartamentoId(departamentoId, pageable);
-        return ResponseEntity.ok(produtos);
+        Page<ProdutoDTO> list = produtoService.findByDepartamentoId(departamentoId, pageable);
+        return ResponseEntity.ok(list);
     }
 
     @GetMapping("/tag/{tagId}")
     public ResponseEntity<Page<ProdutoDTO>> findByTagId(@PathVariable Long tagId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da tag: " + tagId);
-        Page<ProdutoDTO> produtos = produtoService.findByTagId(tagId, pageable);
-        return ResponseEntity.ok(produtos);
+        Page<ProdutoDTO> list = produtoService.findByTagId(tagId, pageable);
+        return ResponseEntity.ok(list);
     }
 }

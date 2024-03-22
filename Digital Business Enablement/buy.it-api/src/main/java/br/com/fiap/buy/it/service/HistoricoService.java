@@ -30,8 +30,8 @@ public class HistoricoService {
     private UsuarioService usuarioService;
 
     public Page<HistoricoDTO> listAll(Pageable pageRequest) {
-        Page<Historico> historicos = historicoRepository.findAll(pageRequest);
-        return historicos.map(this::convertToDto);
+        Page<Historico> list = historicoRepository.findAll(pageRequest);
+        return list.map(this::convertToDto);
     }
 
     public HistoricoDTO findById(Long id) {
@@ -70,24 +70,24 @@ public class HistoricoService {
         if (cotacaoId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID da Cotação não pode ser nulo.");
         }
-        Page<Historico> historicos = historicoRepository.findByCotacaoId(cotacaoId, pageable);
-        return historicos.map(this::convertToDto);
+        Page<Historico> list = historicoRepository.findByCotacaoId(cotacaoId, pageable);
+        return list.map(this::convertToDto);
     }
 
     public Page<HistoricoDTO> findByFornecedorId(Long fornecedorId, Pageable pageable) {
         if (fornecedorId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Fornecedor não pode ser nulo.");
         }
-        Page<Historico> historicos = historicoRepository.findByFornecedorId(fornecedorId, pageable);
-        return historicos.map(this::convertToDto);
+        Page<Historico> list = historicoRepository.findByFornecedorId(fornecedorId, pageable);
+        return list.map(this::convertToDto);
     }
 
     public Page<HistoricoDTO> findByStatusId(Long statusId, Pageable pageable) {
         if (statusId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Status não pode ser nulo.");
         }
-        Page<Historico> historicos = historicoRepository.findByStatusId(statusId, pageable);
-        return historicos.map(this::convertToDto);
+        Page<Historico> list = historicoRepository.findByStatusId(statusId, pageable);
+        return list.map(this::convertToDto);
     }
 
     private HistoricoDTO convertToDto(Historico entity) {
