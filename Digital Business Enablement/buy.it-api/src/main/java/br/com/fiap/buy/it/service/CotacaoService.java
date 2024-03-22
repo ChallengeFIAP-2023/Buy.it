@@ -32,29 +32,30 @@ public class CotacaoService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Page<Cotacao> listAll(Pageable pageRequest) {
-        return cotacaoRepository.findAll(pageRequest);
+    public Page<CotacaoDTO> listAll(Pageable pageRequest) {
+        Page<Cotacao> cotacoes = cotacaoRepository.findAll(pageRequest);
+        return cotacoes.map(this::convertToDto);
     }
 
-    public Cotacao findById(Long id) {
+    public CotacaoDTO findById(Long id) {
         Cotacao entity = findEntityById(id);
-        return entity;
+        return convertToDto(entity);
     }
 
     @Transactional
-    public Cotacao create(CotacaoDTO newData) {
+    public CotacaoDTO create(CotacaoDTO newData) {
         Cotacao entity = convertToEntity(newData);
         Cotacao savedEntity = cotacaoRepository.save(entity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
 
     @Transactional
-    public Cotacao update(Long id, CotacaoDTO updatedData) {
+    public CotacaoDTO update(Long id, CotacaoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Cotacao updatedEntity = convertToEntity(updatedData);    
         Cotacao savedEntity = cotacaoRepository.save(updatedEntity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
 
     @Transactional
@@ -68,43 +69,59 @@ public class CotacaoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Cotacao não encontrado(a) por ID: " + id));
     }
 
-    public Page<Cotacao> findByCompradorId(Long userId, Pageable pageable) {
+    public Page<CotacaoDTO> findByCompradorId(Long userId, Pageable pageable) {
         if (userId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
         }
-        return cotacaoRepository.findByCompradorId(userId, pageable);
+        Page<Cotacao> cotacoes = cotacaoRepository.findByCompradorId(userId, pageable);
+        return cotacoes.map(this::convertToDto);
     }
 
-    public Page<Cotacao> findByProdutoId(Long produtoId, Pageable pageable) {
+    public Page<CotacaoDTO> findByProdutoId(Long produtoId, Pageable pageable) {
         if (produtoId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Produto não pode ser nulo.");
         }
-        return cotacaoRepository.findByProdutoId(produtoId, pageable);
+        Page<Cotacao> cotacoes = cotacaoRepository.findByProdutoId(produtoId, pageable);
+        return cotacoes.map(this::convertToDto);
     }
 
-    public Page<Cotacao> findByStatusId(Long statusId, Pageable pageable) {
+    public Page<CotacaoDTO> findByStatusId(Long statusId, Pageable pageable) {
         if (statusId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Status não pode ser nulo.");
         }
-        return cotacaoRepository.findByStatusId(statusId, pageable);
+        Page<Cotacao> cotacoes = cotacaoRepository.findByStatusId(statusId, pageable);
+        return cotacoes.map(this::convertToDto);
     }
 
-    // private CotacaoDTO convertToDto(Cotacao entity) {
-    //     CotacaoDTO dto = new CotacaoDTO();
-    //     dto.setId(entity.getId());
-    //     dto.setDataAbertura(entity.getDataAbertura());
-    //     dto.setIdComprador(entity.getComprador() != null ? entity.getComprador().getId() : null);
-    //     dto.setIdProduto(entity.getProduto() != null ? entity.getProduto().getId() : null);
-    //     dto.setQuantidadeProduto(entity.getQuantidadeProduto());
-    //     dto.setValorProduto(entity.getValorProduto());
-    //     dto.setIdStatus(entity.getStatus() != null ? entity.getStatus().getId() : null);
-    //     dto.setPrioridadeEntrega(entity.getPrioridadeEntrega());
-    //     dto.setPrioridadeQualidade(entity.getPrioridadeQualidade());
-    //     dto.setPrioridadePreco(entity.getPrioridadePreco());
-    //     dto.setPrazo(entity.getPrazo());
-    //     dto.setDataFechamento(entity.getDataFechamento());
-    //     return dto;
-    // }
+    public InfoCotacaoDTO getInfoByProdutoId(Long idProduto) {
+        Optional<Object> resultadoRaw = cotacaoRepository.getInfoByProdutoId(idProduto);
+        if (resultadoRaw.isPresent()) {
+            Object[] resultado = (Object[]) resultadoRaw.get();
+            BigDecimal minValor = resultado[0] != null ? new BigDecimal(resultado[0].toString()) : null;
+            BigDecimal avgValor = resultado[1] != null ? new BigDecimal(resultado[1].toString()) : null;
+            BigDecimal maxValor = resultado[2] != null ? new BigDecimal(resultado[2].toString()) : null;
+            return new InfoCotacaoDTO(minValor, avgValor, maxValor);
+        } else {
+            return new InfoCotacaoDTO(null, null, null);
+        }
+    }
+
+    private CotacaoDTO convertToDto(Cotacao entity) {
+        CotacaoDTO dto = new CotacaoDTO();
+        dto.setId(entity.getId());
+        dto.setDataAbertura(entity.getDataAbertura());
+        dto.setIdComprador(entity.getComprador() != null ? entity.getComprador().getId() : null);
+        dto.setIdProduto(entity.getProduto() != null ? entity.getProduto().getId() : null);
+        dto.setQuantidadeProduto(entity.getQuantidadeProduto());
+        dto.setValorProduto(entity.getValorProduto());
+        dto.setIdStatus(entity.getStatus() != null ? entity.getStatus().getId() : null);
+        dto.setPrioridadeEntrega(entity.getPrioridadeEntrega());
+        dto.setPrioridadeQualidade(entity.getPrioridadeQualidade());
+        dto.setPrioridadePreco(entity.getPrioridadePreco());
+        dto.setPrazo(entity.getPrazo());
+        dto.setDataFechamento(entity.getDataFechamento());
+        return dto;
+    }
 
     private Cotacao convertToEntity(CotacaoDTO dto) {
         if (Objects.isNull(dto)) {
@@ -137,18 +154,5 @@ public class CotacaoService {
         entity.setPrazo(dto.getPrazo());
         entity.setDataFechamento(dto.getDataFechamento());
         return entity;
-    }
-
-    public InfoCotacaoDTO getInfoByProdutoId(Long idProduto) {
-        Optional<Object> resultadoRaw = cotacaoRepository.getInfoByProdutoId(idProduto);
-        if (resultadoRaw.isPresent()) {
-            Object[] resultado = (Object[]) resultadoRaw.get();
-            BigDecimal minValor = resultado[0] != null ? new BigDecimal(resultado[0].toString()) : null;
-            BigDecimal avgValor = resultado[1] != null ? new BigDecimal(resultado[1].toString()) : null;
-            BigDecimal maxValor = resultado[2] != null ? new BigDecimal(resultado[2].toString()) : null;
-            return new InfoCotacaoDTO(minValor, avgValor, maxValor);
-        } else {
-            return new InfoCotacaoDTO(null, null, null);
-        }
     }
 }

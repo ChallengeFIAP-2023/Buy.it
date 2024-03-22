@@ -2,7 +2,6 @@ package br.com.fiap.buy.it.controller;
 
 import br.com.fiap.buy.it.dto.CotacaoDTO;
 import br.com.fiap.buy.it.dto.InfoCotacaoDTO;
-import br.com.fiap.buy.it.model.Cotacao;
 import br.com.fiap.buy.it.service.CotacaoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,25 +27,25 @@ public class CotacaoController {
     private CotacaoService cotacaoService;
 
     @GetMapping
-    public ResponseEntity<Page<Cotacao>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<CotacaoDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(cotacaoService.listAll(pageable));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Cotacao> findById(@PathVariable Long id) {
+    public ResponseEntity<CotacaoDTO> findById(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
         return ResponseEntity.ok(cotacaoService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Cotacao> create(@RequestBody @Valid CotacaoDTO newData) {
+    public ResponseEntity<CotacaoDTO> create(@RequestBody @Valid CotacaoDTO newData) {
         log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
         return ResponseEntity.status(HttpStatus.CREATED).body(cotacaoService.create(newData));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Cotacao> update(@PathVariable Long id, @RequestBody @Valid CotacaoDTO updatedData) {
+    public ResponseEntity<CotacaoDTO> update(@PathVariable Long id, @RequestBody @Valid CotacaoDTO updatedData) {
         log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
         return ResponseEntity.ok(cotacaoService.update(id, updatedData));
     }
@@ -59,16 +58,16 @@ public class CotacaoController {
     }
 
     @GetMapping("/usuario/comprador/{userId}")
-    public ResponseEntity<Page<Cotacao>> findByCompradorId(@PathVariable Long userId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<CotacaoDTO>> findByCompradorId(@PathVariable Long userId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do usuário: " + userId);
-        Page<Cotacao> cotacoes = cotacaoService.findByCompradorId(userId, pageable);
+        Page<CotacaoDTO> cotacoes = cotacaoService.findByCompradorId(userId, pageable);
         return ResponseEntity.ok(cotacoes);
     }
 
     @GetMapping("/produto/{produtoId}")
-    public ResponseEntity<Page<Cotacao>> findByProdutoId(@PathVariable Long produtoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<CotacaoDTO>> findByProdutoId(@PathVariable Long produtoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do produto: " + produtoId);
-        Page<Cotacao> cotacoes = cotacaoService.findByProdutoId(produtoId, pageable);
+        Page<CotacaoDTO> cotacoes = cotacaoService.findByProdutoId(produtoId, pageable);
         return ResponseEntity.ok(cotacoes);
     }
 
@@ -80,9 +79,9 @@ public class CotacaoController {
     }
 
     @GetMapping("/status/{statusId}")
-    public ResponseEntity<Page<Cotacao>> findByStatusId(@PathVariable Long statusId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<CotacaoDTO>> findByStatusId(@PathVariable Long statusId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do status: " + statusId);
-        Page<Cotacao> cotacoes = cotacaoService.findByStatusId(statusId, pageable);
+        Page<CotacaoDTO> cotacoes = cotacaoService.findByStatusId(statusId, pageable);
         return ResponseEntity.ok(cotacoes);
     }
 }
