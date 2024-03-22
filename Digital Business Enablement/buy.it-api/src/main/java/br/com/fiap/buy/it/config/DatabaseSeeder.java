@@ -2,6 +2,7 @@ package br.com.fiap.buy.it.config;
 
 import br.com.fiap.buy.it.model.*;
 import br.com.fiap.buy.it.repository.*;
+import jakarta.transaction.Transactional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
@@ -48,9 +49,10 @@ public class DatabaseSeeder implements CommandLineRunner {
     private HistoricoRepository historicoRepository;
 
     @Override
+    @Transactional
     public void run(String... args) throws Exception {
 
-        // Populando Usuários
+        // Instanciando Objetos - Usuario
         Usuario usuario1 = new Usuario();
         usuario1.setNome("One Servicos Administrativos LTDA.");
         usuario1.setEmail("comercial@oneservicos.com.br");
@@ -91,7 +93,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         usuario5.setIsFornecedor(true);
         usuario5.setUrlImagem("https://logodownload.org/wp-content/uploads/2014/06/magalu-logo-0.png");        
 
-        // Populando Contatos
+        // Instanciando Objetos - Contato
         Contato contato1 = new Contato();
         contato1.setTipo("Email");
         contato1.setValor("kaue@oneservicos.com.br");
@@ -117,7 +119,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         contato5.setValor("(11) 98282-0000");
         contato5.setUsuario(usuario2);
 
-        // Populando Tags
+        // Instanciando Objetos - Tag
         Tag tag1 = new Tag();
         tag1.setNome("Perifericos");
 
@@ -133,7 +135,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         Tag tag5 = new Tag();
         tag5.setNome("Água");
 
-        // Populando Departamentos
+        // Instanciando Objetos - Departamento
         Departamento departamento1 = new Departamento();
         departamento1.setNome("Informatica");
         departamento1.setIcone("icone-informatica");
@@ -154,7 +156,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         departamento5.setNome("Cozinha");
         departamento5.setIcone(null);
 
-        // Populando Produtos
+        // Instanciando Objetos - Produto
         Produto produto1 = new Produto();
         produto1.setDepartamento(departamento1);
         produto1.setNome("Mouse");
@@ -200,7 +202,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         produto5.setMaterial(null);
         produto5.setObservacao(null);
 
-        // Populando Status
+        // Instanciando Objetos - Status
         Status status1 = new Status();
         status1.setNome("Em Andamento");
 
@@ -216,7 +218,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         Status status5 = new Status();
         status5.setNome("Concluído");
 
-        // Populando Cotações
+        // Instanciando Objetos - Cotacao
         Cotacao cotacao1 = new Cotacao();
         cotacao1.setDataAbertura(new SimpleDateFormat("yyyy-MM-dd").parse("2024-03-19"));
         cotacao1.setComprador(usuario1);
@@ -282,7 +284,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         cotacao5.setPrazo(7L);
         cotacao5.setDataFechamento(new SimpleDateFormat("yyyy-MM-dd").parse("2024-03-16"));
 
-        // Populando Avaliações
+        // Instanciando Objetos - Avaliacao
         Avaliacao avaliacao1 = new Avaliacao();
         avaliacao1.setCotacao(cotacao2);
         avaliacao1.setData(new SimpleDateFormat("yyyy-MM-dd").parse("2024-03-19"));
@@ -299,7 +301,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         avaliacao2.setNotaPreco(2L);
         avaliacao2.setDescricao(null);
 
-        // Populando Históricos
+        // Instanciando Objetos - Histórico
         Historico historico1 = new Historico();
         historico1.setCotacao(cotacao2);
         historico1.setFornecedor(usuario2);
@@ -324,34 +326,26 @@ public class DatabaseSeeder implements CommandLineRunner {
         historico2.setData(new SimpleDateFormat("yyyy-MM-dd").parse("2024-03-18"));
         historico2.setValorOfertado(null);
 
-        // Salvando Listas no Banco H2
-
-        List<Contato> contatos = List.of(contato1, contato2, contato3, contato4, contato5);
-        contatoRepository.saveAll(contatos);
-        
-        // List<Historico> historicos = List.of(historico1, historico2);
-        // historicoRepository.saveAll(historicos);
-
-        // List<Avaliacao> avaliacoes = List.of(avaliacao1, avaliacao2);
-        // avaliacaoRepository.saveAll(avaliacoes);
-
-        List<Tag> tags = List.of(tag1, tag2, tag3, tag4, tag5);
-        tagRepository.saveAll(tags);
-
-        // List<Cotacao> cotacoes = List.of(cotacao1, cotacao2, cotacao3, cotacao4, cotacao5);
-        // cotacaoRepository.saveAll(cotacoes);
-
+        // Populando Listas com Objetos Criados
         List<Usuario> usuarios = List.of(usuario1, usuario2, usuario3, usuario4, usuario5);
-        usuarioRepository.saveAll(usuarios);
-
-        List<Produto> produtos = List.of(produto1, produto2, produto3, produto4, produto5);
-        produtoRepository.saveAll(produtos);
-
+        List<Contato> contatos = List.of(contato1, contato2, contato3, contato4, contato5);
+        List<Tag> tags = List.of(tag1, tag2, tag3, tag4, tag5);
         List<Departamento> departamentos = List.of(departamento1, departamento2, departamento3, departamento4, departamento5);
-        departamentoRepository.saveAll(departamentos);
-
+        List<Produto> produtos = List.of(produto1, produto2, produto3, produto4, produto5);
         List<Status> status = List.of(status1, status2, status3, status4, status5);
-        statusRepository.saveAll(status);
+        List<Cotacao> cotacoes = List.of(cotacao1, cotacao2, cotacao3, cotacao4, cotacao5);
+        List<Avaliacao> avaliacoes = List.of(avaliacao1, avaliacao2);
+        List<Historico> historicos = List.of(historico1, historico2);
 
+        // Salvando no Banco H2
+        usuarioRepository.saveAllAndFlush(usuarios);        
+        departamentoRepository.saveAllAndFlush(departamentos);        
+        produtoRepository.saveAllAndFlush(produtos);        
+        statusRepository.saveAllAndFlush(status);
+        cotacaoRepository.saveAllAndFlush(cotacoes);        
+        avaliacaoRepository.saveAllAndFlush(avaliacoes);        
+        historicoRepository.saveAllAndFlush(historicos);        
+        contatoRepository.saveAllAndFlush(contatos);        
+        tagRepository.saveAllAndFlush(tags);
     }
 }
