@@ -56,4 +56,12 @@ public class AvaliacaoController {
         avaliacaoService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/cotacao/{cotacaoId}")
+    public ResponseEntity<Page<Avaliacao>> findByCotacaoId(@PathVariable Long cotacaoId, 
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da cotação: " + cotacaoId);
+        Page<Avaliacao> avaliacoes = avaliacaoService.findByCotacaoId(cotacaoId, pageable);
+        return ResponseEntity.ok(avaliacoes);
+    }
 }

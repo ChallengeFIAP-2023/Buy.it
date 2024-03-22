@@ -68,11 +68,25 @@ public class CotacaoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Cotacao não encontrado(a) por ID: " + id));
     }
 
-    public Page<Cotacao> findByUserId(Long userId, Pageable pageable) {
+    public Page<Cotacao> findByCompradorId(Long userId, Pageable pageable) {
         if (userId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
         }
         return cotacaoRepository.findByCompradorId(userId, pageable);
+    }
+
+    public Page<Cotacao> findByProdutoId(Long produtoId, Pageable pageable) {
+        if (produtoId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Produto não pode ser nulo.");
+        }
+        return cotacaoRepository.findByProdutoId(produtoId, pageable);
+    }
+
+    public Page<Cotacao> findByStatusId(Long statusId, Pageable pageable) {
+        if (statusId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Status não pode ser nulo.");
+        }
+        return cotacaoRepository.findByStatusId(statusId, pageable);
     }
 
     // private CotacaoDTO convertToDto(Cotacao entity) {

@@ -13,7 +13,11 @@ import java.util.Optional;
 
 @Repository
 public interface CotacaoRepository extends JpaRepository<Cotacao, Long> {
-    Page<Cotacao> findByCompradorId(Long compradorId, Pageable pageable);
+    Page<Cotacao> findByCompradorId(Long userId, Pageable pageable);
+
+    Page<Cotacao> findByProdutoId(Long produtoId, Pageable pageable);
+
+    Page<Cotacao> findByStatusId(Long statusId, Pageable pageable);
 
     @Query("SELECT MIN(c.valorProduto), AVG(c.valorProduto), MAX(c.valorProduto) FROM Cotacao c JOIN c.status s WHERE c.produto.id = :idProduto AND s.nome = 'Concluído'")
     Optional<Object> getInfoByProdutoId(@Param("idProduto") Long idProduto);

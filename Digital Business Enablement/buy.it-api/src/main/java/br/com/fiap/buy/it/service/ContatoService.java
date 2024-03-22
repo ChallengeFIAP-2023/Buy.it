@@ -59,6 +59,13 @@ public class ContatoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Contato não encontrado(a) por ID: " + id));
     }
 
+    public Page<Contato> findByUsuarioId(Long userId, Pageable pageable) {
+        if (userId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
+        }
+        return contatoRepository.findByUsuarioId(userId, pageable);
+    }
+
     // private ContatoDTOconvertToDto(Contato entity) {
     //     ContatoDTOdto = new ContatoDTO();
     //     dto.setId(entity.getId());

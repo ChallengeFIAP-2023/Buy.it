@@ -58,6 +58,13 @@ public class AvaliacaoService {
         return avaliacaoRepository.findById(id)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Avaliacao não encontrado(a) por ID: " + id));
     }
+
+    public Page<Avaliacao> findByCotacaoId(Long cotacaoId, Pageable pageable) {
+        if (cotacaoId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
+        }
+        return avaliacaoRepository.findByCotacaoId(cotacaoId, pageable);
+    }
     
     // private AvaliacaoDTO convertToDto(Avaliacao entity) {
     //     AvaliacaoDTO dto = new AvaliacaoDTO();

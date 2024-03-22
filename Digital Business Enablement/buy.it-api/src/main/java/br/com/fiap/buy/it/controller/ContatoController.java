@@ -56,4 +56,12 @@ public class ContatoController {
         contatoService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/usuario/{userId}")
+    public ResponseEntity<Page<Contato>> findByUsuarioId(@PathVariable Long userId, 
+            @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do usuário: " + userId);
+        Page<Contato> contatos = contatoService.findByUsuarioId(userId, pageable);
+        return ResponseEntity.ok(contatos);
+    }
 }
