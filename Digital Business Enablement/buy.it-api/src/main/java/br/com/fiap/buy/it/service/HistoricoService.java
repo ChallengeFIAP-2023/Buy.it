@@ -29,29 +29,30 @@ public class HistoricoService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Page<Historico> listAll(Pageable pageRequest) {
-        return historicoRepository.findAll(pageRequest);
+    public Page<HistoricoDTO> listAll(Pageable pageRequest) {
+        Page<Historico> historicos = historicoRepository.findAll(pageRequest);
+        return historicos.map(this::convertToDto);
     }
 
-    public Historico findById(Long id) {
+    public HistoricoDTO findById(Long id) {
         Historico entity = findEntityById(id);
-        return entity;
+        return convertToDto(entity);
     }
 
     @Transactional
-    public Historico create(HistoricoDTO newData) {
+    public HistoricoDTO create(HistoricoDTO newData) {
         Historico entity = convertToEntity(newData);
         Historico savedEntity = historicoRepository.save(entity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
 
     @Transactional
-    public Historico update(Long id, HistoricoDTO updatedData) {
+    public HistoricoDTO update(Long id, HistoricoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Historico updatedEntity = convertToEntity(updatedData);    
         Historico savedEntity = historicoRepository.save(updatedEntity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
     
     @Transactional
@@ -65,42 +66,45 @@ public class HistoricoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Historico não encontrado(a) por ID: " + id));
     }
 
-    public Page<Historico> findByCotacaoId(Long cotacaoId, Pageable pageable) {
+    public Page<HistoricoDTO> findByCotacaoId(Long cotacaoId, Pageable pageable) {
         if (cotacaoId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID da Cotação não pode ser nulo.");
         }
-        return historicoRepository.findByCotacaoId(cotacaoId, pageable);
+        Page<Historico> historicos = historicoRepository.findByCotacaoId(cotacaoId, pageable);
+        return historicos.map(this::convertToDto);
     }
 
-    public Page<Historico> findByFornecedorId(Long fornecedorId, Pageable pageable) {
+    public Page<HistoricoDTO> findByFornecedorId(Long fornecedorId, Pageable pageable) {
         if (fornecedorId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Fornecedor não pode ser nulo.");
         }
-        return historicoRepository.findByFornecedorId(fornecedorId, pageable);
+        Page<Historico> historicos = historicoRepository.findByFornecedorId(fornecedorId, pageable);
+        return historicos.map(this::convertToDto);
     }
 
-    public Page<Historico> findByStatusId(Long statusId, Pageable pageable) {
+    public Page<HistoricoDTO> findByStatusId(Long statusId, Pageable pageable) {
         if (statusId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Status não pode ser nulo.");
         }
-        return historicoRepository.findByStatusId(statusId, pageable);
+        Page<Historico> historicos = historicoRepository.findByStatusId(statusId, pageable);
+        return historicos.map(this::convertToDto);
     }
 
-    // private HistoricoDTO convertToDto(Historico entity) {
-    //     HistoricoDTO dto = new HistoricoDTO();
-    //     dto.setId(entity.getId());
-    //     dto.setIdCotacao(entity.getCotacao() != null ? entity.getCotacao().getId() : null);
-    //     dto.setIdFornecedor(entity.getFornecedor() != null ? entity.getFornecedor().getId() : null);
-    //     dto.setIdStatus(entity.getStatus() != null ? entity.getStatus().getId() : null);
-    //     dto.setRecusadoPorProduto(entity.getRecusadoPorProduto());
-    //     dto.setRecusadoPorQuantidade(entity.getRecusadoPorQuantidade());
-    //     dto.setRecusadoPorPreco(entity.getRecusadoPorPreco());
-    //     dto.setRecusadoPorPrazo(entity.getRecusadoPorPrazo());
-    //     dto.setDescricao(entity.getDescricao());
-    //     dto.setData(entity.getData());
-    //     dto.setValorOfertado(entity.getValorOfertado());
-    //     return dto;
-    // }
+    private HistoricoDTO convertToDto(Historico entity) {
+        HistoricoDTO dto = new HistoricoDTO();
+        dto.setId(entity.getId());
+        dto.setIdCotacao(entity.getCotacao() != null ? entity.getCotacao().getId() : null);
+        dto.setIdFornecedor(entity.getFornecedor() != null ? entity.getFornecedor().getId() : null);
+        dto.setIdStatus(entity.getStatus() != null ? entity.getStatus().getId() : null);
+        dto.setRecusadoPorProduto(entity.getRecusadoPorProduto());
+        dto.setRecusadoPorQuantidade(entity.getRecusadoPorQuantidade());
+        dto.setRecusadoPorPreco(entity.getRecusadoPorPreco());
+        dto.setRecusadoPorPrazo(entity.getRecusadoPorPrazo());
+        dto.setDescricao(entity.getDescricao());
+        dto.setData(entity.getData());
+        dto.setValorOfertado(entity.getValorOfertado());
+        return dto;
+    }
 
     private Historico convertToEntity(HistoricoDTO dto) {
         if (Objects.isNull(dto)) {
