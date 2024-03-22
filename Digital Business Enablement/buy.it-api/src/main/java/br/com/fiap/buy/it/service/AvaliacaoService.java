@@ -23,29 +23,30 @@ public class AvaliacaoService {
     @Autowired
     private CotacaoService cotacaoService;
 
-    public Page<Avaliacao> listAll(Pageable pageRequest) {
-        return avaliacaoRepository.findAll(pageRequest);
+    public Page<AvaliacaoDTO> listAll(Pageable pageRequest) {
+        Page<Avaliacao> avaliacoes = avaliacaoRepository.findAll(pageRequest);
+        return avaliacoes.map(this::convertToDto);
     }
 
-    public Avaliacao findById(Long id) {
+    public AvaliacaoDTO findById(Long id) {
         Avaliacao entity = findEntityById(id);
-        return entity;
+        return convertToDto(entity);
     }
 
     @Transactional
-    public Avaliacao create(AvaliacaoDTO newData) {
+    public AvaliacaoDTO create(AvaliacaoDTO newData) {
         Avaliacao entity = convertToEntity(newData);
         Avaliacao savedEntity = avaliacaoRepository.save(entity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
 
     @Transactional
-    public Avaliacao update(Long id, AvaliacaoDTO updatedData) {
+    public AvaliacaoDTO update(Long id, AvaliacaoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Avaliacao updatedEntity = convertToEntity(updatedData);    
         Avaliacao savedEntity = avaliacaoRepository.save(updatedEntity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
     
     @Transactional
@@ -59,24 +60,24 @@ public class AvaliacaoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Avaliacao não encontrado(a) por ID: " + id));
     }
 
-    public Page<Avaliacao> findByCotacaoId(Long cotacaoId, Pageable pageable) {
+    public Page<AvaliacaoDTO> findByCotacaoId(Long cotacaoId, Pageable pageable) {
         if (cotacaoId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
         }
         return avaliacaoRepository.findByCotacaoId(cotacaoId, pageable);
     }
     
-    // private AvaliacaoDTO convertToDto(Avaliacao entity) {
-    //     AvaliacaoDTO dto = new AvaliacaoDTO();
-    //     dto.setId(entity.getId());
-    //     dto.setIdCotacao(entity.getCotacao() != null ? entity.getCotacao().getId() : null);
-    //     dto.setData(entity.getData());
-    //     dto.setNotaEntrega(entity.getNotaEntrega());
-    //     dto.setNotaQualidade(entity.getNotaQualidade());
-    //     dto.setNotaPreco(entity.getNotaPreco());
-    //     dto.setDescricao(entity.getDescricao());
-    //     return dto;
-    // }
+    private AvaliacaoDTO convertToDto(Avaliacao entity) {
+        AvaliacaoDTO dto = new AvaliacaoDTO();
+        dto.setId(entity.getId());
+        dto.setIdCotacao(entity.getCotacao() != null ? entity.getCotacao().getId() : null);
+        dto.setData(entity.getData());
+        dto.setNotaEntrega(entity.getNotaEntrega());
+        dto.setNotaQualidade(entity.getNotaQualidade());
+        dto.setNotaPreco(entity.getNotaPreco());
+        dto.setDescricao(entity.getDescricao());
+        return dto;
+    }
 
     private Avaliacao convertToEntity(AvaliacaoDTO dto) {
         if (Objects.isNull(dto)) {

@@ -1,7 +1,6 @@
 package br.com.fiap.buy.it.controller;
 
 import br.com.fiap.buy.it.dto.AvaliacaoDTO;
-import br.com.fiap.buy.it.model.Avaliacao;
 import br.com.fiap.buy.it.service.AvaliacaoService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,25 +26,25 @@ public class AvaliacaoController {
     private AvaliacaoService avaliacaoService;
 
     @GetMapping
-    public ResponseEntity<Page<Avaliacao>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<AvaliacaoDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(avaliacaoService.listAll(pageable));
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<Avaliacao> findById(@PathVariable Long id) {
+    public ResponseEntity<AvaliacaoDTO> findById(@PathVariable Long id) {
         log.info("(" + getClass().getSimpleName() + ") - Exibindo por ID: " + id);
         return ResponseEntity.ok(avaliacaoService.findById(id));
     }
 
     @PostMapping
-    public ResponseEntity<Avaliacao> create(@RequestBody @Valid AvaliacaoDTO newData) {
+    public ResponseEntity<AvaliacaoDTO> create(@RequestBody @Valid AvaliacaoDTO newData) {
         log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
         return ResponseEntity.status(HttpStatus.CREATED).body(avaliacaoService.create(newData));
     }
 
     @PutMapping("{id}")
-    public ResponseEntity<Avaliacao> update(@PathVariable Long id, @RequestBody @Valid AvaliacaoDTO updatedData) {
+    public ResponseEntity<AvaliacaoDTO> update(@PathVariable Long id, @RequestBody @Valid AvaliacaoDTO updatedData) {
         log.info("(" + getClass().getSimpleName() + ") - Atualizando por ID: " + id);
         return ResponseEntity.ok(avaliacaoService.update(id, updatedData));
     }
@@ -58,9 +57,9 @@ public class AvaliacaoController {
     }
 
     @GetMapping("/cotacao/{cotacaoId}")
-    public ResponseEntity<Page<Avaliacao>> findByCotacaoId(@PathVariable Long cotacaoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<AvaliacaoDTO>> findByCotacaoId(@PathVariable Long cotacaoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da cotação: " + cotacaoId);
-        Page<Avaliacao> avaliacoes = avaliacaoService.findByCotacaoId(cotacaoId, pageable);
+        Page<AvaliacaoDTO> avaliacoes = avaliacaoService.findByCotacaoId(cotacaoId, pageable);
         return ResponseEntity.ok(avaliacoes);
     }
 }
