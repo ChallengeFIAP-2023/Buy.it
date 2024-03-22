@@ -56,4 +56,25 @@ public class HistoricoController {
         historicoService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/cotacao/{cotacaoId}")
+    public ResponseEntity<Page<Historico>> findByCotacaoId(@PathVariable Long cotacaoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da cotacao: " + cotacaoId);
+        Page<Historico> historicos = historicoService.findByCotacaoId(cotacaoId, pageable);
+        return ResponseEntity.ok(historicos);
+    }
+
+    @GetMapping("/usuario/fornecedor/{fornecedorId}")
+    public ResponseEntity<Page<Historico>> findByFornecedorId(@PathVariable Long fornecedorId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do fornecedor: " + fornecedorId);
+        Page<Historico> historicos = historicoService.findByFornecedorId(fornecedorId, pageable);
+        return ResponseEntity.ok(historicos);
+    }
+
+    @GetMapping("/status/{statusId}")
+    public ResponseEntity<Page<Historico>> findByStatusId(@PathVariable Long statusId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do status: " + statusId);
+        Page<Historico> historicos = historicoService.findByStatusId(statusId, pageable);
+        return ResponseEntity.ok(historicos);
+    }
 }

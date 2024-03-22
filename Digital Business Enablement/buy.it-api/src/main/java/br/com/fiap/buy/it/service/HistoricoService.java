@@ -65,6 +65,27 @@ public class HistoricoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Historico não encontrado(a) por ID: " + id));
     }
 
+    public Page<Historico> findByCotacaoId(Long cotacaoId, Pageable pageable) {
+        if (cotacaoId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID da Cotação não pode ser nulo.");
+        }
+        return historicoRepository.findByCotacaoId(cotacaoId, pageable);
+    }
+
+    public Page<Historico> findByFornecedorId(Long fornecedorId, Pageable pageable) {
+        if (fornecedorId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Fornecedor não pode ser nulo.");
+        }
+        return historicoRepository.findByFornecedorId(fornecedorId, pageable);
+    }
+
+    public Page<Historico> findByStatusId(Long statusId, Pageable pageable) {
+        if (statusId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Status não pode ser nulo.");
+        }
+        return historicoRepository.findByStatusId(statusId, pageable);
+    }
+
     // private HistoricoDTO convertToDto(Historico entity) {
     //     HistoricoDTO dto = new HistoricoDTO();
     //     dto.setId(entity.getId());
