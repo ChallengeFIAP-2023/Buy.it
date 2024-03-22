@@ -71,6 +71,20 @@ public class ProdutoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Produto não encontrado(a) por ID: " + id));
     }
 
+    public Page<Produto> findByDepartamentoId(Long departamentoId, Pageable pageable) {
+        if (departamentoId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Departamento não pode ser nulo.");
+        }
+        return produtoRepository.findByDepartamentoId(departamentoId, pageable);
+    }
+
+    public Page<Produto> findByTagId(Long tagId, Pageable pageable) {
+        if (tagId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID da Tag não pode ser nulo.");
+        }
+        return produtoRepository.findByTagId(tagId, pageable);
+    }
+
     // private ProdutoDTO convertToDto(Produto entity) {
     //     ProdutoDTO dto = new ProdutoDTO();
     //     dto.setId(entity.getId());
