@@ -64,7 +64,8 @@ public class AvaliacaoService {
         if (cotacaoId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
         }
-        return avaliacaoRepository.findByCotacaoId(cotacaoId, pageable);
+        Page<Avaliacao> avaliacoes = avaliacaoRepository.findByCotacaoId(cotacaoId, pageable);
+        return avaliacoes.map(this::convertToDto);
     }
     
     private AvaliacaoDTO convertToDto(Avaliacao entity) {

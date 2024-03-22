@@ -23,29 +23,30 @@ public class ContatoService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Page<Contato> listAll(Pageable pageRequest) {
-        return contatoRepository.findAll(pageRequest);
+    public Page<ContatoDTO> listAll(Pageable pageRequest) {
+        Page<Contato> contatos = contatoRepository.findAll(pageRequest);
+        return contatos.map(this::convertToDto);
     }
 
-    public Contato findById(Long id) {
+    public ContatoDTO findById(Long id) {
         Contato entity = findEntityById(id);
-        return entity;
+        return convertToDto(entity);
     }
 
     @Transactional
-    public Contato create(ContatoDTO newData) {
+    public ContatoDTO create(ContatoDTO newData) {
         Contato entity = convertToEntity(newData);
         Contato savedEntity = contatoRepository.save(entity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
 
     @Transactional
-    public Contato update(Long id, ContatoDTO updatedData) {
+    public ContatoDTO update(Long id, ContatoDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
         Contato updatedEntity = convertToEntity(updatedData);    
         Contato savedEntity = contatoRepository.save(updatedEntity);
-        return savedEntity;
+        return convertToDto(savedEntity);
     }
     
     @Transactional
@@ -59,21 +60,22 @@ public class ContatoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Contato não encontrado(a) por ID: " + id));
     }
 
-    public Page<Contato> findByUsuarioId(Long userId, Pageable pageable) {
+    public Page<ContatoDTO> findByUsuarioId(Long userId, Pageable pageable) {
         if (userId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
         }
-        return contatoRepository.findByUsuarioId(userId, pageable);
+        Page<Contato> contatos = contatoRepository.findByUsuarioId(userId, pageable);
+        return contatos.map(this::convertToDto);
     }
 
-    // private ContatoDTOconvertToDto(Contato entity) {
-    //     ContatoDTOdto = new ContatoDTO();
-    //     dto.setId(entity.getId());
-    //     dto.setIdTipoContato(entity.getTipoContato() != null ? entity.getTipoContato().getId() : null);
-    //     dto.setValor(entity.getValor());
-    //     dto.setIdPessoa(entity.getPessoa() != null ? entity.getPessoa().getId() : null);
-    //     return dto;
-    // }
+    private ContatoDTO convertToDto(Contato entity) {
+        ContatoDTO dto = new ContatoDTO();
+        dto.setId(entity.getId());
+        dto.setTipo(entity.getTipo());
+        dto.setValor(entity.getValor());
+        dto.setIdUsuario(entity.getUsuario() != null ? entity.getUsuario().getId() : null);
+        return dto;
+    }
 
     private Contato convertToEntity(ContatoDTO dto) {
         if (Objects.isNull(dto)) {
