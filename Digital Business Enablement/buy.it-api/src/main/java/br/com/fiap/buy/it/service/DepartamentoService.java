@@ -68,6 +68,13 @@ public class DepartamentoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Departamento não encontrado(a) por ID: " + id));
     }
 
+    public Page<Departamento> findByTagId(Long tagId, Pageable pageable) {
+        if (tagId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID da Tag não pode ser nulo.");
+        }
+        return departamentoRepository.findByTagId(tagId, pageable);
+    }
+
     // private DepartamentoDTO convertToDto(Departamento entity) {
     //     DepartamentoDTO dto = new DepartamentoDTO();
     //     dto.setId(entity.getId());
