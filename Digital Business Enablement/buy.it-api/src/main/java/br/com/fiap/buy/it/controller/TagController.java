@@ -56,4 +56,25 @@ public class TagController {
         tagService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+    @GetMapping("/departamento/{departamentoId}")
+    public ResponseEntity<Page<Tag>> findByDepartamentoId(@PathVariable Long departamentoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do departamento: " + departamentoId);
+        Page<Tag> tags = tagService.findByDepartamentoId(departamentoId, pageable);
+        return ResponseEntity.ok(tags);
+    }
+
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<Page<Tag>> findByUsuarioId(@PathVariable Long usuarioId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do usuario: " + usuarioId);
+        Page<Tag> tags = tagService.findByUsuarioId(usuarioId, pageable);
+        return ResponseEntity.ok(tags);
+    }
+
+    @GetMapping("/produto/{produtoId}")
+    public ResponseEntity<Page<Tag>> findByProdutoId(@PathVariable Long produtoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do produto: " + produtoId);
+        Page<Tag> tags = tagService.findByProdutoId(produtoId, pageable);
+        return ResponseEntity.ok(tags);
+    }
 }

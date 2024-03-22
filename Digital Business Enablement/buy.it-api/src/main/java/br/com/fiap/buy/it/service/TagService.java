@@ -89,6 +89,27 @@ public class TagService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Tag não encontrado(a) por ID: " + id));
     }
 
+    public Page<Tag> findByDepartamentoId(Long departamentoId, Pageable pageable) {
+        if (departamentoId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Departamento não pode ser nulo.");
+        }
+        return tagRepository.findByDepartamentoId(departamentoId, pageable);
+    }
+
+    public Page<Tag> findByUsuarioId(Long usuarioId, Pageable pageable) {
+        if (usuarioId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuario não pode ser nulo.");
+        }
+        return tagRepository.findByUsuarioId(usuarioId, pageable);
+    }
+
+    public Page<Tag> findByProdutoId(Long produtoId, Pageable pageable) {
+        if (produtoId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Produto não pode ser nulo.");
+        }
+        return tagRepository.findByProdutoId(produtoId, pageable);
+    }
+
     // private TagDTO convertToDto(Tag entity) {
     //     TagDTO dto = new TagDTO();
     //     dto.setId(entity.getId());
