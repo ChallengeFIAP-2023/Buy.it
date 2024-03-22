@@ -78,6 +78,13 @@ public class UsuarioController {
         return ResponseEntity.noContent().build();
     }
 
+    @GetMapping("/tag/{tagId}")
+    public ResponseEntity<Page<Usuario>> findByTagId(@PathVariable Long tagId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da tag: " + tagId);
+        Page<Usuario> usuarios = usuarioService.findByTagId(tagId, pageable);
+        return ResponseEntity.ok(usuarios);
+    }
+
     @PostMapping("/login")
     public ResponseEntity<Token> login(@RequestBody Credenciais credenciais){
         log.info("(" + getClass().getSimpleName() + ") - Validando Credenciais: " + credenciais);
