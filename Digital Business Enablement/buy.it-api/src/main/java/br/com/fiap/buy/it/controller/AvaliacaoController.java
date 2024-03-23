@@ -58,8 +58,15 @@ public class AvaliacaoController {
 
     @GetMapping("/cotacao/{cotacaoId}")
     public ResponseEntity<Page<AvaliacaoDTO>> findByCotacaoId(@PathVariable Long cotacaoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
-        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da cotação: " + cotacaoId);
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da cotacao: " + cotacaoId);
         Page<AvaliacaoDTO> list = avaliacaoService.findByCotacaoId(cotacaoId, pageable);
+        return ResponseEntity.ok(list);
+    }
+
+    @GetMapping("/usuario/{usuarioId}")
+    public ResponseEntity<Page<AvaliacaoDTO>> findByUsuarioId(@PathVariable Long usuarioId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do usuario: " + usuarioId);
+        Page<AvaliacaoDTO> list = avaliacaoService.findByUsuarioId(usuarioId, pageable);
         return ResponseEntity.ok(list);
     }
 }

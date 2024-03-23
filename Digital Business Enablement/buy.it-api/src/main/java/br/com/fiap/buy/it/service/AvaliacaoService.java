@@ -62,9 +62,17 @@ public class AvaliacaoService {
 
     public Page<AvaliacaoDTO> findByCotacaoId(Long cotacaoId, Pageable pageable) {
         if (cotacaoId == null) {
-            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID da Cotação não pode ser nulo.");
         }
         Page<Avaliacao> list = avaliacaoRepository.findByCotacaoId(cotacaoId, pageable);
+        return list.map(this::convertToDto);
+    }
+
+    public Page<AvaliacaoDTO> findByUsuarioId(Long usuarioId, Pageable pageable) {
+        if (usuarioId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
+        }
+        Page<Avaliacao> list = avaliacaoRepository.findByUsuarioId(usuarioId, pageable);
         return list.map(this::convertToDto);
     }
     
