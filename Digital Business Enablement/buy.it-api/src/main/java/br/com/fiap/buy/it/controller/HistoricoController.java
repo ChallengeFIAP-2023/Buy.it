@@ -63,6 +63,13 @@ public class HistoricoController {
         return ResponseEntity.ok(list);
     }
 
+    @GetMapping("/usuario/comprador/{compradorId}")
+    public ResponseEntity<Page<HistoricoDTO>> findByCompradorId(@PathVariable Long compradorId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do comprador: " + compradorId);
+        Page<HistoricoDTO> list = historicoService.findByCompradorId(compradorId, pageable);
+        return ResponseEntity.ok(list);
+    }
+
     @GetMapping("/usuario/fornecedor/{fornecedorId}")
     public ResponseEntity<Page<HistoricoDTO>> findByFornecedorId(@PathVariable Long fornecedorId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do fornecedor: " + fornecedorId);

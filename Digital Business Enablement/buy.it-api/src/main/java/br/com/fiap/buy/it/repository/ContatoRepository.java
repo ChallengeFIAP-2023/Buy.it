@@ -10,5 +10,4 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ContatoRepository extends JpaRepository<Contato, Long> {
     Page<Contato> findByUsuarioId(Long userId, Pageable pageable);
-
 }

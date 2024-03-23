@@ -20,5 +20,4 @@ public interface TagRepository extends JpaRepository<Tag, Long> {
 
     @Query("SELECT t FROM Tag t JOIN t.produtos p WHERE p.id = :produtoId")
     Page<Tag> findByProdutoId(@Param("produtoId") Long produtoId, Pageable pageable);
-    
 }

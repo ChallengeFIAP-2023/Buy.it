@@ -74,6 +74,14 @@ public class HistoricoService {
         return list.map(this::convertToDto);
     }
 
+    public Page<HistoricoDTO> findByCompradorId(Long compradorId, Pageable pageable) {
+        if (compradorId == null) {
+            throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Comprador não pode ser nulo.");
+        }
+        Page<Historico> list = historicoRepository.findByCompradorId(compradorId, pageable);
+        return list.map(this::convertToDto);
+    }
+
     public Page<HistoricoDTO> findByFornecedorId(Long fornecedorId, Pageable pageable) {
         if (fornecedorId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Fornecedor não pode ser nulo.");

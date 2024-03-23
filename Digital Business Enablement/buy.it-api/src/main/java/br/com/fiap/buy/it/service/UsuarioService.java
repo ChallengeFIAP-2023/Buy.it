@@ -51,7 +51,6 @@ public class UsuarioService {
     public UsuarioDTO update(Long id, UsuarioDTO updatedData) {
         findEntityById(id);
         updatedData.setId(id);
-        updatedData.setSenha(passwordEncoder.encode(updatedData.getSenha()));
         Usuario updatedEntity = convertToEntity(updatedData);    
         Usuario savedEntity = usuarioRepository.save(updatedEntity);
         return convertToDto(savedEntity);
@@ -108,7 +107,7 @@ public class UsuarioService {
             entity = findEntityById(dto.getId());
             entity.setNome(dto.getNome());
             entity.setEmail(dto.getEmail());
-            entity.setSenha(dto.getSenha());
+            entity.setSenha(passwordEncoder.encode(dto.getSenha()));
             entity.setUrlImagem(dto.getUrlImagem());
             entity.setCnpj(dto.getCnpj());
             entity.setIsFornecedor(dto.getIsFornecedor());
@@ -124,7 +123,7 @@ public class UsuarioService {
             entity = new Usuario();
             entity.setNome(dto.getNome());
             entity.setEmail(dto.getEmail());
-            entity.setSenha(dto.getSenha());
+            entity.setSenha(passwordEncoder.encode(dto.getSenha()));
             entity.setUrlImagem(dto.getUrlImagem());
             entity.setCnpj(dto.getCnpj());
             entity.setIsFornecedor(dto.getIsFornecedor());

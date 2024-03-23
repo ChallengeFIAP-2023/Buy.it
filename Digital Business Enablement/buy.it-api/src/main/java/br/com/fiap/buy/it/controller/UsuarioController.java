@@ -3,9 +3,6 @@ package br.com.fiap.buy.it.controller;
 import br.com.fiap.buy.it.dto.Credenciais;
 import br.com.fiap.buy.it.dto.Token;
 import br.com.fiap.buy.it.dto.UsuarioDTO;
-import br.com.fiap.buy.it.dto.UsuarioResponse;
-import br.com.fiap.buy.it.model.Usuario;
-import br.com.fiap.buy.it.repository.UsuarioRepository;
 import br.com.fiap.buy.it.service.TokenService;
 import br.com.fiap.buy.it.service.UsuarioService;
 
@@ -37,9 +34,6 @@ public class UsuarioController {
     TokenService tokenService;
 
     @Autowired
-    UsuarioRepository usuarioRepository;
-
-    @Autowired
     AuthenticationManager authManager;
 
     @Autowired
@@ -58,11 +52,10 @@ public class UsuarioController {
     }
 
     @PostMapping
-    public ResponseEntity<UsuarioResponse> create(@RequestBody @Valid Usuario newData) {
+    public ResponseEntity<UsuarioDTO> create(@RequestBody @Valid UsuarioDTO newData) {
         log.info("(" + getClass().getSimpleName() + ") - Cadastrando: " + newData);
-        newData.setSenha(passwordEncoder.encode(newData.getSenha()));
-        usuarioRepository.save(newData);
-        return ResponseEntity.status(HttpStatus.CREATED).body(UsuarioResponse.fromUsuario(newData));
+        UsuarioDTO createdUsuarioDTO = usuarioService.create(newData);
+        return ResponseEntity.status(HttpStatus.CREATED).body(createdUsuarioDTO);
     }
 
     @PutMapping("{id}")
