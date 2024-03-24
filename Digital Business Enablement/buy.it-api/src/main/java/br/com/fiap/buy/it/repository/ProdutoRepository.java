@@ -15,4 +15,7 @@ public interface ProdutoRepository extends JpaRepository<Produto, Long> {
 
     @Query("SELECT p FROM Produto p JOIN p.tags t WHERE t.id = :tagId")
     Page<Produto> findByTagId(@Param("tagId") Long tagId, Pageable pageable);
+
+    @Query("SELECT p FROM Produto p WHERE LOWER(p.nome) LIKE LOWER(concat('%', :nome, '%'))")
+    Page<Produto> findByNomeContainingIgnoreCase(@Param("nome") String nome, Pageable pageable);
 }

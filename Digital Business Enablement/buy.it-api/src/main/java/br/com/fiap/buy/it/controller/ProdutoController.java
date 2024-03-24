@@ -69,4 +69,11 @@ public class ProdutoController {
         Page<ProdutoDTO> list = produtoService.findByTagId(tagId, pageable);
         return ResponseEntity.ok(list);
     }
+
+    @GetMapping("/nome/{nome}")
+    public ResponseEntity<Page<ProdutoDTO>> findByNomeContainingIgnoreCase(@PathVariable String nome, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+        log.info("(" + getClass().getSimpleName() + ") - Buscando por nome do produto contendo: " + nome);
+        Page<ProdutoDTO> list = produtoService.findByNomeContainingIgnoreCase(nome, pageable);
+        return ResponseEntity.ok(list);
+    }
 }
