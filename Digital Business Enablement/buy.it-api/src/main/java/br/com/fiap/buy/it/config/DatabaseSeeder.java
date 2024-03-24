@@ -338,14 +338,14 @@ public class DatabaseSeeder implements CommandLineRunner {
         List<Historico> historicos = List.of(historico1, historico2);
 
         // Salvando no Banco H2
-        usuarioRepository.saveAllAndFlush(usuarios);        
-        departamentoRepository.saveAllAndFlush(departamentos);        
-        produtoRepository.saveAllAndFlush(produtos);        
+        usuarioRepository.saveAllAndFlush(usuarios);
+        departamentoRepository.saveAllAndFlush(departamentos);
+        produtoRepository.saveAllAndFlush(produtos);
         statusRepository.saveAllAndFlush(status);
-        cotacaoRepository.saveAllAndFlush(cotacoes);        
-        avaliacaoRepository.saveAllAndFlush(avaliacoes);        
-        historicoRepository.saveAllAndFlush(historicos);        
-        contatoRepository.saveAllAndFlush(contatos);        
+        cotacaoRepository.saveAllAndFlush(cotacoes);
+        avaliacaoRepository.saveAllAndFlush(avaliacoes);
+        historicoRepository.saveAllAndFlush(historicos);
+        contatoRepository.saveAllAndFlush(contatos);
         tagRepository.saveAllAndFlush(tags);
     }
 }

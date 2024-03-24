@@ -88,6 +88,11 @@ public class ProdutoService {
         return list.map(this::convertToDto);
     }
 
+    public Page<ProdutoDTO> findByNomeContainingIgnoreCase(String nome, Pageable pageable) {
+        Page<Produto> list = produtoRepository.findByNomeContainingIgnoreCase(nome, pageable);
+        return list.map(this::convertToDto);
+    }
+
     private ProdutoDTO convertToDto(Produto entity) {
         ProdutoDTO dto = new ProdutoDTO();
         dto.setId(entity.getId());
