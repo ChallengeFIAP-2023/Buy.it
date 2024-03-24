@@ -65,7 +65,7 @@ export const Step4: React.FC<
 
         <DecreasingContainer scrollable>
           <LightText>
-          O valor médio de cotações para <LightBoldText> caneta esferográfica </LightBoldText> é R$1,00 por unidade. O menor preço já pago em caneta esferográfica foi R$0,45.  <LightBoldText>muito importante</LightBoldText>
+          O valor médio de cotações para <LightBoldText> caneta esferográfica </LightBoldText> é R$1,00 por unidade. O menor preço já pago em caneta esferográfica foi R$0,45.
           </LightText>
 
           <LightText>
