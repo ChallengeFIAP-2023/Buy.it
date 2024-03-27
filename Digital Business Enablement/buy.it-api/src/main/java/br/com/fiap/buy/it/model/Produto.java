@@ -79,7 +79,7 @@ public class Produto {
 
     public Produto removeTag(Tag tag){
         this.tags.remove(tag);
-        if (tag.getProdutos().equals(this)) tag.removeProduto(this);
+        if (tag.getProdutos().contains(this)) tag.removeProduto(this);
         return this;
     }
 }
