@@ -45,7 +45,7 @@ public class Departamento {
         this.tags.add(tag);
         tag.addDepartamento(this);
         return this;
-    }    
+    }
 
     public Departamento removeTag(Tag tag) {
         this.tags.remove(tag);
