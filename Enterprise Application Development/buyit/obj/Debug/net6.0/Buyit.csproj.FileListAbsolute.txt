@@ -1,0 +1,11 @@
+C:\Users\kauef\Downloads\Kaue\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\Buyit.csproj.AssemblyReference.cache
+C:\Users\kauef\Downloads\Kaue\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\Buyit.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\kauef\Downloads\Kaue\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\Buyit.AssemblyInfoInputs.cache
+C:\Users\kauef\Downloads\Kaue\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\Buyit.AssemblyInfo.cs
+C:\Users\kauef\Downloads\Kaue\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\Buyit.csproj.CoreCompileInputs.cache
+C:\Users\kauef\Downloads\Kaue\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\Buyit.MvcApplicationPartsAssemblyInfo.cs
+C:\Users\kauef\Downloads\Kaue\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\Buyit.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\kauef\Downloads\Kaue\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\Buyit.sourcelink.json
+C:\Users\kauef\Downloads\Kaue\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\Buyit.dll
+C:\Users\kauef\Downloads\Kaue\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\refint\Buyit.dll
+C:\Users\kauef\Downloads\Kaue\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\Buyit.pdb

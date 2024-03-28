@@ -1,0 +1,6 @@
+@buyit_HostAddress = http://localhost:5130
+
+GET {{buyit_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
