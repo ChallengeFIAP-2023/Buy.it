@@ -22,19 +22,19 @@ namespace Buyit.Configurations
             builder.Property(x => x.DataFechamento).HasColumnName("DATA_FECHAMENTO_COTACAO");
 
             builder.HasOne(x => x.Comprador)
-                   .WithMany()
-                   .HasForeignKey(x => x.Comprador)
-                   .HasPrincipalKey(x => x.Id);
+                .WithMany()
+                .HasForeignKey(x => x.Comprador)
+                .HasPrincipalKey(x => x.Id);
 
             builder.HasOne(x => x.Produto)
-                   .WithMany()
-                   .HasForeignKey(x => x.Produto)
-                   .HasPrincipalKey(x => x.Id);
+                .WithMany()
+                .HasForeignKey(x => x.Produto)
+                .HasPrincipalKey(x => x.Id);
 
             builder.HasOne(x => x.Status)
-                   .WithMany()
-                   .HasForeignKey(x => x.Status)
-                   .HasPrincipalKey(x => x.Id);
+                .WithMany()
+                .HasForeignKey(x => x.Status)
+                .HasPrincipalKey(x => x.Id);
         }
     }
 }

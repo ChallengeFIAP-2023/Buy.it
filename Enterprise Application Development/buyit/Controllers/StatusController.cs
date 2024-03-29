@@ -4,26 +4,26 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Buyit.Controllers
 {
-    [Route("/usuarios")]
+    [Route("/status")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class StatusController : ControllerBase
     {
-        private readonly Repository<UsuarioModel> _repository;
+        private readonly Repository<StatusModel> _repository;
 
-        public UsuarioController(Repository<UsuarioModel> repository)
+        public StatusController(Repository<StatusModel> repository)
         {
             _repository = repository;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<UsuarioModel>> GetAll()
+        public ActionResult<IEnumerable<StatusModel>> GetAll()
         {
             var list = _repository.GetAll();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<UsuarioModel> GetById(long id)
+        public ActionResult<StatusModel> GetById(long id)
         {
             var entity = _repository.GetById(id);
             if (entity == null)
@@ -34,7 +34,7 @@ namespace Buyit.Controllers
         }
 
         [HttpPost]
-        public ActionResult<UsuarioModel> Create(UsuarioModel entity)
+        public ActionResult<StatusModel> Create(StatusModel entity)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace Buyit.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, UsuarioModel entity)
+        public IActionResult Update(long id, StatusModel entity)
         {
             if (id != entity.Id)
             {

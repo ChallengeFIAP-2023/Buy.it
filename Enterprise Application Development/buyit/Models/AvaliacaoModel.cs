@@ -23,17 +23,17 @@ namespace Buyit.Models
         [Required(ErrorMessage = "O campo notaEntrega não pode estar vazio.")]
         [Range(1, 5)]
         [Column("NOTA_ENTREGA_AVALIACAO")]
-        public int NotaEntrega { get; set; }
+        public long NotaEntrega { get; set; }
 
         [Required(ErrorMessage = "O campo notaQualidade não pode estar vazio.")]
         [Range(1, 5)]
         [Column("NOTA_QUALIDADE_AVALIACAO")]
-        public int NotaQualidade { get; set; }
+        public long NotaQualidade { get; set; }
 
         [Required(ErrorMessage = "O campo notaPreco não pode estar vazio.")]
         [Range(1, 5)]
         [Column("NOTA_PRECO_AVALIACAO")]
-        public int NotaPreco { get; set; }
+        public long NotaPreco { get; set; }
 
         [MaxLength(400)]
         [Column("DESCRICAO_AVALIACAO")]

@@ -22,17 +22,20 @@ namespace Buyit.Configurations
 
             builder.HasOne(x => x.Cotacao)
                 .WithMany()
-                .HasForeignKey(x => x.Cotacao)
+                .HasForeignKey(x => x.CotacaoId)
+                .HasPrincipalKey(x => x.Id)
                 .IsRequired();
 
             builder.HasOne(x => x.Fornecedor)
                 .WithMany()
                 .HasForeignKey(x => x.Fornecedor)
+                .HasPrincipalKey(x => x.Id)
                 .IsRequired();
 
             builder.HasOne(x => x.Status)
                 .WithMany()
-                .HasForeignKey(x => x.Status)
+                .HasForeignKey(x => x.StatusId)
+                .HasPrincipalKey(x => x.Id)
                 .IsRequired();
         }
     }

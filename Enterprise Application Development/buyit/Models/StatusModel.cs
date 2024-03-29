@@ -3,6 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Buyit.Models
 {
+    [Table("STATUS")]
     public class StatusModel
     {
         [Key]

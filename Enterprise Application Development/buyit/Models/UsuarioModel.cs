@@ -8,7 +8,7 @@ namespace Buyit.Models
     {
         [Key]
         [Column("ID_USUARIO")]
-        public int Id { get; set; }
+        public long Id { get; set; }
 
         [Required(ErrorMessage = "O campo nome não pode estar vazio.")]
         [Column("NOME_USUARIO")]

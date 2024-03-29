@@ -20,8 +20,8 @@ namespace Buyit.Configurations
             builder.Property(x => x.IsFornecedor).HasColumnName("IS_FORNECEDOR").IsRequired();
 
             builder.HasMany(u => u.Tags)
-                   .WithMany(t => t.Usuarios)
-                   .UsingEntity(j => j.ToTable("USUARIO_TAG"));
+                .WithMany(t => t.Usuarios)
+                .UsingEntity(j => j.ToTable("USUARIO_TAG"));
         }
     }
 }

@@ -4,26 +4,26 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Buyit.Controllers
 {
-    [Route("/usuarios")]
+    [Route("/tags")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class TagController : ControllerBase
     {
-        private readonly Repository<UsuarioModel> _repository;
+        private readonly Repository<TagModel> _repository;
 
-        public UsuarioController(Repository<UsuarioModel> repository)
+        public TagController(Repository<TagModel> repository)
         {
             _repository = repository;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<UsuarioModel>> GetAll()
+        public ActionResult<IEnumerable<TagModel>> GetAll()
         {
             var list = _repository.GetAll();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<UsuarioModel> GetById(long id)
+        public ActionResult<TagModel> GetById(long id)
         {
             var entity = _repository.GetById(id);
             if (entity == null)
@@ -34,7 +34,7 @@ namespace Buyit.Controllers
         }
 
         [HttpPost]
-        public ActionResult<UsuarioModel> Create(UsuarioModel entity)
+        public ActionResult<TagModel> Create(TagModel entity)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace Buyit.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, UsuarioModel entity)
+        public IActionResult Update(long id, TagModel entity)
         {
             if (id != entity.Id)
             {

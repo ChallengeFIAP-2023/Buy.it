@@ -16,7 +16,7 @@ namespace Buyit.Repositories
             return _buyitContext.Set<TEntity>().ToList();
         }
 
-        public TEntity GetById(int id)
+        public TEntity GetById(long id)
         {
             return _buyitContext.Set<TEntity>().Find(id);
         }
@@ -33,7 +33,7 @@ namespace Buyit.Repositories
             _buyitContext.SaveChanges();
         }
 
-        public void Delete(int id)
+        public void Delete(long id)
         {
             var entity = GetById(id);
             _buyitContext.Set<TEntity>().Remove(entity);

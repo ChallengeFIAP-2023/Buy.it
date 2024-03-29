@@ -18,41 +18,44 @@ namespace Buyit.Models
         [Required(ErrorMessage = "O campo comprador não pode estar vazio.")]
         [ForeignKey("USUARIO")]
         [Column("ID_USUARIO")]
+        public long CompradorId { get; set; }
         public UsuarioModel Comprador { get; set; }
 
         [Required(ErrorMessage = "O campo produto não pode estar vazio.")]
         [ForeignKey("PRODUTO")]
         [Column("ID_PRODUTO")]
+        public long ProdutoId { get; set; }
         public ProdutoModel Produto { get; set; }
 
         [Required(ErrorMessage = "O campo quantidadeProduto não pode estar vazio.")]
-        [ForeignKey("QUANTIDADE_PRODUTO")]
+        [Column("QUANTIDADE_PRODUTO")]
         public decimal QuantidadeProduto { get; set; }
 
         [Required(ErrorMessage = "O campo valorProduto não pode estar vazio.")]
-        [ForeignKey("VALOR_PRODUTO")]
+        [Column("VALOR_PRODUTO")]
         public decimal ValorProduto { get; set; }
 
         [Required(ErrorMessage = "O campo status não pode estar vazio.")]
         [ForeignKey("STATUS")]
         [Column("ID_STATUS")]
+        public long StatusId { get; set; }
         public StatusModel Status { get; set; }
 
         [Required(ErrorMessage = "O campo prioridadeEntrega não pode estar vazio.")]
         [Column("PRIORIDADE_ENTREGA")]
-        public int PrioridadeEntrega { get; set; }
+        public long PrioridadeEntrega { get; set; }
 
         [Required(ErrorMessage = "O campo prioridadeQualidade não pode estar vazio.")]
         [Column("PRIORIDADE_QUALIDADE")]
-        public int PrioridadeQualidade { get; set; }
+        public long PrioridadeQualidade { get; set; }
 
         [Required(ErrorMessage = "O campo prioridadePreco não pode estar vazio.")]
         [Column("PRIORIDADE_PRECO")]
-        public int PrioridadePreco { get; set; }
+        public long PrioridadePreco { get; set; }
 
         [Required(ErrorMessage = "O campo prazo não pode estar vazio.")]
         [Column("PRAZO_COTACAO")]
-        public int Prazo { get; set; }
+        public long Prazo { get; set; }
 
         [Column("DATA_FECHAMENTO_COTACAO")]
         public DateTime? DataFechamento { get; set; }

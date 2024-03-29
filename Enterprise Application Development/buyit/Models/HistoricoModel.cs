@@ -13,16 +13,19 @@ namespace Buyit.Models
         [Required(ErrorMessage = "O campo cotacao não pode estar vazio.")]
         [ForeignKey("COTACAO")]
         [Column("ID_COTACAO")]
+        public long CotacaoId { get; set; }
         public CotacaoModel Cotacao { get; set; }
 
         [Required(ErrorMessage = "O campo fornecedor não pode estar vazio.")]
         [ForeignKey("USUARIO")]
         [Column("ID_FORNECEDOR")]
+        public long FornecedorId { get; set; }
         public UsuarioModel Fornecedor { get; set; }
 
         [Required(ErrorMessage = "O campo status não pode estar vazio.")]
         [ForeignKey("STATUS")]
         [Column("ID_STATUS")]
+        public long StatusId { get; set; }
         public StatusModel Status { get; set; }
 
         [Required(ErrorMessage = "O campo recusadoPorProduto não pode estar vazio.")]

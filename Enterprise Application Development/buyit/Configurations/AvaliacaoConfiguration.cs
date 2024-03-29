@@ -20,9 +20,9 @@ namespace Buyit.Configurations
             builder.Property(x => x.Descricao).HasColumnName("DESCRICAO_AVALIACAO").HasColumnType("VARCHAR(255)");
 
             builder.HasOne(x => x.Cotacao)
-                   .WithMany()
-                   .HasForeignKey(x => x.CotacaoId)
-                   .HasPrincipalKey(x => x.Id);
+                .WithMany()
+                .HasForeignKey(x => x.CotacaoId)
+                .HasPrincipalKey(x => x.Id);
         }
     }
 }

@@ -4,26 +4,26 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Buyit.Controllers
 {
-    [Route("/usuarios")]
+    [Route("/departamentos")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class DepartamentoController : ControllerBase
     {
-        private readonly Repository<UsuarioModel> _repository;
+        private readonly Repository<DepartamentoModel> _repository;
 
-        public UsuarioController(Repository<UsuarioModel> repository)
+        public DepartamentoController(Repository<DepartamentoModel> repository)
         {
             _repository = repository;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<UsuarioModel>> GetAll()
+        public ActionResult<IEnumerable<DepartamentoModel>> GetAll()
         {
             var list = _repository.GetAll();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<UsuarioModel> GetById(long id)
+        public ActionResult<DepartamentoModel> GetById(long id)
         {
             var entity = _repository.GetById(id);
             if (entity == null)
@@ -34,7 +34,7 @@ namespace Buyit.Controllers
         }
 
         [HttpPost]
-        public ActionResult<UsuarioModel> Create(UsuarioModel entity)
+        public ActionResult<DepartamentoModel> Create(DepartamentoModel entity)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace Buyit.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, UsuarioModel entity)
+        public IActionResult Update(long id, DepartamentoModel entity)
         {
             if (id != entity.Id)
             {

@@ -1935,19 +1935,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\kauef\\.nuget\\packages\\": {}
+    "C:\\Users\\kauec\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\Buyit\\Buyit.csproj",
+      "projectUniqueName": "C:\\Users\\kauec\\OneDrive\\Documentos\\GitHub\\Buy.it\\Enterprise Application Development\\buyit\\Buyit.csproj",
       "projectName": "Buyit",
-      "projectPath": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\Buyit\\Buyit.csproj",
-      "packagesPath": "C:\\Users\\kauef\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\Buyit\\obj\\",
+      "projectPath": "C:\\Users\\kauec\\OneDrive\\Documentos\\GitHub\\Buy.it\\Enterprise Application Development\\buyit\\Buyit.csproj",
+      "packagesPath": "C:\\Users\\kauec\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\kauec\\OneDrive\\Documentos\\GitHub\\Buy.it\\Enterprise Application Development\\buyit\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\kauef\\AppData\\Roaming\\NuGet\\NuGet.Config",
+        "C:\\Users\\kauec\\AppData\\Roaming\\NuGet\\NuGet.Config",
         "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
       ],
       "originalTargetFrameworks": [
@@ -1967,11 +1967,6 @@
         "warnAsError": [
           "NU1605"
         ]
-      },
-      "restoreAuditProperties": {
-        "enableAudit": "true",
-        "auditLevel": "low",
-        "auditMode": "direct"
       }
     },
     "frameworks": {
@@ -2034,7 +2029,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.201\\RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
       }
     }
   }

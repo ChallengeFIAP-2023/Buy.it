@@ -17,9 +17,9 @@ namespace Buyit.Configurations
             builder.Property(x => x.UsuarioId).HasColumnName("ID_USUARIO");
 
             builder.HasOne(x => x.Usuario)
-                   .WithMany()
-                   .HasForeignKey(x => x.UsuarioId)
-                   .HasPrincipalKey(x => x.Id);
+                .WithMany()
+                .HasForeignKey(x => x.UsuarioId)
+                .HasPrincipalKey(x => x.Id);
         }
     }
 }

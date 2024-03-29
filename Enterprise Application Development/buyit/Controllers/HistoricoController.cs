@@ -4,26 +4,26 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace Buyit.Controllers
 {
-    [Route("/usuarios")]
+    [Route("/historicos")]
     [ApiController]
-    public class UsuarioController : ControllerBase
+    public class HistoricoController : ControllerBase
     {
-        private readonly Repository<UsuarioModel> _repository;
+        private readonly Repository<HistoricoModel> _repository;
 
-        public UsuarioController(Repository<UsuarioModel> repository)
+        public HistoricoController(Repository<HistoricoModel> repository)
         {
             _repository = repository;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<UsuarioModel>> GetAll()
+        public ActionResult<IEnumerable<HistoricoModel>> GetAll()
         {
             var list = _repository.GetAll();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<UsuarioModel> GetById(long id)
+        public ActionResult<HistoricoModel> GetById(long id)
         {
             var entity = _repository.GetById(id);
             if (entity == null)
@@ -34,7 +34,7 @@ namespace Buyit.Controllers
         }
 
         [HttpPost]
-        public ActionResult<UsuarioModel> Create(UsuarioModel entity)
+        public ActionResult<HistoricoModel> Create(HistoricoModel entity)
         {
             try
             {
@@ -48,7 +48,7 @@ namespace Buyit.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, UsuarioModel entity)
+        public IActionResult Update(long id, HistoricoModel entity)
         {
             if (id != entity.Id)
             {

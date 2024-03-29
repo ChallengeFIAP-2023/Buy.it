@@ -20,7 +20,7 @@ namespace Buyit.Context
         public DbSet<ProdutoModel> Produto { get; set; }
         public DbSet<StatusModel> Status { get; set; }
         public DbSet<TagModel> Tag { get; set; }
-        public DbSet<UsuarioModel> USUARIO { get; set; }
+        public DbSet<UsuarioModel> Usuario { get; set; }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

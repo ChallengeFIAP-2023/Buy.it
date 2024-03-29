@@ -23,7 +23,7 @@ namespace Buyit.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ContatoModel> GetById(int id)
+        public ActionResult<ContatoModel> GetById(long id)
         {
             var entity = _repository.GetById(id);
             if (entity == null)
@@ -48,7 +48,7 @@ namespace Buyit.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(int id, ContatoModel entity)
+        public IActionResult Update(long id, ContatoModel entity)
         {
             if (id != entity.Id)
             {
@@ -67,7 +67,7 @@ namespace Buyit.Controllers
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(int id)
+        public IActionResult Delete(long id)
         {
             var entity = _repository.GetById(id);
             if (entity == null)
