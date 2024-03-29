@@ -26,8 +26,20 @@ DROP TABLE cotacao CASCADE CONSTRAINTS;
 DROP TABLE avaliacao CASCADE CONSTRAINTS;
 DROP TABLE historico CASCADE CONSTRAINTS;
 
--- SPRINT 01
--- 01. CRIAÇÃO DAS TABELAS:
+-- DROPANDO SEQUÊNCIAS CASO NECESSÁRIO
+DECLARE
+  v_sql VARCHAR2(1000);
+BEGIN
+  FOR cur IN (SELECT sequence_name
+              FROM user_sequences) 
+  LOOP
+    v_sql := 'DROP SEQUENCE ' || cur.sequence_name;
+    EXECUTE IMMEDIATE v_sql;
+  END LOOP;
+END;
+
+-- SPRINT 01:
+-- 01.01. CRIAÇÃO DAS TABELAS:
 CREATE TABLE usuario (
     id_usuario NUMBER(9) CONSTRAINT pk_id_usuario PRIMARY KEY,
     nome_usuario VARCHAR2(255) CONSTRAINT nn_nome_usuario NOT NULL,
@@ -126,7 +138,7 @@ CREATE TABLE historico (
     descricao_historico VARCHAR2(255)
 );
 
--- 02. INSERTS NAS TABELAS:
+-- 01.02. INSERTS NAS TABELAS:
 INSERT INTO usuario VALUES (1, 'One Serviços Administrativos LTDA.', 'comercial@oneservicos.com.br', 'oneserv123', '28434667000111', 0, NULL);
 INSERT INTO usuario VALUES (2, 'Kalunga Comércio e Indústria Gráfica LTDA.', 'vendas@kalunga.com.br', 'kalung4', '43283811000150', 1, 'https://iguatemi.com.br/brasilia/sites/brasilia/files/2020-01/Kalunga_logo.png');
 INSERT INTO usuario VALUES (3, 'Kabum S.A.', 'adm@kabum.com.br', 'kabuuuuum', '05570714000159', 1, NULL);
@@ -199,8 +211,8 @@ INSERT INTO historico VALUES (2, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 4, 2, 5
 INSERT INTO historico VALUES (3, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 5, 5, 44.50, 0, 0, 0, 0, NULL);
 INSERT INTO historico VALUES (4, 3, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 2, 5, 2000, 0, 0, 1, 0, 'Recusado Automaticamente: Preço ofertado maior do que o preço da cotação');
 INSERT INTO historico VALUES (5, 5, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 5, 1, 2999.99, 0, 0, 0, 0, NULL);
-    
--- 03. CONSULTANDO COTAÇÕES, STATUS E AVALIAÇÕES:
+
+-- 01.03. CONSULTANDO COTAÇÕES, STATUS E AVALIAÇÕES:
 SELECT 
     c.id_cotacao, 
     c.data_abertura_cotacao, 
@@ -222,7 +234,7 @@ LEFT JOIN
 -- SPRINT 02:
 SET SERVEROUTPUT ON;
 
--- 01.01. FUNÇÃO PARA VALIDAR A ENTRADA DE UM EMAIL:
+-- 02.01. FUNÇÃO PARA VALIDAR A ENTRADA DE UM EMAIL:
 CREATE OR REPLACE FUNCTION is_email_valid(email IN VARCHAR2) RETURN BOOLEAN IS
 BEGIN
     IF REGEXP_LIKE(email, '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$') THEN
@@ -235,7 +247,7 @@ EXCEPTION
         RETURN FALSE;
 END;
 
--- 01.01.01. TESTANDO ENTRADA DE EMAILS:
+-- 02.01.01. TESTANDO ENTRADA DE EMAILS:
 DECLARE
     email_valido VARCHAR2(100);
     email_invalido VARCHAR2(100);
@@ -255,7 +267,7 @@ BEGIN
     END IF;
 END;
 
--- 01.02. FUNÇÃO PARA VALIDAR A ENTRADA DE UM CNPJ:
+-- 02.02. FUNÇÃO PARA VALIDAR A ENTRADA DE UM CNPJ:
 CREATE OR REPLACE FUNCTION is_cnpj_valid(p_cnpj IN VARCHAR2) RETURN BOOLEAN IS
     v_soma          NUMBER := 0;
     v_indice        NUMBER := 1;
@@ -329,7 +341,7 @@ BEGIN
     RETURN v_resultado;
 END;
 
--- 01.02.01. TESTANDO ENTRADA DE CNPJ:
+-- 02.02.01. TESTANDO ENTRADA DE CNPJ:
 DECLARE
     cnpj_valido VARCHAR2(14) := '28434667000111';
     cnpj_invalido VARCHAR2(14) := '12345678000100';
@@ -350,12 +362,12 @@ BEGIN
     END IF;
 END;
 
--- 02. PROCEDURES DE INSERT, UPDATE e DELETE:
--- 02.01. USUARIO:
+-- 02.03 PROCEDURES DE INSERT, UPDATE e DELETE:
+-- 02.03.01 USUARIO:
 DROP SEQUENCE seq_usuario;
 CREATE SEQUENCE seq_usuario START WITH 6 INCREMENT BY 1;
 
--- 02.01.01. INSERT E TESTE:
+-- 02.03.01.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_usuario(
     p_nome_usuario IN usuario.nome_usuario%TYPE,
     p_email_usuario IN usuario.email_usuario%TYPE,
@@ -396,7 +408,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.03.02. UPDATE E TESTE:
+-- 02.03.01.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_usuario(
     p_id_usuario IN usuario.id_usuario%TYPE,
     p_nome_usuario IN usuario.nome_usuario%TYPE,
@@ -436,7 +448,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.03.03. DELETE E TESTE:
+-- 02.03.01.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_usuario(
     p_id_usuario IN usuario.id_usuario%TYPE
 ) AS
@@ -461,11 +473,11 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.02. CONTATO:
+-- 02.03.02. CONTATO:
 DROP SEQUENCE seq_contato;
 CREATE SEQUENCE seq_contato START WITH 6 INCREMENT BY 1;
 
--- 02.02.01. INSERT E TESTE:
+-- 02.03.02.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_contato(
     p_tipo_contato IN contato.tipo_contato%TYPE,
     p_valor_contato IN contato.valor_contato%TYPE,
@@ -495,7 +507,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.02.02. UPDATE E TESTE:
+-- 02.03.02.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_contato(
     p_id_contato IN contato.id_contato%TYPE,
     p_tipo_contato IN contato.tipo_contato%TYPE,
@@ -524,7 +536,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.02.03. DELETE E TESTE:
+-- 02.03.02.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_contato(
     p_id_contato IN contato.id_contato%TYPE
 ) AS
@@ -549,11 +561,11 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.03. TAG:
+-- 02.03.03. TAG:
 DROP SEQUENCE seq_tag;
 CREATE SEQUENCE seq_tag START WITH 6 INCREMENT BY 1;
 
--- 02.03.01. INSERT E TESTE:
+-- 02.03.03.01. NSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_tag(
     p_nome_tag IN tag.nome_tag%TYPE
 ) AS
@@ -581,7 +593,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.03.02. UPDATE E TESTE:
+-- 02.03.03.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_tag(
     p_id_tag IN tag.id_tag%TYPE,
     p_nome_tag IN tag.nome_tag%TYPE
@@ -608,7 +620,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.03.03. DELETE E TESTE:
+-- 02.03.03.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_tag(
     p_id_tag IN tag.id_tag%TYPE
 ) AS
@@ -633,8 +645,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.04. USUARIO_TAG:
--- 02.04.01. INSERT E TESTE:
+-- 02.03.04. USUARIO_TAG:
+-- 02.03.04.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_usuario_tag(
     p_id_usuario IN usuario_tag.id_usuario%TYPE,
     p_id_tag IN usuario_tag.id_tag%TYPE
@@ -660,7 +672,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.04.02. UPDATE E TESTE:
+-- 02.03.04.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_usuario_tag(
     p_id_usuario_antigo IN usuario_tag.id_usuario%TYPE,
     p_id_tag_antigo IN usuario_tag.id_tag%TYPE,
@@ -689,7 +701,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.04.03. DELETE E TESTE:
+-- 02.03.04.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_usuario_tag(
     p_id_usuario IN usuario_tag.id_usuario%TYPE,
     p_id_tag IN usuario_tag.id_tag%TYPE
@@ -715,11 +727,11 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.05. DEPARTAMENTO:
+-- 02.03.05. DEPARTAMENTO:
 DROP SEQUENCE seq_departamento;
 CREATE SEQUENCE seq_departamento START WITH 6 INCREMENT BY 1;
 
--- 02.05.01. INSERT E TESTE:
+-- 02.03.05.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_departamento(
     p_nome_departamento IN departamento.nome_departamento%TYPE,
     p_icone_departamento IN departamento.icone_departamento%TYPE
@@ -748,7 +760,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.05.02. UPDATE E TESTE:
+-- 02.03.05.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_departamento(
     p_id_departamento IN departamento.id_departamento%TYPE,
     p_nome_departamento IN departamento.nome_departamento%TYPE,
@@ -776,7 +788,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.05.03. DELETE E TESTE:
+-- 02.03.05.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_departamento(
     p_id_departamento IN departamento.id_departamento%TYPE
 ) AS
@@ -801,8 +813,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.06. TAG_DEPARTAMENTO:
--- 02.06.01. INSERT E TESTE:
+-- 02.03.06. TAG_DEPARTAMENTO:
+-- 02.03.06.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_tag_departamento(
     p_id_tag IN tag_departamento.id_tag%TYPE,
     p_id_departamento IN tag_departamento.id_departamento%TYPE
@@ -828,7 +840,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.06.02. UPDATE E TESTE:
+-- 02.03.06.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_tag_departamento(
     p_id_tag_antigo IN tag_departamento.id_tag%TYPE,
     p_id_departamento_antigo IN tag_departamento.id_departamento%TYPE,
@@ -857,7 +869,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.06.03. DELETE E TESTE:
+-- 02.03.06.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_tag_departamento(
     p_id_tag IN tag_departamento.id_tag%TYPE,
     p_id_departamento IN tag_departamento.id_departamento%TYPE
@@ -883,11 +895,11 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.07. PRODUTO:
+-- 02.03.07. PRODUTO:
 DROP SEQUENCE seq_produto;
 CREATE SEQUENCE seq_produto START WITH 6 INCREMENT BY 1;
 
--- 02.07.01. INSERT E TESTE:
+-- 02.03.07.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_produto(
     p_id_departamento IN produto.id_departamento%TYPE,
     p_nome_produto IN produto.nome_produto%TYPE,
@@ -921,7 +933,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.07.02. UPDATE E TESTE:
+-- 02.03.07.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_produto(
     p_id_produto IN produto.id_produto%TYPE,
     p_id_departamento IN produto.id_departamento%TYPE,
@@ -954,7 +966,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.07.03. DELETE E TESTE:
+-- 02.03.07.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_produto(
     p_id_produto IN produto.id_produto%TYPE
 ) AS
@@ -979,8 +991,8 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.08. PRODUTO_TAG:
--- 02.08.01. INSERT E TESTE:
+-- 02.03.08 PRODUTO_TAG:
+-- 02.03.08.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_produto_tag(
     p_id_produto IN produto_tag.id_produto%TYPE,
     p_id_tag IN produto_tag.id_tag%TYPE
@@ -1006,7 +1018,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.08.02. UPDATE E TESTE:
+-- 02.03.08.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_produto_tag(
     p_id_produto_antigo IN produto_tag.id_produto%TYPE,
     p_id_tag_antigo IN produto_tag.id_tag%TYPE,
@@ -1035,7 +1047,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.08.03. DELETE E TESTE:
+-- 02.03.08.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_produto_tag(
     p_id_produto IN produto_tag.id_produto%TYPE,
     p_id_tag IN produto_tag.id_tag%TYPE
@@ -1061,11 +1073,11 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.09. STATUS:
+-- 02.03.09. STATUS:
 DROP SEQUENCE seq_status;
 CREATE SEQUENCE seq_status START WITH 6 INCREMENT BY 1;
 
--- 02.09.01. INSERT E TESTE:
+-- 02.03.09.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_status(
     p_nome_status IN status.nome_status%TYPE
 ) AS
@@ -1093,7 +1105,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.09.02. UPDATE E TESTE:
+-- 02.03.09.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_status(
     p_id_status IN status.id_status%TYPE,
     p_nome_status IN status.nome_status%TYPE
@@ -1120,7 +1132,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.09.03. DELETE E TESTE:
+-- 02.03.09.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_status(
     p_id_status IN status.id_status%TYPE
 ) AS
@@ -1145,11 +1157,11 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.10. COTACAO:
+-- 02.03.10. COTACAO:
 DROP SEQUENCE seq_cotacao;
 CREATE SEQUENCE seq_cotacao START WITH 6 INCREMENT BY 1;
 
--- 02.10.01. INSERT E TESTE:
+-- 02.03.10.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_cotacao(
     p_data_abertura_cotacao IN cotacao.data_abertura_cotacao%TYPE,
     p_id_usuario IN cotacao.id_usuario%TYPE,
@@ -1187,7 +1199,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.10.02. UPDATE E TESTE:
+-- 02.03.10.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_cotacao(
     p_id_cotacao IN cotacao.id_cotacao%TYPE,
     p_data_abertura_cotacao IN cotacao.data_abertura_cotacao%TYPE,
@@ -1224,7 +1236,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.10.03. DELETE E TESTE:
+-- 02.03.10.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_cotacao(
     p_id_cotacao IN cotacao.id_cotacao%TYPE
 ) AS
@@ -1249,12 +1261,12 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.11. AVALIACAO:
+-- 02.03.11. AVALIACAO:
 -- POR SER 1 ÚNICA AVALIAÇÃO POR COTAÇÃO, INSIRA UMA COTAÇÃO DE ID 6 PARA REALIZAR ESSE TESTE
 DROP SEQUENCE seq_avaliacao;
 CREATE SEQUENCE seq_avaliacao START WITH 6 INCREMENT BY 1;
 
--- 02.11.01. INSERT E TESTE:
+-- 02.03.11.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_avaliacao(
     p_id_cotacao IN avaliacao.id_cotacao%TYPE,
     p_data_avaliacao IN avaliacao.data_avaliacao%TYPE,
@@ -1287,7 +1299,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.11.02. UPDATE E TESTE:
+-- 02.03.11.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_avaliacao(
     p_id_avaliacao IN avaliacao.id_avaliacao%TYPE,
     p_id_cotacao IN avaliacao.id_cotacao%TYPE,
@@ -1319,7 +1331,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.11.03. DELETE E TESTE:
+-- 02.03.11.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_avaliacao(
     p_id_avaliacao IN avaliacao.id_avaliacao%TYPE
 ) AS
@@ -1344,11 +1356,11 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.12. HISTORICO (OBS: NÃO FUNCIONA COM NUMERO DECIAL NO VALOR_OFERTADO_HISTORICO. NÃO CONSEGUIMOS RESOLVER)
+-- 02.03.12. HISTORICO (OBS: NÃO FUNCIONA COM NUMERO DECIMAL NO VALOR_OFERTADO_HISTORICO. NÃO CONSEGUIMOS RESOLVER)
 DROP SEQUENCE seq_historico;
 CREATE SEQUENCE seq_historico START WITH 6 INCREMENT BY 1;
 
--- 02.12.01. INSERT E TESTE:
+-- 02.03.12.01. INSERT E TESTE:
 CREATE OR REPLACE PROCEDURE insert_historico(
     p_id_cotacao IN historico.id_cotacao%TYPE,
     p_data_historico IN historico.data_historico%TYPE,
@@ -1385,7 +1397,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.12.02. UPDATE E TESTE:
+-- 02.03.12.02. UPDATE E TESTE:
 CREATE OR REPLACE PROCEDURE update_historico(
     p_id_historico IN historico.id_historico%TYPE,
     p_id_cotacao IN historico.id_cotacao%TYPE,
@@ -1421,7 +1433,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.12.03. DELETE E TESTE:
+-- 02.03.12.03. DELETE E TESTE:
 CREATE OR REPLACE PROCEDURE delete_historico(
     p_id_historico IN historico.id_historico%TYPE
 ) AS
@@ -1446,7 +1458,7 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 03. BLOCO ANÔNIMO COM CURSOR PARA CONSULTA COM JOIN:
+-- 02.04. BLOCO ANÔNIMO COM CURSOR PARA CONSULTA COM JOIN:
 DECLARE
     CURSOR cotacao_avaliacao_cur IS
         SELECT c.id_cotacao, c.data_abertura_cotacao, a.nota_entrega_avaliacao, a.nota_qualidade_avaliacao, a.nota_preco_avaliacao
@@ -1471,7 +1483,7 @@ BEGIN
     CLOSE cotacao_avaliacao_cur;
 END;
 
--- 04. PROCEDURE IMPRIMINDO RELATÓRIO QUE CONTENHA FUNÇÕES, INNER JOIN, ORDER BY, SUM OU COUNT
+-- 02.05. PROCEDURE IMPRIMINDO RELATÓRIO QUE CONTENHA FUNÇÕES, INNER JOIN, ORDER BY, SUM OU COUNT
 CREATE OR REPLACE PROCEDURE print_cotacao_report IS
     v_total_cotacoes NUMBER;
     v_valor_medio NUMBER;
@@ -1505,15 +1517,15 @@ EXCEPTION
         DBMS_OUTPUT.PUT_LINE('Erro ao gerar relatório de cotações.');
 END;
 
--- 04.01. TESTANDO PROCEDURE COM RELATÓRIO:
+-- 02.05.01. TESTANDO PROCEDURE COM RELATÓRIO:
 BEGIN
     print_cotacao_report;
 END;
 
--- Sprint 03 --
+--------------------------------------------------------------------------------
 
--- 05.01. 01 procedimento
-
+-- SPRINT 03:
+-- 03.01. PROCEDIMENTO 01
 CREATE OR REPLACE PROCEDURE listar_cotacoes_pendentes(
     p_id_usuario IN cotacao.id_usuario%TYPE
 ) AS
@@ -1540,9 +1552,7 @@ BEGIN
     listar_cotacoes_pendentes(1);
 END;
 
-
--- 05.02. 02 procedimento
-
+-- 03.02. PROCEDIMENTO 02
 CREATE OR REPLACE PROCEDURE concluir_cotacao(
     p_id_cotacao IN cotacao.id_cotacao%TYPE
 ) AS
@@ -1570,8 +1580,7 @@ BEGIN
     concluir_cotacao(1); 
 END;
 
--- 06.01. 1 função
-
+-- 03.03. FUNÇÃO 01
 CREATE OR REPLACE FUNCTION valor_total_cotacoes_usuario(p_id_usuario IN cotacao.id_usuario%TYPE)
 RETURN NUMBER IS
     v_total NUMBER(10,2) := 0;
@@ -1589,8 +1598,7 @@ END;
 
 SELECT valor_total_cotacoes_usuario(1) FROM dual;
 
--- 06.02. 2 função
-
+-- 03.04. FUNÇÃO 02
 CREATE OR REPLACE FUNCTION verificar_existencia_email(p_email_usuario IN usuario.email_usuario%TYPE)
 RETURN BOOLEAN IS
     v_contagem NUMBER;
@@ -1621,7 +1629,7 @@ BEGIN
     END IF;
 END;
 
--- 07.01. Criação de tabelas para o funcionamento do gatilho
+-- 03.05. CRIAÇÃO DE TABELAS PARA FUNCIONAMENTO DO GATILHO
 DROP TABLE monitoramento_atualizacoes CASCADE CONSTRAINTS;
 DROP TABLE log_erros CASCADE CONSTRAINTS;
 
@@ -1634,7 +1642,6 @@ CREATE TABLE monitoramento_atualizacoes (
     usuario VARCHAR2(255)
 );
 
-
 CREATE TABLE log_erros (
     id_erro NUMBER GENERATED BY DEFAULT ON NULL AS IDENTITY PRIMARY KEY,
     codigo_erro VARCHAR2(255),
@@ -1643,7 +1650,7 @@ CREATE TABLE log_erros (
     usuario VARCHAR2(255)
 );
 
--- 07.02 Gatilho para monitoramento de atualizações
+-- 03.05.01. GATILHO PARA MONITORAMENTO DE ATUALIZAÇÕES
 CREATE OR REPLACE TRIGGER trg_monitora_atualizacao_cotacao
 AFTER UPDATE OF valor_produto ON cotacao
 FOR EACH ROW
@@ -1666,27 +1673,17 @@ EXCEPTION
         VALUES (TO_CHAR(v_codigo_erro), v_nome_erro, v_usuario);
 END;
 
--- 07.03. Testando o gatilho 
+-- 03.05.02. TESTANDO O GATILHO
 UPDATE cotacao SET valor_produto = 150 WHERE id_cotacao = 1;
 
+-- 03.05.03. VALIDANDO O GATILHO
 SELECT * FROM monitoramento_atualizacoes;
-
 SELECT * FROM log_erros;
 
+--------------------------------------------------------------------------------
 
+DELETE FROM status WHERE id_status = -1;
+SELECT * FROM status;
+SELECT SEQ_STATUS.NEXTVAL FROM DUAL;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+COMMIT;

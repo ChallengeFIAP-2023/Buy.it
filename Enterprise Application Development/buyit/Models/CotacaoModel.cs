@@ -24,11 +24,11 @@ namespace Buyit.Models
         public ProdutoModel Produto { get; set; }
 
         [Required(ErrorMessage = "O campo quantidadeProduto não pode estar vazio.")]
-        [Column("QUANTIDADE_PRODUTO")]
+        [Column("QUANTIDADE_PRODUTO", TypeName = "decimal(18,2)")]
         public decimal QuantidadeProduto { get; set; }
 
         [Required(ErrorMessage = "O campo valorProduto não pode estar vazio.")]
-        [Column("VALOR_PRODUTO")]
+        [Column("VALOR_PRODUTO", TypeName = "decimal(18,2)")]
         public decimal ValorProduto { get; set; }
 
         [Required(ErrorMessage = "O campo status não pode estar vazio.")]
