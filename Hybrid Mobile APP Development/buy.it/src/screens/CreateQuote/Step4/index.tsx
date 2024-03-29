@@ -3,11 +3,10 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Slider from '@react-native-community/slider';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
-import { QuoteDetailsRoutes } from '..';
+import { CreateQuoteRoutes } from '..';
 
 // Theme import
 import theme from '@theme/index';
@@ -18,7 +17,6 @@ import { Step4FormSchema } from '@validations/QuoteDetails';
 // Component import
 import {
   Button,
-  CustomSlider,
   DecreasingContainer,
   DefaultComponent,
   Input,
@@ -26,10 +24,7 @@ import {
 } from '@components/index';
 
 // Style import
-import {
-  LightText,
-  LightBoldText,
-} from './styles';
+import { LightText, LightBoldText } from './styles';
 import { ScrollableContent, Fieldset } from '@global/styles/index';
 
 interface Step4Form {
@@ -38,7 +33,7 @@ interface Step4Form {
 
 export const Step4: React.FC<
   CompositeScreenProps<
-    NativeStackScreenProps<QuoteDetailsRoutes, 'Step4'>,
+    NativeStackScreenProps<CreateQuoteRoutes, 'Step4'>,
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
@@ -65,12 +60,12 @@ export const Step4: React.FC<
 
         <DecreasingContainer scrollable>
           <LightText>
-          O valor médio de cotações para <LightBoldText> caneta esferográfica </LightBoldText> é R$1,00 por unidade. O menor preço já pago em caneta esferográfica foi R$0,45.
+            O valor médio de cotações para{' '}
+            <LightBoldText> caneta esferográfica </LightBoldText> é R$1,00 por
+            unidade. O menor preço já pago em caneta esferográfica foi R$0,45.
           </LightText>
 
-          <LightText>
-            Quanto você quer pagar?
-          </LightText>
+          <LightText>Quanto você quer pagar?</LightText>
 
           <Fieldset>
             <Controller
@@ -88,11 +83,7 @@ export const Step4: React.FC<
             />
           </Fieldset>
 
-          <Button
-            label="Utilizar preço sugerido"
-            size="SM"
-          />
-
+          <Button label="Utilizar preço sugerido" size="SM" />
         </DecreasingContainer>
       </ScrollableContent>
 

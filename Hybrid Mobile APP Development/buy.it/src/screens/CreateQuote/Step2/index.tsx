@@ -7,7 +7,7 @@ import { useState } from 'react';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
-import { QuoteDetailsRoutes } from '..';
+import { CreateQuoteRoutes } from '..';
 import { TFlatList } from 'react-native-input-select/lib/typescript/types/index.types';
 
 // Theme import
@@ -36,7 +36,7 @@ import {
 import { ScrollableContent, Fieldset, Flex } from '@global/styles/index';
 
 //Hook import
-import { useQuoteDetails } from '@hooks/useQuoteDetails';
+import { useCreateQuote } from '@hooks/useCreateQuote';
 
 interface Step2Form {
   nomeProduto: string;
@@ -54,7 +54,7 @@ const PRODUCT_QUANTITY = 15;
 
 export const Step2: React.FC<
   CompositeScreenProps<
-    NativeStackScreenProps<QuoteDetailsRoutes, 'Step2'>,
+    NativeStackScreenProps<CreateQuoteRoutes, 'Step2'>,
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
@@ -68,7 +68,7 @@ export const Step2: React.FC<
     defaultValues: {},
   });
 
-  const { setProduct, setQuote } = useQuoteDetails();
+  const { setProduct, setQuote } = useCreateQuote();
 
   const onSubmit: SubmitHandler<Step2Form> = data => {
     const nomeProduto = data.nomeProduto;

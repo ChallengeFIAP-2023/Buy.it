@@ -1,11 +1,11 @@
+import { useState } from 'react';
 import { ArrowRight } from 'phosphor-react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
-import { useLayoutEffect, useState } from 'react';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
-import { QuoteDetailsRoutes } from '..';
+import { CreateQuoteRoutes } from '..';
 import { TFlatList } from 'react-native-input-select/lib/typescript/types/index.types';
 
 // Theme import
@@ -21,7 +21,7 @@ import {
 } from '@components/index';
 
 //Hooks import
-import { useQuoteDetails } from '@hooks/useQuoteDetails';
+import { useCreateQuote } from '@hooks/useCreateQuote';
 
 // Style import
 import { ScrollableContent, Fieldset } from '@global/styles/index';
@@ -33,7 +33,7 @@ interface Step1Form {
 
 export const Step1: React.FC<
   CompositeScreenProps<
-    NativeStackScreenProps<QuoteDetailsRoutes, 'Step1'>,
+    NativeStackScreenProps<CreateQuoteRoutes, 'Step1'>,
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
@@ -41,7 +41,7 @@ export const Step1: React.FC<
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState<number>();
 
-  const { setProduct, tags, departments, loading } = useQuoteDetails();
+  const { setProduct, tags, departments, loading } = useCreateQuote();
 
   const onSubmit = () => {
     const idDepartamento = selectedDepartment as number;

@@ -3,11 +3,10 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { TFlatList } from 'react-native-input-select/lib/typescript/types/index.types';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
-import { QuoteDetailsRoutes } from '..';
+import { CreateQuoteRoutes } from '..';
 
 // Theme import
 import theme from '@theme/index';
@@ -18,7 +17,6 @@ import { Step5FormSchema } from '@validations/QuoteDetails';
 // Component import
 import {
   Button,
-  CustomDropdown,
   DecreasingContainer,
   DefaultComponent,
   Input,
@@ -26,8 +24,8 @@ import {
 } from '@components/index';
 
 // Style import
-import { ScrollableContent, Fieldset, Flex } from '@global/styles/index';
-import { useQuoteDetails } from '@hooks/useQuoteDetails';
+import { ScrollableContent, Fieldset } from '@global/styles/index';
+import { useCreateQuote } from '@hooks/useCreateQuote';
 
 interface Step5Form {
   marca?: string;
@@ -39,7 +37,7 @@ interface Step5Form {
 
 export const Step5: React.FC<
   CompositeScreenProps<
-    NativeStackScreenProps<QuoteDetailsRoutes, 'Step5'>,
+    NativeStackScreenProps<CreateQuoteRoutes, 'Step5'>,
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
@@ -47,18 +45,16 @@ export const Step5: React.FC<
     control,
     handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<Step5Form>({
     resolver: yupResolver(Step5FormSchema),
     defaultValues: {},
   });
 
   // Hook
-  const { setProduct } = useQuoteDetails();
+  const { setProduct } = useCreateQuote();
 
   const onSubmit: SubmitHandler<Step5Form> = data => {
     setProduct(prevProd => ({ ...prevProd, ...data }));
-    // return navigation.navigate('Step5');
   };
 
   return (

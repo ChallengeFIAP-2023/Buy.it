@@ -6,7 +6,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
-import { QuoteDetailsRoutes } from '..';
+import { CreateQuoteRoutes } from '..';
 
 // Theme import
 import theme from '@theme/index';
@@ -27,7 +27,6 @@ import {
 import { LightText, LightBoldText } from './styles';
 import { ScrollableContent } from '@global/styles/index';
 import { useState } from 'react';
-import { useQuoteDetails } from '@hooks/useQuoteDetails';
 
 interface Step3Form {
   prioridadeEntrega: number;
@@ -37,7 +36,7 @@ interface Step3Form {
 
 export const Step3: React.FC<
   CompositeScreenProps<
-    NativeStackScreenProps<QuoteDetailsRoutes, 'Step3'>,
+    NativeStackScreenProps<CreateQuoteRoutes, 'Step3'>,
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
@@ -51,8 +50,6 @@ export const Step3: React.FC<
     2: 'média',
     3: 'alta',
   };
-
-  const { product, quote } = useQuoteDetails();
 
   const [deliveryPriority, setDeliveryPriority] = useState<string>();
   const [pricePriority, setPricePriority] = useState<string>();

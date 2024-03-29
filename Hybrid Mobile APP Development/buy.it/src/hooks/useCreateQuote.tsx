@@ -1,14 +1,13 @@
 import React, { Dispatch, createContext, useContext, useState } from 'react';
 
 // Service import
-import { api } from '@services/api';
 import GlobalRequestService from '@services/global-request';
 
 // Type import
 import { QuoteQuery, ProductQuery, Department, Tag } from '@dtos/index';
 import Toast from 'react-native-toast-message';
 
-interface QuoteDetailsContextData {
+interface CreateQuoteContextData {
   quote: QuoteQuery;
   product: ProductQuery;
   setQuote: Dispatch<React.SetStateAction<QuoteQuery>>;
@@ -20,15 +19,15 @@ interface QuoteDetailsContextData {
   tags: Tag[];
 }
 
-interface QuoteDetailsProviderProps {
+interface CreateQuoteProviderProps {
   children: React.ReactNode;
 }
 
-const QuoteDetailsContext = createContext<QuoteDetailsContextData>(
-  {} as QuoteDetailsContextData,
+const CreateQuoteContext = createContext<CreateQuoteContextData>(
+  {} as CreateQuoteContextData,
 );
 
-const QuoteDetailsProvider: React.FC<QuoteDetailsProviderProps> = ({
+const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
   children,
 }) => {
   const [quote, setQuote] = useState<QuoteQuery>({} as QuoteQuery);
@@ -59,7 +58,7 @@ const QuoteDetailsProvider: React.FC<QuoteDetailsProviderProps> = ({
   }
 
   return (
-    <QuoteDetailsContext.Provider
+    <CreateQuoteContext.Provider
       value={{
         quote,
         setQuote,
@@ -71,19 +70,17 @@ const QuoteDetailsProvider: React.FC<QuoteDetailsProviderProps> = ({
       }}
     >
       {children}
-    </QuoteDetailsContext.Provider>
+    </CreateQuoteContext.Provider>
   );
 };
 
-function useQuoteDetails(): QuoteDetailsContextData {
-  const context = useContext(QuoteDetailsContext);
+function useCreateQuote(): CreateQuoteContextData {
+  const context = useContext(CreateQuoteContext);
 
   if (!context)
-    throw new Error(
-      'useQuoteDetails must be used within a QuoteDetailsProvider',
-    );
+    throw new Error('useCreateQuote must be used within a CreateQuoteProvider');
 
   return context;
 }
 
-export { QuoteDetailsProvider, useQuoteDetails };
+export { CreateQuoteProvider, useCreateQuote };
