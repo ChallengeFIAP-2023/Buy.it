@@ -14,9 +14,9 @@ interface CreateQuoteContextData {
   setProduct: Dispatch<React.SetStateAction<ProductQuery>>;
   // handleCreateQuote: (finalQueryData: QuoteQuery) => Promise<void>;
   loading: boolean;
-
   departments: Department[];
   tags: Tag[];
+  fetchDepartmentsAndTags(): Promise<void>
 }
 
 interface CreateQuoteProviderProps {
@@ -47,9 +47,9 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
 
       setDepartments(departments);
       setTags(tags);
-    } catch (error) {
+    } catch (error) {      
       return Toast.show({
-        type: 'success',
+        type: 'error',
         text1: String(error),
       });
     } finally {
@@ -67,6 +67,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
         departments,
         tags,
         loading,
+        fetchDepartmentsAndTags
       }}
     >
       {children}

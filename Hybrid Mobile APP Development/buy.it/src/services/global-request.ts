@@ -9,6 +9,7 @@ class GlobalRequestService {
       const { data } = await api.get('/departamentos');
       return data.content;
     } catch (error) {
+      console.debug(error);
       throw new Error('Não foi possível buscar os departamentos');
     }
   }
@@ -18,6 +19,7 @@ class GlobalRequestService {
       const { data } = await api.get('/tags');
       return data.content;
     } catch (error) {
+      console.debug(error);
       throw new Error('Não foi possível buscar as tags');
     }
   }

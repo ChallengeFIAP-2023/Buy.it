@@ -1,7 +1,8 @@
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 import { ArrowRight } from 'phosphor-react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
+import Toast from 'react-native-toast-message';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -26,11 +27,6 @@ import { useCreateQuote } from '@hooks/useCreateQuote';
 // Style import
 import { ScrollableContent, Fieldset } from '@global/styles/index';
 
-interface Step1Form {
-  idDepartamento: number;
-  idsTags: number;
-}
-
 export const Step1: React.FC<
   CompositeScreenProps<
     NativeStackScreenProps<CreateQuoteRoutes, 'Step1'>,
@@ -38,14 +34,38 @@ export const Step1: React.FC<
   >
 > = ({ navigation }) => {
   // State
-  const [selectedTags, setSelectedTags] = useState([]);
-  const [selectedDepartment, setSelectedDepartment] = useState<number>();
+  const [selectedTags, setSelectedTags] = useState<number[]>([]);
+  const [selectedDepartment, setSelectedDepartment] = useState<number>(0);
 
-  const { setProduct, tags, departments, loading } = useCreateQuote();
+  const { 
+    setProduct, 
+    tags, 
+    departments, 
+    loading,
+    fetchDepartmentsAndTags 
+  } = useCreateQuote();
+
+  useLayoutEffect(() => {
+    fetchDepartmentsAndTags();
+  }, []);
 
   const onSubmit = () => {
-    const idDepartamento = selectedDepartment as number;
-    const idsTags = selectedTags as number[];
+    const idDepartamento = selectedDepartment;
+    const idsTags = selectedTags;
+
+    const findError = () => {
+      if (!idDepartamento || idDepartamento == 0) return 'Selecione o departamento!' 
+      if (!idsTags || idsTags.length <= 0) return 'Selecione pelo menos uma tag!'
+      return null;
+    };
+
+    const error = findError();
+
+    if (error) 
+      return Toast.show({
+        type: 'error',
+        text1: error,
+      });
 
     setProduct(prevProd => ({ ...prevProd, idDepartamento, idsTags }));
 
@@ -101,7 +121,6 @@ export const Step1: React.FC<
               selectedValue={selectedTags}
               onValueChange={(value: []) => setSelectedTags(value)}
               listControls={{ emptyListMessage: 'Nenhuma tag encontrada' }}
-              searchControls={{ textInputProps: { placeholder: 'teste' } }}
             />
           </Fieldset>
 

@@ -31,7 +31,6 @@ export default function App() {
     <NavigationContainer>
       <ThemeProvider theme={theme}>
         {!fontsLoaded ? <Loading /> : <Routes />}
-
         <Toast />
       </ThemeProvider>
     </NavigationContainer>

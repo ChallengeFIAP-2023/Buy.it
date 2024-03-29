@@ -36,7 +36,7 @@ export default function Routes() {
   const logged = true;
 
   const initialMainRoute = useMemo<keyof MainNavigationRoutes>(() => {
-    if (logged) return 'QuoteProposal';
+    if (logged) return 'CreateQuote';
 
     return 'SignIn';
   }, [logged]);
