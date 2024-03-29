@@ -12,3 +12,15 @@ export interface Product {
     departamento: Department,
     tags: Tag[]
 }
+
+export interface ProductQuery {
+    id: number;
+    nome: string;
+    marca: string | null;
+    cor: string | null;
+    tamanho: string | null;
+    material: string | null;
+    observacao: string | null,
+    idDepartamento: number,
+    idsTags: number[]
+}

@@ -9,11 +9,13 @@ import React, {
 import { api } from '@services/api';
 
 // Type import
-import { QuoteQuery } from '@dtos/quote';
+import { Quote, QuoteQuery, ProductQuery } from '@dtos/index';
 
 interface QuoteDetailsContextData {
   quote: QuoteQuery;
+  product: ProductQuery;
   setQuote: Dispatch<React.SetStateAction<QuoteQuery>>;
+  setProduct: Dispatch<React.SetStateAction<ProductQuery>>;
   // handleCreateQuote: (finalQueryData: QuoteQuery) => Promise<void>;
   loading: boolean;
 }
@@ -31,12 +33,15 @@ const QuoteDetailsProvider: React.FC<QuoteDetailsProviderProps> = ({
 }) => {
 
   const [quote, setQuote] = useState<QuoteQuery>({} as QuoteQuery);
+  const [product, setProduct] = useState<ProductQuery>({} as ProductQuery);
   const [loading, setLoading] = useState(false);
 
   return (
     <QuoteDetailsContext.Provider value={{
       quote,
       setQuote,
+      product,
+      setProduct,
       loading
     }}>
       {children}
