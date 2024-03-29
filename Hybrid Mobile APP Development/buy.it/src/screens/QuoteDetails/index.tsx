@@ -7,7 +7,6 @@ import {
 
 // Hook import
 import { QuoteDetailsProvider } from '../../hooks/useQuoteDetails';
-import { TagsProvider } from '../../hooks/useTags';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -18,7 +17,6 @@ import { Step2 } from '@screens/QuoteDetails/Step2';
 import { Step3 } from '@screens/QuoteDetails/Step3';
 import { Step4 } from '@screens/QuoteDetails/Step4';
 import { Step5 } from '@screens/QuoteDetails/Step5';
-import { DepartmentsProvider } from '@hooks/useDepartments';
 
 // Interfaces
 export type QuoteDetailsRoutes = {
@@ -41,18 +39,14 @@ export const QuoteDetails: React.FC<
   };
 
   return (
-    <TagsProvider>
-      <DepartmentsProvider>
-        <QuoteDetailsProvider>
-          <Stack.Navigator initialRouteName="Step1" screenOptions={screenOptions}>
-            <Stack.Screen name="Step1" component={Step1} />
-            <Stack.Screen name="Step2" component={Step2} />
-            <Stack.Screen name="Step3" component={Step3} />
-            <Stack.Screen name="Step4" component={Step4} />
-            <Stack.Screen name="Step5" component={Step5} />
-          </Stack.Navigator>
-        </QuoteDetailsProvider>
-      </DepartmentsProvider>
-    </TagsProvider>
+    <QuoteDetailsProvider>
+      <Stack.Navigator initialRouteName="Step1" screenOptions={screenOptions}>
+        <Stack.Screen name="Step1" component={Step1} />
+        <Stack.Screen name="Step2" component={Step2} />
+        <Stack.Screen name="Step3" component={Step3} />
+        <Stack.Screen name="Step4" component={Step4} />
+        <Stack.Screen name="Step5" component={Step5} />
+      </Stack.Navigator>
+    </QuoteDetailsProvider>
   );
 };

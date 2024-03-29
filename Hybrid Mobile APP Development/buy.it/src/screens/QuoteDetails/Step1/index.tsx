@@ -2,7 +2,6 @@ import { ArrowRight } from 'phosphor-react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { useLayoutEffect, useState } from 'react';
-import { SubmitHandler } from 'react-hook-form';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -21,13 +20,11 @@ import {
   WrapperPage,
 } from '@components/index';
 
+//Hooks import
+import { useQuoteDetails } from '@hooks/useQuoteDetails';
+
 // Style import
 import { ScrollableContent, Fieldset } from '@global/styles/index';
-
-//Hooks import
-import { useTags } from '@hooks/useTags';
-import { useDepartments } from '@hooks/useDepartments';
-import { useQuoteDetails } from '@hooks/useQuoteDetails';
 
 interface Step1Form {
   idDepartamento: number;
@@ -40,37 +37,28 @@ export const Step1: React.FC<
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
-
   // State
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState<number>();
 
-  // Hook
-  const { tags, handleGetTags, tagsLoading } = useTags();
-  const { departments, handleGetDepartments, departmentsLoading } = useDepartments();
-  const { setProduct } = useQuoteDetails();
+  const { setProduct, tags, departments, loading } = useQuoteDetails();
 
   const onSubmit = () => {
     const idDepartamento = selectedDepartment as number;
     const idsTags = selectedTags as number[];
 
     setProduct(prevProd => ({ ...prevProd, idDepartamento, idsTags }));
-    
+
     return navigation.navigate('Step2');
   };
 
-  useLayoutEffect(() => {
-    handleGetTags();
-    handleGetDepartments();
-  }, []);
-
-  const hasDepartments = !departmentsLoading && departments.length >= 1;
-  const departmentsOptions: TFlatList = departments.map(dep => ({
-    label: dep.nome,
-    value: dep.id,
+  const hasDepartments = !loading && departments.length >= 1;
+  const departmentsOptions: TFlatList = departments.map(item => ({
+    label: item.nome,
+    value: item.id,
   }));
 
-  const hasTag = !tagsLoading && tags.length >= 1;
+  const hasTag = !loading && tags.length >= 1;
   const tagsOptions: TFlatList = tags.map(tag => ({
     label: tag.nome,
     value: tag.id,
@@ -89,40 +77,35 @@ export const Step1: React.FC<
         />
 
         <DecreasingContainer scrollable>
-          
-          {!departmentsLoading && departments && (
-            <Fieldset>
-              <CustomDropdown
-                label="Departamento"
-                isSearchable={hasDepartments}
-                placeholder="Selecione o departamento relacionado"
-                options={departmentsOptions}
-                selectedValue={selectedDepartment}
-                onValueChange={(value: number) => setSelectedDepartment(value)}
-                listControls={{ emptyListMessage: 'Nenhum departamento encontrado' }}
-              />
-            </Fieldset>
-          )}
+          <Fieldset>
+            <CustomDropdown
+              label="Departamento"
+              isSearchable={hasDepartments}
+              placeholder="Selecione o departamento relacionado"
+              options={departmentsOptions}
+              selectedValue={selectedDepartment}
+              onValueChange={(value: number) => setSelectedDepartment(value)}
+              listControls={{
+                emptyListMessage: 'Nenhum departamento encontrado',
+              }}
+            />
+          </Fieldset>
 
-          {!tagsLoading && tags && (
-            <>
-              <Fieldset>
-                <CustomDropdown
-                  label="Tags relacionadas"
-                  isSearchable={hasTag}
-                  isMultiple
-                  placeholder="Selecione as tags relacionadas"
-                  options={tagsOptions}
-                  selectedValue={selectedTags}
-                  onValueChange={(value: []) => setSelectedTags(value)}
-                  listControls={{ emptyListMessage: 'Nenhuma tag encontrada' }} />
-              </Fieldset>
-              
-              <Button
-                label="Nova tag"
-                size="SM" />
-            </>
-          )}
+          <Fieldset>
+            <CustomDropdown
+              label="Tags relacionadas"
+              isSearchable={hasTag}
+              isMultiple
+              placeholder="Selecione as tags relacionadas"
+              options={tagsOptions}
+              selectedValue={selectedTags}
+              onValueChange={(value: []) => setSelectedTags(value)}
+              listControls={{ emptyListMessage: 'Nenhuma tag encontrada' }}
+              searchControls={{ textInputProps: { placeholder: 'teste' } }}
+            />
+          </Fieldset>
+
+          <Button label="Nova tag" size="SM" />
         </DecreasingContainer>
       </ScrollableContent>
 

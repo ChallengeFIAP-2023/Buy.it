@@ -73,7 +73,7 @@ export const Step2: React.FC<
   const onSubmit: SubmitHandler<Step2Form> = data => {
     const nomeProduto = data.nomeProduto;
     setProduct(prevProd => ({ ...prevProd, nomeProduto }));
-    
+
     const prazo = deadline as number;
     const quantidade = data.quantidade as number;
     setQuote(prevQuote => ({ ...prevQuote, prazo, quantidade }));
@@ -82,7 +82,8 @@ export const Step2: React.FC<
   };
 
   function handleSubtract(value: number) {
-    const badValueConditions = isNaN(value) || value <= 0 || (value - PRODUCT_QUANTITY < 5);
+    const badValueConditions =
+      isNaN(value) || value <= 0 || value - PRODUCT_QUANTITY < 5;
     if (badValueConditions) return setValue('quantidade', 5);
 
     return setValue('quantidade', value - PRODUCT_QUANTITY);
@@ -94,7 +95,7 @@ export const Step2: React.FC<
     return setValue('quantidade', Number(value) + PRODUCT_QUANTITY);
   }
 
-  const [deadline, setDeadline] = useState(deadlineOptions[0].value)
+  const [deadline, setDeadline] = useState(deadlineOptions[0].value);
 
   return (
     <WrapperPage>
@@ -164,7 +165,9 @@ export const Step2: React.FC<
               options={deadlineOptions}
               selectedValue={deadline}
               onValueChange={(value: number) => setDeadline(value)}
-              listControls={{ emptyListMessage: 'Nenhum tipo de prazo encontrado' }}
+              listControls={{
+                emptyListMessage: 'Nenhum tipo de prazo encontrado',
+              }}
             />
           </Fieldset>
         </DecreasingContainer>

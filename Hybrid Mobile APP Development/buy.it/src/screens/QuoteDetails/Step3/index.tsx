@@ -1,9 +1,8 @@
 import { ArrowRight } from 'phosphor-react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import Slider from '@react-native-community/slider';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -25,12 +24,9 @@ import {
 } from '@components/index';
 
 // Style import
-import {
-  LightText,
-  LightBoldText,
-} from './styles';
-import { ScrollableContent, } from '@global/styles/index';
-import { useLayoutEffect, useState } from 'react';
+import { LightText, LightBoldText } from './styles';
+import { ScrollableContent } from '@global/styles/index';
+import { useState } from 'react';
 import { useQuoteDetails } from '@hooks/useQuoteDetails';
 
 interface Step3Form {
@@ -45,51 +41,49 @@ export const Step3: React.FC<
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
-  const {
-    control,
-    handleSubmit,
-    formState: { errors },
-    setValue,
-  } = useForm<Step3Form>({
+  const { setValue } = useForm<Step3Form>({
     resolver: yupResolver(Step3FormSchema),
     defaultValues: {},
   });
 
   const labelValues: { [key: number]: string } = {
-    1: "baixa",
-    2: "média",
-    3: "alta"
-  }
+    1: 'baixa',
+    2: 'média',
+    3: 'alta',
+  };
 
   const { product, quote } = useQuoteDetails();
 
-  const [deliveryPriority, setDeliveryPrioriry] = useState<string>();
-  const [pricePriority, setPricePrioriry] = useState<string>();
-  const [qualityPriority, setQualityPrioriry] = useState<string>();
+  const [deliveryPriority, setDeliveryPriority] = useState<string>();
+  const [pricePriority, setPricePriority] = useState<string>();
+  const [qualityPriority, setQualityPriority] = useState<string>();
 
-  type keyTypes = "prioridadeEntrega" | "prioridadeQualidade" | "prioridadePreco";
+  type keyTypes =
+    | 'prioridadeEntrega'
+    | 'prioridadeQualidade'
+    | 'prioridadePreco';
 
   function handleSetValues(
-    value: number, 
-    key: keyTypes, 
-    setLabel: React.Dispatch<React.SetStateAction<string | undefined>>
+    value: number,
+    key: keyTypes,
+    setLabel: React.Dispatch<React.SetStateAction<string | undefined>>,
   ) {
-    const integerValue =  Math.round(value);
-    const label = `${integerValue}: importância ${labelValues[integerValue]}`
+    const integerValue = Math.round(value);
+    const label = `${integerValue}: importância ${labelValues[integerValue]}`;
     setLabel(label);
     return setValue(key, integerValue);
   }
 
   function handleDeliveryPriority(value: number) {
-    handleSetValues(value, "prioridadeEntrega", setDeliveryPrioriry)
+    handleSetValues(value, 'prioridadeEntrega', setDeliveryPriority);
   }
 
   function handlePricePriority(value: number) {
-    handleSetValues(value, "prioridadePreco", setPricePrioriry)
+    handleSetValues(value, 'prioridadePreco', setPricePriority);
   }
 
   function handleQualityPriority(value: number) {
-    handleSetValues(value, "prioridadeQualidade", setQualityPrioriry)
+    handleSetValues(value, 'prioridadeQualidade', setQualityPriority);
   }
 
   return (
@@ -106,33 +100,37 @@ export const Step3: React.FC<
 
         <DecreasingContainer scrollable>
           <LightText>
-            A nota de cada item está relacionada à sua importancia, onde 1 significa <LightBoldText> pouco importante</LightBoldText> e 3 significa <LightBoldText>muito importante</LightBoldText>
+            A nota de cada item está relacionada à sua importancia, onde 1
+            significa <LightBoldText> pouco importante</LightBoldText> e 3
+            significa <LightBoldText>muito importante</LightBoldText>
           </LightText>
 
           <CustomSlider
-            label='Entrega rápida'
-            valueString={deliveryPriority}
+            label="Entrega rápida"
+            value={Number(deliveryPriority) ?? 0}
             minimumValue={1}
             maximumValue={3}
+            step={1}
             onValueChange={handleDeliveryPriority}
           />
 
           <CustomSlider
-            label='Qualidade'
-            valueString={qualityPriority}
+            label="Qualidade"
+            value={Number(qualityPriority) ?? 0}
             minimumValue={1}
             maximumValue={3}
+            step={1}
             onValueChange={handleQualityPriority}
           />
 
           <CustomSlider
-            label='Preço baixo'
-            valueString={pricePriority}
+            label="Preço baixo"
+            value={Number(pricePriority) ?? 0}
             minimumValue={1}
             maximumValue={3}
+            step={1}
             onValueChange={handlePricePriority}
           />
-
         </DecreasingContainer>
       </ScrollableContent>
 

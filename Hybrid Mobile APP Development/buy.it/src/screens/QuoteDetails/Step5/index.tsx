@@ -39,7 +39,7 @@ interface Step5Form {
 
 export const Step5: React.FC<
   CompositeScreenProps<
-    NativeStackScreenProps<QuoteDetailsRoutes, 'Step2'>,
+    NativeStackScreenProps<QuoteDetailsRoutes, 'Step5'>,
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
@@ -54,7 +54,7 @@ export const Step5: React.FC<
   });
 
   // Hook
-  const { setProduct } = useQuoteDetails(); 
+  const { setProduct } = useQuoteDetails();
 
   const onSubmit: SubmitHandler<Step5Form> = data => {
     setProduct(prevProd => ({ ...prevProd, ...data }));
@@ -68,7 +68,7 @@ export const Step5: React.FC<
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
             title: 'Se preferir, especifique detalhes do produto',
-            subtitle: 'Passo 5 de 5    (opcional)',
+            subtitle: 'Passo 5 de 5 (opcional)',
           }}
           key="default-component-quote-details"
         />
@@ -150,12 +150,10 @@ export const Step5: React.FC<
                   placeholder="Informações complementares"
                   error={errors.observacoes?.message}
                   numberOfLines={3}
-
                 />
               )}
             />
           </Fieldset>
-
         </DecreasingContainer>
       </ScrollableContent>
 

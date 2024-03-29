@@ -38,6 +38,7 @@ export function CustomDropdown({ label, ...rest }: DropdownProps) {
           textInputContainerStyle: textStyle,
           textInputProps: {
             placeholder: 'Pesquise uma opção',
+            ...rest.searchControls?.textInputProps,
             placeholderTextColor: theme.COLORS.GRAY_200,
           },
         }}

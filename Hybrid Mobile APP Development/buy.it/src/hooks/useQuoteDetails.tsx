@@ -1,15 +1,12 @@
-import React, { 
-  Dispatch, 
-  createContext, 
-  useContext, 
-  useState 
-} from 'react';
+import React, { Dispatch, createContext, useContext, useState } from 'react';
 
 // Service import
 import { api } from '@services/api';
+import GlobalRequestService from '@services/global-request';
 
 // Type import
-import { Quote, QuoteQuery, ProductQuery } from '@dtos/index';
+import { QuoteQuery, ProductQuery, Department, Tag } from '@dtos/index';
+import Toast from 'react-native-toast-message';
 
 interface QuoteDetailsContextData {
   quote: QuoteQuery;
@@ -18,6 +15,9 @@ interface QuoteDetailsContextData {
   setProduct: Dispatch<React.SetStateAction<ProductQuery>>;
   // handleCreateQuote: (finalQueryData: QuoteQuery) => Promise<void>;
   loading: boolean;
+
+  departments: Department[];
+  tags: Tag[];
 }
 
 interface QuoteDetailsProviderProps {
@@ -31,19 +31,45 @@ const QuoteDetailsContext = createContext<QuoteDetailsContextData>(
 const QuoteDetailsProvider: React.FC<QuoteDetailsProviderProps> = ({
   children,
 }) => {
-
   const [quote, setQuote] = useState<QuoteQuery>({} as QuoteQuery);
   const [product, setProduct] = useState<ProductQuery>({} as ProductQuery);
+  const [departments, setDepartments] = useState<Department[]>([]);
+  const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(false);
 
+  async function fetchDepartmentsAndTags() {
+    try {
+      setLoading(true);
+
+      const [departments, tags] = await Promise.all([
+        GlobalRequestService.getDepartments(),
+        GlobalRequestService.getTags(),
+      ]);
+
+      setDepartments(departments);
+      setTags(tags);
+    } catch (error) {
+      return Toast.show({
+        type: 'success',
+        text1: String(error),
+      });
+    } finally {
+      setLoading(false);
+    }
+  }
+
   return (
-    <QuoteDetailsContext.Provider value={{
-      quote,
-      setQuote,
-      product,
-      setProduct,
-      loading
-    }}>
+    <QuoteDetailsContext.Provider
+      value={{
+        quote,
+        setQuote,
+        product,
+        setProduct,
+        departments,
+        tags,
+        loading,
+      }}
+    >
       {children}
     </QuoteDetailsContext.Provider>
   );
