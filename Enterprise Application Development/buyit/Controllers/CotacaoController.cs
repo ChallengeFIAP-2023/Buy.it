@@ -38,11 +38,12 @@ namespace Buyit.Controllers
         }
 
         [HttpPost]
-        public ActionResult<CotacaoModel> Create(CotacaoModel entity)
+        public ActionResult<CotacaoModel> Create([FromBody] CotacaoModel entity)
         {
             try
             {
                 _repository.Create(entity);
+                _context.SaveChanges();
                 return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
             }
             catch (Exception ex)
@@ -52,17 +53,30 @@ namespace Buyit.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, CotacaoModel entity)
+        public IActionResult Update(long id, [FromBody] CotacaoModel updatedEntity)
         {
-            if (id != entity.Id)
-            {
-                return BadRequest("O Id fornecido na URL não corresponde.");
-            }
-
             try
             {
-                _repository.Update(entity);
-                return NoContent();
+                var existingEntity = _context.Cotacao.FirstOrDefault(x => x.Id == id);
+                if (existingEntity == null)
+                {
+                    return NotFound();
+                }
+
+                existingEntity.DataAbertura = updatedEntity.DataAbertura;
+                existingEntity.Comprador = updatedEntity.Comprador;
+                existingEntity.Produto = updatedEntity.Produto;
+                existingEntity.QuantidadeProduto = updatedEntity.QuantidadeProduto;
+                existingEntity.ValorProduto = updatedEntity.ValorProduto;
+                existingEntity.Status = updatedEntity.Status;
+                existingEntity.PrioridadeEntrega = updatedEntity.PrioridadeEntrega;
+                existingEntity.PrioridadeQualidade = updatedEntity.PrioridadeQualidade;
+                existingEntity.PrioridadePreco = updatedEntity.PrioridadePreco;
+                existingEntity.Prazo = updatedEntity.Prazo;
+                existingEntity.DataFechamento = updatedEntity.DataFechamento;
+
+                _context.SaveChanges();
+                return Ok(existingEntity);
             }
             catch (Exception ex)
             {

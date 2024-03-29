@@ -38,11 +38,12 @@ namespace Buyit.Controllers
         }
 
         [HttpPost]
-        public ActionResult<AvaliacaoModel> Create(AvaliacaoModel entity)
+        public ActionResult<AvaliacaoModel> Create([FromBody] AvaliacaoModel entity)
         {
             try
             {
                 _repository.Create(entity);
+                _context.SaveChanges();
                 return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
             }
             catch (Exception ex)
@@ -52,17 +53,25 @@ namespace Buyit.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, AvaliacaoModel entity)
+        public IActionResult Update(long id, [FromBody] AvaliacaoModel updatedEntity)
         {
-            if (id != entity.Id)
-            {
-                return BadRequest("O Id fornecido na URL não corresponde.");
-            }
-
             try
             {
-                _repository.Update(entity);
-                return NoContent();
+                var existingEntity = _context.Avaliacao.FirstOrDefault(x => x.Id == id);
+                if (existingEntity == null)
+                {
+                    return NotFound();
+                }
+
+                existingEntity.Cotacao = updatedEntity.Cotacao;
+                existingEntity.Data = updatedEntity.Data;
+                existingEntity.NotaEntrega = updatedEntity.NotaEntrega;
+                existingEntity.NotaQualidade = updatedEntity.NotaQualidade;
+                existingEntity.NotaPreco = updatedEntity.NotaPreco;
+                existingEntity.Descricao = updatedEntity.Descricao;
+
+                _context.SaveChanges();
+                return Ok(existingEntity);
             }
             catch (Exception ex)
             {

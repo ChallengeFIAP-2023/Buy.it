@@ -38,11 +38,12 @@ namespace Buyit.Controllers
         }
 
         [HttpPost]
-        public ActionResult<ContatoModel> Create(ContatoModel entity)
+        public ActionResult<ContatoModel> Create([FromBody] ContatoModel entity)
         {
             try
             {
                 _repository.Create(entity);
+                _context.SaveChanges();
                 return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
             }
             catch (Exception ex)
@@ -52,17 +53,22 @@ namespace Buyit.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, ContatoModel entity)
+        public IActionResult Update(long id, [FromBody] ContatoModel updatedEntity)
         {
-            if (id != entity.Id)
-            {
-                return BadRequest("O Id fornecido na URL não corresponde.");
-            }
-
             try
             {
-                _repository.Update(entity);
-                return NoContent();
+                var existingEntity = _context.Contato.FirstOrDefault(x => x.Id == id);
+                if (existingEntity == null)
+                {
+                    return NotFound();
+                }
+
+                existingEntity.Tipo = updatedEntity.Tipo;
+                existingEntity.Valor = updatedEntity.Valor;
+                existingEntity.Usuario = updatedEntity.Usuario;
+
+                _context.SaveChanges();
+                return Ok(existingEntity);
             }
             catch (Exception ex)
             {

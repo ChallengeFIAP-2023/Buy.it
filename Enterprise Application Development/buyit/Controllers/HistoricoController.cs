@@ -38,11 +38,12 @@ namespace Buyit.Controllers
         }
 
         [HttpPost]
-        public ActionResult<HistoricoModel> Create(HistoricoModel entity)
+        public ActionResult<HistoricoModel> Create([FromBody] HistoricoModel entity)
         {
             try
             {
                 _repository.Create(entity);
+                _context.SaveChanges();
                 return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
             }
             catch (Exception ex)
@@ -52,17 +53,29 @@ namespace Buyit.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, HistoricoModel entity)
+        public IActionResult Update(long id, [FromBody] HistoricoModel updatedEntity)
         {
-            if (id != entity.Id)
-            {
-                return BadRequest("O Id fornecido na URL não corresponde.");
-            }
-
             try
             {
-                _repository.Update(entity);
-                return NoContent();
+                var existingEntity = _context.Historico.FirstOrDefault(x => x.Id == id);
+                if (existingEntity == null)
+                {
+                    return NotFound();
+                }
+
+                existingEntity.Cotacao = updatedEntity.Cotacao;
+                existingEntity.Fornecedor = updatedEntity.Fornecedor;
+                existingEntity.Status = updatedEntity.Status;
+                existingEntity.RecusadoPorProduto = updatedEntity.RecusadoPorProduto;
+                existingEntity.RecusadoPorQuantidade = updatedEntity.RecusadoPorQuantidade;
+                existingEntity.RecusadoPorPreco = updatedEntity.RecusadoPorPreco;
+                existingEntity.RecusadoPorPrazo = updatedEntity.RecusadoPorPrazo;
+                existingEntity.Descricao = updatedEntity.Descricao;
+                existingEntity.Data = updatedEntity.Data;
+                existingEntity.ValorOfertado = updatedEntity.ValorOfertado;
+
+                _context.SaveChanges();
+                return Ok(existingEntity);
             }
             catch (Exception ex)
             {
