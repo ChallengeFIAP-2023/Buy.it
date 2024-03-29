@@ -22,14 +22,14 @@ namespace Buyit.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<DepartamentoModel>>> GetAll()
         {
-            var list = await _context.Departamento.Include(x => x.Tags).ToListAsync();
+            var list = await _context.Departamento.ToListAsync();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
         public ActionResult<DepartamentoModel> GetById(long id)
         {
-            var entity = _context.Departamento.Include(x => x.Tags).FirstOrDefault();
+            var entity = _context.Departamento.FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 return NotFound();

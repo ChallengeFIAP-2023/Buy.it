@@ -1,6 +1,8 @@
-﻿using Buyit.Models;
+﻿using Buyit.Context;
+using Buyit.Models;
 using Buyit.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Buyit.Controllers
 {
@@ -9,23 +11,25 @@ namespace Buyit.Controllers
     public class TagController : ControllerBase
     {
         private readonly Repository<TagModel> _repository;
+        private readonly BuyitContext _context;
 
-        public TagController(Repository<TagModel> repository)
+        public TagController(Repository<TagModel> repository, BuyitContext context)
         {
             _repository = repository;
+            _context = context;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<TagModel>> GetAll()
+        public async Task<ActionResult<IEnumerable<TagModel>>> GetAll()
         {
-            var list = _repository.GetAll();
+            var list = await _context.Tag.ToListAsync();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
         public ActionResult<TagModel> GetById(long id)
         {
-            var entity = _repository.GetById(id);
+            var entity = _context.Tag.FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 return NotFound();

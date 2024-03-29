@@ -1,6 +1,8 @@
-﻿using Buyit.Models;
+﻿using Buyit.Context;
+using Buyit.Models;
 using Buyit.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Buyit.Controllers
 {
@@ -9,23 +11,25 @@ namespace Buyit.Controllers
     public class StatusController : ControllerBase
     {
         private readonly Repository<StatusModel> _repository;
+        private readonly BuyitContext _context;
 
-        public StatusController(Repository<StatusModel> repository)
+        public StatusController(Repository<StatusModel> repository, BuyitContext context)
         {
             _repository = repository;
+            _context = context;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<StatusModel>> GetAll()
+        public async Task<ActionResult<IEnumerable<StatusModel>>> GetAll()
         {
-            var list = _repository.GetAll();
+            var list = await _context.Status.ToListAsync();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
         public ActionResult<StatusModel> GetById(long id)
         {
-            var entity = _repository.GetById(id);
+            var entity = _context.Status.FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 return NotFound();
@@ -34,11 +38,12 @@ namespace Buyit.Controllers
         }
 
         [HttpPost]
-        public ActionResult<StatusModel> Create(StatusModel entity)
+        public ActionResult<StatusModel> Create([FromBody] StatusModel entity)
         {
             try
             {
                 _repository.Create(entity);
+                _context.SaveChanges(); 
                 return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
             }
             catch (Exception ex)
@@ -48,17 +53,20 @@ namespace Buyit.Controllers
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, StatusModel entity)
+        public IActionResult Update(long id, [FromBody] StatusModel updatedEntity)
         {
-            if (id != entity.Id)
-            {
-                return BadRequest("O Id fornecido na URL não corresponde.");
-            }
-
             try
             {
-                _repository.Update(entity);
-                return NoContent();
+                var existingEntity = _context.Status.FirstOrDefault(x => x.Id == id);
+                if (existingEntity == null)
+                {
+                    return NotFound();
+                }
+
+                existingEntity.Nome = updatedEntity.Nome;
+
+                _context.SaveChanges();
+                return Ok(existingEntity);
             }
             catch (Exception ex)
             {

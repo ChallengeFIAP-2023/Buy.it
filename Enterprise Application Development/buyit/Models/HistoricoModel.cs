@@ -45,7 +45,7 @@ namespace Buyit.Models
         [Column("DATA_HISTORICO", TypeName = "date")]
         public DateTime Data { get; set; }
 
-        [Column("VALOR_OFERTADO_HISTORICO")]
+        [Column("VALOR_OFERTADO_HISTORICO", TypeName = "decimal(18,2)")]
         public decimal? ValorOfertado { get; set; }
     }
 }

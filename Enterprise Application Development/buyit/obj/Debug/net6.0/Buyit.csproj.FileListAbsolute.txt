@@ -68,3 +68,4 @@ C:\Users\kauec\OneDrive\Documentos\GitHub\Buy.it\Enterprise Application Developm
 C:\Users\kauec\OneDrive\Documentos\GitHub\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\Buyit.pdb
 C:\Users\kauec\OneDrive\Documentos\GitHub\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\Buyit.genruntimeconfig.cache
 C:\Users\kauec\OneDrive\Documentos\GitHub\Buy.it\Enterprise Application Development\buyit\obj\Debug\net6.0\ref\Buyit.dll
+C:\Users\kauec\OneDrive\Documentos\GitHub\Buy.it\Enterprise Application Development\buyit\bin\Debug\net6.0\libman.json
