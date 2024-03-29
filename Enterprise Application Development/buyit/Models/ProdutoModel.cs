@@ -30,9 +30,7 @@ namespace Buyit.Models
         [Column("OBSERVACAO_PRODUTO")]
         public string? Observacao { get; set; }
 
-        [ForeignKey("DEPARTAMENTO")]
-        [Column("ID_DEPARTAMENTO")]
-        public long? DepartamentoId { get; set; }
+        [ForeignKey("ID_DEPARTAMENTO")]
         public DepartamentoModel Departamento { get; set; }
 
         public virtual ICollection<TagModel> Tags { get; set; } = new HashSet<TagModel>();

@@ -12,17 +12,17 @@ namespace Buyit.Configurations
 
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).HasColumnName("ID_HISTORICO");
-            builder.Property(x => x.Data).HasColumnName("DATA_HISTORICO");
+            builder.Property(x => x.Data).HasColumnName("DATA_HISTORICO").IsRequired();
             builder.Property(x => x.ValorOfertado).HasColumnName("VALOR_OFERTADO_HISTORICO");
-            builder.Property(x => x.RecusadoPorProduto).HasColumnName("RECUSADO_POR_PRODUTO");
-            builder.Property(x => x.RecusadoPorQuantidade).HasColumnName("RECUSADO_POR_QUANTIDADE");
-            builder.Property(x => x.RecusadoPorPreco).HasColumnName("RECUSADO_POR_PRECO");
-            builder.Property(x => x.RecusadoPorPrazo).HasColumnName("RECUSADO_POR_PRAZO");
+            builder.Property(x => x.RecusadoPorProduto).HasColumnName("RECUSADO_POR_PRODUTO").IsRequired();
+            builder.Property(x => x.RecusadoPorQuantidade).HasColumnName("RECUSADO_POR_QUANTIDADE").IsRequired();
+            builder.Property(x => x.RecusadoPorPreco).HasColumnName("RECUSADO_POR_PRECO").IsRequired();
+            builder.Property(x => x.RecusadoPorPrazo).HasColumnName("RECUSADO_POR_PRAZO").IsRequired();
             builder.Property(x => x.Descricao).HasColumnName("DESCRICAO_HISTORICO").HasMaxLength(255);
 
             builder.HasOne(x => x.Cotacao)
                 .WithMany()
-                .HasForeignKey(x => x.CotacaoId)
+                .HasForeignKey(x => x.Cotacao)
                 .HasPrincipalKey(x => x.Id)
                 .IsRequired();
 
@@ -34,7 +34,7 @@ namespace Buyit.Configurations
 
             builder.HasOne(x => x.Status)
                 .WithMany()
-                .HasForeignKey(x => x.StatusId)
+                .HasForeignKey(x => x.Status)
                 .HasPrincipalKey(x => x.Id)
                 .IsRequired();
         }

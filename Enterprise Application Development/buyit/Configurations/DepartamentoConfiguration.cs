@@ -12,7 +12,7 @@ namespace Buyit.Configurations
 
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).HasColumnName("ID_DEPARTAMENTO");
-            builder.Property(x => x.Nome).HasColumnName("NOME_DEPARTAMENTO").HasMaxLength(255);
+            builder.Property(x => x.Nome).HasColumnName("NOME_DEPARTAMENTO").HasMaxLength(255).IsRequired();
             builder.Property(x => x.Icone).HasColumnName("ICONE_DEPARTAMENTO").HasMaxLength(255);
 
             builder

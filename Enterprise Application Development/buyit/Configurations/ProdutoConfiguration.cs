@@ -18,12 +18,10 @@ namespace Buyit.Configurations
             builder.Property(x => x.Tamanho).HasColumnName("TAMANHO_PRODUTO").HasMaxLength(50);
             builder.Property(x => x.Material).HasColumnName("MATERIAL_PRODUTO").HasMaxLength(50);
             builder.Property(x => x.Observacao).HasColumnName("OBSERVACAO_PRODUTO").HasMaxLength(255);
-            builder.Property(x => x.DepartamentoId).HasColumnName("ID_DEPARTAMENTO");
 
             builder.HasOne(x => x.Departamento)
                 .WithMany()
-                .HasForeignKey(x => x.DepartamentoId)
-                .IsRequired(false);
+                .HasForeignKey(x => x.Departamento);
 
             builder.HasMany(p => p.Tags)
                 .WithMany(t => t.Produtos)

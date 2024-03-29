@@ -1,6 +1,8 @@
-﻿using Buyit.Models;
+﻿using Buyit.Context;
+using Buyit.Models;
 using Buyit.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Buyit.Controllers
 {
@@ -9,23 +11,25 @@ namespace Buyit.Controllers
     public class CotacaoController : ControllerBase
     {
         private readonly Repository<CotacaoModel> _repository;
+        private readonly BuyitContext _context;
 
-        public CotacaoController(Repository<CotacaoModel> repository)
+        public CotacaoController(Repository<CotacaoModel> repository, BuyitContext context)
         {
             _repository = repository;
+            _context = context;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<CotacaoModel>> GetAll()
+        public async Task<ActionResult<IEnumerable<CotacaoModel>>> GetAll()
         {
-            var list = _repository.GetAll();
+            var list = await _context.Cotacao.Include(x => x.Comprador).Include(x => x.Produto).Include(x => x.Status).ToListAsync();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
         public ActionResult<CotacaoModel> GetById(long id)
         {
-            var entity = _repository.GetById(id);
+            var entity = _context.Cotacao.Include(x => x.Comprador).Include(x => x.Produto).Include(x => x.Status).FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 return NotFound();

@@ -12,17 +12,17 @@ namespace Buyit.Configurations
 
             builder.HasKey(x => x.Id);
             builder.Property(x => x.Id).HasColumnName("ID_AVALIACAO");
-            builder.Property(x => x.CotacaoId).HasColumnName("ID_COTACAO");
-            builder.Property(x => x.Data).HasColumnName("DATA_AVALIACAO");
-            builder.Property(x => x.NotaEntrega).HasColumnName("NOTA_ENTREGA_AVALIACAO");
-            builder.Property(x => x.NotaQualidade).HasColumnName("NOTA_QUALIDADE_AVALIACAO");
-            builder.Property(x => x.NotaPreco).HasColumnName("NOTA_PRECO_AVALIACAO");
+            builder.Property(x => x.Data).HasColumnName("DATA_AVALIACAO").IsRequired();
+            builder.Property(x => x.NotaEntrega).HasColumnName("NOTA_ENTREGA_AVALIACAO").IsRequired();
+            builder.Property(x => x.NotaQualidade).HasColumnName("NOTA_QUALIDADE_AVALIACAO").IsRequired();
+            builder.Property(x => x.NotaPreco).HasColumnName("NOTA_PRECO_AVALIACAO").IsRequired();
             builder.Property(x => x.Descricao).HasColumnName("DESCRICAO_AVALIACAO").HasColumnType("VARCHAR(255)");
 
             builder.HasOne(x => x.Cotacao)
                 .WithMany()
-                .HasForeignKey(x => x.CotacaoId)
-                .HasPrincipalKey(x => x.Id);
+                .HasForeignKey(x => x.Cotacao)
+                .HasPrincipalKey(x => x.Id)
+                .IsRequired();
         }
     }
 }

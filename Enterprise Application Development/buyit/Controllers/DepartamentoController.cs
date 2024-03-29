@@ -1,6 +1,8 @@
-﻿using Buyit.Models;
+﻿using Buyit.Context;
+using Buyit.Models;
 using Buyit.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Buyit.Controllers
 {
@@ -9,23 +11,25 @@ namespace Buyit.Controllers
     public class DepartamentoController : ControllerBase
     {
         private readonly Repository<DepartamentoModel> _repository;
+        private readonly BuyitContext _context;
 
-        public DepartamentoController(Repository<DepartamentoModel> repository)
+        public DepartamentoController(Repository<DepartamentoModel> repository, BuyitContext context)
         {
             _repository = repository;
+            _context = context;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<DepartamentoModel>> GetAll()
+        public async Task<ActionResult<IEnumerable<DepartamentoModel>>> GetAll()
         {
-            var list = _repository.GetAll();
+            var list = await _context.Departamento.Include(x => x.Tags).ToListAsync();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
         public ActionResult<DepartamentoModel> GetById(long id)
         {
-            var entity = _repository.GetById(id);
+            var entity = _context.Departamento.Include(x => x.Tags).FirstOrDefault();
             if (entity == null)
             {
                 return NotFound();

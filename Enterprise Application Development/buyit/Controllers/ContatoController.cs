@@ -1,6 +1,8 @@
-﻿using Buyit.Models;
+﻿using Buyit.Context;
+using Buyit.Models;
 using Buyit.Repositories;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 
 namespace Buyit.Controllers
 {
@@ -9,23 +11,25 @@ namespace Buyit.Controllers
     public class ContatoController : ControllerBase
     {
         private readonly Repository<ContatoModel> _repository;
+        private readonly BuyitContext _context;
 
-        public ContatoController(Repository<ContatoModel> repository)
+        public ContatoController(Repository<ContatoModel> repository, BuyitContext context)
         {
             _repository = repository;
+            _context = context;
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<ContatoModel>> GetAll()
+        public async Task<ActionResult<IEnumerable<ContatoModel>>> GetAll()
         {
-            var list = _repository.GetAll();
+            var list = await _context.Contato.Include(x => x.Usuario).ToListAsync();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
         public ActionResult<ContatoModel> GetById(long id)
         {
-            var entity = _repository.GetById(id);
+            var entity = _context.Contato.Include(c => c.Usuario).FirstOrDefault(x => x.Id == id);
             if (entity == null)
             {
                 return NotFound();

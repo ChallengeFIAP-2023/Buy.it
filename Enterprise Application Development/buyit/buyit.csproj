@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <Compile Remove="Controllers\Class.cs" />
+    <Compile Remove="Models\TagDepartamentoModel.cs" />
   </ItemGroup>
 
   <ItemGroup>

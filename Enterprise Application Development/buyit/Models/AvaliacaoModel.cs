@@ -11,9 +11,7 @@ namespace Buyit.Models
         public long Id { get; set; }
 
         [Required(ErrorMessage = "O campo cotacao não pode estar vazio.")]
-        [ForeignKey("COTACAO")]
-        [Column("ID_COTACAO")]
-        public long CotacaoId { get; set; }
+        [ForeignKey("ID_COTACAO")]
         public CotacaoModel Cotacao { get; set; }
 
         [Required(ErrorMessage = "O campo data não pode estar vazio.")]

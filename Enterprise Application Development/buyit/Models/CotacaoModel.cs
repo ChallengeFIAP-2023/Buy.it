@@ -16,15 +16,11 @@ namespace Buyit.Models
         public DateTime DataAbertura { get; set; }
 
         [Required(ErrorMessage = "O campo comprador não pode estar vazio.")]
-        [ForeignKey("USUARIO")]
-        [Column("ID_USUARIO")]
-        public long CompradorId { get; set; }
+        [ForeignKey("ID_USUARIO")]
         public UsuarioModel Comprador { get; set; }
 
         [Required(ErrorMessage = "O campo produto não pode estar vazio.")]
-        [ForeignKey("PRODUTO")]
-        [Column("ID_PRODUTO")]
-        public long ProdutoId { get; set; }
+        [ForeignKey("ID_PRODUTO")]
         public ProdutoModel Produto { get; set; }
 
         [Required(ErrorMessage = "O campo quantidadeProduto não pode estar vazio.")]
@@ -36,9 +32,7 @@ namespace Buyit.Models
         public decimal ValorProduto { get; set; }
 
         [Required(ErrorMessage = "O campo status não pode estar vazio.")]
-        [ForeignKey("STATUS")]
-        [Column("ID_STATUS")]
-        public long StatusId { get; set; }
+        [ForeignKey("ID_STATUS")]
         public StatusModel Status { get; set; }
 
         [Required(ErrorMessage = "O campo prioridadeEntrega não pode estar vazio.")]

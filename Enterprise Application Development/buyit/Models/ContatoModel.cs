@@ -18,9 +18,8 @@ namespace Buyit.Models
         [Column("VALOR_CONTATO")]
         public string Valor { get; set; }
 
-        [ForeignKey("USUARIO")]
-        [Column("ID_USUARIO")]
-        public long UsuarioId { get; set; }
+        [Required(ErrorMessage = "O campo usuario não pode estar vazio.")]
+        [ForeignKey("ID_USUARIO")]
         public UsuarioModel Usuario { get; set; }
     }
 }
