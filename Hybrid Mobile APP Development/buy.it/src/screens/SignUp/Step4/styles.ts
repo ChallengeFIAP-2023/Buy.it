@@ -11,4 +11,6 @@ export const Container = styled.View`
 
 export const AvatarWrapper = styled.View`
   margin-top: 30px;
+  align-items: center;
+  justify-content: center;
 `;

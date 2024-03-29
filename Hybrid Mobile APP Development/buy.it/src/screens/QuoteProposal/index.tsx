@@ -5,23 +5,21 @@ import {
   NativeStackScreenProps,
 } from '@react-navigation/native-stack';
 
-// Hook import
-import { QuoteDetailsProvider } from '../../hooks/useCreateQuote';
-
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
 
 // Pages import
+import { QuoteProposalDetails } from './QuoteProposalDetails';
 
 // Interfaces
-export type CreateQuoteRoutes = {
+export type QuoteProposalRoutes = {
   QuoteProposalDetails: undefined;
 };
 
-export const QuoteDetails: React.FC<
-  NativeStackScreenProps<MainNavigationRoutes, 'QuoteDetails'>
+export const QuoteProposal: React.FC<
+  NativeStackScreenProps<MainNavigationRoutes, 'QuoteProposal'>
 > = () => {
-  const Stack = createNativeStackNavigator<CreateQuoteRoutes>();
+  const Stack = createNativeStackNavigator<QuoteProposalRoutes>();
 
   const screenOptions: NativeStackNavigationOptions = {
     headerShown: false,
@@ -30,13 +28,14 @@ export const QuoteDetails: React.FC<
   };
 
   return (
-    <QuoteDetailsProvider>
-      <Stack.Navigator
-        initialRouteName="QuoteProposalDetails"
-        screenOptions={screenOptions}
-      >
-        <Stack.Screen name="QuoteProposalDetails" component={{}} />
-      </Stack.Navigator>
-    </QuoteDetailsProvider>
+    <Stack.Navigator
+      initialRouteName="QuoteProposalDetails"
+      screenOptions={screenOptions}
+    >
+      <Stack.Screen
+        name="QuoteProposalDetails"
+        component={QuoteProposalDetails}
+      />
+    </Stack.Navigator>
   );
 };

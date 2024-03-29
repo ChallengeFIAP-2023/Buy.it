@@ -72,7 +72,7 @@ export const Step4: React.FC<
           <UserAvatar
             imageSource={imageSource}
             handleSetAvatar={setAvatar}
-            size="XLL"
+            size="XXL"
           />
         </AvatarWrapper>
       </DecreasingContainer>

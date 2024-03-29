@@ -12,12 +12,14 @@ import { SignIn } from '@screens/SignIn';
 import { SignUp } from '@screens/SignUp';
 import { Profile } from '@screens/Profile';
 import { CreateQuote } from '@screens/CreateQuote';
+import { QuoteProposal } from '@screens/QuoteProposal';
 
 export type MainNavigationRoutes = {
   SignIn: undefined;
   SignUp: undefined;
   Profile: undefined;
   CreateQuote: undefined;
+  QuoteProposal: undefined;
 };
 
 export type AppNavigatorRoutesProps =
@@ -34,7 +36,7 @@ export default function Routes() {
   const logged = true;
 
   const initialMainRoute = useMemo<keyof MainNavigationRoutes>(() => {
-    if (logged) return 'CreateQuote';
+    if (logged) return 'QuoteProposal';
 
     return 'SignIn';
   }, [logged]);
@@ -53,6 +55,7 @@ export default function Routes() {
         <Stack.Screen name="SignUp" component={SignUp} />
         <Stack.Screen name="Profile" component={Profile} />
         <Stack.Screen name="CreateQuote" component={CreateQuote} />
+        <Stack.Screen name="QuoteProposal" component={QuoteProposal} />
       </Stack.Navigator>
     );
 

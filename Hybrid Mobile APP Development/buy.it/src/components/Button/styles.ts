@@ -18,12 +18,22 @@ export const ButtonContainer = styled.TouchableOpacity<Props>`
   background-color: ${({ backgroundColor }) => backgroundColor};
 
   border-radius: 8px;
-  border-bottom-right-radius: ${({ bottom }) => (bottom ? '0' : '8px')};
-  border-bottom-left-radius: ${({ bottom }) => (bottom ? '0' : '8px')};
+  border-bottom-right-radius: 8px;
+  border-bottom-left-radius: 8px;
 
   padding: ${({ size }) => (size === 'SM' ? '8px 12px' : '16px')};
 
-  opacity: ${({ disabled }) => (disabled ? 0.5 : 1)};
+  opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
+
+  ${props =>
+    props.bottom &&
+    css`
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      border-bottom-right-radius: 0;
+      border-bottom-left-radius: 0;
+    `}
 `;
 
 export const ButtonText = styled.Text<Props>`
