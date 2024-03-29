@@ -1,4 +1,4 @@
--- SELECTS CASO NECESSÁRIO:
+-- SELECTS CASO NECESSï¿½RIO:
 SELECT * FROM usuario;
 SELECT * FROM contato;
 SELECT * FROM tag;
@@ -12,7 +12,7 @@ SELECT * FROM cotacao;
 SELECT * FROM avaliacao;
 SELECT * FROM historico;
 
--- DROP TABLES CASO NECESSÁRIO:
+-- DROP TABLES CASO NECESSï¿½RIO:
 DROP TABLE usuario CASCADE CONSTRAINTS;
 DROP TABLE contato CASCADE CONSTRAINTS;
 DROP TABLE tag CASCADE CONSTRAINTS;
@@ -26,7 +26,7 @@ DROP TABLE cotacao CASCADE CONSTRAINTS;
 DROP TABLE avaliacao CASCADE CONSTRAINTS;
 DROP TABLE historico CASCADE CONSTRAINTS;
 
--- DROPANDO SEQUÊNCIAS CASO NECESSÁRIO
+-- DROPANDO SEQUï¿½NCIAS CASO NECESSï¿½RIO
 DECLARE
   v_sql VARCHAR2(1000);
 BEGIN
@@ -39,7 +39,7 @@ BEGIN
 END;
 
 -- SPRINT 01:
--- 01.01. CRIAÇÃO DAS TABELAS:
+-- 01.01. CRIAï¿½ï¿½O DAS TABELAS:
 CREATE TABLE usuario (
     id_usuario NUMBER(9) CONSTRAINT pk_id_usuario PRIMARY KEY,
     nome_usuario VARCHAR2(255) CONSTRAINT nn_nome_usuario NOT NULL,
@@ -139,10 +139,10 @@ CREATE TABLE historico (
 );
 
 -- 01.02. INSERTS NAS TABELAS:
-INSERT INTO usuario VALUES (1, 'One Serviços Administrativos LTDA.', 'comercial@oneservicos.com.br', 'oneserv123', '28434667000111', 0, NULL);
-INSERT INTO usuario VALUES (2, 'Kalunga Comércio e Indústria Gráfica LTDA.', 'vendas@kalunga.com.br', 'kalung4', '43283811000150', 1, 'https://iguatemi.com.br/brasilia/sites/brasilia/files/2020-01/Kalunga_logo.png');
+INSERT INTO usuario VALUES (1, 'One Serviï¿½os Administrativos LTDA.', 'comercial@oneservicos.com.br', 'oneserv123', '28434667000111', 0, NULL);
+INSERT INTO usuario VALUES (2, 'Kalunga Comï¿½rcio e Indï¿½stria Grï¿½fica LTDA.', 'vendas@kalunga.com.br', 'kalung4', '43283811000150', 1, 'https://iguatemi.com.br/brasilia/sites/brasilia/files/2020-01/Kalunga_logo.png');
 INSERT INTO usuario VALUES (3, 'Kabum S.A.', 'adm@kabum.com.br', 'kabuuuuum', '05570714000159', 1, NULL);
-INSERT INTO usuario VALUES (4, 'Kuará Capital Gestora de Recursos LTDA.', 'operacional@kuaracapital.com', 'farialima', '41179663000100', 0, NULL);
+INSERT INTO usuario VALUES (4, 'Kuarï¿½ Capital Gestora de Recursos LTDA.', 'operacional@kuaracapital.com', 'farialima', '41179663000100', 0, NULL);
 INSERT INTO usuario VALUES (5, 'Magazine Luiza S.A.', 'magalu@magalu.com.br', 'vempromagalu', '47960950000121', 1, 'https://logodownload.org/wp-content/uploads/2014/06/magalu-logo-0.png');
 
 INSERT INTO contato VALUES (1, 'Email', 'kaue@oneservicos.com.br', 1);
@@ -151,11 +151,11 @@ INSERT INTO contato VALUES (3, 'Telefone', '(11) 3200-0000', 2);
 INSERT INTO contato VALUES (4, 'Telefone', '(11) 98282-0000', 2);
 INSERT INTO contato VALUES (5, 'Whatsapp', '(11) 98585-0000', 3);
 
-INSERT INTO tag VALUES (1, 'Periféricos');
-INSERT INTO tag VALUES (2, 'Calças');
-INSERT INTO tag VALUES (3, 'Eletrodomésticos');
+INSERT INTO tag VALUES (1, 'Perifï¿½ricos');
+INSERT INTO tag VALUES (2, 'Calï¿½as');
+INSERT INTO tag VALUES (3, 'Eletrodomï¿½sticos');
 INSERT INTO tag VALUES (4, 'Celulares');
-INSERT INTO tag VALUES (5, 'Água');
+INSERT INTO tag VALUES (5, 'ï¿½gua');
 
 INSERT INTO usuario_tag VALUES (5, 4);
 INSERT INTO usuario_tag VALUES (5, 5);
@@ -163,9 +163,9 @@ INSERT INTO usuario_tag VALUES (2, 2);
 INSERT INTO usuario_tag VALUES (2, 3);
 INSERT INTO usuario_tag VALUES (3, 2);
 
-INSERT INTO departamento VALUES (1, 'Informática', 'icone-informatica');
-INSERT INTO departamento VALUES (2, 'Eletrônicos', 'icone-eletrônicos');
-INSERT INTO departamento VALUES (3, 'Vestuário', 'icone-vestuario');
+INSERT INTO departamento VALUES (1, 'Informï¿½tica', 'icone-informatica');
+INSERT INTO departamento VALUES (2, 'Eletrï¿½nicos', 'icone-eletrï¿½nicos');
+INSERT INTO departamento VALUES (3, 'Vestuï¿½rio', 'icone-vestuario');
 INSERT INTO departamento VALUES (4, 'Bebidas', 'icone-bebidas');
 INSERT INTO departamento VALUES (5, 'Cozinha', NULL);
 
@@ -176,9 +176,9 @@ INSERT INTO tag_departamento VALUES (4, 1);
 INSERT INTO tag_departamento VALUES (5, 4);
 
 INSERT INTO produto VALUES (1, 1, 'Mouse', 'Logitech', 'Preto', NULL, NULL, NULL);
-INSERT INTO produto VALUES (2, 4, 'Água', 'Lindóia', NULL, '1 Litro', NULL, NULL);
+INSERT INTO produto VALUES (2, 4, 'ï¿½gua', 'Lindï¿½ia', NULL, '1 Litro', NULL, NULL);
 INSERT INTO produto VALUES (3, 2, 'Celular', 'Apple', 'Vermelho', NULL, NULL, NULL);
-INSERT INTO produto VALUES (4, 3, 'Calça', 'Hering', 'Vermelho', 'P', 'Jeans', 'Modelo XYZ');
+INSERT INTO produto VALUES (4, 3, 'Calï¿½a', 'Hering', 'Vermelho', 'P', 'Jeans', 'Modelo XYZ');
 INSERT INTO produto VALUES (5, 5, 'Geladeira', NULL, NULL, NULL, NULL, NULL);
 
 INSERT INTO produto_tag VALUES (1, 1);
@@ -191,7 +191,7 @@ INSERT INTO status VALUES (1, 'Em Andamento');
 INSERT INTO status VALUES (2, 'Recusado');
 INSERT INTO status VALUES (3, 'Aprovado');
 INSERT INTO status VALUES (4, 'Fechado');
-INSERT INTO status VALUES (5, 'Concluído');
+INSERT INTO status VALUES (5, 'Concluï¿½do');
 
 INSERT INTO cotacao VALUES (1, TO_DATE('2023-11-13', 'YYYY-MM-DD'), 1, 1, 20, 50.99, 1, 3, 1, 2, 10, NULL); 
 INSERT INTO cotacao VALUES (2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 1, 1, 10, 69.90, 5, 2, 1, 3, 5, TO_DATE('2023-11-13', 'YYYY-MM-DD')); 
@@ -199,20 +199,20 @@ INSERT INTO cotacao VALUES (3, TO_DATE('2023-11-11', 'YYYY-MM-DD'), 4, 3, 5, 150
 INSERT INTO cotacao VALUES (4, TO_DATE('2023-11-10', 'YYYY-MM-DD'), 4, 2, 100, 2.00, 1, 2, 1, 3, 1, NULL); 
 INSERT INTO cotacao VALUES (5, TO_DATE('2023-11-09', 'YYYY-MM-DD'), 1, 5, 2, 3.500, 5, 3, 1, 2, 7, TO_DATE('2023-11-10', 'YYYY-MM-DD'));
 
--- Valores inseridos somente para contemplar os 5 inserts solicitados, porém só serão avaliados as cotações de status concluído.
+-- Valores inseridos somente para contemplar os 5 inserts solicitados, porï¿½m sï¿½ serï¿½o avaliados as cotaï¿½ï¿½es de status concluï¿½do.
 INSERT INTO avaliacao VALUES (1, 1, TO_DATE('2023-11-13', 'YYYY-MM-DD'), 5, 3, 3, 'Muito bom!');
 INSERT INTO avaliacao VALUES (2, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 3, 4, 2, NULL); 
 INSERT INTO avaliacao VALUES (3, 3, TO_DATE('2023-11-11', 'YYYY-MM-DD'), 3, 1, 5, 'Demora para chegar'); 
 INSERT INTO avaliacao VALUES (4, 4, TO_DATE('2023-11-10', 'YYYY-MM-DD'), 1, 1, 1, 'Compra cancelada'); 
 INSERT INTO avaliacao VALUES (5, 5, TO_DATE('2023-11-09', 'YYYY-MM-DD'), 5, 5, 5, 'Excelente'); 
 
-INSERT INTO historico VALUES (1, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 2, 3, NULL, 0, 1, 0, 0, 'Não tenho a quantidade no momento');
+INSERT INTO historico VALUES (1, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 2, 3, NULL, 0, 1, 0, 0, 'Nï¿½o tenho a quantidade no momento');
 INSERT INTO historico VALUES (2, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 4, 2, 59.90, 0, 0, 0, 0, NULL);
 INSERT INTO historico VALUES (3, 2, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 5, 5, 44.50, 0, 0, 0, 0, NULL);
-INSERT INTO historico VALUES (4, 3, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 2, 5, 2000, 0, 0, 1, 0, 'Recusado Automaticamente: Preço ofertado maior do que o preço da cotação');
+INSERT INTO historico VALUES (4, 3, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 2, 5, 2000, 0, 0, 1, 0, 'Recusado Automaticamente: Preï¿½o ofertado maior do que o preï¿½o da cotaï¿½ï¿½o');
 INSERT INTO historico VALUES (5, 5, TO_DATE('2023-11-12', 'YYYY-MM-DD'), 5, 1, 2999.99, 0, 0, 0, 0, NULL);
 
--- 01.03. CONSULTANDO COTAÇÕES, STATUS E AVALIAÇÕES:
+-- 01.03. CONSULTANDO COTAï¿½ï¿½ES, STATUS E AVALIAï¿½ï¿½ES:
 SELECT 
     c.id_cotacao, 
     c.data_abertura_cotacao, 
@@ -234,7 +234,7 @@ LEFT JOIN
 -- SPRINT 02:
 SET SERVEROUTPUT ON;
 
--- 02.01. FUNÇÃO PARA VALIDAR A ENTRADA DE UM EMAIL:
+-- 02.01. FUNï¿½ï¿½O PARA VALIDAR A ENTRADA DE UM EMAIL:
 CREATE OR REPLACE FUNCTION is_email_valid(email IN VARCHAR2) RETURN BOOLEAN IS
 BEGIN
     IF REGEXP_LIKE(email, '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$') THEN
@@ -254,20 +254,20 @@ DECLARE
 BEGIN
     email_valido := 'exemplo@dominio.com';
     IF is_email_valid(email_valido) THEN
-        DBMS_OUTPUT.PUT_LINE(email_valido || ' é válido');
+        DBMS_OUTPUT.PUT_LINE(email_valido || ' ï¿½ vï¿½lido');
     ELSE
-        DBMS_OUTPUT.PUT_LINE(email_valido || ' é inválido');
+        DBMS_OUTPUT.PUT_LINE(email_valido || ' ï¿½ invï¿½lido');
     END IF;
 
     email_invalido := 'exemplo@dominio';
     IF is_email_valid(email_invalido) THEN
-        DBMS_OUTPUT.PUT_LINE(email_invalido || ' é válido');
+        DBMS_OUTPUT.PUT_LINE(email_invalido || ' ï¿½ vï¿½lido');
     ELSE
-        DBMS_OUTPUT.PUT_LINE(email_invalido || ' é inválido');
+        DBMS_OUTPUT.PUT_LINE(email_invalido || ' ï¿½ invï¿½lido');
     END IF;
 END;
 
--- 02.02. FUNÇÃO PARA VALIDAR A ENTRADA DE UM CNPJ:
+-- 02.02. FUNï¿½ï¿½O PARA VALIDAR A ENTRADA DE UM CNPJ:
 CREATE OR REPLACE FUNCTION is_cnpj_valid(p_cnpj IN VARCHAR2) RETURN BOOLEAN IS
     v_soma          NUMBER := 0;
     v_indice        NUMBER := 1;
@@ -349,16 +349,16 @@ DECLARE
 BEGIN
     resultado := is_cnpj_valid(cnpj_valido);
     IF resultado THEN
-        DBMS_OUTPUT.PUT_LINE('CNPJ válido: ' || cnpj_valido || ' é válido');
+        DBMS_OUTPUT.PUT_LINE('CNPJ vï¿½lido: ' || cnpj_valido || ' ï¿½ vï¿½lido');
     ELSE
-        DBMS_OUTPUT.PUT_LINE('CNPJ válido: ' || cnpj_valido || ' é inválido');
+        DBMS_OUTPUT.PUT_LINE('CNPJ vï¿½lido: ' || cnpj_valido || ' ï¿½ invï¿½lido');
     END IF;
 
     resultado := is_cnpj_valid(cnpj_invalido);
     IF resultado THEN
-        DBMS_OUTPUT.PUT_LINE('CNPJ inválido: ' || cnpj_invalido || ' é válido');
+        DBMS_OUTPUT.PUT_LINE('CNPJ invï¿½lido: ' || cnpj_invalido || ' ï¿½ vï¿½lido');
     ELSE
-        DBMS_OUTPUT.PUT_LINE('CNPJ inválido: ' || cnpj_invalido || ' é inválido');
+        DBMS_OUTPUT.PUT_LINE('CNPJ invï¿½lido: ' || cnpj_invalido || ' ï¿½ invï¿½lido');
     END IF;
 END;
 
@@ -381,11 +381,11 @@ BEGIN
     SELECT seq_usuario.NEXTVAL INTO v_id_usuario FROM DUAL;
 
     IF NOT is_email_valid(p_email_usuario) THEN
-        RAISE_APPLICATION_ERROR(-20024, 'E-mail inválido');
+        RAISE_APPLICATION_ERROR(-20024, 'E-mail invï¿½lido');
     END IF;
     
     IF NOT is_cnpj_valid(p_cnpj_usuario) THEN
-        RAISE_APPLICATION_ERROR(-20024, 'Cnpj inválido');
+        RAISE_APPLICATION_ERROR(-20024, 'Cnpj invï¿½lido');
     END IF;
 
     INSERT INTO usuario (id_usuario, nome_usuario, email_usuario, senha_usuario, cnpj_usuario, is_fornecedor, imagem_usuario)
@@ -393,7 +393,7 @@ BEGIN
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20017, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20017, 'Erro de valor na inserï¿½ï¿½o');
     WHEN DUP_VAL_ON_INDEX THEN
         RAISE_APPLICATION_ERROR(-20018, 'Chave duplicada');
     WHEN OTHERS THEN
@@ -402,7 +402,7 @@ END;
 
 BEGIN
     insert_usuario('Usuario Cadastrado por Procedure','email@email.com', 'senha123', '02647408000185', 1, NULL);
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Inserï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -420,11 +420,11 @@ CREATE OR REPLACE PROCEDURE update_usuario(
 ) AS
 BEGIN
     IF NOT is_email_valid(p_email_usuario) THEN
-        RAISE_APPLICATION_ERROR(-20025, 'E-mail inválido');
+        RAISE_APPLICATION_ERROR(-20025, 'E-mail invï¿½lido');
     END IF;
     
     IF NOT is_cnpj_valid(p_cnpj_usuario) THEN
-        RAISE_APPLICATION_ERROR(-20024, 'Cnpj inválido');
+        RAISE_APPLICATION_ERROR(-20024, 'Cnpj invï¿½lido');
     END IF;
 
     UPDATE usuario
@@ -432,7 +432,7 @@ BEGIN
     WHERE id_usuario = p_id_usuario;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20020, 'Registro não encontrado para atualização');
+        RAISE_APPLICATION_ERROR(-20020, 'Registro nï¿½o encontrado para atualizaï¿½ï¿½o');
     END IF;
 
 EXCEPTION
@@ -442,7 +442,7 @@ END;
 
 BEGIN
     update_usuario(6, 'Usuario Editado por Procedure','gmail@gmail.com', '123senha', '15436940000103', 0, NULL);
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Atualizaï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -457,7 +457,7 @@ BEGIN
     WHERE id_usuario = p_id_usuario;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20022, 'Registro não encontrado para exclusão');
+        RAISE_APPLICATION_ERROR(-20022, 'Registro nï¿½o encontrado para exclusï¿½o');
     END IF;
 
 EXCEPTION
@@ -467,7 +467,7 @@ END;
 
 BEGIN
     delete_usuario(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Exclusï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -492,7 +492,7 @@ BEGIN
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20026, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20026, 'Erro de valor na inserï¿½ï¿½o');
     WHEN DUP_VAL_ON_INDEX THEN
         RAISE_APPLICATION_ERROR(-20027, 'Chave duplicada');
     WHEN OTHERS THEN
@@ -501,7 +501,7 @@ END;
 
 BEGIN
     insert_contato('Whatsapp', '(21) 98383-0000', 3);
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Inserï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -520,7 +520,7 @@ BEGIN
     WHERE id_contato = p_id_contato;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20029, 'Registro não encontrado para atualização');
+        RAISE_APPLICATION_ERROR(-20029, 'Registro nï¿½o encontrado para atualizaï¿½ï¿½o');
     END IF;
 
 EXCEPTION
@@ -530,7 +530,7 @@ END;
 
 BEGIN
     update_contato(6, 'Whatsapp Editado', '(21) 00000-1111', 2);
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Atualizaï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -545,7 +545,7 @@ BEGIN
     WHERE id_contato = p_id_contato;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20031, 'Registro não encontrado para exclusão');
+        RAISE_APPLICATION_ERROR(-20031, 'Registro nï¿½o encontrado para exclusï¿½o');
     END IF;
 
 EXCEPTION
@@ -555,7 +555,7 @@ END;
 
 BEGIN
     delete_contato(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Exclusï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -578,7 +578,7 @@ BEGIN
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20049, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20049, 'Erro de valor na inserï¿½ï¿½o');
     WHEN DUP_VAL_ON_INDEX THEN
         RAISE_APPLICATION_ERROR(-20050, 'Chave duplicada');
     WHEN OTHERS THEN
@@ -587,7 +587,7 @@ END;
 
 BEGIN
     insert_tag('Tag Exemplo Procedure');
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Inserï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -604,7 +604,7 @@ BEGIN
     WHERE id_tag = p_id_tag;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20052, 'Registro não encontrado para atualização');
+        RAISE_APPLICATION_ERROR(-20052, 'Registro nï¿½o encontrado para atualizaï¿½ï¿½o');
     END IF;
 
 EXCEPTION
@@ -614,7 +614,7 @@ END;
 
 BEGIN
     update_tag(6, 'Tag Atualizada');
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Atualizaï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -629,7 +629,7 @@ BEGIN
     WHERE id_tag = p_id_tag;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20054, 'Registro não encontrado para exclusão');
+        RAISE_APPLICATION_ERROR(-20054, 'Registro nï¿½o encontrado para exclusï¿½o');
     END IF;
 
 EXCEPTION
@@ -639,7 +639,7 @@ END;
 
 BEGIN
     delete_tag(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Exclusï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -657,16 +657,16 @@ BEGIN
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20056, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20056, 'Erro de valor na inserï¿½ï¿½o');
     WHEN DUP_VAL_ON_INDEX THEN
-        RAISE_APPLICATION_ERROR(-20057, 'Relação duplicada');
+        RAISE_APPLICATION_ERROR(-20057, 'Relaï¿½ï¿½o duplicada');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20058, SQLERRM);
 END;
 
 BEGIN
     insert_usuario_tag(1, 1);
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Inserï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -685,7 +685,7 @@ BEGIN
     WHERE id_usuario = p_id_usuario_antigo AND id_tag = p_id_tag_antigo;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20061, 'Relação não encontrada para atualização');
+        RAISE_APPLICATION_ERROR(-20061, 'Relaï¿½ï¿½o nï¿½o encontrada para atualizaï¿½ï¿½o');
     END IF;
 
 EXCEPTION
@@ -695,7 +695,7 @@ END;
 
 BEGIN
     update_usuario_tag(1, 1, 1, 3);
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Atualizaï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -711,7 +711,7 @@ BEGIN
     WHERE id_usuario = p_id_usuario AND id_tag = p_id_tag;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20059, 'Relação não encontrada para exclusão');
+        RAISE_APPLICATION_ERROR(-20059, 'Relaï¿½ï¿½o nï¿½o encontrada para exclusï¿½o');
     END IF;
 
 EXCEPTION
@@ -721,7 +721,7 @@ END;
 
 BEGIN
     delete_usuario_tag(1, 3);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Exclusï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -745,7 +745,7 @@ BEGIN
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20063, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20063, 'Erro de valor na inserï¿½ï¿½o');
     WHEN DUP_VAL_ON_INDEX THEN
         RAISE_APPLICATION_ERROR(-20064, 'Chave duplicada');
     WHEN OTHERS THEN
@@ -754,7 +754,7 @@ END;
 
 BEGIN
     insert_departamento('TI', 'icone_ti.png');
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Inserï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -772,7 +772,7 @@ BEGIN
     WHERE id_departamento = p_id_departamento;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20066, 'Registro não encontrado para atualização');
+        RAISE_APPLICATION_ERROR(-20066, 'Registro nï¿½o encontrado para atualizaï¿½ï¿½o');
     END IF;
 
 EXCEPTION
@@ -781,8 +781,8 @@ EXCEPTION
 END;
 
 BEGIN
-    update_departamento(6, 'Tecnologia da Informação', 'icone_ti_novo.png');
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+    update_departamento(6, 'Tecnologia da Informaï¿½ï¿½o', 'icone_ti_novo.png');
+    DBMS_OUTPUT.PUT_LINE('Atualizaï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -797,7 +797,7 @@ BEGIN
     WHERE id_departamento = p_id_departamento;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20068, 'Registro não encontrado para exclusão');
+        RAISE_APPLICATION_ERROR(-20068, 'Registro nï¿½o encontrado para exclusï¿½o');
     END IF;
 
 EXCEPTION
@@ -807,7 +807,7 @@ END;
 
 BEGIN
     delete_departamento(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Exclusï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -825,16 +825,16 @@ BEGIN
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20070, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20070, 'Erro de valor na inserï¿½ï¿½o');
     WHEN DUP_VAL_ON_INDEX THEN
-        RAISE_APPLICATION_ERROR(-20071, 'Relação duplicada');
+        RAISE_APPLICATION_ERROR(-20071, 'Relaï¿½ï¿½o duplicada');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20072, SQLERRM);
 END;
 
 BEGIN
     insert_tag_departamento(1, 4);
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Inserï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -853,7 +853,7 @@ BEGIN
     WHERE id_tag = p_id_tag_antigo AND id_departamento = p_id_departamento_antigo;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20075, 'Relação não encontrada para atualização');
+        RAISE_APPLICATION_ERROR(-20075, 'Relaï¿½ï¿½o nï¿½o encontrada para atualizaï¿½ï¿½o');
     END IF;
 
 EXCEPTION
@@ -863,7 +863,7 @@ END;
 
 BEGIN
     update_tag_departamento(1, 4, 1, 2);
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Atualizaï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -879,7 +879,7 @@ BEGIN
     WHERE id_tag = p_id_tag AND id_departamento = p_id_departamento;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20073, 'Relação não encontrada para exclusão');
+        RAISE_APPLICATION_ERROR(-20073, 'Relaï¿½ï¿½o nï¿½o encontrada para exclusï¿½o');
     END IF;
 
 EXCEPTION
@@ -889,7 +889,7 @@ END;
 
 BEGIN
     delete_tag_departamento(1, 2);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Exclusï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -918,7 +918,7 @@ BEGIN
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20077, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20077, 'Erro de valor na inserï¿½ï¿½o');
     WHEN DUP_VAL_ON_INDEX THEN
         RAISE_APPLICATION_ERROR(-20078, 'Chave duplicada');
     WHEN OTHERS THEN
@@ -926,8 +926,8 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_produto(1, 'Produto Teste', 'Marca Teste', 'Azul', 'M', 'Algodão', 'Sem observações');
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+    insert_produto(1, 'Produto Teste', 'Marca Teste', 'Azul', 'M', 'Algodï¿½o', 'Sem observaï¿½ï¿½es');
+    DBMS_OUTPUT.PUT_LINE('Inserï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -950,7 +950,7 @@ BEGIN
     WHERE id_produto = p_id_produto;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20080, 'Registro não encontrado para atualização');
+        RAISE_APPLICATION_ERROR(-20080, 'Registro nï¿½o encontrado para atualizaï¿½ï¿½o');
     END IF;
 
 EXCEPTION
@@ -959,8 +959,8 @@ EXCEPTION
 END;
 
 BEGIN
-    update_produto(6, 2, 'Produto Atualizado', 'Marca Nova', 'Vermelho', 'G', 'Poliéster', 'Atualizado');
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+    update_produto(6, 2, 'Produto Atualizado', 'Marca Nova', 'Vermelho', 'G', 'Poliï¿½ster', 'Atualizado');
+    DBMS_OUTPUT.PUT_LINE('Atualizaï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -975,7 +975,7 @@ BEGIN
     WHERE id_produto = p_id_produto;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20082, 'Registro não encontrado para exclusão');
+        RAISE_APPLICATION_ERROR(-20082, 'Registro nï¿½o encontrado para exclusï¿½o');
     END IF;
 
 EXCEPTION
@@ -985,7 +985,7 @@ END;
 
 BEGIN
     delete_produto(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Exclusï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1003,16 +1003,16 @@ BEGIN
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20084, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20084, 'Erro de valor na inserï¿½ï¿½o');
     WHEN DUP_VAL_ON_INDEX THEN
-        RAISE_APPLICATION_ERROR(-20085, 'Relação duplicada');
+        RAISE_APPLICATION_ERROR(-20085, 'Relaï¿½ï¿½o duplicada');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20086, SQLERRM);
 END;
 
 BEGIN
     insert_produto_tag(1, 4);
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Inserï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1031,7 +1031,7 @@ BEGIN
     WHERE id_produto = p_id_produto_antigo AND id_tag = p_id_tag_antigo;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20087, 'Relação não encontrada para atualização');
+        RAISE_APPLICATION_ERROR(-20087, 'Relaï¿½ï¿½o nï¿½o encontrada para atualizaï¿½ï¿½o');
     END IF;
 
 EXCEPTION
@@ -1041,7 +1041,7 @@ END;
 
 BEGIN
     update_produto_tag(1, 4, 1, 2);
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Atualizaï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1057,7 +1057,7 @@ BEGIN
     WHERE id_produto = p_id_produto AND id_tag = p_id_tag;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20089, 'Relação não encontrada para exclusão');
+        RAISE_APPLICATION_ERROR(-20089, 'Relaï¿½ï¿½o nï¿½o encontrada para exclusï¿½o');
     END IF;
 
 EXCEPTION
@@ -1067,7 +1067,7 @@ END;
 
 BEGIN
     delete_produto_tag(1, 2);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Exclusï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1090,7 +1090,7 @@ BEGIN
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20091, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20091, 'Erro de valor na inserï¿½ï¿½o');
     WHEN DUP_VAL_ON_INDEX THEN
         RAISE_APPLICATION_ERROR(-20092, 'Chave duplicada');
     WHEN OTHERS THEN
@@ -1099,7 +1099,7 @@ END;
 
 BEGIN
     insert_status('Em Processamento');
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Inserï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1116,7 +1116,7 @@ BEGIN
     WHERE id_status = p_id_status;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20094, 'Registro não encontrado para atualização');
+        RAISE_APPLICATION_ERROR(-20094, 'Registro nï¿½o encontrado para atualizaï¿½ï¿½o');
     END IF;
 
 EXCEPTION
@@ -1126,7 +1126,7 @@ END;
 
 BEGIN
     update_status(6, 'OK');
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Atualizaï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1141,7 +1141,7 @@ BEGIN
     WHERE id_status = p_id_status;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20096, 'Registro não encontrado para exclusão');
+        RAISE_APPLICATION_ERROR(-20096, 'Registro nï¿½o encontrado para exclusï¿½o');
     END IF;
 
 EXCEPTION
@@ -1151,7 +1151,7 @@ END;
 
 BEGIN
     delete_status(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Exclusï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1184,7 +1184,7 @@ BEGIN
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20098, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20098, 'Erro de valor na inserï¿½ï¿½o');
     WHEN DUP_VAL_ON_INDEX THEN
         RAISE_APPLICATION_ERROR(-20099, 'Chave duplicada');
     WHEN OTHERS THEN
@@ -1193,7 +1193,7 @@ END;
 
 BEGIN
     insert_cotacao(SYSDATE, 1, 1, 100, 500, 1, 1, 1, 1, 30, SYSDATE);
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Inserï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1220,7 +1220,7 @@ BEGIN
     WHERE id_cotacao = p_id_cotacao;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20101, 'Registro não encontrado para atualização');
+        RAISE_APPLICATION_ERROR(-20101, 'Registro nï¿½o encontrado para atualizaï¿½ï¿½o');
     END IF;
 
 EXCEPTION
@@ -1230,7 +1230,7 @@ END;
 
 BEGIN
     update_cotacao(6, SYSDATE, 1, 2, 150, 750, 2, 0, 1, 0, 45, SYSDATE);
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Atualizaï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1245,7 +1245,7 @@ BEGIN
     WHERE id_cotacao = p_id_cotacao;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20103, 'Registro não encontrado para exclusão');
+        RAISE_APPLICATION_ERROR(-20103, 'Registro nï¿½o encontrado para exclusï¿½o');
     END IF;
 
 EXCEPTION
@@ -1255,14 +1255,14 @@ END;
 
 BEGIN
     delete_cotacao(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Exclusï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
 -- 02.03.11. AVALIACAO:
--- POR SER 1 ÚNICA AVALIAÇÃO POR COTAÇÃO, INSIRA UMA COTAÇÃO DE ID 6 PARA REALIZAR ESSE TESTE
+-- POR SER 1 ï¿½NICA AVALIAï¿½ï¿½O POR COTAï¿½ï¿½O, INSIRA UMA COTAï¿½ï¿½O DE ID 6 PARA REALIZAR ESSE TESTE
 DROP SEQUENCE seq_avaliacao;
 CREATE SEQUENCE seq_avaliacao START WITH 6 INCREMENT BY 1;
 
@@ -1284,7 +1284,7 @@ BEGIN
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20105, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20105, 'Erro de valor na inserï¿½ï¿½o');
     WHEN DUP_VAL_ON_INDEX THEN
         RAISE_APPLICATION_ERROR(-20106, 'Chave duplicada');
     WHEN OTHERS THEN
@@ -1292,8 +1292,8 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_avaliacao(6, SYSDATE, 4, 5, 4, 'Avaliação positiva');
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+    insert_avaliacao(6, SYSDATE, 4, 5, 4, 'Avaliaï¿½ï¿½o positiva');
+    DBMS_OUTPUT.PUT_LINE('Inserï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1315,7 +1315,7 @@ BEGIN
     WHERE id_avaliacao = p_id_avaliacao;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20108, 'Registro não encontrado para atualização');
+        RAISE_APPLICATION_ERROR(-20108, 'Registro nï¿½o encontrado para atualizaï¿½ï¿½o');
     END IF;
 
 EXCEPTION
@@ -1324,8 +1324,8 @@ EXCEPTION
 END;
 
 BEGIN
-    update_avaliacao(6, 6, SYSDATE, 3, 4, 5, 'Avaliação atualizada');
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+    update_avaliacao(6, 6, SYSDATE, 3, 4, 5, 'Avaliaï¿½ï¿½o atualizada');
+    DBMS_OUTPUT.PUT_LINE('Atualizaï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1340,7 +1340,7 @@ BEGIN
     WHERE id_avaliacao = p_id_avaliacao;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20110, 'Registro não encontrado para exclusão');
+        RAISE_APPLICATION_ERROR(-20110, 'Registro nï¿½o encontrado para exclusï¿½o');
     END IF;
 
 EXCEPTION
@@ -1350,13 +1350,13 @@ END;
 
 BEGIN
     delete_avaliacao(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Exclusï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.03.12. HISTORICO (OBS: NÃO FUNCIONA COM NUMERO DECIMAL NO VALOR_OFERTADO_HISTORICO. NÃO CONSEGUIMOS RESOLVER)
+-- 02.03.12. HISTORICO (OBS: Nï¿½O FUNCIONA COM NUMERO DECIMAL NO VALOR_OFERTADO_HISTORICO. Nï¿½O CONSEGUIMOS RESOLVER)
 DROP SEQUENCE seq_historico;
 CREATE SEQUENCE seq_historico START WITH 6 INCREMENT BY 1;
 
@@ -1382,7 +1382,7 @@ BEGIN
 
 EXCEPTION
     WHEN VALUE_ERROR THEN
-        RAISE_APPLICATION_ERROR(-20112, 'Erro de valor na inserção');
+        RAISE_APPLICATION_ERROR(-20112, 'Erro de valor na inserï¿½ï¿½o');
     WHEN DUP_VAL_ON_INDEX THEN
         RAISE_APPLICATION_ERROR(-20113, 'Chave duplicada');
     WHEN OTHERS THEN
@@ -1390,8 +1390,8 @@ EXCEPTION
 END;
 
 BEGIN
-    insert_historico(2, SYSDATE, 1, 2, 15000, 0, 0, 0, 0, 'Histórico inicial da cotação');
-    DBMS_OUTPUT.PUT_LINE('Inserção bem-sucedida');
+    insert_historico(2, SYSDATE, 1, 2, 15000, 0, 0, 0, 0, 'Histï¿½rico inicial da cotaï¿½ï¿½o');
+    DBMS_OUTPUT.PUT_LINE('Inserï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1417,7 +1417,7 @@ BEGIN
     WHERE id_historico = p_id_historico;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20115, 'Registro não encontrado para atualização');
+        RAISE_APPLICATION_ERROR(-20115, 'Registro nï¿½o encontrado para atualizaï¿½ï¿½o');
     END IF;
 
 EXCEPTION
@@ -1426,8 +1426,8 @@ EXCEPTION
 END;
 
 BEGIN
-    update_historico(6, 2, SYSDATE, 2, 3, 550, 1, 0, 1, 0, 'Atualização do histórico da cotação');
-    DBMS_OUTPUT.PUT_LINE('Atualização bem-sucedida');
+    update_historico(6, 2, SYSDATE, 2, 3, 550, 1, 0, 1, 0, 'Atualizaï¿½ï¿½o do histï¿½rico da cotaï¿½ï¿½o');
+    DBMS_OUTPUT.PUT_LINE('Atualizaï¿½ï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
@@ -1442,7 +1442,7 @@ BEGIN
     WHERE id_historico = p_id_historico;
 
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20117, 'Registro não encontrado para exclusão');
+        RAISE_APPLICATION_ERROR(-20117, 'Registro nï¿½o encontrado para exclusï¿½o');
     END IF;
 
 EXCEPTION
@@ -1452,13 +1452,13 @@ END;
 
 BEGIN
     delete_historico(6);
-    DBMS_OUTPUT.PUT_LINE('Exclusão bem-sucedida');
+    DBMS_OUTPUT.PUT_LINE('Exclusï¿½o bem-sucedida');
 EXCEPTION
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro: ' || SQLERRM);
 END;
 
--- 02.04. BLOCO ANÔNIMO COM CURSOR PARA CONSULTA COM JOIN:
+-- 02.04. BLOCO ANï¿½NIMO COM CURSOR PARA CONSULTA COM JOIN:
 DECLARE
     CURSOR cotacao_avaliacao_cur IS
         SELECT c.id_cotacao, c.data_abertura_cotacao, a.nota_entrega_avaliacao, a.nota_qualidade_avaliacao, a.nota_preco_avaliacao
@@ -1473,17 +1473,17 @@ BEGIN
         FETCH cotacao_avaliacao_cur INTO cotacao_avaliacao_rec;
         EXIT WHEN cotacao_avaliacao_cur%NOTFOUND;
 
-        DBMS_OUTPUT.PUT_LINE('ID Cotação: ' || cotacao_avaliacao_rec.id_cotacao ||
+        DBMS_OUTPUT.PUT_LINE('ID Cotaï¿½ï¿½o: ' || cotacao_avaliacao_rec.id_cotacao ||
                              ', Data Abertura: ' || cotacao_avaliacao_rec.data_abertura_cotacao ||
                              ', Nota Entrega: ' || cotacao_avaliacao_rec.nota_entrega_avaliacao ||
                              ', Nota Qualidade: ' || cotacao_avaliacao_rec.nota_qualidade_avaliacao ||
-                             ', Nota Preço: ' || cotacao_avaliacao_rec.nota_preco_avaliacao);
+                             ', Nota Preï¿½o: ' || cotacao_avaliacao_rec.nota_preco_avaliacao);
     END LOOP;
 
     CLOSE cotacao_avaliacao_cur;
 END;
 
--- 02.05. PROCEDURE IMPRIMINDO RELATÓRIO QUE CONTENHA FUNÇÕES, INNER JOIN, ORDER BY, SUM OU COUNT
+-- 02.05. PROCEDURE IMPRIMINDO RELATï¿½RIO QUE CONTENHA FUNï¿½ï¿½ES, INNER JOIN, ORDER BY, SUM OU COUNT
 CREATE OR REPLACE PROCEDURE print_cotacao_report IS
     v_total_cotacoes NUMBER;
     v_valor_medio NUMBER;
@@ -1496,28 +1496,28 @@ BEGIN
     INTO v_total_cotacoes, v_valor_medio
     FROM cotacao c
     JOIN status s ON c.id_status = s.id_status
-    WHERE s.nome_status = 'Concluído';
-    DBMS_OUTPUT.PUT_LINE('Total de Cotações Concluídas: ' || v_total_cotacoes);
-    DBMS_OUTPUT.PUT_LINE('Valor Médio das Cotações Cocluídas: ' || v_valor_medio);
+    WHERE s.nome_status = 'Concluï¿½do';
+    DBMS_OUTPUT.PUT_LINE('Total de Cotaï¿½ï¿½es Concluï¿½das: ' || v_total_cotacoes);
+    DBMS_OUTPUT.PUT_LINE('Valor Mï¿½dio das Cotaï¿½ï¿½es Cocluï¿½das: ' || v_valor_medio);
 
     FOR r IN (
         SELECT id_cotacao, data_abertura_cotacao, valor_produto
         FROM cotacao c
         JOIN status s ON c.id_status = s.id_status
-        WHERE s.nome_status = 'Concluído'
+        WHERE s.nome_status = 'Concluï¿½do'
         ORDER BY data_abertura_cotacao DESC
     ) LOOP
-        DBMS_OUTPUT.PUT_LINE('ID da Cotação: ' || r.id_cotacao || 
+        DBMS_OUTPUT.PUT_LINE('ID da Cotaï¿½ï¿½o: ' || r.id_cotacao || 
                              ', Data de Abertura: ' || r.data_abertura_cotacao || 
                              ', Valor: ' || r.valor_produto);
     END LOOP;
 
 EXCEPTION
     WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro ao gerar relatório de cotações.');
+        DBMS_OUTPUT.PUT_LINE('Erro ao gerar relatï¿½rio de cotaï¿½ï¿½es.');
 END;
 
--- 02.05.01. TESTANDO PROCEDURE COM RELATÓRIO:
+-- 02.05.01. TESTANDO PROCEDURE COM RELATï¿½RIO:
 BEGIN
     print_cotacao_report;
 END;
@@ -1537,7 +1537,7 @@ BEGIN
         WHERE c.id_usuario = p_id_usuario AND s.nome_status IN ('Em Andamento', 'Recusado')
         ORDER BY c.data_abertura_cotacao DESC
     ) LOOP
-        DBMS_OUTPUT.PUT_LINE('ID da Cotação: ' || r.id_cotacao || 
+        DBMS_OUTPUT.PUT_LINE('ID da Cotaï¿½ï¿½o: ' || r.id_cotacao || 
                              ', Data de Abertura: ' || r.data_abertura_cotacao || 
                              ', Quantidade: ' || r.quantidade_produto || 
                              ', Valor: ' || r.valor_produto ||
@@ -1545,7 +1545,7 @@ BEGIN
     END LOOP;
 EXCEPTION
     WHEN OTHERS THEN
-        DBMS_OUTPUT.PUT_LINE('Erro ao listar cotações pendentes.');
+        DBMS_OUTPUT.PUT_LINE('Erro ao listar cotaï¿½ï¿½es pendentes.');
 END;
 
 BEGIN
@@ -1558,20 +1558,20 @@ CREATE OR REPLACE PROCEDURE concluir_cotacao(
 ) AS
     v_status_concluido NUMBER;
 BEGIN
-    SELECT id_status INTO v_status_concluido FROM status WHERE nome_status = 'Concluído';
+    SELECT id_status INTO v_status_concluido FROM status WHERE nome_status = 'Concluï¿½do';
     
     UPDATE cotacao
     SET id_status = v_status_concluido, data_fechamento_cotacao = SYSDATE
     WHERE id_cotacao = p_id_cotacao;
     
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20002, 'Cotação não encontrada ou já está concluída.');
+        RAISE_APPLICATION_ERROR(-20002, 'Cotaï¿½ï¿½o nï¿½o encontrada ou jï¿½ estï¿½ concluï¿½da.');
     END IF;
     
-    DBMS_OUTPUT.PUT_LINE('Cotação concluída com sucesso.');
+    DBMS_OUTPUT.PUT_LINE('Cotaï¿½ï¿½o concluï¿½da com sucesso.');
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        RAISE_APPLICATION_ERROR(-20003, 'Status "Concluído" não encontrado.');
+        RAISE_APPLICATION_ERROR(-20003, 'Status "Concluï¿½do" nï¿½o encontrado.');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20004, SQLERRM);
 END;
@@ -1580,7 +1580,7 @@ BEGIN
     concluir_cotacao(1); 
 END;
 
--- 03.03. FUNÇÃO 01
+-- 03.03. FUNï¿½ï¿½O 01
 CREATE OR REPLACE FUNCTION valor_total_cotacoes_usuario(p_id_usuario IN cotacao.id_usuario%TYPE)
 RETURN NUMBER IS
     v_total NUMBER(10,2) := 0;
@@ -1598,7 +1598,7 @@ END;
 
 SELECT valor_total_cotacoes_usuario(1) FROM dual;
 
--- 03.04. FUNÇÃO 02
+-- 03.04. FUNï¿½ï¿½O 02
 CREATE OR REPLACE FUNCTION verificar_existencia_email(p_email_usuario IN usuario.email_usuario%TYPE)
 RETURN BOOLEAN IS
     v_contagem NUMBER;
@@ -1623,13 +1623,13 @@ DECLARE
 BEGIN
     v_existe := verificar_existencia_email('email@exemplo.com');
     IF v_existe THEN
-        DBMS_OUTPUT.PUT_LINE('Usuário existe.');
+        DBMS_OUTPUT.PUT_LINE('Usuï¿½rio existe.');
     ELSE
-        DBMS_OUTPUT.PUT_LINE('Usuário não existe.');
+        DBMS_OUTPUT.PUT_LINE('Usuï¿½rio nï¿½o existe.');
     END IF;
 END;
 
--- 03.05. CRIAÇÃO DE TABELAS PARA FUNCIONAMENTO DO GATILHO
+-- 03.05. CRIAï¿½ï¿½O DE TABELAS PARA FUNCIONAMENTO DO GATILHO
 DROP TABLE monitoramento_atualizacoes CASCADE CONSTRAINTS;
 DROP TABLE log_erros CASCADE CONSTRAINTS;
 
@@ -1650,7 +1650,7 @@ CREATE TABLE log_erros (
     usuario VARCHAR2(255)
 );
 
--- 03.05.01. GATILHO PARA MONITORAMENTO DE ATUALIZAÇÕES
+-- 03.05.01. GATILHO PARA MONITORAMENTO DE ATUALIZAï¿½ï¿½ES
 CREATE OR REPLACE TRIGGER trg_monitora_atualizacao_cotacao
 AFTER UPDATE OF valor_produto ON cotacao
 FOR EACH ROW
@@ -1681,9 +1681,3 @@ SELECT * FROM monitoramento_atualizacoes;
 SELECT * FROM log_erros;
 
 --------------------------------------------------------------------------------
-
-DELETE FROM status WHERE id_status = -1;
-SELECT * FROM status;
-SELECT SEQ_STATUS.NEXTVAL FROM DUAL;
-
-COMMIT;
