@@ -45,9 +45,10 @@ export const Step1: React.FC<
   const [selectedTags, setSelectedTags] = useState([]);
   const [selectedDepartment, setSelectedDepartment] = useState<number>();
 
+  // Hook
   const { tags, handleGetTags, tagsLoading } = useTags();
   const { departments, handleGetDepartments, departmentsLoading } = useDepartments();
-  const { product, setProduct } = useQuoteDetails();
+  const { setProduct } = useQuoteDetails();
 
   const onSubmit = () => {
     const idDepartamento = selectedDepartment as number;

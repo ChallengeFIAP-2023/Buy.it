@@ -30,7 +30,8 @@ import {
   LightBoldText,
 } from './styles';
 import { ScrollableContent, } from '@global/styles/index';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
+import { useQuoteDetails } from '@hooks/useQuoteDetails';
 
 interface Step3Form {
   prioridadeEntrega: number;
@@ -59,6 +60,8 @@ export const Step3: React.FC<
     2: "média",
     3: "alta"
   }
+
+  const { product, quote } = useQuoteDetails();
 
   const [deliveryPriority, setDeliveryPrioriry] = useState<string>();
   const [pricePriority, setPricePrioriry] = useState<string>();

@@ -27,6 +27,7 @@ import {
 
 // Style import
 import { ScrollableContent, Fieldset, Flex } from '@global/styles/index';
+import { useQuoteDetails } from '@hooks/useQuoteDetails';
 
 interface Step5Form {
   marca?: string;
@@ -52,7 +53,11 @@ export const Step5: React.FC<
     defaultValues: {},
   });
 
+  // Hook
+  const { setProduct } = useQuoteDetails(); 
+
   const onSubmit: SubmitHandler<Step5Form> = data => {
+    setProduct(prevProd => ({ ...prevProd, ...data }));
     // return navigation.navigate('Step5');
   };
 
@@ -159,7 +164,7 @@ export const Step5: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        onPress={() => navigation.navigate('Step3')}
+        onPress={handleSubmit(onSubmit)}
       />
     </WrapperPage>
   );
