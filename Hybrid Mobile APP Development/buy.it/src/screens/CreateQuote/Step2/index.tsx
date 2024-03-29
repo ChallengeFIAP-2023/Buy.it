@@ -3,11 +3,12 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { TFlatList } from 'react-native-input-select/lib/typescript/types/index.types';
+import { useState } from 'react';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
-import { QuoteDetailsRoutes } from '..';
+import { CreateQuoteRoutes } from '..';
+import { TFlatList } from 'react-native-input-select/lib/typescript/types/index.types';
 
 // Theme import
 import theme from '@theme/index';
@@ -34,24 +35,26 @@ import {
 } from './styles';
 import { ScrollableContent, Fieldset, Flex } from '@global/styles/index';
 
+//Hook import
+import { useCreateQuote } from '@hooks/useCreateQuote';
+
 interface Step2Form {
   nomeProduto: string;
   quantidade: number;
-  prazo: string;
 }
 
 const deadlineOptions: TFlatList = [
-  { label: 'Rápido (3 dias)', value: 'quick' },
-  { label: 'Padrão (7 dias)', value: 'standard' },
-  { label: 'Estendido (2 semanas)', value: 'extended' },
-  { label: 'Sem prioridade', value: 'no-priority' },
+  { label: 'Rápido (3 dias)', value: 3 },
+  { label: 'Padrão (7 dias)', value: 7 },
+  { label: 'Estendido (2 semanas)', value: 14 },
+  { label: 'Sem prioridade', value: 0 },
 ];
 
 const PRODUCT_QUANTITY = 15;
 
 export const Step2: React.FC<
   CompositeScreenProps<
-    NativeStackScreenProps<QuoteDetailsRoutes, 'Step2'>,
+    NativeStackScreenProps<CreateQuoteRoutes, 'Step2'>,
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
@@ -65,12 +68,22 @@ export const Step2: React.FC<
     defaultValues: {},
   });
 
+  const { setProduct, setQuote } = useCreateQuote();
+
   const onSubmit: SubmitHandler<Step2Form> = data => {
+    const nomeProduto = data.nomeProduto;
+    setProduct(prevProd => ({ ...prevProd, nomeProduto }));
+
+    const prazo = deadline as number;
+    const quantidade = data.quantidade as number;
+    setQuote(prevQuote => ({ ...prevQuote, prazo, quantidade }));
+
     return navigation.navigate('Step3');
   };
 
   function handleSubtract(value: number) {
-    const badValueConditions = isNaN(value) || value <= 0 || (value - PRODUCT_QUANTITY < 5);
+    const badValueConditions =
+      isNaN(value) || value <= 0 || value - PRODUCT_QUANTITY < 5;
     if (badValueConditions) return setValue('quantidade', 5);
 
     return setValue('quantidade', value - PRODUCT_QUANTITY);
@@ -81,6 +94,8 @@ export const Step2: React.FC<
 
     return setValue('quantidade', Number(value) + PRODUCT_QUANTITY);
   }
+
+  const [deadline, setDeadline] = useState(deadlineOptions[0].value);
 
   return (
     <WrapperPage>
@@ -148,9 +163,11 @@ export const Step2: React.FC<
               label="Prazo de recebimento"
               placeholder="3 dias"
               options={deadlineOptions}
-              selectedValue={deadlineOptions[0].value}
-              onValueChange={(value: []) => {}}
-              listControls={{ emptyListMessage: 'Nenhuma tag encontrada' }}
+              selectedValue={deadline}
+              onValueChange={(value: number) => setDeadline(value)}
+              listControls={{
+                emptyListMessage: 'Nenhum tipo de prazo encontrado',
+              }}
             />
           </Fieldset>
         </DecreasingContainer>
@@ -161,7 +178,7 @@ export const Step2: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        onPress={() => navigation.navigate('Step3')}
+        onPress={handleSubmit(onSubmit)}
       />
     </WrapperPage>
   );
