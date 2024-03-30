@@ -96,7 +96,7 @@ export const DeliveryText = styled(SimpleText)`
 export const ActionsButton = styled.View`
   width: 100%;
 
-  padding-bottom: 30px;
+  padding-bottom: 20px;
 
   position: absolute;
   bottom: 0;
@@ -105,8 +105,6 @@ export const ActionsButton = styled.View`
   flex-direction: row;
   justify-content: space-around;
   align-items: center;
-
-  background-color: ${({ theme }) => theme.COLORS.GRAY_600};
 `;
 
 export const ActionButton = styled.TouchableOpacity.attrs({

@@ -1,6 +1,7 @@
-import { ImageSourcePropType, TouchableOpacity } from 'react-native';
+import { ImageSourcePropType } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
+import { Check, DotsThree, Truck, X } from 'phosphor-react-native';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -21,7 +22,7 @@ import {
 } from '@components/index';
 
 // Style import
-import { ScrollableContent } from '@global/styles/index';
+import { Flex, ScrollableContent } from '@global/styles/index';
 import {
   CompanyWrapper,
   CompanyData,
@@ -42,7 +43,6 @@ import {
   Refuse,
   Accept,
 } from './styles';
-import { Check, DotsThree, Truck, X } from 'phosphor-react-native';
 
 const tags = ['Material escolar', 'Papelaria'];
 const maximumTags = 8;
@@ -79,13 +79,16 @@ export const QuoteProposalDetails: React.FC<
 
           <TagWrapper>
             {tags.map(item => (
-              <Chip value={item} key={item} />
+              <Chip value={item} key={`${item}-${Math.random()}`} />
             ))}
-
-            {tags && tags.length >= maximumTags && (
-              <DotsThree size={40} color={theme.COLORS.WHITE} />
-            )}
           </TagWrapper>
+
+          {tags && tags.length >= maximumTags && (
+            <Flex style={{ justifyContent: 'flex-start' }}>
+              <DotsThree size={40} color={theme.COLORS.WHITE} />
+              <Description>Mais {tags.length - maximumTags} tags</Description>
+            </Flex>
+          )}
         </DescriptionContainer>
 
         <DecreasingContainer>
@@ -111,17 +114,17 @@ export const QuoteProposalDetails: React.FC<
             </DeliveryContainer>
           </ProductDetails>
         </DecreasingContainer>
-
-        <ActionsButton>
-          <Refuse>
-            <X size={40} color={theme.COLORS.GRAY_600} weight="bold" />
-          </Refuse>
-
-          <Accept>
-            <Check size={40} color={theme.COLORS.GRAY_600} weight="bold" />
-          </Accept>
-        </ActionsButton>
       </ScrollableContent>
+
+      <ActionsButton>
+        <Refuse>
+          <X size={40} color={theme.COLORS.GRAY_600} weight="bold" />
+        </Refuse>
+
+        <Accept>
+          <Check size={40} color={theme.COLORS.GRAY_600} weight="bold" />
+        </Accept>
+      </ActionsButton>
     </WrapperPage>
   );
 };
