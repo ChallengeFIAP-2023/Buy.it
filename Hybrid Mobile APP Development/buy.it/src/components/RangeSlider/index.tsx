@@ -17,7 +17,6 @@ export function CustomSlider({ label, ...rest }: Props) {
   return (
     <Fragment>
       {Boolean(label) && <Label>{label}</Label>}
-      {/* TODO: verificar margem extra nos sliders */}
       <StyledSlider
         {...rest}
         minimumTrackTintColor={theme.COLORS.GRAY_400}

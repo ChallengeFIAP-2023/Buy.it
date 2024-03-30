@@ -47,7 +47,7 @@ const deadlineOptions: TFlatList = [
   { label: 'Rápido (3 dias)', value: 3 },
   { label: 'Padrão (7 dias)', value: 7 },
   { label: 'Estendido (2 semanas)', value: 14 },
-  { label: 'Sem prioridade', value: 0 },
+  { label: 'Sem prioridade', value: -1 },
 ];
 
 const PRODUCT_QUANTITY = 15;
@@ -161,7 +161,6 @@ export const Step2: React.FC<
           <Fieldset>
             <CustomDropdown
               label="Prazo de recebimento"
-              placeholder="3 dias"
               options={deadlineOptions}
               selectedValue={deadline}
               onValueChange={(value: number) => setDeadline(value)}

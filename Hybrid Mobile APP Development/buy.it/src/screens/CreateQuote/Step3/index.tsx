@@ -1,8 +1,7 @@
 import { ArrowRight } from 'phosphor-react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
+import { useState } from 'react';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -10,9 +9,6 @@ import { CreateQuoteRoutes } from '..';
 
 // Theme import
 import theme from '@theme/index';
-
-// Validation import
-import { Step3FormSchema } from '@validations/QuoteDetails';
 
 // Component import
 import {
@@ -24,9 +20,11 @@ import {
 } from '@components/index';
 
 // Style import
-import { LightText, LightBoldText } from './styles';
+import { LightText, LightBoldText, Label } from './styles';
 import { ScrollableContent } from '@global/styles/index';
-import { useState } from 'react';
+
+//Hook import 
+import { useCreateQuote } from '@hooks/useCreateQuote';
 
 interface Step3Form {
   prioridadeEntrega: number;
@@ -34,16 +32,40 @@ interface Step3Form {
   prioridadePreco: number;
 }
 
+type Priority = {
+  label: string;
+  value: number;
+}
+
+type Priorities = {
+  delivery: Priority;
+  quality: Priority;
+  price: Priority;
+}
+
+type keyTypes =
+| 'delivery'
+| 'quality'
+| 'price';
+
 export const Step3: React.FC<
   CompositeScreenProps<
     NativeStackScreenProps<CreateQuoteRoutes, 'Step3'>,
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
-  const { setValue } = useForm<Step3Form>({
-    resolver: yupResolver(Step3FormSchema),
-    defaultValues: {},
-  });
+
+  const { setProduct, setQuote } = useCreateQuote();
+
+  const onSubmit = () => {
+    const prioridadeEntrega = priorities.delivery.value;
+    const prioridadeQualidade = priorities.quality.value;
+    const prioridadePreco = priorities.price.value;
+    
+    setQuote(prevQuote => ({ ...prevQuote, prioridadeEntrega, prioridadeQualidade, prioridadePreco }));
+
+    return navigation.navigate('Step4');
+  };
 
   const labelValues: { [key: number]: string } = {
     1: 'baixa',
@@ -51,36 +73,35 @@ export const Step3: React.FC<
     3: 'alta',
   };
 
-  const [deliveryPriority, setDeliveryPriority] = useState<string>();
-  const [pricePriority, setPricePriority] = useState<string>();
-  const [qualityPriority, setQualityPriority] = useState<string>();
+  const defaultPriorities = {
+    delivery: {
+      label: "1: importância baixa", value: 1 
+    },
+    quality: {
+      label: "2: importância média", value: 2
+    },
+    price: {
+      label: "3: importância média", value: 3
+    },
+  }
 
-  type keyTypes =
-    | 'prioridadeEntrega'
-    | 'prioridadeQualidade'
-    | 'prioridadePreco';
+  const [priorities, setPriorities] = useState<Priorities>(defaultPriorities);
 
-  function handleSetValues(
-    value: number,
-    key: keyTypes,
-    setLabel: React.Dispatch<React.SetStateAction<string | undefined>>,
-  ) {
+  function handleSetPriorities(value: number, key: keyTypes) {
     const integerValue = Math.round(value);
     const label = `${integerValue}: importância ${labelValues[integerValue]}`;
-    setLabel(label);
-    return setValue(key, integerValue);
+
+    const newValue = { label, value };
+    setPriorities(prevPriorities => ({ ...prevPriorities, [key]: newValue }));
+
+    handlePrioritiesChanged(value, key);
   }
 
-  function handleDeliveryPriority(value: number) {
-    handleSetValues(value, 'prioridadeEntrega', setDeliveryPriority);
-  }
+  function handlePrioritiesChanged(value: number, key: keyTypes) {
+    const prevPriorities = { ...priorities }
+    delete prevPriorities[key];
 
-  function handlePricePriority(value: number) {
-    handleSetValues(value, 'prioridadePreco', setPricePriority);
-  }
-
-  function handleQualityPriority(value: number) {
-    handleSetValues(value, 'prioridadeQualidade', setQualityPriority);
+    // TODO: verificar o valor alterado com "prevPriorities" pra alterar também as outras prioridades para que não tenham repetidos
   }
 
   return (
@@ -104,30 +125,33 @@ export const Step3: React.FC<
 
           <CustomSlider
             label="Entrega rápida"
-            value={Number(deliveryPriority) ?? 0}
+            value={priorities.delivery.value}
             minimumValue={1}
             maximumValue={3}
             step={1}
-            onValueChange={handleDeliveryPriority}
+            onValueChange={(value: number) => handleSetPriorities(value, 'delivery')}
           />
+          <Label>{priorities.delivery.label}</Label>
 
           <CustomSlider
             label="Qualidade"
-            value={Number(qualityPriority) ?? 0}
+            value={priorities.quality.value}
             minimumValue={1}
             maximumValue={3}
             step={1}
-            onValueChange={handleQualityPriority}
+            onValueChange={(value: number) => handleSetPriorities(value, 'quality')}
           />
+          <Label>{priorities.quality.label}</Label>
 
           <CustomSlider
             label="Preço baixo"
-            value={Number(pricePriority) ?? 0}
+            value={priorities.price.value}
             minimumValue={1}
             maximumValue={3}
             step={1}
-            onValueChange={handlePricePriority}
+            onValueChange={(value: number) => handleSetPriorities(value, 'price')}
           />
+          <Label>{priorities.price.label}</Label>
         </DecreasingContainer>
       </ScrollableContent>
 
@@ -136,7 +160,7 @@ export const Step3: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        onPress={() => navigation.navigate('Step4')}
+        onPress={onSubmit}
       />
     </WrapperPage>
   );
