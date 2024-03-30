@@ -1,4 +1,4 @@
-import React, { Dispatch, createContext, useContext, useState } from 'react';
+import React, { Dispatch, createContext, useCallback, useContext, useState } from 'react';
 
 // Service import
 import GlobalRequestService from '@services/global-request';
@@ -6,13 +6,15 @@ import GlobalRequestService from '@services/global-request';
 // Type import
 import { QuoteQuery, ProductQuery, Department, Tag } from '@dtos/index';
 import Toast from 'react-native-toast-message';
+import { api } from '@services/api';
 
 interface CreateQuoteContextData {
   quote: QuoteQuery;
   product: ProductQuery;
   setQuote: Dispatch<React.SetStateAction<QuoteQuery>>;
   setProduct: Dispatch<React.SetStateAction<ProductQuery>>;
-  // handleCreateQuote: (finalQueryData: QuoteQuery) => Promise<void>;
+  handleCreateQuote: (finalQueryData: QuoteQuery) => Promise<void>;
+  handleCreateProduct: (finalQueryData: ProductQuery) => Promise<void>;
   loading: boolean;
   departments: Department[];
   tags: Tag[];
@@ -57,6 +59,59 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     }
   }
 
+  const handleCreateProduct = useCallback(async (productData: ProductQuery) => {
+    try {
+      setLoading(true);
+
+      const body = productData;
+      const { data } = await api.post('/produtos', body);
+
+      console.debug(data);
+
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível cadastrar este produto.',
+      });
+
+      throw error;
+    } finally {
+      setLoading(true);
+    }
+  }, []);
+
+  const handleCreateQuote = useCallback(async (data: QuoteQuery) => {
+    try {
+      setLoading(true);
+
+      const values = Object.values(data);
+      const insufficientInformation = values.some(
+        value =>
+          typeof value === 'undefined' ||
+          typeof value === null,
+      );
+
+      if (insufficientInformation)
+        throw new Error('Um ou mais atributos estão vazios.');
+
+      const body = data;
+
+      await api.post('/cotacoes', body);
+
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível criar esta cotação.',
+      });
+
+      throw error;
+    } finally {
+      setLoading(true);
+    }
+  }, []);
+
   return (
     <CreateQuoteContext.Provider
       value={{
@@ -67,7 +122,9 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
         departments,
         tags,
         loading,
-        fetchDepartmentsAndTags
+        fetchDepartmentsAndTags,
+        handleCreateProduct,
+        handleCreateQuote
       }}
     >
       {children}

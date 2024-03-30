@@ -1,4 +1,4 @@
-import { ArrowRight, Minus, Plus } from 'phosphor-react-native';
+import { ArrowRight } from 'phosphor-react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
@@ -24,15 +24,11 @@ import {
 } from '@components/index';
 
 // Style import
+import { LightText, LightBoldText } from './styles';
 import { ScrollableContent, Fieldset } from '@global/styles/index';
-import { useCreateQuote } from '@hooks/useCreateQuote';
 
 interface Step5Form {
-  marca?: string;
-  cor?: string;
-  tamanho?: string;
-  material?: string;
-  observacoes?: string;
+  preco: number;
 }
 
 export const Step5: React.FC<
@@ -43,19 +39,10 @@ export const Step5: React.FC<
 > = ({ navigation }) => {
   const {
     control,
-    handleSubmit,
     formState: { errors },
   } = useForm<Step5Form>({
     resolver: yupResolver(Step5FormSchema),
-    defaultValues: {},
   });
-
-  // Hook
-  const { setProduct } = useCreateQuote();
-
-  const onSubmit: SubmitHandler<Step5Form> = data => {
-    setProduct(prevProd => ({ ...prevProd, ...data }));
-  };
 
   return (
     <WrapperPage>
@@ -63,93 +50,38 @@ export const Step5: React.FC<
         <DefaultComponent
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
-            title: 'Se preferir, especifique detalhes do produto',
-            subtitle: 'Passo 5 de 5 (opcional)',
+            title: 'Quanto você quer pagar em cada caneta esferográfica?',
+            subtitle: 'Passo 5 de 5',
           }}
           key="default-component-quote-details"
         />
 
         <DecreasingContainer scrollable>
+          <LightText>
+            O valor médio de cotações para{' '}
+            <LightBoldText> caneta esferográfica </LightBoldText> é R$1,00 por
+            unidade. O menor preço já pago em caneta esferográfica foi R$0,45.
+          </LightText>
+
+          <LightText>Quanto você quer pagar?</LightText>
+
           <Fieldset>
             <Controller
               control={control}
-              name="marca"
+              name="preco"
               render={({ field: { value, onChange } }) => (
                 <Input
-                  value={value}
+                  value={value?.toString()}
                   onChangeText={onChange}
-                  label="Marca"
-                  placeholder="BIC"
-                  error={errors.marca?.message}
+                  label="Valor"
+                  placeholder="R$ 0,50"
+                  error={errors.preco?.message}
                 />
               )}
             />
           </Fieldset>
 
-          <Fieldset>
-            <Controller
-              control={control}
-              name="cor"
-              render={({ field: { value, onChange } }) => (
-                <Input
-                  value={value}
-                  onChangeText={onChange}
-                  label="Cor"
-                  placeholder="Azul"
-                  error={errors.cor?.message}
-                />
-              )}
-            />
-          </Fieldset>
-
-          <Fieldset>
-            <Controller
-              control={control}
-              name="tamanho"
-              render={({ field: { value, onChange } }) => (
-                <Input
-                  value={value}
-                  onChangeText={onChange}
-                  label="Tamanho"
-                  placeholder="Normal"
-                  error={errors.tamanho?.message}
-                />
-              )}
-            />
-          </Fieldset>
-
-          <Fieldset>
-            <Controller
-              control={control}
-              name="material"
-              render={({ field: { value, onChange } }) => (
-                <Input
-                  value={value}
-                  onChangeText={onChange}
-                  label="Material"
-                  placeholder="Plástico"
-                  error={errors.material?.message}
-                />
-              )}
-            />
-          </Fieldset>
-
-          <Fieldset>
-            <Controller
-              control={control}
-              name="observacoes"
-              render={({ field: { value, onChange } }) => (
-                <Input
-                  value={value}
-                  onChangeText={onChange}
-                  label="Observacoes"
-                  placeholder="Informações complementares"
-                  error={errors.observacoes?.message}
-                  numberOfLines={3}
-                />
-              )}
-            />
-          </Fieldset>
+          <Button label="Utilizar preço sugerido" size="SM" />
         </DecreasingContainer>
       </ScrollableContent>
 
@@ -158,7 +90,7 @@ export const Step5: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        onPress={handleSubmit(onSubmit)}
+        onPress={() => navigation.navigate('Step5')}
       />
     </WrapperPage>
   );

@@ -1,4 +1,4 @@
-import { ArrowRight } from 'phosphor-react-native';
+import { ArrowRight, Minus, Plus } from 'phosphor-react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
@@ -24,11 +24,17 @@ import {
 } from '@components/index';
 
 // Style import
-import { LightText, LightBoldText } from './styles';
 import { ScrollableContent, Fieldset } from '@global/styles/index';
 
+// Hook import
+import { useCreateQuote } from '@hooks/useCreateQuote';
+
 interface Step4Form {
-  preco: number;
+  marca?: string;
+  cor?: string;
+  tamanho?: string;
+  material?: string;
+  observacoes?: string;
 }
 
 export const Step4: React.FC<
@@ -39,12 +45,26 @@ export const Step4: React.FC<
 > = ({ navigation }) => {
   const {
     control,
+    handleSubmit,
     formState: { errors },
-    setValue,
   } = useForm<Step4Form>({
     resolver: yupResolver(Step4FormSchema),
-    defaultValues: {},
   });
+
+  // Hook
+  const { setProduct, handleCreateProduct, product } = useCreateQuote();
+
+  const onSubmit: SubmitHandler<Step4Form> = async data => {
+    setProduct(prevProd => ({ ...prevProd, ...data }));
+
+    console.debug(product);
+
+    try {
+      await handleCreateProduct(product);
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
   return (
     <WrapperPage>
@@ -52,38 +72,93 @@ export const Step4: React.FC<
         <DefaultComponent
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
-            title: 'Quanto você quer pagar em cada caneta esferográfica?',
-            subtitle: 'Passo 4 de 5',
+            title: 'Se preferir, especifique detalhes do produto',
+            subtitle: 'Passo 4 de 5 (opcional)',
           }}
           key="default-component-quote-details"
         />
 
         <DecreasingContainer scrollable>
-          <LightText>
-            O valor médio de cotações para{' '}
-            <LightBoldText> caneta esferográfica </LightBoldText> é R$1,00 por
-            unidade. O menor preço já pago em caneta esferográfica foi R$0,45.
-          </LightText>
-
-          <LightText>Quanto você quer pagar?</LightText>
-
           <Fieldset>
             <Controller
               control={control}
-              name="preco"
+              name="marca"
               render={({ field: { value, onChange } }) => (
                 <Input
-                  value={value?.toString()}
+                  value={value}
                   onChangeText={onChange}
-                  label="Valor"
-                  placeholder="R$ 0,50"
-                  error={errors.preco?.message}
+                  label="Marca"
+                  placeholder="BIC"
+                  error={errors.marca?.message}
                 />
               )}
             />
           </Fieldset>
 
-          <Button label="Utilizar preço sugerido" size="SM" />
+          <Fieldset>
+            <Controller
+              control={control}
+              name="cor"
+              render={({ field: { value, onChange } }) => (
+                <Input
+                  value={value}
+                  onChangeText={onChange}
+                  label="Cor"
+                  placeholder="Azul"
+                  error={errors.cor?.message}
+                />
+              )}
+            />
+          </Fieldset>
+
+          <Fieldset>
+            <Controller
+              control={control}
+              name="tamanho"
+              render={({ field: { value, onChange } }) => (
+                <Input
+                  value={value}
+                  onChangeText={onChange}
+                  label="Tamanho"
+                  placeholder="Normal"
+                  error={errors.tamanho?.message}
+                />
+              )}
+            />
+          </Fieldset>
+
+          <Fieldset>
+            <Controller
+              control={control}
+              name="material"
+              render={({ field: { value, onChange } }) => (
+                <Input
+                  value={value}
+                  onChangeText={onChange}
+                  label="Material"
+                  placeholder="Plástico"
+                  error={errors.material?.message}
+                />
+              )}
+            />
+          </Fieldset>
+
+          <Fieldset style={{ marginBottom: 130 }}>
+            <Controller
+              control={control}
+              name="observacoes"
+              render={({ field: { value, onChange } }) => (
+                <Input
+                  value={value}
+                  onChangeText={onChange}
+                  label="Observacoes"
+                  placeholder="Informações complementares"
+                  error={errors.observacoes?.message}
+                  numberOfLines={3}
+                />
+              )}
+            />
+          </Fieldset>
         </DecreasingContainer>
       </ScrollableContent>
 
@@ -92,7 +167,7 @@ export const Step4: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        onPress={() => navigation.navigate('Step5')}
+        onPress={handleSubmit(onSubmit)}
       />
     </WrapperPage>
   );

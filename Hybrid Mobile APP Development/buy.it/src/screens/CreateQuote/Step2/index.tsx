@@ -39,7 +39,7 @@ import { ScrollableContent, Fieldset, Flex } from '@global/styles/index';
 import { useCreateQuote } from '@hooks/useCreateQuote';
 
 interface Step2Form {
-  nomeProduto: string;
+  nome: string;
   quantidade: number;
 }
 
@@ -65,14 +65,16 @@ export const Step2: React.FC<
     setValue,
   } = useForm<Step2Form>({
     resolver: yupResolver(Step2FormSchema),
-    defaultValues: {},
+    defaultValues: {
+      quantidade: 5
+    },
   });
 
   const { setProduct, setQuote } = useCreateQuote();
 
   const onSubmit: SubmitHandler<Step2Form> = data => {
-    const nomeProduto = data.nomeProduto;
-    setProduct(prevProd => ({ ...prevProd, nomeProduto }));
+    const nome = data.nome;
+    setProduct(prevProd => ({ ...prevProd, nome }));
 
     const prazo = deadline as number;
     const quantidade = data.quantidade as number;
@@ -113,14 +115,14 @@ export const Step2: React.FC<
           <Fieldset>
             <Controller
               control={control}
-              name="nomeProduto"
+              name="nome"
               render={({ field: { value, onChange } }) => (
                 <Input
                   value={value}
                   onChangeText={onChange}
                   label="Nome do produto"
                   placeholder="Caneta esferográfica"
-                  error={errors.nomeProduto?.message}
+                  error={errors.nome?.message}
                 />
               )}
             />
@@ -143,7 +145,7 @@ export const Step2: React.FC<
                       <Input
                         value={value?.toString()}
                         onChangeText={onChange}
-                        placeholder="5"
+                        placeholder="Quantidade"
                         keyboardType="number-pad"
                         error={errors.quantidade?.message}
                       />
