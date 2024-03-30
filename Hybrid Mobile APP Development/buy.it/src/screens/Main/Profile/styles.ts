@@ -5,3 +5,10 @@ export const Fieldset = styled.View`
 
   margin-bottom: 25px;
 `;
+
+export const AvatarWrapper = styled.View`
+  align-items: center;
+  justify-content: center;
+
+  margin-bottom: 30px;
+`;

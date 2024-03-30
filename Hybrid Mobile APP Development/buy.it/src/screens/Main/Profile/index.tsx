@@ -7,7 +7,7 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import Toast from 'react-native-toast-message';
 
 // Type import
-import { MainNavigationRoutes } from '@routes/index';
+import { MainRoutes } from '..';
 import { UserQuery } from '@dtos/user';
 
 // Hook import
@@ -30,7 +30,7 @@ import {
 } from '@components/index';
 
 // Style import
-import { Fieldset } from './styles';
+import { AvatarWrapper, Fieldset } from './styles';
 import { ScrollableContent } from '@global/styles/index';
 
 interface ProfileForm {
@@ -40,7 +40,7 @@ interface ProfileForm {
 
 export function Profile({
   navigation,
-}: NativeStackScreenProps<MainNavigationRoutes, 'Profile'>) {
+}: NativeStackScreenProps<MainRoutes, 'Profile'>) {
   // Hook
   const { user, handleUpdateUser } = useAuth();
   const {
@@ -87,7 +87,7 @@ export function Profile({
 
   const imageSource: ImageSourcePropType = avatar
     ? { uri: avatar }
-    : require('../../assets/default_avatar.png');
+    : require('../../../assets/default_avatar.png');
 
   return (
     <WrapperPage>
@@ -95,18 +95,20 @@ export function Profile({
         <DefaultComponent
           highlightProps={{
             title: 'Gerencie sua conta',
-            subtitle: `Olá, ${user.nome}!`,
+            subtitle: `Olá ${user.nome || ''}!`,
           }}
           headerProps={{ goBack: () => navigation.goBack() }}
           key="default-component-profile"
         />
 
         <DecreasingContainer>
-          <UserAvatar
-            imageSource={imageSource}
-            handleSetAvatar={setAvatar}
-            size="MD"
-          />
+          <AvatarWrapper>
+            <UserAvatar
+              imageSource={imageSource}
+              handleSetAvatar={setAvatar}
+              size="MD"
+            />
+          </AvatarWrapper>
 
           <Fieldset>
             <Controller
@@ -126,7 +128,7 @@ export function Profile({
             />
           </Fieldset>
 
-          <Fieldset style={{ paddingBottom: 75 }}>
+          <Fieldset>
             <Controller
               control={control}
               name="senha"
@@ -142,16 +144,17 @@ export function Profile({
               )}
             />
           </Fieldset>
+
+          <Fieldset style={{ paddingBottom: 75 }}>
+            <Button
+              label="Salvar"
+              size="XL"
+              icon={<Checks color={theme.COLORS.WHITE} weight="bold" />}
+              onPress={handleSubmit(onSubmit)}
+            />
+          </Fieldset>
         </DecreasingContainer>
       </ScrollableContent>
-
-      <Button
-        label="Salvar"
-        size="XL"
-        icon={<Checks color={theme.COLORS.WHITE} weight="bold" />}
-        bottom
-        onPress={handleSubmit(onSubmit)}
-      />
     </WrapperPage>
   );
 }

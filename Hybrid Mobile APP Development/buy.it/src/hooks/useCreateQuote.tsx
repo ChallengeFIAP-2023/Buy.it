@@ -1,4 +1,10 @@
-import React, { Dispatch, createContext, useCallback, useContext, useState } from 'react';
+import React, {
+  Dispatch,
+  createContext,
+  useCallback,
+  useContext,
+  useState,
+} from 'react';
 
 // Service import
 import GlobalRequestService from '@services/global-request';
@@ -18,7 +24,7 @@ interface CreateQuoteContextData {
   loading: boolean;
   departments: Department[];
   tags: Tag[];
-  fetchDepartmentsAndTags(): Promise<void>
+  fetchDepartmentsAndTags(): Promise<void>;
 }
 
 interface CreateQuoteProviderProps {
@@ -49,7 +55,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
 
       setDepartments(departments);
       setTags(tags);
-    } catch (error) {      
+    } catch (error) {
       return Toast.show({
         type: 'error',
         text1: String(error),
@@ -67,7 +73,6 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
       const { data } = await api.post('/produtos', body);
 
       console.debug(data);
-
     } catch (error) {
       Toast.show({
         type: 'error',
@@ -77,7 +82,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
 
       throw error;
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   }, []);
 
@@ -87,9 +92,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
 
       const values = Object.values(data);
       const insufficientInformation = values.some(
-        value =>
-          typeof value === 'undefined' ||
-          typeof value === null,
+        value => typeof value === 'undefined' || typeof value === null,
       );
 
       if (insufficientInformation)
@@ -98,7 +101,6 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
       const body = data;
 
       await api.post('/cotacoes', body);
-
     } catch (error) {
       Toast.show({
         type: 'error',
@@ -108,7 +110,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
 
       throw error;
     } finally {
-      setLoading(true);
+      setLoading(false);
     }
   }, []);
 
@@ -124,7 +126,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
         loading,
         fetchDepartmentsAndTags,
         handleCreateProduct,
-        handleCreateQuote
+        handleCreateQuote,
       }}
     >
       {children}

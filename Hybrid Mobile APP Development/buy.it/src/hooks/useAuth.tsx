@@ -57,7 +57,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
 
       setUser(data);
 
-      return navigate('Profile');
+      return navigate('Main');
     } catch (error) {
       Toast.show({
         type: 'error',
