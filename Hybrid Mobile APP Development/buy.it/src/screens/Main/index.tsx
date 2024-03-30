@@ -38,7 +38,6 @@ export const Main: React.FC<
     headerShown: false,
     tabBarActiveBackgroundColor: theme.COLORS.GRAY_500,
     tabBarInactiveBackgroundColor: theme.COLORS.GRAY_500,
-    tabBarLabelPosition: 'beside-icon',
     tabBarStyle: {
       borderTopWidth: 0,
       height: 70,
@@ -48,7 +47,7 @@ export const Main: React.FC<
   function iconProps(focused: boolean): IconProps {
     return {
       color: focused ? GRAY_100 : GRAY_300,
-      size: focused ? theme.FONT_SIZE.XXL : theme.FONT_SIZE.XL,
+      size: theme.FONT_SIZE.XXL,
       weight: focused ? 'fill' : 'regular',
     };
   }
