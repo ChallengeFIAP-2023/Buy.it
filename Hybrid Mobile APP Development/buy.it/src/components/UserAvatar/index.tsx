@@ -10,17 +10,17 @@ import theme from '@theme/index';
 import { Container, Image, IconPic } from './styles';
 
 interface Props {
-  handleSetAvatar: (uri: string) => void;
+  handleSetAvatar?: (uri: string) => void;
   imageSource: ImageSourcePropType;
-  size: 'MD' | 'XLL';
+  size: 'MD' | 'XXL';
 }
 
 export function UserAvatar({
   handleSetAvatar,
   imageSource,
-  size = 'XLL',
+  size = 'XXL',
 }: Props) {
-  const iconSize = size === 'XLL' ? theme.FONT_SIZE.XXL : theme.FONT_SIZE.MD;
+  const iconSize = size === 'XXL' ? theme.FONT_SIZE.XXL : theme.FONT_SIZE.LG;
 
   async function handleSelectImage() {
     const result = await ImagePicker.launchImageLibraryAsync({
@@ -31,16 +31,25 @@ export function UserAvatar({
       base64: true,
     });
 
-    if (!result.canceled) handleSetAvatar(result.assets[0].uri);
+    if (!result.canceled && handleSetAvatar) {
+      handleSetAvatar(result.assets[0].uri);
+    }
   }
 
   return (
-    <Container onPress={handleSelectImage} activeOpacity={0.7}>
+    <Container
+      {...(handleSetAvatar && {
+        onPress: handleSelectImage,
+      })}
+      activeOpacity={0.7}
+    >
       <Image source={imageSource} size={size} />
 
-      <IconPic size={size}>
-        <ImageIcon size={iconSize} color={theme.COLORS.WHITE} weight="bold" />
-      </IconPic>
+      {handleSetAvatar && (
+        <IconPic size={size}>
+          <ImageIcon size={iconSize} color={theme.COLORS.WHITE} weight="bold" />
+        </IconPic>
+      )}
     </Container>
   );
 }

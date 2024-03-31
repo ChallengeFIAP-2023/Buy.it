@@ -97,7 +97,7 @@ public class Tag {
 
     public Tag addDepartamento(Departamento departamento) {
         this.departamentos.add(departamento);
-        if (!departamento.getTags().contains(this)) departamento.getTags().add(this);
+        departamento.addTag(this);
         return this;
     }
 
@@ -115,7 +115,7 @@ public class Tag {
 
     public Tag removeUsuario(Usuario usuario) {
         this.usuarios.remove(usuario);
-        if (usuario.getTags().equals(this)) usuario.removeTag(this);
+        if (usuario.getTags().contains(this)) usuario.removeTag(this);
         return this;
     }
 
@@ -127,7 +127,7 @@ public class Tag {
 
     public Tag removeProduto(Produto produto) {
         this.produtos.remove(produto);
-        if (produto.getTags().equals(this)) produto.removeTag(this);
+        if (produto.getTags().contains(this)) produto.removeTag(this);
         return this;
     }
 

@@ -14,6 +14,7 @@ export { DefaultComponent } from './DefaultComponent';
 export { UserAvatar } from './UserAvatar';
 export { WrapperPage } from './WrapperPage';
 export { Requirement } from './Requirement';
+export { Text } from './Tab';
 
 // Type export
 export type { Props as HeaderProps } from './Header';

@@ -11,8 +11,6 @@ import java.util.Set;
 import com.fasterxml.jackson.annotation.JsonIdentityInfo;
 import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 
-import java.util.Optional;
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -43,14 +41,11 @@ public class Departamento {
     })
     private Set<Tag> tags = new LinkedHashSet<>();
 
-    public Optional<Departamento> addTag(Tag tag) {
-        if (this.tags == null) {
-            this.tags = new LinkedHashSet<>();
-        }
+    public Departamento addTag(Tag tag) {
         this.tags.add(tag);
-        if (!tag.getDepartamentos().contains(this)) tag.getDepartamentos().add(this);
-        return Optional.of(this);
-    }    
+        tag.addDepartamento(this);
+        return this;
+    }
 
     public Departamento removeTag(Tag tag) {
         this.tags.remove(tag);

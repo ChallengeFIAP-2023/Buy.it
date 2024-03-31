@@ -20,5 +20,5 @@ export const Value = styled.Text`
 
 export const StyledSlider = styled(Slider)`
   margin-top: 0;
-  margin-bottom: 15px;
+  margin-bottom: 5px;
 `;

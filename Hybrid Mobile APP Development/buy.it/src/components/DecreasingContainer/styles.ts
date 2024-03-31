@@ -16,10 +16,13 @@ export const Container = styled.View<{ scrollable?: boolean }>`
   flex: 1;
 
   ${props =>
-    props.scrollable &&
-    css`
-      min-height: 600px;
-    `}
+    props.scrollable
+      ? css`
+          min-height: 600px;
+        `
+      : css`
+          min-height: ${windowHeight - 285}px;
+        `}
 
   background-color: ${({ theme }) => theme.COLORS.GRAY_600};
 

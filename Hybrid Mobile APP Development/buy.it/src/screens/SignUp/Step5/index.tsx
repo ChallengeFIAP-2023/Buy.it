@@ -62,7 +62,7 @@ export const Step5: React.FC<
 
       await handleSignIn({ email, password: senha });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   };
 

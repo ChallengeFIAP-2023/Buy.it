@@ -10,14 +10,16 @@ import { AuthProvider, useAuth } from '@hooks/useAuth';
 // Screen import
 import { SignIn } from '@screens/SignIn';
 import { SignUp } from '@screens/SignUp';
-import { Profile } from '@screens/Profile';
-import { QuoteDetails } from '@screens/QuoteDetails';
+import { CreateQuote } from '@screens/CreateQuote';
+import { QuoteProposal } from '@screens/QuoteProposal';
+import { Main } from '@screens/Main';
 
 export type MainNavigationRoutes = {
   SignIn: undefined;
   SignUp: undefined;
-  Profile: undefined;
-  QuoteDetails: undefined;
+  CreateQuote: undefined;
+  QuoteProposal: undefined;
+  Main: undefined;
 };
 
 export type AppNavigatorRoutesProps =
@@ -34,7 +36,7 @@ export default function Routes() {
   const logged = true;
 
   const initialMainRoute = useMemo<keyof MainNavigationRoutes>(() => {
-    if (logged) return 'QuoteDetails';
+    if (logged) return 'Main';
 
     return 'SignIn';
   }, [logged]);
@@ -51,8 +53,9 @@ export default function Routes() {
       >
         <Stack.Screen name="SignIn" component={SignIn} />
         <Stack.Screen name="SignUp" component={SignUp} />
-        <Stack.Screen name="Profile" component={Profile} />
-        <Stack.Screen name="QuoteDetails" component={QuoteDetails} />
+        <Stack.Screen name="CreateQuote" component={CreateQuote} />
+        <Stack.Screen name="QuoteProposal" component={QuoteProposal} />
+        <Stack.Screen name="Main" component={Main} />
       </Stack.Navigator>
     );
 

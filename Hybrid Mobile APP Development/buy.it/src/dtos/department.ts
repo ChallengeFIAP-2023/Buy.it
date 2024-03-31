@@ -6,3 +6,10 @@ export interface Department {
   icone: string;
   tags: Tag[];
 }
+
+export interface DepartmentQuery {
+  id: string;
+  nome: string;
+  icone: string;
+  idsTags: number[];
+}

@@ -1,14 +1,11 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.TouchableOpacity`
-  width: 100%;
   height: auto;
   border-radius: 80px;
-  align-items: center;
-  justify-content: center;
 `;
 
-export const Image = styled.Image<{ size: 'MD' | 'XLL' }>`
+export const Image = styled.Image<{ size: 'MD' | 'XXL' }>`
   background-color: ${({ theme }) => theme.COLORS.GRAY_400};
 
   width: ${props => (props.size === 'MD' ? '100px' : '200px')};
@@ -19,10 +16,10 @@ export const Image = styled.Image<{ size: 'MD' | 'XLL' }>`
   border-color: ${({ theme }) => theme.COLORS.GRAY_300};
 `;
 
-export const IconPic = styled.View<{ size: 'MD' | 'XLL' }>`
+export const IconPic = styled.View<{ size: 'MD' | 'XXL' }>`
   position: absolute;
   bottom: 10px;
-  right: ${props => (props.size === 'MD' ? '105px' : '60px')};
+  right: ${props => (props.size === 'MD' ? '-10px' : '0px')};
 
   align-items: center;
   justify-content: center;

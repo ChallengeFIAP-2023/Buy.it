@@ -1,0 +1,37 @@
+{
+  "Version": 1,
+  "WorkspaceRootPath": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\",
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\configurations\\avaliacaoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:configurations\\avaliacaoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
+  "DocumentGroupContainers": [
+    {
+      "Orientation": 0,
+      "VerticalTabListWidth": 256,
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "AvaliacaoConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\AvaliacaoConfiguration.cs",
+              "RelativeDocumentMoniker": "Configurations\\AvaliacaoConfiguration.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\AvaliacaoConfiguration.cs",
+              "RelativeToolTip": "Configurations\\AvaliacaoConfiguration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABsAAAABAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-03-28T21:01:54.146Z",
+              "EditorCaption": ""
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

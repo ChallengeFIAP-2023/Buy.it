@@ -87,7 +87,7 @@ public class Usuario implements UserDetails{
 
     public Usuario removeTag(Tag tag){
         this.tags.remove(tag);
-        if (tag.getUsuarios().equals(this)) tag.removeUsuario(this);
+        if (tag.getUsuarios().contains(this)) tag.removeUsuario(this);
         return this;
     }
 
