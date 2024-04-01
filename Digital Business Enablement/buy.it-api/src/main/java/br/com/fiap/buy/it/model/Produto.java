@@ -53,7 +53,7 @@ public class Produto {
     @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
-            name = "TAG_PRODUTO",
+            name = "PRODUTO_TAG",
             joinColumns = {
                     @JoinColumn(
                             name = "ID_PRODUTO",
