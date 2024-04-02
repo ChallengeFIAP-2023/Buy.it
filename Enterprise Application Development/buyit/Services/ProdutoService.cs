@@ -88,6 +88,39 @@ public class ProdutoService
         return entity;
     }
 
+    public async Task<List<ProdutoDto>> FindByDepartamentoIdAsync(long id)
+    {
+        var list = await _context.Produto
+            .Where(x => x.Departamento.Id == id)
+            .Include(x => x.Departamento)
+            .Include(x => x.Tags)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
+    public async Task<List<ProdutoDto>> FindByTagIdAsync(long id)
+    {
+        var list = await _context.Produto
+            .Where(p => p.Tags.Any(t => t.Id == id))
+            .Include(x => x.Tags)
+            .Include(x => x.Departamento)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
+    public async Task<List<ProdutoDto>> FindByNameAsync(string nome)
+    {
+        var list = await _context.Produto
+            .Where(p => p.Nome.ToLower().Contains(nome.ToLower()))
+            .Include(x => x.Tags)
+            .Include(x => x.Departamento)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
     private ProdutoDto ConvertToDto(ProdutoModel entity)
     {
         return new ProdutoDto

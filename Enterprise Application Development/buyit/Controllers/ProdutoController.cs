@@ -85,5 +85,47 @@ namespace Buyit.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("departamento/{id}")]
+        public async Task<ActionResult<IEnumerable<ProdutoDto>>> GetByDepartamentoId(long id)
+        {
+            try
+            {
+                var list = await _service.FindByDepartamentoIdAsync(id);
+                return Ok(list);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("tag/{id}")]
+        public async Task<ActionResult<IEnumerable<ProdutoDto>>> GetByTagId(long id)
+        {
+            try
+            {
+                var list = await _service.FindByTagIdAsync(id);
+                return Ok(list);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("nome/{nome}")]
+        public async Task<ActionResult<IEnumerable<ProdutoDto>>> GetByName(string nome)
+        {
+            try
+            {
+                var list = await _service.FindByNameAsync(nome);
+                return Ok(list);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

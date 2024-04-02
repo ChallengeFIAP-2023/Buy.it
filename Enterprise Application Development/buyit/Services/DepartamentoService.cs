@@ -84,6 +84,16 @@ public class DepartamentoService
         return entity;
     }
 
+    public async Task<List<DepartamentoDto>> FindByTagIdAsync(long id)
+    {
+        var list = await _context.Departamento
+            .Where(d => d.Tags.Any(t => t.Id == id))
+            .Include(x => x.Tags)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
     private DepartamentoDto ConvertToDto(DepartamentoModel entity)
     {
         return new DepartamentoDto

@@ -85,5 +85,19 @@ namespace Buyit.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("tag/{id}")]
+        public async Task<ActionResult<IEnumerable<DepartamentoDto>>> GetByTagId(long id)
+        {
+            try
+            {
+                var list = await _service.FindByTagIdAsync(id);
+                return Ok(list);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

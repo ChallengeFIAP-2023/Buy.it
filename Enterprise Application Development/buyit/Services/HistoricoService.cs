@@ -69,6 +69,54 @@ public class HistoricoService
         return entity;
     }
 
+    public async Task<List<HistoricoDto>> FindByCotacaoIdAsync(long id)
+    {
+        var list = await _context.Historico
+            .Where(x => x.Cotacao.Id == id)
+            .Include(x => x.Cotacao).ThenInclude(x => x.Comprador)
+            .Include(x => x.Fornecedor)
+            .Include(x => x.Status)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
+    public async Task<List<HistoricoDto>> FindByCompradorIdAsync(long id)
+    {
+        var list = await _context.Historico
+            .Where(x => x.Cotacao.Comprador.Id == id)
+            .Include(x => x.Cotacao).ThenInclude(x => x.Comprador)
+            .Include(x => x.Fornecedor)
+            .Include(x => x.Status)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
+    public async Task<List<HistoricoDto>> FindByFornecedorIdAsync(long id)
+    {
+        var list = await _context.Historico
+            .Where(x => x.Fornecedor.Id == id)
+            .Include(x => x.Cotacao).ThenInclude(x => x.Comprador)
+            .Include(x => x.Fornecedor)
+            .Include(x => x.Status)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
+    public async Task<List<HistoricoDto>> FindByStatusIdAsync(long id)
+    {
+        var list = await _context.Historico
+            .Where(x => x.Status.Id == id)
+            .Include(x => x.Cotacao).ThenInclude(x => x.Comprador)
+            .Include(x => x.Fornecedor)
+            .Include(x => x.Status)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
     private HistoricoDto ConvertToDto(HistoricoModel entity)
     {
         return new HistoricoDto

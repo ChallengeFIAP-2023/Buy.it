@@ -85,5 +85,19 @@ namespace Buyit.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("usuario/{id}")]
+        public async Task<ActionResult<IEnumerable<ContatoDto>>> GetByUsuarioId(long id)
+        {
+            try
+            {
+                var list = await _service.FindByUsuarioIdAsync(id);
+                return Ok(list);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
     }
 }

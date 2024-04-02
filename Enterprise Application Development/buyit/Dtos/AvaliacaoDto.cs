@@ -1,5 +1,4 @@
-﻿using Buyit.Models;
-using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations;
 
 namespace Buyit.Dtos
 {

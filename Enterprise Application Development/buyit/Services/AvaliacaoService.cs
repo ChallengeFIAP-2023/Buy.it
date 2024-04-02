@@ -65,6 +65,26 @@ public class AvaliacaoService
         return entity;
     }
 
+    public async Task<List<AvaliacaoDto>> FindByCotacaoIdAsync(long id)
+    {
+        var list = await _context.Avaliacao
+            .Where(x => x.Cotacao.Id == id)
+            .Include(x => x.Cotacao)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
+    public async Task<List<AvaliacaoDto>> FindByUsuarioIdAsync(long id)
+    {
+        var list = await _context.Avaliacao
+            .Where(x => x.Cotacao.Comprador.Id == id)
+            .Include(x => x.Cotacao)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
     private AvaliacaoDto ConvertToDto(AvaliacaoModel entity)
     {
         return new AvaliacaoDto

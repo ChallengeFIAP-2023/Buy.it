@@ -119,4 +119,14 @@ public class UsuarioService
             Tags = tags
         };
     }
+
+    public async Task<List<UsuarioDto>> FindByTagIdAsync(long id)
+    {
+        var list = await _context.Usuario
+            .Where(u => u.Tags.Any(t => t.Id == id))
+            .Include(x => x.Tags)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
 }

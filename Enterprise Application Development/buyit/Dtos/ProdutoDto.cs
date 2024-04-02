@@ -14,7 +14,7 @@ namespace Buyit.Dtos
         public string? Tamanho { get; set; }
         public string? Material { get; set; }
         public string? Observacao { get; set; }
-        public long IdDepartamento { get; set; }
+        public long? IdDepartamento { get; set; }
 
         public List<long>? IdsTags { get; set; }
     }

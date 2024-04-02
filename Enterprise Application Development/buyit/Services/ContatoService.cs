@@ -65,6 +65,16 @@ public class ContatoService
         return entity;
     }
 
+    public async Task<List<ContatoDto>> FindByUsuarioIdAsync(long id)
+    {
+        var list = await _context.Contato
+            .Where(x => x.Usuario.Id == id)
+            .Include(x => x.Usuario)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
     private ContatoDto ConvertToDto(ContatoModel entity)
     {
         return new ContatoDto

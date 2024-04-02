@@ -110,6 +110,42 @@ public class TagService
         return entity;
     }
 
+    public async Task<List<TagDto>> FindByDepartamentoIdAsync(long id)
+    {
+        var list = await _context.Tag
+            .Where(t => t.Departamentos.Any(d => d.Id == id))
+            .Include(x => x.Departamentos)
+            .Include(x => x.Usuarios)
+            .Include(x => x.Produtos)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
+    public async Task<List<TagDto>> FindByUsuarioIdAsync(long id)
+    {
+        var list = await _context.Tag
+            .Where(t => t.Usuarios.Any(u => u.Id == id))
+            .Include(x => x.Departamentos)
+            .Include(x => x.Usuarios)
+            .Include(x => x.Produtos)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
+    public async Task<List<TagDto>> FindByProdutoIdAsync(long id)
+    {
+        var list = await _context.Tag
+            .Where(t => t.Produtos.Any(p => p.Id == id))
+            .Include(x => x.Departamentos)
+            .Include(x => x.Usuarios)
+            .Include(x => x.Produtos)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
     private TagDto ConvertToDto(TagModel entity)
     {
         return new TagDto

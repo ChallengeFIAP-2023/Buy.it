@@ -69,6 +69,65 @@ public class CotacaoService
         return entity;
     }
 
+    public async Task<List<CotacaoDto>> FindByUsuarioIdAsync(long id)
+    {
+        var list = await _context.Cotacao
+            .Where(x => x.Comprador.Id == id)
+            .Include(x => x.Comprador)
+            .Include(x => x.Produto)
+            .Include(x => x.Status)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
+    public async Task<InfoCotacaoDto> GetInfoByProdutoIdAsync(long produtoId)
+    {
+        var resultado = await _context.Cotacao
+            .Where(c => c.Produto.Id == produtoId && c.Status.Nome == "Concluído")
+            .GroupBy(c => 1)
+            .Select(g => new
+            {
+                MinValor = g.Min(c => c.ValorProduto),
+                AvgValor = g.Average(c => c.ValorProduto),
+                MaxValor = g.Max(c => c.ValorProduto)
+            })
+            .FirstOrDefaultAsync();
+
+        if (resultado != null)
+        {
+            return new InfoCotacaoDto(resultado.MinValor, resultado.AvgValor, resultado.MaxValor);
+        }
+        else
+        {
+            return new InfoCotacaoDto(null, null, null);
+        }
+    }
+
+    public async Task<List<CotacaoDto>> FindByProdutoIdAsync(long id)
+    {
+        var list = await _context.Cotacao
+            .Where(x => x.Produto.Id == id)
+            .Include(x => x.Comprador)
+            .Include(x => x.Produto)
+            .Include(x => x.Status)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
+    public async Task<List<CotacaoDto>> FindByStatusIdAsync(long id)
+    {
+        var list = await _context.Cotacao
+            .Where(x => x.Status.Id == id)
+            .Include(x => x.Comprador)
+            .Include(x => x.Produto)
+            .Include(x => x.Status)
+            .ToListAsync();
+
+        return list.Select(x => ConvertToDto(x)).ToList();
+    }
+
     private CotacaoDto ConvertToDto(CotacaoModel entity)
     {
         return new CotacaoDto

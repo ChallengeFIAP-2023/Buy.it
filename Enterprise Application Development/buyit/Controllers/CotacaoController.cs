@@ -85,5 +85,62 @@ namespace Buyit.Controllers
                 return BadRequest(ex.Message);
             }
         }
+
+        [HttpGet("usuario/comprador/{id}")]
+        public async Task<ActionResult<IEnumerable<CotacaoDto>>> GetByUsuarioId(long id)
+        {
+            try
+            {
+                var list = await _service.FindByUsuarioIdAsync(id);
+                return Ok(list);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("produto/{id}")]
+        public async Task<ActionResult<IEnumerable<CotacaoDto>>> GetByProdutoId(long id)
+        {
+            try
+            {
+                var list = await _service.FindByProdutoIdAsync(id);
+                return Ok(list);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("status/{id}")]
+        public async Task<ActionResult<IEnumerable<CotacaoDto>>> GetByStatusId(long id)
+        {
+            try
+            {
+                var list = await _service.FindByStatusIdAsync(id);
+                return Ok(list);
+            }
+            catch (System.Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("produto/info/{id}")]
+        public async Task<ActionResult<InfoCotacaoDto>> GetInfoByProdutoId(long id)
+        {
+            try
+            {
+                var info = await _service.GetInfoByProdutoIdAsync(id);
+                return Ok(info);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
     }
 }
