@@ -11,14 +11,9 @@ namespace Buyit.Configurations
             builder.ToTable("DEPARTAMENTO");
 
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).HasColumnName("ID_DEPARTAMENTO");
+            builder.Property(x => x.Id).HasColumnName("ID_DEPARTAMENTO").UseHiLo("SEQ_DEPARTAMENTO");
             builder.Property(x => x.Nome).HasColumnName("NOME_DEPARTAMENTO").HasMaxLength(255).IsRequired();
             builder.Property(x => x.Icone).HasColumnName("ICONE_DEPARTAMENTO").HasMaxLength(255);
-
-            builder
-                .HasMany(d => d.Tags)
-                .WithMany(t => t.Departamentos)
-                .UsingEntity(j => j.ToTable("TAG_DEPARTAMENTO"));
         }
     }
 }

@@ -31,8 +31,8 @@ namespace Buyit.Models
         public string? Observacao { get; set; }
 
         [ForeignKey("ID_DEPARTAMENTO")]
-        public DepartamentoModel Departamento { get; set; }
+        public DepartamentoModel? Departamento { get; set; }
 
-        public virtual ICollection<TagModel> Tags { get; set; } = new HashSet<TagModel>();
+        public virtual ICollection<TagModel>? Tags { get; set; } = new HashSet<TagModel>();
     }
 }

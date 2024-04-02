@@ -11,7 +11,7 @@ namespace Buyit.Configurations
             builder.ToTable("STATUS");
 
             builder.HasKey(x => x.Id);
-            builder.Property(x => x.Id).HasColumnName("ID_STATUS");
+            builder.Property(x => x.Id).HasColumnName("ID_STATUS").UseHiLo("SEQ_STATUS");
             builder.Property(x => x.Nome).HasColumnName("NOME_STATUS").HasMaxLength(50).IsRequired();
         }
     }

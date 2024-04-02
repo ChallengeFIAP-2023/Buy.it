@@ -1,8 +1,6 @@
-﻿using Buyit.Context;
-using Buyit.Models;
-using Buyit.Repositories;
+﻿using Buyit.Dtos;
+using Buyit.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Buyit.Controllers
 {
@@ -10,87 +8,79 @@ namespace Buyit.Controllers
     [ApiController]
     public class ContatoController : ControllerBase
     {
-        private readonly Repository<ContatoModel> _repository;
-        private readonly BuyitContext _context;
+        private readonly ContatoService _service;
 
-        public ContatoController(Repository<ContatoModel> repository, BuyitContext context)
+        public ContatoController(ContatoService service)
         {
-            _repository = repository;
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ContatoModel>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ContatoDto>>> GetAll()
         {
-            var list = await _context.Contato.Include(x => x.Usuario).ToListAsync();
+            var list = await _service.ListAllAsync();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<ContatoModel> GetById(long id)
-        {
-            var entity = _context.Contato.Include(c => c.Usuario).FirstOrDefault(x => x.Id == id);
-            if (entity == null)
-            {
-                return NotFound();
-            }
-            return Ok(entity);
-        }
-
-        [HttpPost]
-        public ActionResult<ContatoModel> Create([FromBody] ContatoModel entity)
+        public async Task<ActionResult<ContatoDto>> GetById(long id)
         {
             try
             {
-                _repository.Create(entity);
-                _context.SaveChanges();
-                return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
+                var dto = await _service.FindByIdAsync(id);
+                return Ok(dto);
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<ContatoDto>> Create([FromBody] ContatoDto dto)
+        {
+            try
+            {
+                var created = await _service.CreateAsync(dto);
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            }
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, [FromBody] ContatoModel updatedEntity)
+        public async Task<ActionResult<ContatoDto>> Update(long id, [FromBody] ContatoDto updatedContatoDto)
         {
             try
             {
-                var existingEntity = _context.Contato.FirstOrDefault(x => x.Id == id);
-                if (existingEntity == null)
-                {
-                    return NotFound();
-                }
-
-                existingEntity.Tipo = updatedEntity.Tipo;
-                existingEntity.Valor = updatedEntity.Valor;
-                existingEntity.Usuario = updatedEntity.Usuario;
-
-                _context.SaveChanges();
-                return Ok(existingEntity);
+                var updated = await _service.UpdateAsync(id, updatedContatoDto);
+                return Ok(updated);
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(long id)
+        public async Task<IActionResult> Delete(long id)
         {
-            var entity = _repository.GetById(id);
-            if (entity == null)
+            try
+            {
+                await _service.DeleteAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            try
-            {
-                _repository.Delete(id);
-                return NoContent();
-            }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }

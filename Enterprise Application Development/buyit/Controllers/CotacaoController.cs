@@ -1,8 +1,6 @@
-﻿using Buyit.Context;
-using Buyit.Models;
-using Buyit.Repositories;
+﻿using Buyit.Dtos;
+using Buyit.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Buyit.Controllers
 {
@@ -10,95 +8,79 @@ namespace Buyit.Controllers
     [ApiController]
     public class CotacaoController : ControllerBase
     {
-        private readonly Repository<CotacaoModel> _repository;
-        private readonly BuyitContext _context;
+        private readonly CotacaoService _service;
 
-        public CotacaoController(Repository<CotacaoModel> repository, BuyitContext context)
+        public CotacaoController(CotacaoService service)
         {
-            _repository = repository;
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CotacaoModel>>> GetAll()
+        public async Task<ActionResult<IEnumerable<CotacaoDto>>> GetAll()
         {
-            var list = await _context.Cotacao.Include(x => x.Comprador).Include(x => x.Produto).Include(x => x.Status).ToListAsync();
+            var list = await _service.ListAllAsync();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<CotacaoModel> GetById(long id)
-        {
-            var entity = _context.Cotacao.Include(x => x.Comprador).Include(x => x.Produto).Include(x => x.Status).FirstOrDefault(x => x.Id == id);
-            if (entity == null)
-            {
-                return NotFound();
-            }
-            return Ok(entity);
-        }
-
-        [HttpPost]
-        public ActionResult<CotacaoModel> Create([FromBody] CotacaoModel entity)
+        public async Task<ActionResult<CotacaoDto>> GetById(long id)
         {
             try
             {
-                _repository.Create(entity);
-                _context.SaveChanges();
-                return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
+                var dto = await _service.FindByIdAsync(id);
+                return Ok(dto);
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<CotacaoDto>> Create([FromBody] CotacaoDto dto)
+        {
+            try
+            {
+                var created = await _service.CreateAsync(dto);
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            }
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, [FromBody] CotacaoModel updatedEntity)
+        public async Task<ActionResult<CotacaoDto>> Update(long id, [FromBody] CotacaoDto updatedCotacaoDto)
         {
             try
             {
-                var existingEntity = _context.Cotacao.FirstOrDefault(x => x.Id == id);
-                if (existingEntity == null)
-                {
-                    return NotFound();
-                }
-
-                existingEntity.DataAbertura = updatedEntity.DataAbertura;
-                existingEntity.Comprador = updatedEntity.Comprador;
-                existingEntity.Produto = updatedEntity.Produto;
-                existingEntity.QuantidadeProduto = updatedEntity.QuantidadeProduto;
-                existingEntity.ValorProduto = updatedEntity.ValorProduto;
-                existingEntity.Status = updatedEntity.Status;
-                existingEntity.PrioridadeEntrega = updatedEntity.PrioridadeEntrega;
-                existingEntity.PrioridadeQualidade = updatedEntity.PrioridadeQualidade;
-                existingEntity.PrioridadePreco = updatedEntity.PrioridadePreco;
-                existingEntity.Prazo = updatedEntity.Prazo;
-                existingEntity.DataFechamento = updatedEntity.DataFechamento;
-
-                _context.SaveChanges();
-                return Ok(existingEntity);
+                var updated = await _service.UpdateAsync(id, updatedCotacaoDto);
+                return Ok(updated);
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(long id)
+        public async Task<IActionResult> Delete(long id)
         {
-            var entity = _repository.GetById(id);
-            if (entity == null)
+            try
+            {
+                await _service.DeleteAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            try
-            {
-                _repository.Delete(id);
-                return NoContent();
-            }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }

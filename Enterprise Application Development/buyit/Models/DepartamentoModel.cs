@@ -17,6 +17,6 @@ namespace Buyit.Models
         [Column("ICONE_DEPARTAMENTO")]
         public string? Icone { get; set; }
 
-        public virtual ICollection<TagModel> Tags { get; set; } = new List<TagModel>();
+        public virtual ICollection<TagModel>? Tags { get; set; } = new List<TagModel>();
     }
 }

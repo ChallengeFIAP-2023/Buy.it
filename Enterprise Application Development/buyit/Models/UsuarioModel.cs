@@ -34,6 +34,6 @@ namespace Buyit.Models
         [Column("IS_FORNECEDOR")]
         public bool IsFornecedor { get; set; }
 
-        public virtual ICollection<TagModel> Tags { get; set; } = new HashSet<TagModel>();
+        public virtual ICollection<TagModel>? Tags { get; set; } = new HashSet<TagModel>();
     }
 }

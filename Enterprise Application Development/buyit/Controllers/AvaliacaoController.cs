@@ -1,8 +1,6 @@
-﻿using Buyit.Context;
-using Buyit.Models;
-using Buyit.Repositories;
+﻿using Buyit.Dtos;
+using Buyit.Services;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 
 namespace Buyit.Controllers
 {
@@ -10,90 +8,79 @@ namespace Buyit.Controllers
     [ApiController]
     public class AvaliacaoController : ControllerBase
     {
-        private readonly Repository<AvaliacaoModel> _repository;
-        private readonly BuyitContext _context;
+        private readonly AvaliacaoService _service;
 
-        public AvaliacaoController(Repository<AvaliacaoModel> repository, BuyitContext context)
+        public AvaliacaoController(AvaliacaoService service)
         {
-            _repository = repository;
-            _context = context;
+            _service = service;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<AvaliacaoModel>>> GetAll()
+        public async Task<ActionResult<IEnumerable<AvaliacaoDto>>> GetAll()
         {
-            var list = await _context.Avaliacao.Include(x => x.Cotacao).ToListAsync();
+            var list = await _service.ListAllAsync();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
-        public ActionResult<AvaliacaoModel> GetById(long id)
-        {
-            var entity = _context.Avaliacao.Include(x => x.Cotacao).FirstOrDefault(x => x.Id == id);
-            if (entity == null)
-            {
-                return NotFound();
-            }
-            return Ok(entity);
-        }
-
-        [HttpPost]
-        public ActionResult<AvaliacaoModel> Create([FromBody] AvaliacaoModel entity)
+        public async Task<ActionResult<AvaliacaoDto>> GetById(long id)
         {
             try
             {
-                _repository.Create(entity);
-                _context.SaveChanges();
-                return CreatedAtAction(nameof(GetById), new { id = entity.Id }, entity);
+                var dto = await _service.FindByIdAsync(id);
+                return Ok(dto);
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<AvaliacaoDto>> Create([FromBody] AvaliacaoDto dto)
+        {
+            try
+            {
+                var created = await _service.CreateAsync(dto);
+                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+            }
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpPut("{id}")]
-        public IActionResult Update(long id, [FromBody] AvaliacaoModel updatedEntity)
+        public async Task<ActionResult<AvaliacaoDto>> Update(long id, [FromBody] AvaliacaoDto updatedAvaliacaoDto)
         {
             try
             {
-                var existingEntity = _context.Avaliacao.FirstOrDefault(x => x.Id == id);
-                if (existingEntity == null)
-                {
-                    return NotFound();
-                }
-
-                existingEntity.Cotacao = updatedEntity.Cotacao;
-                existingEntity.Data = updatedEntity.Data;
-                existingEntity.NotaEntrega = updatedEntity.NotaEntrega;
-                existingEntity.NotaQualidade = updatedEntity.NotaQualidade;
-                existingEntity.NotaPreco = updatedEntity.NotaPreco;
-                existingEntity.Descricao = updatedEntity.Descricao;
-
-                _context.SaveChanges();
-                return Ok(existingEntity);
+                var updated = await _service.UpdateAsync(id, updatedAvaliacaoDto);
+                return Ok(updated);
             }
-            catch (Exception ex)
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
         }
 
         [HttpDelete("{id}")]
-        public IActionResult Delete(long id)
+        public async Task<IActionResult> Delete(long id)
         {
-            var entity = _repository.GetById(id);
-            if (entity == null)
+            try
+            {
+                await _service.DeleteAsync(id);
+                return NoContent();
+            }
+            catch (KeyNotFoundException)
             {
                 return NotFound();
             }
-
-            try
-            {
-                _repository.Delete(id);
-                return NoContent();
-            }
-            catch (Exception ex)
+            catch (System.Exception ex)
             {
                 return BadRequest(ex.Message);
             }
