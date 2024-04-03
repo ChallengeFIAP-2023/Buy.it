@@ -40,7 +40,7 @@ export const Step1: React.FC<
   const [selectedDepartment, setSelectedDepartment] = useState<number>(0);
   const [isModalVisible, setModalVisible] = useState(false);
   const [tagName, setTagName] = useState("");
-  const [newTagError, setNewTagError] = useState();
+  const [newTagError, setNewTagError] = useState<string | undefined>();
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -59,11 +59,7 @@ export const Step1: React.FC<
   }, []);
 
   const newTag = () => {
-    if (!tagName) 
-      return Toast.show({
-        type: 'error',
-        text1: 'Nome da tag é obrigatório!',
-      });
+    if (!tagName) return setNewTagError("Nome da tag é obrigatório!");
     
     handleNewTag({ nome: tagName });
     toggleModal();
@@ -71,10 +67,6 @@ export const Step1: React.FC<
       type: 'success',
       text1: 'Tag criada com sucesso',
     });
-
-    // setProduct(prevProd => ({ ...prevProd, idDepartamento, idsTags }));
-
-    // return navigation.navigate('Step2');
   };
 
   const onSubmit = () => {
