@@ -10,7 +10,7 @@ import React, {
 import GlobalRequestService from '@services/global-request';
 
 // Type import
-import { QuoteQuery, ProductQuery, Department, Tag } from '@dtos/index';
+import { QuoteQuery, ProductQuery, Department, Tag, TagQuery } from '@dtos/index';
 import Toast from 'react-native-toast-message';
 import { api } from '@services/api';
 
@@ -19,8 +19,9 @@ interface CreateQuoteContextData {
   product: ProductQuery;
   setQuote: Dispatch<React.SetStateAction<QuoteQuery>>;
   setProduct: Dispatch<React.SetStateAction<ProductQuery>>;
-  handleCreateQuote: (finalQueryData: QuoteQuery) => Promise<void>;
-  handleCreateProduct: (finalQueryData: ProductQuery) => Promise<void>;
+  handleNewQuote: (finalQueryData: QuoteQuery) => Promise<void>;
+  handleNewProduct: (finalQueryData: ProductQuery) => Promise<void>;
+  handleNewTag: (finalQueryData: TagQuery) => Promise<void>;
   loading: boolean;
   departments: Department[];
   tags: Tag[];
@@ -65,7 +66,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     }
   }
 
-  const handleCreateProduct = useCallback(async (productData: ProductQuery) => {
+  const handleNewProduct = useCallback(async (productData: ProductQuery) => {
     try {
       setLoading(true);
 
@@ -86,7 +87,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     }
   }, []);
 
-  const handleCreateQuote = useCallback(async (data: QuoteQuery) => {
+  const handleNewQuote = useCallback(async (data: QuoteQuery) => {
     try {
       setLoading(true);
 
@@ -114,6 +115,28 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     }
   }, []);
 
+  const handleNewTag = useCallback(async (tagData: TagQuery) => {
+    try {
+      setLoading(true);
+      const body = tagData;
+
+      const { data } = await api.post('/tag', body);
+      console.debug(data);
+      // TODO: após criar a tag, adicionar seu id aos ids das tags do produto
+
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível criar esta tag.',
+      });
+
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return (
     <CreateQuoteContext.Provider
       value={{
@@ -125,8 +148,9 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
         tags,
         loading,
         fetchDepartmentsAndTags,
-        handleCreateProduct,
-        handleCreateQuote,
+        handleNewProduct,
+        handleNewQuote,
+        handleNewTag
       }}
     >
       {children}

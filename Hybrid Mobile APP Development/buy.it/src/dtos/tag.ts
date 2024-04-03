@@ -4,9 +4,5 @@ export interface Tag {
 }
 
 export interface TagQuery {
-  id: number;
   nome: string;
-  idsDepartamentos: number[];
-  idsUsuarios: number[];
-  idsProdutos: number[];
 }

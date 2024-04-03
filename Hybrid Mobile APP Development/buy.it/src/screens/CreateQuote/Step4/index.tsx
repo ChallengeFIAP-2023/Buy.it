@@ -52,7 +52,7 @@ export const Step4: React.FC<
   });
 
   // Hook
-  const { setProduct, handleCreateProduct, product } = useCreateQuote();
+  const { setProduct, handleNewProduct, product } = useCreateQuote();
 
   const onSubmit: SubmitHandler<Step4Form> = async data => {
     setProduct(prevProd => ({ ...prevProd, ...data }));
@@ -60,7 +60,7 @@ export const Step4: React.FC<
     console.debug(product);
 
     try {
-      await handleCreateProduct(product);
+      await handleNewProduct(product);
     } catch (error) {
       console.error(error);
     }

@@ -12,7 +12,6 @@ export const Label = styled.Text`
 export const dropdownStyle: ViewStyle = {
   backgroundColor: theme.COLORS.GRAY_500,
   paddingHorizontal: 12,
-  // TODO: esse padding vertical por algum motivo não funciona. Fica maior que o padrão. Precisamos investigar
   paddingVertical: 14,
   borderRadius: 8,
   borderWidth: 0,
