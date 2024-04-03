@@ -71,7 +71,7 @@ Representa o status de um processo ou atividade no sistema.
 
 **Atributos:**
 - `id_status` (NUMBER(9)): Identificador único do status.
-- `nome_status` (VARCHAR2(255)): Nome do status.
+- `nome` (VARCHAR2(255)): Nome do status.
 
 ## Classe `Cotacao`
 
@@ -301,7 +301,7 @@ Atualiza um usuario.
 **Exemplo do body da requisição:**
 ```json
 {
-	"email": "exemplo@email.com",
+    "email": "exemplo@email.com",
     "senha": "senha123"
 }
 ```
@@ -418,7 +418,7 @@ Cadastra um departamento.
 ```json
 {
     "nome": "Cadastrando Novo Departamento",
-	"icone": "novo_icone.png"
+    "icone": "novo_icone.png"
 }
 ```
 
@@ -430,8 +430,8 @@ Atualiza um departamento.
 ```json
 {
     "nome": "Editando Departamento",
-	"icone": "icone_editado.png",
-	"idsTags": [1]
+    "icone": "icone_editado.png",
+    "idsTags": [1]
 }
 ```
 
@@ -786,7 +786,7 @@ Cadastra um status.
 **Exemplo do body da requisição:**
 ```json
 {
-    "nome_status": "Em Andamento"
+    "nome": "Em Andamento"
 }
 
 ```
@@ -798,7 +798,7 @@ Atualiza um status.
 **Exemplo do body da requisição:**
 ```json
 {
-    "nome_status": "Concluído"
+    "nome": "Concluído"
 }
 ```
 
