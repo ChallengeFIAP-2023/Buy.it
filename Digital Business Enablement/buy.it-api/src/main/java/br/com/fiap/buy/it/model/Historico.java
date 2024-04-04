@@ -8,6 +8,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -72,6 +74,7 @@ public class Historico {
     @Column(name = "DATA_HISTORICO", nullable = false)
     @NotNull(message = "O campo data não pode estar vazio.")
     @PastOrPresent
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date data;
 
     @Column(name = "VALOR_OFERTADO_HISTORICO")

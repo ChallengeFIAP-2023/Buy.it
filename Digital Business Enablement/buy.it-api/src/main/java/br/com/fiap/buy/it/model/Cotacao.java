@@ -8,6 +8,8 @@ import lombok.*;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -24,6 +26,7 @@ public class Cotacao {
     @NotNull(message = "O campo data não pode estar vazio.")
     @PastOrPresent
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date dataAbertura;
 
     @ManyToOne(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
@@ -91,5 +94,6 @@ public class Cotacao {
 
     @Column(name = "DATA_FECHAMENTO_COTACAO")
     @PastOrPresent
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date dataFechamento;
 }

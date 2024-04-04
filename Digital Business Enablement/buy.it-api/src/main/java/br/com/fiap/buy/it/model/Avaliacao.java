@@ -7,6 +7,8 @@ import lombok.*;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
@@ -34,6 +36,7 @@ public class Avaliacao {
     @NotNull(message = "O campo data não pode estar vazio.")
     @PastOrPresent
     @Temporal(TemporalType.DATE)
+    @JsonFormat(pattern = "dd-MM-yyyy")
     private Date data;
 
     @Column(name = "NOTA_ENTREGA_AVALIACAO", nullable = false)

@@ -550,7 +550,7 @@ Lista todos as cotacoes.
 [
     {
     	"id": 1,
-    	"dataAbertura": "2023-12-01T09:00:00.000+00:00",
+    	"dataAbertura": "01-12-2023",
     	"comprador": {
     		"id": 1,
     		"email": "exemplo@email.com",
@@ -600,7 +600,7 @@ Exibe a cotação de acordo com seu ID.
 [
     {
     	"id": 1,
-    	"dataAbertura": "2023-12-01T09:00:00.000+00:00",
+    	"dataAbertura": "01-12-2023",
     	"comprador": {
     		"id": 1,
     		"email": "exemplo@email.com",
@@ -650,7 +650,7 @@ Lista todas as cotações de acordo com um ID de usuário.
 [
     {
     	"id": 1,
-    	"dataAbertura": "2023-12-01T09:00:00.000+00:00",
+    	"dataAbertura": "01-12-2023",
     	"comprador": {
     		"id": 1,
     		"email": "exemplo@email.com",
@@ -713,7 +713,7 @@ Cadastra uma cotação.
 **Exemplo do body da requisição:**
 ```json
 {
-    "dataAbertura": "2023-12-01T09:00:00Z",
+    "dataAbertura": "01-12-2023",
     "idComprador": 1,
     "idProduto": 1,
     "quantidadeProduto": 100,
@@ -734,7 +734,7 @@ Atualiza uma cotação.
 **Exemplo do body da requisição:**
 ```json
 {
-    "dataAbertura": "2023-12-01T10:30:00Z",
+    "dataAbertura": "01-12-2023",
     "idComprador": 1,
     "idProduto": 1,
     "quantidadeProduto": 200,
@@ -878,7 +878,7 @@ Lista todos os registros históricos das cotações.
 			"recusadoPorPreco": false,
 			"recusadoPorPrazo": false,
 			"descricao": "Descrição do histórico",
-			"data": "2023-12-01T10:00:00.000+00:00",
+			"data": "01-12-2023",
 			"valorOfertado": 150.75
 		}
 ]
@@ -901,7 +901,7 @@ Cadastra um registro histórico de cotação.
     "recusadoPorPreco": false,
     "recusadoPorPrazo": false,
     "descricao": "Descrição do histórico",
-    "data": "2023-12-01T10:00:00Z",
+    "data": "01-12-2023",
     "valorOfertado": 150.75
 }
 
@@ -922,7 +922,7 @@ Atualiza um registro histórico de cotação.
     "recusadoPorPreco": true,
     "recusadoPorPrazo": false,
     "descricao": "Nova descrição do histórico",
-    "data": "2023-12-02T08:30:00Z",
+    "data": "01-12-2023",
     "valorOfertado": 180.50
 }
 ```
@@ -1004,7 +1004,7 @@ Cadastra uma avaliação.
 ```json
 {
     "idCotacao": 1,
-    "data": "2023-12-01T09:00:00Z",
+    "data": "01-12-2023",
     "notaEntrega": 4,
     "notaQualidade": 5,
     "notaPreco": 3,
@@ -1021,7 +1021,7 @@ Atualiza uma avaliação.
 ```json
 {
     "idCotacao": 1,
-    "data": "2023-12-02T10:30:00Z",
+    "data": "01-12-2023",
     "notaEntrega": 1,
     "notaQualidade": 4,
     "notaPreco": 2,
