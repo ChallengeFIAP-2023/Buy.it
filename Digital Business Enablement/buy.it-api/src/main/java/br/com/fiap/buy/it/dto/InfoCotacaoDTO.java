@@ -14,5 +14,6 @@ public class InfoCotacaoDTO {
     private BigDecimal avgValor;
 
     private BigDecimal maxValor;
-    
+
+    private ProdutoDTO produto;
 }

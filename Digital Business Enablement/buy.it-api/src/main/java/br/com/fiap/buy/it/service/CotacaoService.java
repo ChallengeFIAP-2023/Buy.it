@@ -2,6 +2,7 @@ package br.com.fiap.buy.it.service;
 
 import br.com.fiap.buy.it.dto.CotacaoDTO;
 import br.com.fiap.buy.it.dto.InfoCotacaoDTO;
+import br.com.fiap.buy.it.dto.ProdutoDTO;
 import br.com.fiap.buy.it.model.Cotacao;
 import br.com.fiap.buy.it.repository.CotacaoRepository;
 
@@ -95,14 +96,15 @@ public class CotacaoService {
 
     public InfoCotacaoDTO getInfoByProdutoId(Long idProduto) {
         Optional<Object> resultadoRaw = cotacaoRepository.getInfoByProdutoId(idProduto);
+        ProdutoDTO produto = produtoService.findById(idProduto);
         if (resultadoRaw.isPresent()) {
             Object[] resultado = (Object[]) resultadoRaw.get();
             BigDecimal minValor = resultado[0] != null ? new BigDecimal(resultado[0].toString()) : null;
             BigDecimal avgValor = resultado[1] != null ? new BigDecimal(resultado[1].toString()) : null;
             BigDecimal maxValor = resultado[2] != null ? new BigDecimal(resultado[2].toString()) : null;
-            return new InfoCotacaoDTO(minValor, avgValor, maxValor);
+            return new InfoCotacaoDTO(minValor, avgValor, maxValor, produto);
         } else {
-            return new InfoCotacaoDTO(null, null, null);
+            return new InfoCotacaoDTO(null, null, null, produto);
         }
     }
 
