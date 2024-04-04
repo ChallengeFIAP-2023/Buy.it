@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useState } from 'react';
+import { useLayoutEffect, useState } from 'react';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -34,6 +34,8 @@ import {
   InputWrapper,
 } from './styles';
 import { ScrollableContent, Fieldset, Flex } from '@global/styles/index';
+import { CustomModal } from '@components/Modal';
+import { NewProduct } from './NewProduct';
 
 //Hook import
 import { useCreateQuote } from '@hooks/useCreateQuote';
@@ -70,12 +72,13 @@ export const Step2: React.FC<
     },
   });
 
-  const { setProduct, setQuote } = useCreateQuote();
+  const { setQuote, products, fetchProducts } = useCreateQuote();
+
+  useLayoutEffect(() => {
+    fetchProducts();
+  }, []);
 
   const onSubmit: SubmitHandler<Step2Form> = data => {
-    const nome = data.nome;
-    setProduct(prevProd => ({ ...prevProd, nome }));
-
     const prazo = deadline as number;
     const quantidade = data.quantidade as number;
     setQuote(prevQuote => ({ ...prevQuote, prazo, quantidade }));
@@ -98,6 +101,17 @@ export const Step2: React.FC<
   }
 
   const [deadline, setDeadline] = useState(deadlineOptions[0].value);
+  const [selectedProduct, setSelectedProduct] = useState<number>(0);
+  const [isModalVisible, setModalVisible] = useState(false);
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
+
+  const productsOptions: TFlatList = products.map(item => ({
+    label: `${item.nome} ${item.marca || ""} ${item.cor || ""} ${item.material || ""} ${item.tamanho || ""}`,
+    value: item.id,
+  }));
 
   return (
     <WrapperPage>
@@ -113,18 +127,21 @@ export const Step2: React.FC<
 
         <DecreasingContainer scrollable>
           <Fieldset>
-            <Controller
-              control={control}
-              name="nome"
-              render={({ field: { value, onChange } }) => (
-                <Input
-                  value={value}
-                  onChangeText={onChange}
-                  label="Nome do produto"
-                  placeholder="Caneta esferográfica"
-                  error={errors.nome?.message}
+            <CustomDropdown
+              label="Produto"
+              isSearchable
+              placeholder="Selecione o produto que deseja cotar"
+              options={productsOptions}
+              selectedValue={selectedProduct}
+              onValueChange={(value: number) => setSelectedProduct(value)}
+              listFooterComponent={
+                <Button 
+                  label="Novo produto" 
+                  size="SM"
+                  style={{ margin: 15 }}
+                  onPress={toggleModal}
                 />
-              )}
+              }
             />
           </Fieldset>
 
@@ -173,6 +190,15 @@ export const Step2: React.FC<
           </Fieldset>
         </DecreasingContainer>
       </ScrollableContent>
+
+      <CustomModal
+        modalProps={{
+          isVisible: isModalVisible,
+        }}
+        onClose={toggleModal}
+      >
+        <NewProduct />
+      </CustomModal>
 
       <Button
         label="Continuar"

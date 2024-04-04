@@ -7,12 +7,9 @@ import LogoImage from '@assets/logo.png';
 export const Container = styled.View`
   width: 100%;
 
-  background-color: ${({ theme }) => theme.COLORS.GRAY_700};
-
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  padding: 0 30px;
 `;
 
 export const Logo = styled.Image.attrs({

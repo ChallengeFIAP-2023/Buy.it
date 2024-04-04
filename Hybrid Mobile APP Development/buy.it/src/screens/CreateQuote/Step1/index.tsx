@@ -18,6 +18,7 @@ import {
   CustomDropdown,
   DecreasingContainer,
   DefaultComponent,
+  Input,
   WrapperPage,
 } from '@components/index';
 
@@ -26,6 +27,7 @@ import { useCreateQuote } from '@hooks/useCreateQuote';
 
 // Style import
 import { ScrollableContent, Fieldset } from '@global/styles/index';
+import { CustomModal } from '@components/Modal';
 
 export const Step1: React.FC<
   CompositeScreenProps<
@@ -36,18 +38,39 @@ export const Step1: React.FC<
   // State
   const [selectedTags, setSelectedTags] = useState<number[]>([]);
   const [selectedDepartment, setSelectedDepartment] = useState<number>(0);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [tagName, setTagName] = useState("");
+  const [newTagError, setNewTagError] = useState<string | undefined>();
+
+  const toggleModal = () => {
+    setModalVisible(!isModalVisible);
+  };
 
   const { 
     setProduct, 
     tags, 
     departments, 
-    loading,
+    handleNewTag,
     fetchDepartmentsAndTags 
   } = useCreateQuote();
 
   useLayoutEffect(() => {
     fetchDepartmentsAndTags();
   }, []);
+
+  const newTag = () => {
+    if (!tagName) return setNewTagError("Nome da tag é obrigatório!");
+    
+    const id = handleNewTag({ nome: tagName });
+
+    if (typeof id === 'number') setSelectedTags(tags => [...tags, id]);
+
+    // TODO: verificar uma forma de mostrar o toast na frente do modal
+    return Toast.show({
+      type: 'success',
+      text1: 'Tag criada com sucesso',
+    });
+  };
 
   const onSubmit = () => {
     const idDepartamento = selectedDepartment;
@@ -72,13 +95,11 @@ export const Step1: React.FC<
     return navigation.navigate('Step2');
   };
 
-  const hasDepartments = !loading && departments.length >= 1;
   const departmentsOptions: TFlatList = departments.map(item => ({
     label: item.nome,
     value: item.id,
   }));
 
-  const hasTag = !loading && tags.length >= 1;
   const tagsOptions: TFlatList = tags.map(tag => ({
     label: tag.nome,
     value: tag.id,
@@ -96,11 +117,11 @@ export const Step1: React.FC<
           key="default-component-quote-details"
         />
 
-        <DecreasingContainer scrollable>
+        <DecreasingContainer>
           <Fieldset>
             <CustomDropdown
+              isSearchable
               label="Departamento"
-              isSearchable={hasDepartments}
               placeholder="Selecione o departamento relacionado"
               options={departmentsOptions}
               selectedValue={selectedDepartment}
@@ -114,19 +135,49 @@ export const Step1: React.FC<
           <Fieldset>
             <CustomDropdown
               label="Tags relacionadas"
-              isSearchable={hasTag}
+              isSearchable
               isMultiple
               placeholder="Selecione as tags relacionadas"
               options={tagsOptions}
               selectedValue={selectedTags}
               onValueChange={(value: []) => setSelectedTags(value)}
-              listControls={{ emptyListMessage: 'Nenhuma tag encontrada' }}
+              listFooterComponent={
+                <Button 
+                  label="Nova tag" 
+                  size="SM"
+                  style={{ margin: 15 }}
+                  onPress={toggleModal}
+                />
+              }
             />
           </Fieldset>
-
-          <Button label="Nova tag" size="SM" />
+    
         </DecreasingContainer>
       </ScrollableContent>
+
+      <CustomModal
+        modalProps={{
+          isVisible: isModalVisible,
+        }}
+        title="Nova tag"
+        subtitle="Tags nos ajudam a selecionar os melhores fornecedores para a cotação"
+        onClose={toggleModal}
+      >
+        <Fieldset>
+          <Input
+            value={tagName}
+            onChangeText={(value) => setTagName(value)}
+            placeholder="Papelaria"
+            error={newTagError}
+          />
+        </Fieldset>
+        
+        <Button
+          label="Criar"
+          size="LG"
+          onPress={() => newTag()}
+        />
+      </CustomModal>
 
       <Button
         label="Continuar"

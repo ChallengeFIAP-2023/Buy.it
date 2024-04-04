@@ -10,7 +10,7 @@ import React, {
 import GlobalRequestService from '@services/global-request';
 
 // Type import
-import { QuoteQuery, ProductQuery, Department, Tag } from '@dtos/index';
+import { QuoteQuery, ProductQuery, Department, Tag, TagQuery, Product } from '@dtos/index';
 import Toast from 'react-native-toast-message';
 import { api } from '@services/api';
 
@@ -19,12 +19,15 @@ interface CreateQuoteContextData {
   product: ProductQuery;
   setQuote: Dispatch<React.SetStateAction<QuoteQuery>>;
   setProduct: Dispatch<React.SetStateAction<ProductQuery>>;
-  handleCreateQuote: (finalQueryData: QuoteQuery) => Promise<void>;
-  handleCreateProduct: (finalQueryData: ProductQuery) => Promise<void>;
+  handleNewQuote: (finalQueryData: QuoteQuery) => Promise<void>;
+  handleNewProduct: (finalQueryData: ProductQuery) => Promise<void>;
+  handleNewTag: (finalQueryData: TagQuery) => Promise<void>;
   loading: boolean;
   departments: Department[];
   tags: Tag[];
+  products: Product[];
   fetchDepartmentsAndTags(): Promise<void>;
+  fetchProducts: () => Promise<void>
 }
 
 interface CreateQuoteProviderProps {
@@ -42,6 +45,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
   const [product, setProduct] = useState<ProductQuery>({} as ProductQuery);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
+  const [products, setProducts] = useState<Product[]>([]);
   const [loading, setLoading] = useState(false);
 
   async function fetchDepartmentsAndTags() {
@@ -65,7 +69,22 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     }
   }
 
-  const handleCreateProduct = useCallback(async (productData: ProductQuery) => {
+  const fetchProducts = async () => {
+    try {
+      const { data } = await api.get('/produtos');
+      setProducts(data.content);
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível buscar os produtos',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleNewProduct = useCallback(async (productData: ProductQuery) => {
     try {
       setLoading(true);
 
@@ -73,6 +92,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
       const { data } = await api.post('/produtos', body);
 
       console.debug(data);
+      
     } catch (error) {
       Toast.show({
         type: 'error',
@@ -86,7 +106,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     }
   }, []);
 
-  const handleCreateQuote = useCallback(async (data: QuoteQuery) => {
+  const handleNewQuote = useCallback(async (data: QuoteQuery) => {
     try {
       setLoading(true);
 
@@ -114,6 +134,26 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     }
   }, []);
 
+  const handleNewTag = useCallback(async (tagData: TagQuery) => {
+    try {
+      setLoading(true);
+      const body = tagData;
+
+      const { data } = await api.post('/tags', body);
+      return data.id;
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível criar esta tag.',
+      });
+
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   return (
     <CreateQuoteContext.Provider
       value={{
@@ -123,10 +163,13 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
         setProduct,
         departments,
         tags,
+        products,
         loading,
         fetchDepartmentsAndTags,
-        handleCreateProduct,
-        handleCreateQuote,
+        fetchProducts,
+        handleNewProduct,
+        handleNewQuote,
+        handleNewTag
       }}
     >
       {children}

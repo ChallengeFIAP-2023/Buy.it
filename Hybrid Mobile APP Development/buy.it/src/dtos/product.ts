@@ -14,7 +14,6 @@ export interface Product {
 }
 
 export interface ProductQuery {
-    id: number;
     nome: string;
     marca: string | null;
     cor: string | null;
