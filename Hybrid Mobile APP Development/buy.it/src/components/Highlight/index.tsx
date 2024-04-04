@@ -6,11 +6,14 @@ export interface Props {
   title: string;
   subtitle?: string;
   highlightedText?: string;
+  noPadding?: boolean;
 }
 
-export function Highlight({ title, subtitle, highlightedText }: Props) {
+export function Highlight({ title, subtitle, highlightedText, noPadding }: Props) {
   return (
-    <Container>
+    <Container style={{
+      paddingHorizontal: noPadding ? 0 : 30 
+    }}>
       <Subtitle>{subtitle}</Subtitle>
 
       <Flex>

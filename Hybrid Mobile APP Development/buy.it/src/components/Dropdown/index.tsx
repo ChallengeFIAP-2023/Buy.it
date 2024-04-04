@@ -44,9 +44,13 @@ export function CustomDropdown({ label, ...rest }: DropdownProps) {
         }}
         searchInputStyle={searchInputStyle}
         checkboxStyle={checkboxStyle}
+        listComponentStyles={{
+          listEmptyComponentStyle: textStyle,
+        }}
         listControls={{
           selectAllText: 'Selecionar todos',
           unselectAllText: 'Remover todos',
+          emptyListMessage: 'Nem uma opção encontrada'
         }}
         {...rest}
       />

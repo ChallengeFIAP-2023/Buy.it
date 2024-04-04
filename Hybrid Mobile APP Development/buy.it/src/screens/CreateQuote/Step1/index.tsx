@@ -61,8 +61,11 @@ export const Step1: React.FC<
   const newTag = () => {
     if (!tagName) return setNewTagError("Nome da tag é obrigatório!");
     
-    handleNewTag({ nome: tagName });
-    toggleModal();
+    const id = handleNewTag({ nome: tagName });
+
+    if (typeof id === 'number') setSelectedTags(tags => [...tags, id]);
+
+    // TODO: verificar uma forma de mostrar o toast na frente do modal
     return Toast.show({
       type: 'success',
       text1: 'Tag criada com sucesso',
@@ -114,7 +117,7 @@ export const Step1: React.FC<
           key="default-component-quote-details"
         />
 
-        <DecreasingContainer scrollable>
+        <DecreasingContainer>
           <Fieldset>
             <CustomDropdown
               isSearchable
@@ -138,7 +141,6 @@ export const Step1: React.FC<
               options={tagsOptions}
               selectedValue={selectedTags}
               onValueChange={(value: []) => setSelectedTags(value)}
-              listControls={{ emptyListMessage: 'Nenhuma tag encontrada' }}
               listFooterComponent={
                 <Button 
                   label="Nova tag" 

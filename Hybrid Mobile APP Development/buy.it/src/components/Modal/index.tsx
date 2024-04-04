@@ -21,8 +21,8 @@ type ModalProps = {
 }
 
 type CustomModalProps = {
-  title: string;
-  subtitle: string | null;
+  title?: string;
+  subtitle?: string | null;
   children: React.ReactNode;
   onClose: () => void;
   modalProps: ModalProps;

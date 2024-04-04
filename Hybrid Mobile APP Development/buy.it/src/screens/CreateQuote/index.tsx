@@ -16,7 +16,6 @@ import { Step1 } from '@screens/CreateQuote/Step1';
 import { Step2 } from '@screens/CreateQuote/Step2';
 import { Step3 } from '@screens/CreateQuote/Step3';
 import { Step4 } from '@screens/CreateQuote/Step4';
-import { Step5 } from '@screens/CreateQuote/Step5';
 
 // Interfaces
 export type CreateQuoteRoutes = {
@@ -24,7 +23,6 @@ export type CreateQuoteRoutes = {
   Step2: undefined;
   Step3: undefined;
   Step4: undefined;
-  Step5: undefined;
 };
 
 export const CreateQuote: React.FC<
@@ -45,7 +43,6 @@ export const CreateQuote: React.FC<
         <Stack.Screen name="Step2" component={Step2} />
         <Stack.Screen name="Step3" component={Step3} />
         <Stack.Screen name="Step4" component={Step4} />
-        <Stack.Screen name="Step5" component={Step5} />
       </Stack.Navigator>
     </CreateQuoteProvider>
   );
