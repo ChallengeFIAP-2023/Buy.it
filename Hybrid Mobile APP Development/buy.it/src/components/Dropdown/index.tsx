@@ -50,7 +50,7 @@ export function CustomDropdown({ label, ...rest }: DropdownProps) {
         listControls={{
           selectAllText: 'Selecionar todos',
           unselectAllText: 'Remover todos',
-          emptyListMessage: 'Nem uma opção encontrada'
+          emptyListMessage: 'Nenhuma opção encontrada'
         }}
         {...rest}
       />

@@ -62,10 +62,13 @@ export const Step1: React.FC<
     if (!tagName) return setNewTagError("Nome da tag é obrigatório!");
     
     const id = handleNewTag({ nome: tagName });
+    
+    fetchDepartmentsAndTags();    
 
     if (typeof id === 'number') setSelectedTags(tags => [...tags, id]);
 
-    // TODO: verificar uma forma de mostrar o toast na frente do modal
+    toggleModal();
+
     return Toast.show({
       type: 'success',
       text1: 'Tag criada com sucesso',
