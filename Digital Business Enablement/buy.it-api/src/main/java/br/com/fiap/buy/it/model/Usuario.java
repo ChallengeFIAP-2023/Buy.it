@@ -81,7 +81,7 @@ public class Usuario implements UserDetails{
 
     public Usuario addTag(Tag tag) {
         this.tags.add(tag);
-        tag.addUsuario(this);
+        if (tag.getUsuarios().contains(this)) tag.addUsuario(this);
         return this;
     }
 

@@ -40,7 +40,7 @@ public class UsuarioController {
     PasswordEncoder passwordEncoder;
 
     @GetMapping
-    public ResponseEntity<Page<UsuarioDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<UsuarioDTO>> listAll(@PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(usuarioService.listAll(pageable));
     }
@@ -72,7 +72,7 @@ public class UsuarioController {
     }
 
     @GetMapping("/tag/{tagId}")
-    public ResponseEntity<Page<UsuarioDTO>> findByTagId(@PathVariable Long tagId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<UsuarioDTO>> findByTagId(@PathVariable Long tagId, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da tag: " + tagId);
         Page<UsuarioDTO> list = usuarioService.findByTagId(tagId, pageable);
         return ResponseEntity.ok(list);

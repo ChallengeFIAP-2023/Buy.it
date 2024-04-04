@@ -97,7 +97,7 @@ public class Tag {
 
     public Tag addDepartamento(Departamento departamento) {
         this.departamentos.add(departamento);
-        departamento.addTag(this);
+        if (departamento.getTags().contains(this)) departamento.addTag(this);
         return this;
     }
 
@@ -109,7 +109,7 @@ public class Tag {
 
     public Tag addUsuario(Usuario usuario) {
         this.usuarios.add(usuario);
-        usuario.addTag(this);
+        if (usuario.getTags().contains(this)) usuario.addTag(this);
         return this;
     }
 
@@ -121,7 +121,7 @@ public class Tag {
 
     public Tag addProduto(Produto produto) {
         this.produtos.add(produto);
-        produto.addTag(this);
+        if (produto.getTags().contains(this)) produto.addTag(this);
         return this;
     }
 

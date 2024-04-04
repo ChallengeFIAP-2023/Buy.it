@@ -26,7 +26,7 @@ public class ProdutoController {
     private ProdutoService produtoService;
 
     @GetMapping
-    public ResponseEntity<Page<ProdutoDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<ProdutoDTO>> listAll(@PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(produtoService.listAll(pageable));
     }
@@ -57,21 +57,21 @@ public class ProdutoController {
     }
 
     @GetMapping("/departamento/{departamentoId}")
-    public ResponseEntity<Page<ProdutoDTO>> findByDepartamentoId(@PathVariable Long departamentoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<ProdutoDTO>> findByDepartamentoId(@PathVariable Long departamentoId, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do departamento: " + departamentoId);
         Page<ProdutoDTO> list = produtoService.findByDepartamentoId(departamentoId, pageable);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("/tag/{tagId}")
-    public ResponseEntity<Page<ProdutoDTO>> findByTagId(@PathVariable Long tagId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<ProdutoDTO>> findByTagId(@PathVariable Long tagId, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da tag: " + tagId);
         Page<ProdutoDTO> list = produtoService.findByTagId(tagId, pageable);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("/nome/{nome}")
-    public ResponseEntity<Page<ProdutoDTO>> findByNomeContainingIgnoreCase(@PathVariable String nome, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<ProdutoDTO>> findByNomeContainingIgnoreCase(@PathVariable String nome, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por nome do produto contendo: " + nome);
         Page<ProdutoDTO> list = produtoService.findByNomeContainingIgnoreCase(nome, pageable);
         return ResponseEntity.ok(list);

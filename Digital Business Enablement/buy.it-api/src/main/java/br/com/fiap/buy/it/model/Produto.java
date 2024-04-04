@@ -73,7 +73,7 @@ public class Produto {
 
     public Produto addTag(Tag tag) {
         this.tags.add(tag);
-        tag.addProduto(this);
+        if (tag.getProdutos().contains(this)) tag.addProduto(this);
         return this;
     }
 

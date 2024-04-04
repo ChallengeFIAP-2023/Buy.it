@@ -26,7 +26,7 @@ public class StatusController {
     private StatusService statusService;
 
     @GetMapping
-    public ResponseEntity<Page<StatusDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<StatusDTO>> listAll(@PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(statusService.listAll(pageable));
     }

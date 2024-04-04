@@ -27,7 +27,7 @@ public class CotacaoController {
     private CotacaoService cotacaoService;
 
     @GetMapping
-    public ResponseEntity<Page<CotacaoDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<CotacaoDTO>> listAll(@PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(cotacaoService.listAll(pageable));
     }
@@ -58,14 +58,14 @@ public class CotacaoController {
     }
 
     @GetMapping("/usuario/comprador/{userId}")
-    public ResponseEntity<Page<CotacaoDTO>> findByCompradorId(@PathVariable Long userId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<CotacaoDTO>> findByCompradorId(@PathVariable Long userId, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do usuário: " + userId);
         Page<CotacaoDTO> list = cotacaoService.findByCompradorId(userId, pageable);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("/produto/{produtoId}")
-    public ResponseEntity<Page<CotacaoDTO>> findByProdutoId(@PathVariable Long produtoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<CotacaoDTO>> findByProdutoId(@PathVariable Long produtoId, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do produto: " + produtoId);
         Page<CotacaoDTO> list = cotacaoService.findByProdutoId(produtoId, pageable);
         return ResponseEntity.ok(list);
@@ -79,7 +79,7 @@ public class CotacaoController {
     }
 
     @GetMapping("/status/{statusId}")
-    public ResponseEntity<Page<CotacaoDTO>> findByStatusId(@PathVariable Long statusId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<CotacaoDTO>> findByStatusId(@PathVariable Long statusId, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do status: " + statusId);
         Page<CotacaoDTO> list = cotacaoService.findByStatusId(statusId, pageable);
         return ResponseEntity.ok(list);

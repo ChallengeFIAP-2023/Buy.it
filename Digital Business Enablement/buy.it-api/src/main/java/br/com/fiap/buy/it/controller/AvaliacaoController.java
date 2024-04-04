@@ -26,7 +26,7 @@ public class AvaliacaoController {
     private AvaliacaoService avaliacaoService;
 
     @GetMapping
-    public ResponseEntity<Page<AvaliacaoDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<AvaliacaoDTO>> listAll(@PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(avaliacaoService.listAll(pageable));
     }
@@ -57,14 +57,14 @@ public class AvaliacaoController {
     }
 
     @GetMapping("/cotacao/{cotacaoId}")
-    public ResponseEntity<Page<AvaliacaoDTO>> findByCotacaoId(@PathVariable Long cotacaoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<AvaliacaoDTO>> findByCotacaoId(@PathVariable Long cotacaoId, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID da cotacao: " + cotacaoId);
         Page<AvaliacaoDTO> list = avaliacaoService.findByCotacaoId(cotacaoId, pageable);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<Page<AvaliacaoDTO>> findByUsuarioId(@PathVariable Long usuarioId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<AvaliacaoDTO>> findByUsuarioId(@PathVariable Long usuarioId, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do usuario: " + usuarioId);
         Page<AvaliacaoDTO> list = avaliacaoService.findByUsuarioId(usuarioId, pageable);
         return ResponseEntity.ok(list);

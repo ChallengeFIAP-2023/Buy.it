@@ -26,7 +26,7 @@ public class TagController {
     private TagService tagService;
 
     @GetMapping
-    public ResponseEntity<Page<TagDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<TagDTO>> listAll(@PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(tagService.listAll(pageable));
     }
@@ -57,21 +57,21 @@ public class TagController {
     }
 
     @GetMapping("/departamento/{departamentoId}")
-    public ResponseEntity<Page<TagDTO>> findByDepartamentoId(@PathVariable Long departamentoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<TagDTO>> findByDepartamentoId(@PathVariable Long departamentoId, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do departamento: " + departamentoId);
         Page<TagDTO> list = tagService.findByDepartamentoId(departamentoId, pageable);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("/usuario/{usuarioId}")
-    public ResponseEntity<Page<TagDTO>> findByUsuarioId(@PathVariable Long usuarioId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<TagDTO>> findByUsuarioId(@PathVariable Long usuarioId, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do usuario: " + usuarioId);
         Page<TagDTO> list = tagService.findByUsuarioId(usuarioId, pageable);
         return ResponseEntity.ok(list);
     }
 
     @GetMapping("/produto/{produtoId}")
-    public ResponseEntity<Page<TagDTO>> findByProdutoId(@PathVariable Long produtoId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<TagDTO>> findByProdutoId(@PathVariable Long produtoId, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do produto: " + produtoId);
         Page<TagDTO> list = tagService.findByProdutoId(produtoId, pageable);
         return ResponseEntity.ok(list);

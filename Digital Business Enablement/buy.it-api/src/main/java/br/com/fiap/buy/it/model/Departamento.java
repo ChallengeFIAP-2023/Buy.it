@@ -43,7 +43,7 @@ public class Departamento {
 
     public Departamento addTag(Tag tag) {
         this.tags.add(tag);
-        tag.addDepartamento(this);
+        if (tag.getDepartamentos().contains(this)) tag.addDepartamento(this);
         return this;
     }
 

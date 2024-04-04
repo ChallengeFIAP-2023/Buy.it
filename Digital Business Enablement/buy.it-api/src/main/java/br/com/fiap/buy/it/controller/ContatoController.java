@@ -26,7 +26,7 @@ public class ContatoController {
     private ContatoService contatoService;
 
     @GetMapping
-    public ResponseEntity<Page<ContatoDTO>> listAll(@PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<ContatoDTO>> listAll(@PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando todos(as)");
         return ResponseEntity.ok(contatoService.listAll(pageable));
     }
@@ -57,7 +57,7 @@ public class ContatoController {
     }
 
     @GetMapping("/usuario/{userId}")
-    public ResponseEntity<Page<ContatoDTO>> findByUsuarioId(@PathVariable Long userId, @PageableDefault(size = 5, sort = "id", direction = Sort.Direction.ASC) Pageable pageable) {
+    public ResponseEntity<Page<ContatoDTO>> findByUsuarioId(@PathVariable Long userId, @PageableDefault(size = 100, sort = "id", direction = Sort.Direction.DESC) Pageable pageable) {
         log.info("(" + getClass().getSimpleName() + ") - Buscando por ID do usuário: " + userId);
         Page<ContatoDTO> list = contatoService.findByUsuarioId(userId, pageable);
         return ResponseEntity.ok(list);
