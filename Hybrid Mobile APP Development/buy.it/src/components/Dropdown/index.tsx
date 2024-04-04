@@ -13,17 +13,22 @@ import {
   textStyle,
   checkboxStyle,
   searchInputStyle,
+  errorStyle,
+  dropdownErrorStyle
 } from './styles';
 
-export function CustomDropdown({ label, ...rest }: DropdownProps) {
+export function CustomDropdown({ label, error, ...rest }: DropdownProps) {
   return (
     <Fragment>
       {Boolean(label) && <Label>{label}</Label>}
       <Dropdown
         dropdownStyle={dropdownStyle}
+        dropdownErrorStyle={dropdownErrorStyle}
         placeholderStyle={textStyle}
         selectedItemStyle={textStyle}
+        dropdownErrorTextStyle={errorStyle}
         primaryColor={theme.COLORS.PRIMARY}
+        error={error}
         dropdownIcon={
           <CaretDown
             color={theme.COLORS.GRAY_200}

@@ -2,6 +2,7 @@ import { useForm, SubmitHandler, Controller, Control, FieldErrors } from 'react-
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Fragment, useState } from 'react';
 import { ArrowRight } from 'phosphor-react-native';
+import Toast from 'react-native-toast-message';
 
 // Validation import
 import { NewProductFormSchema } from '@validations/QuoteDetails';
@@ -15,6 +16,8 @@ import { useCreateQuote } from '@hooks/useCreateQuote';
 
 // Theme import
 import theme from '@theme/index';
+
+// Type import
 import { ProductQuery } from '@dtos/product';
 
 interface NewProductForm {
@@ -30,7 +33,11 @@ interface Step {
   errors: FieldErrors<NewProductForm>
 }
 
-export function NewProduct() {
+interface NewProduct {
+  toggleModal: () => void;
+}
+
+export function NewProduct({ toggleModal }: NewProduct) {
 
   const {
     control,
@@ -40,12 +47,32 @@ export function NewProduct() {
     resolver: yupResolver(NewProductFormSchema),
   });
 
-  const { handleNewProduct, setProduct, product } = useCreateQuote();
+  const { 
+    handleNewProduct, 
+    product, 
+    fetchProducts,
+    setQuote
+  } = useCreateQuote();
+
+  const proceed = () => {
+    setStep(2);
+  }
 
   const onSubmit: SubmitHandler<NewProductForm> = data => {
     const finalQuery: ProductQuery = { ...product, ...data }
-    console.debug(finalQuery);
-    handleNewProduct(finalQuery);
+    const id = handleNewProduct(finalQuery);
+    
+    fetchProducts();    
+
+    if (typeof id === 'number') setQuote(prevQuote => ({ ...prevQuote, idProduto: id }));
+
+    toggleModal();
+
+
+    return Toast.show({
+      type: 'success',
+      text1: 'Produto criado com sucesso',
+    });
   };
 
   const [step, setStep] = useState<number>(1);
@@ -78,7 +105,7 @@ export function NewProduct() {
           label="Continuar"
           size="LG"
           icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
-          onPress={() => setStep(2)}
+          onPress={handleSubmit(proceed)}
         />
       ) : (
         <Button

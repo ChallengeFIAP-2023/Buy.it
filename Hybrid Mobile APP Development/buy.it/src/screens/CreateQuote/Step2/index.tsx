@@ -41,7 +41,7 @@ import { NewProduct } from './NewProduct';
 import { useCreateQuote } from '@hooks/useCreateQuote';
 
 interface Step2Form {
-  nome: string;
+  produto: number;
   quantidade: number;
 }
 
@@ -101,7 +101,6 @@ export const Step2: React.FC<
   }
 
   const [deadline, setDeadline] = useState(deadlineOptions[0].value);
-  const [selectedProduct, setSelectedProduct] = useState<number>(0);
   const [isModalVisible, setModalVisible] = useState(false);
 
   const toggleModal = () => {
@@ -120,28 +119,35 @@ export const Step2: React.FC<
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
             title: 'Principais informações do produto',
-            subtitle: 'Passo 2 de 5',
+            subtitle: 'Passo 2 de 4',
           }}
           key="default-component-quote-details"
         />
 
         <DecreasingContainer scrollable>
           <Fieldset>
-            <CustomDropdown
-              label="Produto"
-              isSearchable
-              placeholder="Selecione o produto que deseja cotar"
-              options={productsOptions}
-              selectedValue={selectedProduct}
-              onValueChange={(value: number) => setSelectedProduct(value)}
-              listFooterComponent={
-                <Button 
-                  label="Novo produto" 
-                  size="SM"
-                  style={{ margin: 15 }}
-                  onPress={toggleModal}
+            <Controller
+              control={control}
+              name="produto"
+              render={({ field: { value, onChange } }) => (
+                <CustomDropdown
+                  label="Produto"
+                  isSearchable
+                  placeholder="Selecione o produto que deseja cotar"
+                  options={productsOptions}
+                  selectedValue={value}
+                  onValueChange={onChange}
+                  error={errors.produto?.message}
+                  listFooterComponent={
+                    <Button 
+                      label="Novo produto" 
+                      size="SM"
+                      style={{ margin: 15 }}
+                      onPress={toggleModal}
+                    />
+                  }
                 />
-              }
+                )}
             />
           </Fieldset>
 
@@ -192,12 +198,12 @@ export const Step2: React.FC<
       </ScrollableContent>
 
       <CustomModal
-        modalProps={{
-          isVisible: isModalVisible,
-        }}
+        modalProps={{ isVisible: isModalVisible }}
         onClose={toggleModal}
       >
-        <NewProduct />
+        <NewProduct 
+          toggleModal={toggleModal}
+        />
       </CustomModal>
 
       <Button

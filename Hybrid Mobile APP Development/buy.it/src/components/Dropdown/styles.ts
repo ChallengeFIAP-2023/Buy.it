@@ -9,15 +9,25 @@ export const Label = styled.Text`
   margin-bottom: 12px;
 `;
 
+export const errorStyle: TextStyle = {
+  color: theme.COLORS.RED,
+  fontSize: theme.FONT_SIZE.SM,
+  fontFamily: theme.FONT_FAMILY.RALEWAY.BOLD,
+  margin: 5
+};
+
 export const dropdownStyle: ViewStyle = {
   backgroundColor: theme.COLORS.GRAY_500,
   paddingHorizontal: 12,
-  paddingVertical: 14,
   borderRadius: 8,
   borderWidth: 0,
   height: 'auto',
   display: 'flex',
-  flexDirection: 'row',
+  margin: 0
+};
+
+export const dropdownErrorStyle: ViewStyle = {
+  borderColor: theme.COLORS.RED,
 };
 
 export const textStyle: TextStyle = {

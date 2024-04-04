@@ -51,7 +51,7 @@ export const Step4: React.FC<
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
             title: 'Quanto você quer pagar em cada caneta esferográfica?',
-            subtitle: 'Passo 5 de 5',
+            subtitle: 'Passo 4 de 4',
           }}
           key="default-component-quote-details"
         />

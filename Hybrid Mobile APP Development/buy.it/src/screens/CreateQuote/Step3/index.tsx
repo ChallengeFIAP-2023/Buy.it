@@ -26,12 +26,6 @@ import { ScrollableContent } from '@global/styles/index';
 //Hook import 
 import { useCreateQuote } from '@hooks/useCreateQuote';
 
-interface Step3Form {
-  prioridadeEntrega: number;
-  prioridadeQualidade: number;
-  prioridadePreco: number;
-}
-
 type Priority = {
   label: string;
   value: number;
@@ -55,7 +49,7 @@ export const Step3: React.FC<
   >
 > = ({ navigation }) => {
 
-  const { setProduct, setQuote } = useCreateQuote();
+  const { setQuote } = useCreateQuote();
 
   const onSubmit = () => {
     const prioridadeEntrega = priorities.delivery.value;
@@ -111,7 +105,7 @@ export const Step3: React.FC<
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
             title: 'O que é prioridade na cotação?',
-            subtitle: 'Passo 3 de 5',
+            subtitle: 'Passo 3 de 4',
           }}
           key="default-component-quote-details"
         />

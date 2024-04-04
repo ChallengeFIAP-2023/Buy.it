@@ -9,6 +9,11 @@ import { MainNavigationRoutes } from '@routes/index';
 import { CreateQuoteRoutes } from '..';
 import { TFlatList } from 'react-native-input-select/lib/typescript/types/index.types';
 
+// Validation import
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
+import { yupResolver } from '@hookform/resolvers/yup';
+import { Step1FormSchema } from '@validations/QuoteDetails';
+
 // Theme import
 import theme from '@theme/index';
 
@@ -29,6 +34,11 @@ import { useCreateQuote } from '@hooks/useCreateQuote';
 import { ScrollableContent, Fieldset } from '@global/styles/index';
 import { CustomModal } from '@components/Modal';
 
+interface Step1Form {
+  idsTags: number[];
+  idDepartamento: number;
+}
+
 export const Step1: React.FC<
   CompositeScreenProps<
     NativeStackScreenProps<CreateQuoteRoutes, 'Step1'>,
@@ -36,11 +46,17 @@ export const Step1: React.FC<
   >
 > = ({ navigation }) => {
   // State
-  const [selectedTags, setSelectedTags] = useState<number[]>([]);
-  const [selectedDepartment, setSelectedDepartment] = useState<number>(0);
   const [isModalVisible, setModalVisible] = useState(false);
   const [tagName, setTagName] = useState("");
   const [newTagError, setNewTagError] = useState<string | undefined>();
+
+  const {
+    control,
+    handleSubmit,
+    formState: { errors },
+  } = useForm<Step1Form>({
+    resolver: yupResolver(Step1FormSchema),
+  });
 
   const toggleModal = () => {
     setModalVisible(!isModalVisible);
@@ -61,12 +77,9 @@ export const Step1: React.FC<
   const newTag = () => {
     if (!tagName) return setNewTagError("Nome da tag é obrigatório!");
     
-    const id = handleNewTag({ nome: tagName });
+    handleNewTag({ nome: tagName });
     
     fetchDepartmentsAndTags();    
-
-    if (typeof id === 'number') setSelectedTags(tags => [...tags, id]);
-
     toggleModal();
 
     return Toast.show({
@@ -75,26 +88,8 @@ export const Step1: React.FC<
     });
   };
 
-  const onSubmit = () => {
-    const idDepartamento = selectedDepartment;
-    const idsTags = selectedTags;
-
-    const findError = () => {
-      if (!idDepartamento || idDepartamento == 0) return 'Selecione o departamento!' 
-      if (!idsTags || idsTags.length <= 0) return 'Selecione pelo menos uma tag!'
-      return null;
-    };
-
-    const error = findError();
-
-    if (error) 
-      return Toast.show({
-        type: 'error',
-        text1: error,
-      });
-
-    setProduct(prevProd => ({ ...prevProd, idDepartamento, idsTags }));
-
+  const onSubmit: SubmitHandler<Step1Form> = data => {
+    setProduct(prevProd => ({ ...prevProd, ...data }));
     return navigation.navigate('Step2');
   };
 
@@ -115,43 +110,57 @@ export const Step1: React.FC<
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
             title: 'De que tipo de produto você precisa hoje?',
-            subtitle: 'Passo 1 de 5',
+            subtitle: 'Passo 1 de 4',
           }}
           key="default-component-quote-details"
         />
 
         <DecreasingContainer>
           <Fieldset>
-            <CustomDropdown
-              isSearchable
-              label="Departamento"
-              placeholder="Selecione o departamento relacionado"
-              options={departmentsOptions}
-              selectedValue={selectedDepartment}
-              onValueChange={(value: number) => setSelectedDepartment(value)}
-              listControls={{
-                emptyListMessage: 'Nenhum departamento encontrado',
-              }}
+            <Controller
+              control={control}
+              name="idDepartamento"
+              render={({ field: { value, onChange } }) => (
+                <CustomDropdown
+                  isSearchable
+                  label="Departamento"
+                  placeholder="Selecione o departamento relacionado"
+                  options={departmentsOptions}
+                  selectedValue={value}
+                  onValueChange={onChange}
+                  error={errors.idDepartamento?.message}
+                  listControls={{
+                    emptyListMessage: 'Nenhum departamento encontrado',
+                  }}
+                />
+              )}
             />
           </Fieldset>
 
           <Fieldset>
-            <CustomDropdown
-              label="Tags relacionadas"
-              isSearchable
-              isMultiple
-              placeholder="Selecione as tags relacionadas"
-              options={tagsOptions}
-              selectedValue={selectedTags}
-              onValueChange={(value: []) => setSelectedTags(value)}
-              listFooterComponent={
-                <Button 
-                  label="Nova tag" 
-                  size="SM"
-                  style={{ margin: 15 }}
-                  onPress={toggleModal}
-                />
-              }
+            <Controller
+              control={control}
+              name="idsTags"
+              render={({ field: { value, onChange } }) => (
+              <CustomDropdown
+                label="Tags relacionadas"
+                isSearchable
+                isMultiple
+                placeholder="Selecione as tags relacionadas"
+                options={tagsOptions}
+                selectedValue={value}
+                onValueChange={onChange}
+                error={errors.idsTags?.message}
+                listFooterComponent={
+                  <Button 
+                    label="Nova tag" 
+                    size="SM"
+                    style={{ margin: 15 }}
+                    onPress={toggleModal}
+                  />
+                }
+              />
+              )}
             />
           </Fieldset>
     
@@ -187,7 +196,7 @@ export const Step1: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        onPress={() => onSubmit()}
+        onPress={handleSubmit(onSubmit)}
       />
     </WrapperPage>
   );
