@@ -3,7 +3,7 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
-import { useLayoutEffect, useState } from 'react';
+import React, { useLayoutEffect, useState } from 'react';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -49,7 +49,7 @@ const deadlineOptions: TFlatList = [
   { label: 'Rápido (3 dias)', value: 3 },
   { label: 'Padrão (7 dias)', value: 7 },
   { label: 'Estendido (2 semanas)', value: 14 },
-  { label: 'Sem prioridade', value: -1 },
+  { label: 'Sem prioridade', value: 0 },
 ];
 
 const PRODUCT_QUANTITY = 15;

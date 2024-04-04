@@ -4,6 +4,7 @@ import { CompositeScreenProps } from '@react-navigation/native';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { Fragment, useLayoutEffect } from 'react';
+import { format } from "date-fns";
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -32,12 +33,11 @@ import { LightText, LightBoldText } from './styles';
 import { ScrollableContent, Fieldset } from '@global/styles/index';
 
 // Hook import
-import { useCreateQuote } from '@hooks/useCreateQuote';
+import { NavigationProp, useCreateQuote } from '@hooks/useCreateQuote';
 import { useAuth } from '@hooks/useAuth';
 
 // Utils import
-import { formatCurrency } from '@utils/formatStrings';
-import { toMaskedCurrency, unMask, unMaskCurrency } from '@utils/masks';
+import { toMaskedCurrency, unMaskCurrency } from '@utils/masks';
 import Toast from 'react-native-toast-message';
 
 interface Step4Form {
@@ -76,7 +76,7 @@ export const Step4: React.FC<
   const { user } = useAuth();
 
   const onSubmit: SubmitHandler<Step4Form> = data => {
-    const dataAbertura = new Date().toISOString();
+    const dataAbertura = format(new Date(), "dd-MM-yyyy");
     const idStatus = EM_ANDAMENTO;
     // const idComprador = user.id as unknown as number;
     const idComprador = 1;
@@ -94,7 +94,7 @@ export const Step4: React.FC<
       ...quote, dataAbertura, idStatus, idComprador, valorProduto
     }
 
-    handleNewQuote(finalQuery);
+    handleNewQuote(finalQuery, navigation as NavigationProp);
   };
 
   useLayoutEffect(() => {
@@ -169,18 +169,18 @@ function Message ({ productPrices }: Message) {
           <LightText>
             O valor médio de cotações para{' '}
             <LightBoldText>{productPrices.produto.nome}</LightBoldText> é {' '}
-            {formatCurrency(productPrices.avgValor)} por unidade.
+            {toMaskedCurrency(productPrices.avgValor.toString())} por unidade.
           </LightText>
           <LightText>
             O menor preço já pago em {productPrices.produto.nome}{' '}
-            foi {formatCurrency(productPrices.minValor)}.
+            foi {toMaskedCurrency(productPrices.minValor.toString())}.
           </LightText>
         </Fragment>
         ) : (
           <LightText>
-            Infelizmente ainda não possuímos uma média de valores anteriores para
+            Infelizmente ainda não possuímos uma média de valores para
             <LightBoldText> {productPrices.produto && productPrices.produto.nome}</LightBoldText>. 
-            Quando tivermos você receberá a sugestão.
+            Quando tivermos você a receberá como sugestão.
           </LightText>
         )
       }

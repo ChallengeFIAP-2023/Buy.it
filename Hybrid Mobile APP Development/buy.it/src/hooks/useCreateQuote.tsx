@@ -13,13 +13,18 @@ import GlobalRequestService from '@services/global-request';
 import { QuoteQuery, ProductQuery, Department, Tag, TagQuery, Product, ProductPrices } from '@dtos/index';
 import Toast from 'react-native-toast-message';
 import { api } from '@services/api';
+import { CreateQuoteRoutes } from '@screens/CreateQuote';
+import { MainNavigationRoutes } from '@routes/index';
+import { StackNavigationProp } from '@react-navigation/stack';
+
+export type NavigationProp = StackNavigationProp<CreateQuoteRoutes & MainNavigationRoutes>;
 
 interface CreateQuoteContextData {
   quote: QuoteQuery;
   product: ProductQuery;
   setQuote: Dispatch<React.SetStateAction<QuoteQuery>>;
   setProduct: Dispatch<React.SetStateAction<ProductQuery>>;
-  handleNewQuote: (finalQueryData: QuoteQuery) => Promise<void>;
+  handleNewQuote: (finalQueryData: QuoteQuery, navigation: NavigationProp) => Promise<void>;
   handleNewProduct: (finalQueryData: ProductQuery) => Promise<void>;
   handleNewTag: (finalQueryData: TagQuery) => Promise<void>;
   loading: boolean;
@@ -114,6 +119,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
           type: 'success',
           text1: 'Produto criado com sucesso!',
         });
+        fetchProducts();
       }
       
     } catch (error) {
@@ -129,7 +135,10 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     }
   }, []);
 
-  const handleNewQuote = useCallback(async (quoteData: QuoteQuery) => {
+  const handleNewQuote = useCallback(async (
+    quoteData: QuoteQuery, 
+    navigation: NavigationProp
+  ) => {
     try {
       setLoading(true);
 
@@ -137,11 +146,13 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
       const { data } = await api.post('/cotacoes', body);
 
       if (data.id) {
-        return Toast.show({
+        Toast.show({
           type: 'success',
           text1: 'Cotação enviada com sucesso!',
           text2: 'Assim que alguem aceitá-la você será notificado.',
         });
+
+        return navigation.navigate("Main");
       }
 
     } catch (error) {
