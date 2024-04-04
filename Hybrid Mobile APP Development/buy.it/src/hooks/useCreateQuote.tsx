@@ -91,7 +91,12 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
       const body = productData;
       const { data } = await api.post('/produtos', body);
 
-      console.debug(data);
+      if (data.id) {
+        Toast.show({
+          type: 'success',
+          text1: 'Produto criado com sucesso!',
+        });
+      }
       
     } catch (error) {
       Toast.show({
@@ -106,21 +111,21 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     }
   }, []);
 
-  const handleNewQuote = useCallback(async (data: QuoteQuery) => {
+  const handleNewQuote = useCallback(async (quoteData: QuoteQuery) => {
     try {
       setLoading(true);
 
-      const values = Object.values(data);
-      const insufficientInformation = values.some(
-        value => typeof value === 'undefined' || typeof value === null,
-      );
+      const body = quoteData;
+      const { data } = await api.post('/cotacoes', body);
 
-      if (insufficientInformation)
-        throw new Error('Um ou mais atributos estão vazios.');
+      if (data.id) {
+        return Toast.show({
+          type: 'success',
+          text1: 'Cotação enviada com sucesso!',
+          text2: 'Assim que alguem aceitá-la você será notificado.',
+        });
+      }
 
-      const body = data;
-
-      await api.post('/cotacoes', body);
     } catch (error) {
       Toast.show({
         type: 'error',

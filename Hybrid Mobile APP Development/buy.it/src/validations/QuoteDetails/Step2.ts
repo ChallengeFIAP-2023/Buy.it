@@ -1,10 +1,10 @@
 import * as yup from 'yup';
 
 export const Step2FormSchema = yup.object().shape({
-  produto: yup
+  idProduto: yup
     .number()
     .required("Selecione um produto!"),
-  quantidade: yup
+  quantidadeProduto: yup
     .number()
     .required('Quantidade obrigatória.')
     .positive('Deve ser um número positivo.')

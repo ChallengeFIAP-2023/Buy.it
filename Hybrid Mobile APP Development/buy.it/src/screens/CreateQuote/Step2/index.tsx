@@ -41,8 +41,8 @@ import { NewProduct } from './NewProduct';
 import { useCreateQuote } from '@hooks/useCreateQuote';
 
 interface Step2Form {
-  produto: number;
-  quantidade: number;
+  idProduto: number;
+  quantidadeProduto: number;
 }
 
 const deadlineOptions: TFlatList = [
@@ -68,7 +68,7 @@ export const Step2: React.FC<
   } = useForm<Step2Form>({
     resolver: yupResolver(Step2FormSchema),
     defaultValues: {
-      quantidade: 5
+      quantidadeProduto: 5
     },
   });
 
@@ -80,8 +80,7 @@ export const Step2: React.FC<
 
   const onSubmit: SubmitHandler<Step2Form> = data => {
     const prazo = deadline as number;
-    const quantidade = data.quantidade as number;
-    setQuote(prevQuote => ({ ...prevQuote, prazo, quantidade }));
+    setQuote(prevQuote => ({ ...prevQuote, prazo, ...data }));
 
     return navigation.navigate('Step3');
   };
@@ -89,15 +88,15 @@ export const Step2: React.FC<
   function handleSubtract(value: number) {
     const badValueConditions =
       isNaN(value) || value <= 0 || value - PRODUCT_QUANTITY < 5;
-    if (badValueConditions) return setValue('quantidade', 5);
+    if (badValueConditions) return setValue('quantidadeProduto', 5);
 
-    return setValue('quantidade', value - PRODUCT_QUANTITY);
+    return setValue('quantidadeProduto', value - PRODUCT_QUANTITY);
   }
 
   function handleSum(value: number) {
-    if (isNaN(value)) return setValue('quantidade', 5);
+    if (isNaN(value)) return setValue('quantidadeProduto', 5);
 
-    return setValue('quantidade', Number(value) + PRODUCT_QUANTITY);
+    return setValue('quantidadeProduto', Number(value) + PRODUCT_QUANTITY);
   }
 
   const [deadline, setDeadline] = useState(deadlineOptions[0].value);
@@ -128,7 +127,7 @@ export const Step2: React.FC<
           <Fieldset>
             <Controller
               control={control}
-              name="produto"
+              name="idProduto"
               render={({ field: { value, onChange } }) => (
                 <CustomDropdown
                   label="Produto"
@@ -137,7 +136,7 @@ export const Step2: React.FC<
                   options={productsOptions}
                   selectedValue={value}
                   onValueChange={onChange}
-                  error={errors.produto?.message}
+                  error={errors.idProduto?.message}
                   listFooterComponent={
                     <Button 
                       label="Novo produto" 
@@ -154,7 +153,7 @@ export const Step2: React.FC<
           <Fieldset>
             <Controller
               control={control}
-              name="quantidade"
+              name="quantidadeProduto"
               render={({ field: { value, onChange } }) => (
                 <QuantityContainer>
                   <InputLabel>Quantidade</InputLabel>
@@ -170,7 +169,7 @@ export const Step2: React.FC<
                         onChangeText={onChange}
                         placeholder="Quantidade"
                         keyboardType="number-pad"
-                        error={errors.quantidade?.message}
+                        error={errors.quantidadeProduto?.message}
                       />
                     </InputWrapper>
 

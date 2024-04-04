@@ -64,15 +64,10 @@ export function NewProduct({ toggleModal }: NewProduct) {
     
     fetchProducts();    
 
-    if (typeof id === 'number') setQuote(prevQuote => ({ ...prevQuote, idProduto: id }));
+    if (typeof id === 'number') 
+      setQuote(prevQuote => ({ ...prevQuote, idProduto: id }));
 
     toggleModal();
-
-
-    return Toast.show({
-      type: 'success',
-      text1: 'Produto criado com sucesso',
-    });
   };
 
   const [step, setStep] = useState<number>(1);

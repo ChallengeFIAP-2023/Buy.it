@@ -3,16 +3,21 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
+import Toast from 'react-native-toast-message';
+import { format } from 'date-fns';
+import React from 'react';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
 import { CreateQuoteRoutes } from '..';
+import { QuoteQuery } from '@dtos/quote';
 
 // Theme import
 import theme from '@theme/index';
 
 // Validation import
 import { Step4FormSchema } from '@validations/QuoteDetails';
+
 
 // Component import
 import {
@@ -27,9 +32,15 @@ import {
 import { LightText, LightBoldText } from './styles';
 import { ScrollableContent, Fieldset } from '@global/styles/index';
 
+// Hook import
+import { useCreateQuote } from '@hooks/useCreateQuote';
+import { useAuth } from '@hooks/useAuth';
+
 interface Step4Form {
-  preco: number;
+  valorProduto: number;
 }
+
+const EM_ANDAMENTO = 1;
 
 export const Step4: React.FC<
   CompositeScreenProps<
@@ -39,10 +50,27 @@ export const Step4: React.FC<
 > = ({ navigation }) => {
   const {
     control,
+    handleSubmit,
     formState: { errors },
   } = useForm<Step4Form>({
     resolver: yupResolver(Step4FormSchema),
   });
+
+  const { quote, handleNewQuote } = useCreateQuote();
+
+  const { user } = useAuth();
+
+  const onSubmit: SubmitHandler<Step4Form> = data => {
+    const dataAbertura = new Date().toISOString();
+    const idStatus = EM_ANDAMENTO;
+    // const idComprador = user.id as unknown as number;
+    const idComprador = 1;
+
+    const finalQuery: QuoteQuery = { 
+      ...quote, ...data, dataAbertura, idStatus, idComprador 
+    }
+    handleNewQuote(finalQuery);
+  };
 
   return (
     <WrapperPage>
@@ -68,14 +96,14 @@ export const Step4: React.FC<
           <Fieldset>
             <Controller
               control={control}
-              name="preco"
+              name="valorProduto"
               render={({ field: { value, onChange } }) => (
                 <Input
                   value={value?.toString()}
                   onChangeText={onChange}
                   label="Valor"
                   placeholder="R$ 0,50"
-                  error={errors.preco?.message}
+                  error={errors.valorProduto?.message}
                 />
               )}
             />
@@ -90,7 +118,7 @@ export const Step4: React.FC<
         size="XL"
         icon={<ArrowRight color={theme.COLORS.WHITE} weight="bold" />}
         bottom
-        // onPress={() => navigation.navigate('Step5')}
+        onPress={handleSubmit(onSubmit)}
       />
     </WrapperPage>
   );
