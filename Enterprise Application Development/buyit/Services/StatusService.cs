@@ -14,7 +14,7 @@ public class StatusService
         _context = context;
     }
 
-    public async Task<List<StatusDto>> ListAllAsync()
+    public async Task<List<StatusDto>> FindAll()
     {
         var list = await _context.Status
             .ToListAsync();
@@ -22,13 +22,13 @@ public class StatusService
         return list.Select(entity => ConvertToDto(entity)).ToList();
     }
 
-    public async Task<StatusDto> FindByIdAsync(long id)
+    public async Task<StatusDto> FindById(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         return ConvertToDto(entity);
     }
 
-    public async Task<StatusDto> CreateAsync(StatusDto newData)
+    public async Task<StatusDto> Create(StatusDto newData)
     {
         var entity = await ConvertToEntity(newData);
         _context.Status.Add(entity);
@@ -36,9 +36,9 @@ public class StatusService
         return ConvertToDto(entity);
     }
 
-    public async Task<StatusDto> UpdateAsync(long id, StatusDto updatedData)
+    public async Task<StatusDto> Update(long id, StatusDto updatedData)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         updatedData.Id = entity.Id;
         var updatedEntity = await ConvertToEntity(updatedData);
         _context.Entry(entity).CurrentValues.SetValues(updatedEntity);
@@ -46,14 +46,14 @@ public class StatusService
         return ConvertToDto(entity);
     }
 
-    public async Task DeleteAsync(long id)
+    public async Task Delete(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         _context.Status.Remove(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<StatusModel> FindEntityByIdAsync(long id)
+    public async Task<StatusModel> FindEntityById(long id)
     {
         var entity = await _context.Status
             .FirstOrDefaultAsync(x => x.Id == id);

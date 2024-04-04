@@ -13,7 +13,7 @@ public class AvaliacaoService
         _context = context;
     }
 
-    public async Task<List<AvaliacaoDto>> ListAllAsync()
+    public async Task<List<AvaliacaoDto>> FindAll()
     {
         var list = await _context.Avaliacao
             .Include(x => x.Cotacao)
@@ -22,13 +22,13 @@ public class AvaliacaoService
         return list.Select(entity => ConvertToDto(entity)).ToList();
     }
 
-    public async Task<AvaliacaoDto> FindByIdAsync(long id)
+    public async Task<AvaliacaoDto> FindById(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         return ConvertToDto(entity);
     }
 
-    public async Task<AvaliacaoDto> CreateAsync(AvaliacaoDto newData)
+    public async Task<AvaliacaoDto> Create(AvaliacaoDto newData)
     {
         var entity = await ConvertToEntity(newData);
         _context.Avaliacao.Add(entity);
@@ -36,9 +36,9 @@ public class AvaliacaoService
         return ConvertToDto(entity);
     }
 
-    public async Task<AvaliacaoDto> UpdateAsync(long id, AvaliacaoDto updatedData)
+    public async Task<AvaliacaoDto> Update(long id, AvaliacaoDto updatedData)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         updatedData.Id = entity.Id;
         var updatedEntity = await ConvertToEntity(updatedData);
         _context.Entry(entity).CurrentValues.SetValues(updatedEntity);
@@ -46,14 +46,14 @@ public class AvaliacaoService
         return ConvertToDto(entity);
     }
 
-    public async Task DeleteAsync(long id)
+    public async Task Delete(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         _context.Avaliacao.Remove(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<AvaliacaoModel> FindEntityByIdAsync(long id)
+    public async Task<AvaliacaoModel> FindEntityById(long id)
     {
         var entity = await _context.Avaliacao
             .Include(x => x.Cotacao)
@@ -65,7 +65,7 @@ public class AvaliacaoService
         return entity;
     }
 
-    public async Task<List<AvaliacaoDto>> FindByCotacaoIdAsync(long id)
+    public async Task<List<AvaliacaoDto>> FindByCotacaoId(long id)
     {
         var list = await _context.Avaliacao
             .Where(x => x.Cotacao.Id == id)
@@ -75,7 +75,7 @@ public class AvaliacaoService
         return list.Select(x => ConvertToDto(x)).ToList();
     }
 
-    public async Task<List<AvaliacaoDto>> FindByUsuarioIdAsync(long id)
+    public async Task<List<AvaliacaoDto>> FindByUsuarioId(long id)
     {
         var list = await _context.Avaliacao
             .Where(x => x.Cotacao.Comprador.Id == id)

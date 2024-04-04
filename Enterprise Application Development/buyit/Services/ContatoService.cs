@@ -13,7 +13,7 @@ public class ContatoService
         _context = context;
     }
 
-    public async Task<List<ContatoDto>> ListAllAsync()
+    public async Task<List<ContatoDto>> FindAll()
     {
         var list = await _context.Contato
             .Include(x => x.Usuario)
@@ -22,13 +22,13 @@ public class ContatoService
         return list.Select(entity => ConvertToDto(entity)).ToList();
     }
 
-    public async Task<ContatoDto> FindByIdAsync(long id)
+    public async Task<ContatoDto> FindById(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         return ConvertToDto(entity);
     }
 
-    public async Task<ContatoDto> CreateAsync(ContatoDto newData)
+    public async Task<ContatoDto> Create(ContatoDto newData)
     {
         var entity = await ConvertToEntity(newData);
         _context.Contato.Add(entity);
@@ -36,9 +36,9 @@ public class ContatoService
         return ConvertToDto(entity);
     }
 
-    public async Task<ContatoDto> UpdateAsync(long id, ContatoDto updatedData)
+    public async Task<ContatoDto> Update(long id, ContatoDto updatedData)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         updatedData.Id = entity.Id;
         var updatedEntity = await ConvertToEntity(updatedData);
         _context.Entry(entity).CurrentValues.SetValues(updatedEntity);
@@ -46,14 +46,14 @@ public class ContatoService
         return ConvertToDto(entity);
     }
 
-    public async Task DeleteAsync(long id)
+    public async Task Delete(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         _context.Contato.Remove(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<ContatoModel> FindEntityByIdAsync(long id)
+    public async Task<ContatoModel> FindEntityById(long id)
     {
         var entity = await _context.Contato
             .Include(x => x.Usuario)
@@ -65,7 +65,7 @@ public class ContatoService
         return entity;
     }
 
-    public async Task<List<ContatoDto>> FindByUsuarioIdAsync(long id)
+    public async Task<List<ContatoDto>> FindByUsuarioId(long id)
     {
         var list = await _context.Contato
             .Where(x => x.Usuario.Id == id)

@@ -1,7 +1,7 @@
 [
   {
     "ContainingType": "Buyit.Controllers.AvaliacaoController",
-    "Method": "GetAll",
+    "Method": "FindAll",
     "RelativePath": "avaliacoes",
     "HttpMethod": "GET",
     "IsController": true,
@@ -47,7 +47,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.AvaliacaoController",
-    "Method": "GetById",
+    "Method": "FindById",
     "RelativePath": "avaliacoes/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -120,7 +120,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.AvaliacaoController",
-    "Method": "GetByCotacaoId",
+    "Method": "FindByCotacaoId",
     "RelativePath": "avaliacoes/cotacao/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -146,7 +146,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.AvaliacaoController",
-    "Method": "GetByUsuarioId",
+    "Method": "FindByUsuarioId",
     "RelativePath": "avaliacoes/usuario/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -172,7 +172,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.ContatoController",
-    "Method": "GetAll",
+    "Method": "FindAll",
     "RelativePath": "contatos",
     "HttpMethod": "GET",
     "IsController": true,
@@ -218,7 +218,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.ContatoController",
-    "Method": "GetById",
+    "Method": "FindById",
     "RelativePath": "contatos/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -291,7 +291,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.ContatoController",
-    "Method": "GetByUsuarioId",
+    "Method": "FindByUsuarioId",
     "RelativePath": "contatos/usuario/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -317,7 +317,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.CotacaoController",
-    "Method": "GetAll",
+    "Method": "FindAll",
     "RelativePath": "cotacoes",
     "HttpMethod": "GET",
     "IsController": true,
@@ -363,7 +363,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.CotacaoController",
-    "Method": "GetById",
+    "Method": "FindById",
     "RelativePath": "cotacoes/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -436,7 +436,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.CotacaoController",
-    "Method": "GetByProdutoId",
+    "Method": "FindByProdutoId",
     "RelativePath": "cotacoes/produto/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -462,7 +462,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.CotacaoController",
-    "Method": "GetInfoByProdutoId",
+    "Method": "FindInfoByProdutoId",
     "RelativePath": "cotacoes/produto/info/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -488,7 +488,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.CotacaoController",
-    "Method": "GetByStatusId",
+    "Method": "FindByStatusId",
     "RelativePath": "cotacoes/status/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -514,7 +514,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.CotacaoController",
-    "Method": "GetByUsuarioId",
+    "Method": "FindByUsuarioId",
     "RelativePath": "cotacoes/usuario/comprador/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -540,7 +540,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.DepartamentoController",
-    "Method": "GetAll",
+    "Method": "FindAll",
     "RelativePath": "departamentos",
     "HttpMethod": "GET",
     "IsController": true,
@@ -586,7 +586,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.DepartamentoController",
-    "Method": "GetById",
+    "Method": "FindById",
     "RelativePath": "departamentos/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -659,7 +659,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.DepartamentoController",
-    "Method": "GetByTagId",
+    "Method": "FindByTagId",
     "RelativePath": "departamentos/tag/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -685,7 +685,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.HistoricoController",
-    "Method": "GetAll",
+    "Method": "FindAll",
     "RelativePath": "historicos",
     "HttpMethod": "GET",
     "IsController": true,
@@ -731,7 +731,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.HistoricoController",
-    "Method": "GetById",
+    "Method": "FindById",
     "RelativePath": "historicos/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -804,7 +804,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.HistoricoController",
-    "Method": "GetByCotacaoId",
+    "Method": "FindByCotacaoId",
     "RelativePath": "historicos/cotacao/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -830,7 +830,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.HistoricoController",
-    "Method": "GetByStatusId",
+    "Method": "FindByStatusId",
     "RelativePath": "historicos/status/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -856,7 +856,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.HistoricoController",
-    "Method": "GetByCompradorId",
+    "Method": "FindByCompradorId",
     "RelativePath": "historicos/usuario/comprador/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -882,7 +882,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.HistoricoController",
-    "Method": "GetByFornecedorId",
+    "Method": "FindByFornecedorId",
     "RelativePath": "historicos/usuario/fornecedor/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -908,7 +908,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.ProdutoController",
-    "Method": "GetAll",
+    "Method": "FindAll",
     "RelativePath": "produtos",
     "HttpMethod": "GET",
     "IsController": true,
@@ -954,7 +954,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.ProdutoController",
-    "Method": "GetById",
+    "Method": "FindById",
     "RelativePath": "produtos/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1027,7 +1027,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.ProdutoController",
-    "Method": "GetByDepartamentoId",
+    "Method": "FindByDepartamentoId",
     "RelativePath": "produtos/departamento/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1053,7 +1053,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.ProdutoController",
-    "Method": "GetByName",
+    "Method": "FindByName",
     "RelativePath": "produtos/nome/{nome}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1079,7 +1079,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.ProdutoController",
-    "Method": "GetByTagId",
+    "Method": "FindByTagId",
     "RelativePath": "produtos/tag/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1105,7 +1105,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.StatusController",
-    "Method": "GetAll",
+    "Method": "FindAll",
     "RelativePath": "status",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1151,7 +1151,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.StatusController",
-    "Method": "GetById",
+    "Method": "FindById",
     "RelativePath": "status/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1224,7 +1224,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.TagController",
-    "Method": "GetAll",
+    "Method": "FindAll",
     "RelativePath": "tags",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1270,7 +1270,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.TagController",
-    "Method": "GetById",
+    "Method": "FindById",
     "RelativePath": "tags/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1343,7 +1343,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.TagController",
-    "Method": "GetByDepartamentoId",
+    "Method": "FindByDepartamentoId",
     "RelativePath": "tags/departamento/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1369,7 +1369,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.TagController",
-    "Method": "GetByProdutoId",
+    "Method": "FindByProdutoId",
     "RelativePath": "tags/produto/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1395,7 +1395,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.TagController",
-    "Method": "GetByUsuarioId",
+    "Method": "FindByUsuarioId",
     "RelativePath": "tags/usuario/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1421,7 +1421,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.UsuarioController",
-    "Method": "GetAll",
+    "Method": "FindAll",
     "RelativePath": "usuarios",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1467,7 +1467,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.UsuarioController",
-    "Method": "GetById",
+    "Method": "FindById",
     "RelativePath": "usuarios/{id}",
     "HttpMethod": "GET",
     "IsController": true,
@@ -1540,7 +1540,7 @@
   },
   {
     "ContainingType": "Buyit.Controllers.UsuarioController",
-    "Method": "GetByTagId",
+    "Method": "FindByTagId",
     "RelativePath": "usuarios/tag/{id}",
     "HttpMethod": "GET",
     "IsController": true,

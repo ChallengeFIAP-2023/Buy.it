@@ -11,12 +11,12 @@ namespace Buyit.Repositories
             _buyitContext = buyitContext;
         }
 
-        public IEnumerable<TEntity> GetAll()
+        public IEnumerable<TEntity> FindAll()
         {
             return _buyitContext.Set<TEntity>().ToList();
         }
 
-        public TEntity GetById(long id)
+        public TEntity FindById(long id)
         {
             return _buyitContext.Set<TEntity>().Find(id);
         }
@@ -35,7 +35,7 @@ namespace Buyit.Repositories
 
         public void Delete(long id)
         {
-            var entity = GetById(id);
+            var entity = FindById(id);
             _buyitContext.Set<TEntity>().Remove(entity);
             _buyitContext.SaveChanges();
         }

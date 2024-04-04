@@ -16,18 +16,18 @@ namespace Buyit.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<UsuarioDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<UsuarioDto>>> FindAll()
         {
-            var list = await _service.ListAllAsync();
+            var list = await _service.FindAll();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<UsuarioDto>> GetById(long id)
+        public async Task<ActionResult<UsuarioDto>> FindById(long id)
         {
             try
             {
-                var dto = await _service.FindByIdAsync(id);
+                var dto = await _service.FindById(id);
                 return Ok(dto);
             }
             catch (KeyNotFoundException)
@@ -41,8 +41,8 @@ namespace Buyit.Controllers
         {
             try
             {
-                var created = await _service.CreateAsync(dto);
-                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+                var created = await _service.Create(dto);
+                return CreatedAtAction(nameof(FindById), new { id = created.Id }, created);
             }
             catch (System.Exception ex)
             {
@@ -55,7 +55,7 @@ namespace Buyit.Controllers
         {
             try
             {
-                var updated = await _service.UpdateAsync(id, updatedUsuarioDto);
+                var updated = await _service.Update(id, updatedUsuarioDto);
                 return Ok(updated);
             }
             catch (KeyNotFoundException)
@@ -73,7 +73,7 @@ namespace Buyit.Controllers
         {
             try
             {
-                await _service.DeleteAsync(id);
+                await _service.Delete(id);
                 return NoContent();
             }
             catch (KeyNotFoundException)
@@ -87,11 +87,11 @@ namespace Buyit.Controllers
         }
 
         [HttpGet("tag/{id}")]
-        public async Task<ActionResult<IEnumerable<UsuarioDto>>> GetByTagId(long id)
+        public async Task<ActionResult<IEnumerable<UsuarioDto>>> FindByTagId(long id)
         {
             try
             {
-                var list = await _service.FindByTagIdAsync(id);
+                var list = await _service.FindByTagId(id);
                 return Ok(list);
             }
             catch (System.Exception ex)

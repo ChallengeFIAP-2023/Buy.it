@@ -16,18 +16,18 @@ namespace Buyit.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<StatusDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<StatusDto>>> FindAll()
         {
-            var list = await _service.ListAllAsync();
+            var list = await _service.FindAll();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<StatusDto>> GetById(long id)
+        public async Task<ActionResult<StatusDto>> FindById(long id)
         {
             try
             {
-                var dto = await _service.FindByIdAsync(id);
+                var dto = await _service.FindById(id);
                 return Ok(dto);
             }
             catch (KeyNotFoundException)
@@ -41,8 +41,8 @@ namespace Buyit.Controllers
         {
             try
             {
-                var created = await _service.CreateAsync(dto);
-                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+                var created = await _service.Create(dto);
+                return CreatedAtAction(nameof(FindById), new { id = created.Id }, created);
             }
             catch (System.Exception ex)
             {
@@ -55,7 +55,7 @@ namespace Buyit.Controllers
         {
             try
             {
-                var updated = await _service.UpdateAsync(id, updatedStatusDto);
+                var updated = await _service.Update(id, updatedStatusDto);
                 return Ok(updated);
             }
             catch (KeyNotFoundException)
@@ -73,7 +73,7 @@ namespace Buyit.Controllers
         {
             try
             {
-                await _service.DeleteAsync(id);
+                await _service.Delete(id);
                 return NoContent();
             }
             catch (KeyNotFoundException)

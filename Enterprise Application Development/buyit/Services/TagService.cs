@@ -13,7 +13,7 @@ public class TagService
         _context = context;
     }
 
-    public async Task<List<TagDto>> ListAllAsync()
+    public async Task<List<TagDto>> FindAll()
     {
         var list = await _context.Tag
             .Include(x => x.Departamentos)
@@ -24,13 +24,13 @@ public class TagService
         return list.Select(entity => ConvertToDto(entity)).ToList();
     }
 
-    public async Task<TagDto> FindByIdAsync(long id)
+    public async Task<TagDto> FindById(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         return ConvertToDto(entity);
     }
 
-    public async Task<TagDto> CreateAsync(TagDto newData)
+    public async Task<TagDto> Create(TagDto newData)
     {
         var entity = await ConvertToEntity(newData);
         _context.Tag.Add(entity);
@@ -38,7 +38,7 @@ public class TagService
         return ConvertToDto(entity);
     }
 
-    public async Task<TagDto> UpdateAsync(long id, TagDto updatedData)
+    public async Task<TagDto> Update(long id, TagDto updatedData)
     {
         var entity = await _context.Tag
             .Include(x => x.Departamentos)
@@ -89,14 +89,14 @@ public class TagService
         return ConvertToDto(entity);
     }
 
-    public async Task DeleteAsync(long id)
+    public async Task Delete(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         _context.Tag.Remove(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<TagModel> FindEntityByIdAsync(long id)
+    public async Task<TagModel> FindEntityById(long id)
     {
         var entity = await _context.Tag
             .Include(x => x.Departamentos)
@@ -110,7 +110,7 @@ public class TagService
         return entity;
     }
 
-    public async Task<List<TagDto>> FindByDepartamentoIdAsync(long id)
+    public async Task<List<TagDto>> FindByDepartamentoId(long id)
     {
         var list = await _context.Tag
             .Where(t => t.Departamentos.Any(d => d.Id == id))
@@ -122,7 +122,7 @@ public class TagService
         return list.Select(x => ConvertToDto(x)).ToList();
     }
 
-    public async Task<List<TagDto>> FindByUsuarioIdAsync(long id)
+    public async Task<List<TagDto>> FindByUsuarioId(long id)
     {
         var list = await _context.Tag
             .Where(t => t.Usuarios.Any(u => u.Id == id))
@@ -134,7 +134,7 @@ public class TagService
         return list.Select(x => ConvertToDto(x)).ToList();
     }
 
-    public async Task<List<TagDto>> FindByProdutoIdAsync(long id)
+    public async Task<List<TagDto>> FindByProdutoId(long id)
     {
         var list = await _context.Tag
             .Where(t => t.Produtos.Any(p => p.Id == id))

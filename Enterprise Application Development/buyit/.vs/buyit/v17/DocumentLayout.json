@@ -1,12 +1,231 @@
 {
   "Version": 1,
   "WorkspaceRootPath": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\",
-  "Documents": [],
+  "Documents": [
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\services\\usuarioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:services\\usuarioservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\controllers\\contatocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:controllers\\contatocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\configurations\\usuarioconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:configurations\\usuarioconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\configurations\\tagconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:configurations\\tagconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\configurations\\statusconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:configurations\\statusconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\configurations\\produtoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:configurations\\produtoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\configurations\\historicoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:configurations\\historicoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\configurations\\departamentoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:configurations\\departamentoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\configurations\\cotacaoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:configurations\\cotacaoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\configurations\\contatoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:configurations\\contatoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\configurations\\avaliacaoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:configurations\\avaliacaoconfiguration.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\services\\avaliacaoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:services\\avaliacaoservice.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    },
+    {
+      "AbsoluteMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|c:\\users\\kauef\\downloads\\kaue\\buy.it\\enterprise application development\\buyit\\controllers\\avaliacaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}",
+      "RelativeMoniker": "D:0:0:{28CD3441-E4FB-4BD5-98F2-D2609C66D6BE}|Buyit.csproj|solutionrelative:controllers\\avaliacaocontroller.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
+    }
+  ],
   "DocumentGroupContainers": [
     {
       "Orientation": 0,
       "VerticalTabListWidth": 256,
-      "DocumentGroups": []
+      "DocumentGroups": [
+        {
+          "DockedWidth": 200,
+          "SelectedChildIndex": 0,
+          "Children": [
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
+              "Title": "UsuarioService.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Services\\UsuarioService.cs",
+              "RelativeDocumentMoniker": "Services\\UsuarioService.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Services\\UsuarioService.cs",
+              "RelativeToolTip": "Services\\UsuarioService.cs",
+              "ViewState": "AQIAADoAAAAAAAAAAAAcwAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:49:43.597Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 1,
+              "Title": "ContatoController.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Controllers\\ContatoController.cs",
+              "RelativeDocumentMoniker": "Controllers\\ContatoController.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Controllers\\ContatoController.cs",
+              "RelativeToolTip": "Controllers\\ContatoController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:49:40.25Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 2,
+              "Title": "UsuarioConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\UsuarioConfiguration.cs",
+              "RelativeDocumentMoniker": "Configurations\\UsuarioConfiguration.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\UsuarioConfiguration.cs",
+              "RelativeToolTip": "Configurations\\UsuarioConfiguration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAoAAAAnAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:49:16.83Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 3,
+              "Title": "TagConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\TagConfiguration.cs",
+              "RelativeDocumentMoniker": "Configurations\\TagConfiguration.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\TagConfiguration.cs",
+              "RelativeToolTip": "Configurations\\TagConfiguration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:49:15.822Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 4,
+              "Title": "StatusConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\StatusConfiguration.cs",
+              "RelativeDocumentMoniker": "Configurations\\StatusConfiguration.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\StatusConfiguration.cs",
+              "RelativeToolTip": "Configurations\\StatusConfiguration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:49:14.779Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 5,
+              "Title": "ProdutoConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\ProdutoConfiguration.cs",
+              "RelativeDocumentMoniker": "Configurations\\ProdutoConfiguration.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\ProdutoConfiguration.cs",
+              "RelativeToolTip": "Configurations\\ProdutoConfiguration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:49:13.796Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 6,
+              "Title": "HistoricoConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\HistoricoConfiguration.cs",
+              "RelativeDocumentMoniker": "Configurations\\HistoricoConfiguration.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\HistoricoConfiguration.cs",
+              "RelativeToolTip": "Configurations\\HistoricoConfiguration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:49:12.584Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 7,
+              "Title": "DepartamentoConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\DepartamentoConfiguration.cs",
+              "RelativeDocumentMoniker": "Configurations\\DepartamentoConfiguration.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\DepartamentoConfiguration.cs",
+              "RelativeToolTip": "Configurations\\DepartamentoConfiguration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:49:11.475Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 8,
+              "Title": "CotacaoConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\CotacaoConfiguration.cs",
+              "RelativeDocumentMoniker": "Configurations\\CotacaoConfiguration.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\CotacaoConfiguration.cs",
+              "RelativeToolTip": "Configurations\\CotacaoConfiguration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:49:10.126Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 9,
+              "Title": "ContatoConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\ContatoConfiguration.cs",
+              "RelativeDocumentMoniker": "Configurations\\ContatoConfiguration.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\ContatoConfiguration.cs",
+              "RelativeToolTip": "Configurations\\ContatoConfiguration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:49:08.646Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 10,
+              "Title": "AvaliacaoConfiguration.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\AvaliacaoConfiguration.cs",
+              "RelativeDocumentMoniker": "Configurations\\AvaliacaoConfiguration.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Configurations\\AvaliacaoConfiguration.cs",
+              "RelativeToolTip": "Configurations\\AvaliacaoConfiguration.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:49:06.719Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 11,
+              "Title": "AvaliacaoService.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Services\\AvaliacaoService.cs",
+              "RelativeDocumentMoniker": "Services\\AvaliacaoService.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Services\\AvaliacaoService.cs",
+              "RelativeToolTip": "Services\\AvaliacaoService.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAABUAAAAVAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:48:57.558Z"
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 12,
+              "Title": "AvaliacaoController.cs",
+              "DocumentMoniker": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Controllers\\AvaliacaoController.cs",
+              "RelativeDocumentMoniker": "Controllers\\AvaliacaoController.cs",
+              "ToolTip": "C:\\Users\\kauef\\Downloads\\Kaue\\Buy.it\\Enterprise Application Development\\buyit\\Controllers\\AvaliacaoController.cs",
+              "RelativeToolTip": "Controllers\\AvaliacaoController.cs",
+              "ViewState": "AQIAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
+              "WhenOpened": "2024-04-04T14:48:55.995Z"
+            }
+          ]
+        }
+      ]
     }
   ]
 }

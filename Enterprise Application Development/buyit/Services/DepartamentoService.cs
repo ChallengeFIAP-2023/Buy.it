@@ -13,7 +13,7 @@ public class DepartamentoService
         _context = context;
     }
 
-    public async Task<List<DepartamentoDto>> ListAllAsync()
+    public async Task<List<DepartamentoDto>> FindAll()
     {
         var list = await _context.Departamento
             .Include(x => x.Tags)
@@ -22,13 +22,13 @@ public class DepartamentoService
         return list.Select(entity => ConvertToDto(entity)).ToList();
     }
 
-    public async Task<DepartamentoDto> FindByIdAsync(long id)
+    public async Task<DepartamentoDto> FindById(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         return ConvertToDto(entity);
     }
 
-    public async Task<DepartamentoDto> CreateAsync(DepartamentoDto newData)
+    public async Task<DepartamentoDto> Create(DepartamentoDto newData)
     {
         var entity = await ConvertToEntity(newData);
         _context.Departamento.Add(entity);
@@ -36,7 +36,7 @@ public class DepartamentoService
         return ConvertToDto(entity);
     }
 
-    public async Task<DepartamentoDto> UpdateAsync(long id, DepartamentoDto updatedData)
+    public async Task<DepartamentoDto> Update(long id, DepartamentoDto updatedData)
     {
         var entity = await _context.Departamento
             .Include(x => x.Tags)
@@ -65,14 +65,14 @@ public class DepartamentoService
         return ConvertToDto(entity);
     }
 
-    public async Task DeleteAsync(long id)
+    public async Task Delete(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         _context.Departamento.Remove(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<DepartamentoModel> FindEntityByIdAsync(long id)
+    public async Task<DepartamentoModel> FindEntityById(long id)
     {
         var entity = await _context.Departamento
             .Include(x => x.Tags)
@@ -84,7 +84,7 @@ public class DepartamentoService
         return entity;
     }
 
-    public async Task<List<DepartamentoDto>> FindByTagIdAsync(long id)
+    public async Task<List<DepartamentoDto>> FindByTagId(long id)
     {
         var list = await _context.Departamento
             .Where(d => d.Tags.Any(t => t.Id == id))

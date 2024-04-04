@@ -16,18 +16,18 @@ namespace Buyit.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProdutoDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<ProdutoDto>>> FindAll()
         {
-            var list = await _service.ListAllAsync();
+            var list = await _service.FindAll();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<ProdutoDto>> GetById(long id)
+        public async Task<ActionResult<ProdutoDto>> FindById(long id)
         {
             try
             {
-                var dto = await _service.FindByIdAsync(id);
+                var dto = await _service.FindById(id);
                 return Ok(dto);
             }
             catch (KeyNotFoundException)
@@ -41,8 +41,8 @@ namespace Buyit.Controllers
         {
             try
             {
-                var created = await _service.CreateAsync(dto);
-                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+                var created = await _service.Create(dto);
+                return CreatedAtAction(nameof(FindById), new { id = created.Id }, created);
             }
             catch (System.Exception ex)
             {
@@ -55,7 +55,7 @@ namespace Buyit.Controllers
         {
             try
             {
-                var updated = await _service.UpdateAsync(id, updatedProdutoDto);
+                var updated = await _service.Update(id, updatedProdutoDto);
                 return Ok(updated);
             }
             catch (KeyNotFoundException)
@@ -73,7 +73,7 @@ namespace Buyit.Controllers
         {
             try
             {
-                await _service.DeleteAsync(id);
+                await _service.Delete(id);
                 return NoContent();
             }
             catch (KeyNotFoundException)
@@ -87,11 +87,11 @@ namespace Buyit.Controllers
         }
 
         [HttpGet("departamento/{id}")]
-        public async Task<ActionResult<IEnumerable<ProdutoDto>>> GetByDepartamentoId(long id)
+        public async Task<ActionResult<IEnumerable<ProdutoDto>>> FindByDepartamentoId(long id)
         {
             try
             {
-                var list = await _service.FindByDepartamentoIdAsync(id);
+                var list = await _service.FindByDepartamentoId(id);
                 return Ok(list);
             }
             catch (System.Exception ex)
@@ -101,11 +101,11 @@ namespace Buyit.Controllers
         }
 
         [HttpGet("tag/{id}")]
-        public async Task<ActionResult<IEnumerable<ProdutoDto>>> GetByTagId(long id)
+        public async Task<ActionResult<IEnumerable<ProdutoDto>>> FindByTagId(long id)
         {
             try
             {
-                var list = await _service.FindByTagIdAsync(id);
+                var list = await _service.FindByTagId(id);
                 return Ok(list);
             }
             catch (System.Exception ex)
@@ -115,11 +115,11 @@ namespace Buyit.Controllers
         }
 
         [HttpGet("nome/{nome}")]
-        public async Task<ActionResult<IEnumerable<ProdutoDto>>> GetByName(string nome)
+        public async Task<ActionResult<IEnumerable<ProdutoDto>>> FindByName(string nome)
         {
             try
             {
-                var list = await _service.FindByNameAsync(nome);
+                var list = await _service.FindByName(nome);
                 return Ok(list);
             }
             catch (System.Exception ex)

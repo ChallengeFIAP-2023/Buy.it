@@ -16,18 +16,18 @@ namespace Buyit.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<HistoricoDto>>> GetAll()
+        public async Task<ActionResult<IEnumerable<HistoricoDto>>> FindAll()
         {
-            var list = await _service.ListAllAsync();
+            var list = await _service.FindAll();
             return Ok(list);
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<HistoricoDto>> GetById(long id)
+        public async Task<ActionResult<HistoricoDto>> FindById(long id)
         {
             try
             {
-                var dto = await _service.FindByIdAsync(id);
+                var dto = await _service.FindById(id);
                 return Ok(dto);
             }
             catch (KeyNotFoundException)
@@ -41,8 +41,8 @@ namespace Buyit.Controllers
         {
             try
             {
-                var created = await _service.CreateAsync(dto);
-                return CreatedAtAction(nameof(GetById), new { id = created.Id }, created);
+                var created = await _service.Create(dto);
+                return CreatedAtAction(nameof(FindById), new { id = created.Id }, created);
             }
             catch (System.Exception ex)
             {
@@ -55,7 +55,7 @@ namespace Buyit.Controllers
         {
             try
             {
-                var updated = await _service.UpdateAsync(id, updatedHistoricoDto);
+                var updated = await _service.Update(id, updatedHistoricoDto);
                 return Ok(updated);
             }
             catch (KeyNotFoundException)
@@ -73,7 +73,7 @@ namespace Buyit.Controllers
         {
             try
             {
-                await _service.DeleteAsync(id);
+                await _service.Delete(id);
                 return NoContent();
             }
             catch (KeyNotFoundException)
@@ -87,11 +87,11 @@ namespace Buyit.Controllers
         }
 
         [HttpGet("cotacao/{id}")]
-        public async Task<ActionResult<IEnumerable<HistoricoDto>>> GetByCotacaoId(long id)
+        public async Task<ActionResult<IEnumerable<HistoricoDto>>> FindByCotacaoId(long id)
         {
             try
             {
-                var list = await _service.FindByCotacaoIdAsync(id);
+                var list = await _service.FindByCotacaoId(id);
                 return Ok(list);
             }
             catch (System.Exception ex)
@@ -101,11 +101,11 @@ namespace Buyit.Controllers
         }
 
         [HttpGet("usuario/comprador/{id}")]
-        public async Task<ActionResult<IEnumerable<HistoricoDto>>> GetByCompradorId(long id)
+        public async Task<ActionResult<IEnumerable<HistoricoDto>>> FindByCompradorId(long id)
         {
             try
             {
-                var list = await _service.FindByCompradorIdAsync(id);
+                var list = await _service.FindByCompradorId(id);
                 return Ok(list);
             }
             catch (System.Exception ex)
@@ -115,11 +115,11 @@ namespace Buyit.Controllers
         }
 
         [HttpGet("usuario/fornecedor/{id}")]
-        public async Task<ActionResult<IEnumerable<HistoricoDto>>> GetByFornecedorId(long id)
+        public async Task<ActionResult<IEnumerable<HistoricoDto>>> FindByFornecedorId(long id)
         {
             try
             {
-                var list = await _service.FindByFornecedorIdAsync(id);
+                var list = await _service.FindByFornecedorId(id);
                 return Ok(list);
             }
             catch (System.Exception ex)
@@ -129,11 +129,11 @@ namespace Buyit.Controllers
         }
 
         [HttpGet("status/{id}")]
-        public async Task<ActionResult<IEnumerable<HistoricoDto>>> GetByStatusId(long id)
+        public async Task<ActionResult<IEnumerable<HistoricoDto>>> FindByStatusId(long id)
         {
             try
             {
-                var list = await _service.FindByStatusIdAsync(id);
+                var list = await _service.FindByStatusId(id);
                 return Ok(list);
             }
             catch (System.Exception ex)

@@ -13,7 +13,7 @@ public class HistoricoService
         _context = context;
     }
 
-    public async Task<List<HistoricoDto>> ListAllAsync()
+    public async Task<List<HistoricoDto>> FindAll()
     {
         var list = await _context.Historico
             .Include(x => x.Cotacao)
@@ -24,13 +24,13 @@ public class HistoricoService
         return list.Select(entity => ConvertToDto(entity)).ToList();
     }
 
-    public async Task<HistoricoDto> FindByIdAsync(long id)
+    public async Task<HistoricoDto> FindById(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         return ConvertToDto(entity);
     }
 
-    public async Task<HistoricoDto> CreateAsync(HistoricoDto newData)
+    public async Task<HistoricoDto> Create(HistoricoDto newData)
     {
         var entity = await ConvertToEntity(newData);
         _context.Historico.Add(entity);
@@ -38,9 +38,9 @@ public class HistoricoService
         return ConvertToDto(entity);
     }
 
-    public async Task<HistoricoDto> UpdateAsync(long id, HistoricoDto updatedData)
+    public async Task<HistoricoDto> Update(long id, HistoricoDto updatedData)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         updatedData.Id = entity.Id;
         var updatedEntity = await ConvertToEntity(updatedData);
         _context.Entry(entity).CurrentValues.SetValues(updatedEntity);
@@ -48,14 +48,14 @@ public class HistoricoService
         return ConvertToDto(entity);
     }
 
-    public async Task DeleteAsync(long id)
+    public async Task Delete(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         _context.Historico.Remove(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<HistoricoModel> FindEntityByIdAsync(long id)
+    public async Task<HistoricoModel> FindEntityById(long id)
     {
         var entity = await _context.Historico
             .Include(x => x.Cotacao)
@@ -69,7 +69,7 @@ public class HistoricoService
         return entity;
     }
 
-    public async Task<List<HistoricoDto>> FindByCotacaoIdAsync(long id)
+    public async Task<List<HistoricoDto>> FindByCotacaoId(long id)
     {
         var list = await _context.Historico
             .Where(x => x.Cotacao.Id == id)
@@ -81,7 +81,7 @@ public class HistoricoService
         return list.Select(x => ConvertToDto(x)).ToList();
     }
 
-    public async Task<List<HistoricoDto>> FindByCompradorIdAsync(long id)
+    public async Task<List<HistoricoDto>> FindByCompradorId(long id)
     {
         var list = await _context.Historico
             .Where(x => x.Cotacao.Comprador.Id == id)
@@ -93,7 +93,7 @@ public class HistoricoService
         return list.Select(x => ConvertToDto(x)).ToList();
     }
 
-    public async Task<List<HistoricoDto>> FindByFornecedorIdAsync(long id)
+    public async Task<List<HistoricoDto>> FindByFornecedorId(long id)
     {
         var list = await _context.Historico
             .Where(x => x.Fornecedor.Id == id)
@@ -105,7 +105,7 @@ public class HistoricoService
         return list.Select(x => ConvertToDto(x)).ToList();
     }
 
-    public async Task<List<HistoricoDto>> FindByStatusIdAsync(long id)
+    public async Task<List<HistoricoDto>> FindByStatusId(long id)
     {
         var list = await _context.Historico
             .Where(x => x.Status.Id == id)

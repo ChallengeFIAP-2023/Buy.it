@@ -13,7 +13,7 @@ public class CotacaoService
         _context = context;
     }
 
-    public async Task<List<CotacaoDto>> ListAllAsync()
+    public async Task<List<CotacaoDto>> FindAll()
     {
         var list = await _context.Cotacao
             .Include(x => x.Comprador)
@@ -24,13 +24,13 @@ public class CotacaoService
         return list.Select(entity => ConvertToDto(entity)).ToList();
     }
 
-    public async Task<CotacaoDto> FindByIdAsync(long id)
+    public async Task<CotacaoDto> FindById(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         return ConvertToDto(entity);
     }
 
-    public async Task<CotacaoDto> CreateAsync(CotacaoDto newData)
+    public async Task<CotacaoDto> Create(CotacaoDto newData)
     {
         var entity = await ConvertToEntity(newData);
         _context.Cotacao.Add(entity);
@@ -38,9 +38,9 @@ public class CotacaoService
         return ConvertToDto(entity);
     }
 
-    public async Task<CotacaoDto> UpdateAsync(long id, CotacaoDto updatedData)
+    public async Task<CotacaoDto> Update(long id, CotacaoDto updatedData)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         updatedData.Id = entity.Id;
         var updatedEntity = await ConvertToEntity(updatedData);
         _context.Entry(entity).CurrentValues.SetValues(updatedEntity);
@@ -48,14 +48,14 @@ public class CotacaoService
         return ConvertToDto(entity);
     }
 
-    public async Task DeleteAsync(long id)
+    public async Task Delete(long id)
     {
-        var entity = await FindEntityByIdAsync(id);
+        var entity = await FindEntityById(id);
         _context.Cotacao.Remove(entity);
         await _context.SaveChangesAsync();
     }
 
-    public async Task<CotacaoModel> FindEntityByIdAsync(long id)
+    public async Task<CotacaoModel> FindEntityById(long id)
     {
         var entity = await _context.Cotacao
             .Include(x => x.Comprador)
@@ -69,7 +69,7 @@ public class CotacaoService
         return entity;
     }
 
-    public async Task<List<CotacaoDto>> FindByUsuarioIdAsync(long id)
+    public async Task<List<CotacaoDto>> FindByUsuarioId(long id)
     {
         var list = await _context.Cotacao
             .Where(x => x.Comprador.Id == id)
@@ -81,7 +81,7 @@ public class CotacaoService
         return list.Select(x => ConvertToDto(x)).ToList();
     }
 
-    public async Task<InfoCotacaoDto> GetInfoByProdutoIdAsync(long produtoId)
+    public async Task<InfoCotacaoDto> FindInfoByProdutoId(long produtoId)
     {
         var resultado = await _context.Cotacao
             .Where(c => c.Produto.Id == produtoId && c.Status.Nome == "Concluído")
@@ -104,7 +104,7 @@ public class CotacaoService
         }
     }
 
-    public async Task<List<CotacaoDto>> FindByProdutoIdAsync(long id)
+    public async Task<List<CotacaoDto>> FindByProdutoId(long id)
     {
         var list = await _context.Cotacao
             .Where(x => x.Produto.Id == id)
@@ -116,7 +116,7 @@ public class CotacaoService
         return list.Select(x => ConvertToDto(x)).ToList();
     }
 
-    public async Task<List<CotacaoDto>> FindByStatusIdAsync(long id)
+    public async Task<List<CotacaoDto>> FindByStatusId(long id)
     {
         var list = await _context.Cotacao
             .Where(x => x.Status.Id == id)
