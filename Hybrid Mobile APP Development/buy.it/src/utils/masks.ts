@@ -4,6 +4,10 @@ export function unMask(value: string) {
   return value.replace(/[^\d]/g, '');
 }
 
+export function unMaskCurrency(value: string) {
+  return Number(value.replace("R$", "").replace(",", "."));
+}
+
 export function toMaskedPhone(value: string) {
   try {
     return MaskService.toMask('cel-phone', value, {
@@ -19,6 +23,18 @@ export function toMaskedPhone(value: string) {
 export function toMaskedCNPJ(value: string) {
   try {
     return MaskService.toMask('cnpj', value);
+  } catch (error) {
+    throw error;
+  }
+}
+
+export function toMaskedCurrency(value: string) {
+  try {
+    return MaskService.toMask('money', value, {
+      precision: 2,
+      separator: ',',
+      unit: 'R$',
+    });
   } catch (error) {
     throw error;
   }
