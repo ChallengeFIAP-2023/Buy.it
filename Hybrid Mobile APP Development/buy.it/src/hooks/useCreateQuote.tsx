@@ -10,7 +10,7 @@ import React, {
 import GlobalRequestService from '@services/global-request';
 
 // Type import
-import { QuoteQuery, ProductQuery, Department, Tag, TagQuery, Product } from '@dtos/index';
+import { QuoteQuery, ProductQuery, Department, Tag, TagQuery, Product, ProductPrices } from '@dtos/index';
 import Toast from 'react-native-toast-message';
 import { api } from '@services/api';
 
@@ -26,8 +26,10 @@ interface CreateQuoteContextData {
   departments: Department[];
   tags: Tag[];
   products: Product[];
+  productPrices: ProductPrices;
   fetchDepartmentsAndTags(): Promise<void>;
   fetchProducts: () => Promise<void>
+  fetchProductPrices: (productId: number) => Promise<void>
 }
 
 interface CreateQuoteProviderProps {
@@ -46,6 +48,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
   const [departments, setDepartments] = useState<Department[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
+  const [productPrices, setProductPrices] = useState<ProductPrices>({} as ProductPrices);
   const [loading, setLoading] = useState(false);
 
   async function fetchDepartmentsAndTags() {
@@ -78,6 +81,21 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
         type: 'error',
         text1: 'Erro',
         text2: 'Não foi possível buscar os produtos',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchProductPrices = async (productId: number) => {
+    try {
+      const { data } = await api.get(`/cotacoes/produto/info/${productId}`);
+      setProductPrices(data);
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível buscar os preços do produto',
       });
     } finally {
       setLoading(false);
@@ -169,9 +187,11 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
         departments,
         tags,
         products,
+        productPrices,
         loading,
         fetchDepartmentsAndTags,
         fetchProducts,
+        fetchProductPrices,
         handleNewProduct,
         handleNewQuote,
         handleNewTag

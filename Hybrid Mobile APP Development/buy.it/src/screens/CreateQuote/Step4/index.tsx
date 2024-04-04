@@ -5,7 +5,7 @@ import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Toast from 'react-native-toast-message';
 import { format } from 'date-fns';
-import React from 'react';
+import React, { Fragment, useLayoutEffect } from 'react';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -18,13 +18,13 @@ import theme from '@theme/index';
 // Validation import
 import { Step4FormSchema } from '@validations/QuoteDetails';
 
-
 // Component import
 import {
   Button,
   DecreasingContainer,
   DefaultComponent,
   Input,
+  Loading,
   WrapperPage,
 } from '@components/index';
 
@@ -51,12 +51,19 @@ export const Step4: React.FC<
   const {
     control,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<Step4Form>({
     resolver: yupResolver(Step4FormSchema),
   });
 
-  const { quote, handleNewQuote } = useCreateQuote();
+  const { 
+    quote, 
+    handleNewQuote, 
+    fetchProductPrices, 
+    productPrices,
+    loading
+  } = useCreateQuote();
 
   const { user } = useAuth();
 
@@ -72,24 +79,43 @@ export const Step4: React.FC<
     handleNewQuote(finalQuery);
   };
 
+  useLayoutEffect(() => {
+    fetchProductPrices(quote.idProduto);
+  }, []);
+
+  if (loading || !productPrices.produto) return <Loading />
+
   return (
     <WrapperPage>
       <ScrollableContent>
         <DefaultComponent
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
-            title: 'Quanto você quer pagar em cada caneta esferográfica?',
+            title: `Quanto você quer pagar em cada ${productPrices.produto.nome}?`,
             subtitle: 'Passo 4 de 4',
           }}
           key="default-component-quote-details"
         />
 
-        <DecreasingContainer scrollable>
-          <LightText>
-            O valor médio de cotações para{' '}
-            <LightBoldText> caneta esferográfica </LightBoldText> é R$1,00 por
-            unidade. O menor preço já pago em caneta esferográfica foi R$0,45.
-          </LightText>
+        <DecreasingContainer>
+          {productPrices.avgValor ? (
+            <Fragment>
+              <LightText>
+                O valor médio de cotações para{' '}
+                <LightBoldText>{productPrices.produto.nome}</LightBoldText> é R${productPrices.avgValor} por
+                unidade.
+              </LightText>
+              <LightText>O menor preço já pago em {productPrices.produto.nome} foi R${productPrices.minValor}.
+              </LightText>
+            </Fragment>
+            ) : (
+              <LightText>
+                Infelizmente ainda não possuímos uma média de valores anteriores para
+                <LightBoldText> {productPrices.produto && productPrices.produto.nome}</LightBoldText>. 
+                Quando tivermos você receberá a sugestão.
+              </LightText>
+            )
+          }
 
           <LightText>Quanto você quer pagar?</LightText>
 
@@ -109,7 +135,14 @@ export const Step4: React.FC<
             />
           </Fieldset>
 
-          <Button label="Utilizar preço sugerido" size="SM" />
+          {productPrices.avgValor && (
+            <Button 
+              label="Utilizar preço sugerido" 
+              size="SM"
+              onPress={() => setValue('valorProduto', productPrices.avgValor as number)}
+            />
+          )}
+          
         </DecreasingContainer>
       </ScrollableContent>
 

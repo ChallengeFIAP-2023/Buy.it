@@ -23,3 +23,10 @@ export interface ProductQuery {
     idDepartamento: number,
     idsTags: number[]
 }
+
+export interface ProductPrices {
+    minValor: number | null;
+    avgValor: number | null;
+    maxValor: number | null;
+    produto: Product;
+}
