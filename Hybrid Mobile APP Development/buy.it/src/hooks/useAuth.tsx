@@ -7,7 +7,6 @@ import React, {
 } from 'react';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Type import
 import { AppNavigatorRoutesProps } from '@routes/index';

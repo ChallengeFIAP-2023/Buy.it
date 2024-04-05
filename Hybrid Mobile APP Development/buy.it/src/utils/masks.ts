@@ -5,7 +5,7 @@ export function unMask(value: string) {
 }
 
 export function unMaskCurrency(value: string) {
-  return Number(value.replace("R$", "").replace(",", "."));
+  return Number(value.replace('R$', '').replace(',', '.'));
 }
 
 export function toMaskedPhone(value: string) {

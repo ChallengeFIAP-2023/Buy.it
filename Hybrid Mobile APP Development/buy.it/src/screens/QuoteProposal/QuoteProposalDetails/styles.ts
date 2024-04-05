@@ -22,6 +22,8 @@ export const CompanyName = styled.Text`
 
   max-width: 240px;
   overflow: hidden;
+
+  text-transform: capitalize;
 `;
 
 export const CompanyDocument = styled.Text`

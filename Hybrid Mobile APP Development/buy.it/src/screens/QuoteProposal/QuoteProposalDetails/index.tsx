@@ -1,4 +1,4 @@
-import { ImageSourcePropType } from 'react-native';
+import { ActivityIndicator, ImageSourcePropType } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { Check, DotsThree, Truck, X } from 'phosphor-react-native';
@@ -9,6 +9,7 @@ import { QuoteProposalRoutes } from '..';
 
 //Hooks import
 import { useAuth } from '@hooks/useAuth';
+import { useQuoteProposal } from '@hooks/useQuoteProposal';
 
 // Theme import
 import theme from '@theme/index';
@@ -43,8 +44,9 @@ import {
   Refuse,
   Accept,
 } from './styles';
+import { toMaskedCNPJ, toMaskedCurrency } from '@utils/masks';
+import { Fragment } from 'react';
 
-const tags = ['Material escolar', 'Papelaria'];
 const maximumTags = 8;
 
 export const QuoteProposalDetails: React.FC<
@@ -54,11 +56,25 @@ export const QuoteProposalDetails: React.FC<
   >
 > = ({ navigation }) => {
   // Hook
-  const { user } = useAuth();
+  const { handleProcessProposal, proposal, approveLoading, declineLoading } =
+    useQuoteProposal();
 
-  const imageSource: ImageSourcePropType = user.urlImagem
-    ? { uri: user.urlImagem }
+  const imageSource: ImageSourcePropType = proposal?.comprador.urlImagem
+    ? { uri: proposal?.comprador.urlImagem }
     : require('../../../assets/default_avatar.png');
+
+  const tags = Array.isArray(proposal?.produto.tags)
+    ? proposal?.produto.tags
+    : [];
+
+  function deadlineLabel() {
+    if (proposal?.prazo && proposal?.prazo > 1)
+      return `${proposal?.prazo} dias`;
+
+    return `${proposal?.prazo} dia`;
+  }
+
+  const buttonIsDisabled = approveLoading || declineLoading;
 
   return (
     <WrapperPage>
@@ -67,8 +83,12 @@ export const QuoteProposalDetails: React.FC<
           <CompanyImage imageSource={imageSource} size="MD" />
 
           <CompanyData>
-            <CompanyName numberOfLines={1}>Dunder Mifflin</CompanyName>
-            <CompanyDocument>92.754.738/0001-62 </CompanyDocument>
+            <CompanyName numberOfLines={1}>
+              {proposal?.comprador.nome ?? 'Empresa não identificada'}
+            </CompanyName>
+            <CompanyDocument>
+              {toMaskedCNPJ(proposal?.comprador.cnpj ?? '')}
+            </CompanyDocument>
           </CompanyData>
         </CompanyWrapper>
 
@@ -77,29 +97,45 @@ export const QuoteProposalDetails: React.FC<
             Criou uma cotação que pode ser do seu interesse
           </Description>
 
-          <TagWrapper>
-            {tags.map(item => (
-              <Chip value={item} key={`${item}-${Math.random()}`} />
-            ))}
-          </TagWrapper>
+          {tags[0] && (
+            <Fragment>
+              <TagWrapper>
+                {tags.map(item => (
+                  <Chip
+                    value={item.nome}
+                    key={`${item.nome}-${Math.random()}`}
+                  />
+                ))}
+              </TagWrapper>
 
-          {tags && tags.length >= maximumTags && (
-            <Flex style={{ justifyContent: 'flex-start' }}>
-              <DotsThree size={40} color={theme.COLORS.WHITE} />
-              <Description>Mais {tags.length - maximumTags} tags</Description>
-            </Flex>
+              {tags && tags.length >= maximumTags && (
+                <Flex style={{ justifyContent: 'flex-start' }}>
+                  <DotsThree size={40} color={theme.COLORS.WHITE} />
+                  <Description>
+                    Mais {tags.length - maximumTags} tags
+                  </Description>
+                </Flex>
+              )}
+            </Fragment>
           )}
         </DescriptionContainer>
 
         <DecreasingContainer>
           <ProductDetails>
-            <ProductQuantity>100 unidades de</ProductQuantity>
+            <ProductQuantity>
+              {proposal?.quantidadeProduto} unidades de
+            </ProductQuantity>
             <ProductName>Caneta Esferográfica</ProductName>
             <PerText>por</PerText>
 
             <ProductPriceContainer>
               <PerText>R$</PerText>
-              <Price>0,50</Price>
+              <Price>
+                {toMaskedCurrency(String(proposal?.valorProduto)).replace(
+                  'R$',
+                  '',
+                )}
+              </Price>
               <PerText>cada</PerText>
             </ProductPriceContainer>
 
@@ -108,7 +144,7 @@ export const QuoteProposalDetails: React.FC<
               <DeliveryText>
                 Para entrega em{' '}
                 <DeliveryText style={{ fontWeight: '800' }}>
-                  5 dias
+                  {deadlineLabel()}
                 </DeliveryText>
               </DeliveryText>
             </DeliveryContainer>
@@ -117,12 +153,26 @@ export const QuoteProposalDetails: React.FC<
       </ScrollableContent>
 
       <ActionsButton>
-        <Refuse>
-          <X size={40} color={theme.COLORS.GRAY_600} weight="bold" />
+        <Refuse
+          onPress={() => handleProcessProposal('decline')}
+          disabled={buttonIsDisabled}
+        >
+          {declineLoading ? (
+            <ActivityIndicator color={theme.COLORS.WHITE} size={40} />
+          ) : (
+            <X size={40} color={theme.COLORS.GRAY_600} weight="bold" />
+          )}
         </Refuse>
 
-        <Accept>
-          <Check size={40} color={theme.COLORS.GRAY_600} weight="bold" />
+        <Accept
+          onPress={() => handleProcessProposal('approve')}
+          disabled={buttonIsDisabled}
+        >
+          {approveLoading ? (
+            <ActivityIndicator color={theme.COLORS.WHITE} size={40} />
+          ) : (
+            <Check size={40} color={theme.COLORS.GRAY_600} weight="bold" />
+          )}
         </Accept>
       </ActionsButton>
     </WrapperPage>

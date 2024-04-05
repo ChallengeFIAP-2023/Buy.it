@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Article, House, IconProps, User } from 'phosphor-react-native';
 import {
   createBottomTabNavigator,
@@ -8,6 +8,9 @@ import {
 
 // Theme import
 import theme from '@theme/index';
+
+// Hook import
+import { useQuoteProposal } from '@hooks/useQuoteProposal';
 
 // Component import
 import { Text } from '@components/Tab';
@@ -30,6 +33,7 @@ export type MainRoutes = {
 export const Main: React.FC<
   BottomTabScreenProps<MainNavigationRoutes, 'Main'>
 > = ({ navigation, route }) => {
+  const { proposal, setLastRouteNavigated } = useQuoteProposal();
   const Tab = createBottomTabNavigator<MainRoutes>();
 
   const { GRAY_100, GRAY_300 } = theme.COLORS;
@@ -51,6 +55,31 @@ export const Main: React.FC<
       weight: focused ? 'fill' : 'regular',
     };
   }
+
+  // Verifico se há propostas pro usuário autenticado
+  useEffect(() => {
+    if (proposal) return navigation.navigate('QuoteProposal');
+  }, [proposal]);
+
+  // Verifica qual a última rota que o usuário estava, pra quando ele recusar ou aceitar a proposta continuar na mesma tela
+  useEffect(() => {
+    const getCurrentRoute = (routes: any) => {
+      if (routes && routes.length > 0) {
+        const state = routes[0].state;
+
+        if (state?.history && state.history.length > 0) {
+          const lastEntry = state.history[state.history.length - 1];
+          const key = lastEntry.key;
+
+          const lastRouteName = key.split('-')[0] as keyof MainRoutes;
+
+          setLastRouteNavigated(lastRouteName);
+        }
+      }
+    };
+
+    getCurrentRoute(navigation.getState()?.routes);
+  }, [navigation, route]);
 
   return (
     <Tab.Navigator initialRouteName="Home" screenOptions={screenOptions}>

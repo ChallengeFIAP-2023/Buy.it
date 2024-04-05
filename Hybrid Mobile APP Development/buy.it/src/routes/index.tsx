@@ -6,20 +6,22 @@ import {
 
 // Hook import
 import { AuthProvider, useAuth } from '@hooks/useAuth';
+import { QuoteProposalProvider } from '@hooks/useQuoteProposal';
 
 // Screen import
 import { SignIn } from '@screens/SignIn';
 import { SignUp } from '@screens/SignUp';
 import { CreateQuote } from '@screens/CreateQuote';
 import { QuoteProposal } from '@screens/QuoteProposal';
-import { Main } from '@screens/Main';
+import { Main, MainRoutes } from '@screens/Main';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
 export type MainNavigationRoutes = {
   SignIn: undefined;
   SignUp: undefined;
   CreateQuote: undefined;
   QuoteProposal: undefined;
-  Main: undefined;
+  Main: NavigatorScreenParams<MainRoutes> | undefined;
 };
 
 export type AppNavigatorRoutesProps =
@@ -32,10 +34,11 @@ export default function Routes() {
   // Navigator instance
   const Stack = createNativeStackNavigator<MainNavigationRoutes>();
 
-  const logged = !!user?.cnpj;
+  // const logged = !!user?.cnpj;
+  const logged = true;
 
   const initialMainRoute = useMemo<keyof MainNavigationRoutes>(() => {
-    if (logged) return 'SignIn';
+    if (logged) return 'Main';
 
     return 'SignIn';
   }, [logged]);
@@ -61,5 +64,9 @@ export default function Routes() {
     return <Navigator />;
   }, [initialMainRoute]);
 
-  return <AuthProvider>{MainNavigation}</AuthProvider>;
+  return (
+    <AuthProvider>
+      <QuoteProposalProvider>{MainNavigation}</QuoteProposalProvider>
+    </AuthProvider>
+  );
 }
