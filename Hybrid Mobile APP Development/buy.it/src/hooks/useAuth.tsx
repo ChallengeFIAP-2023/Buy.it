@@ -21,12 +21,13 @@ import { api } from '@services/api';
 // Type import
 import { User, UserQuery } from '@dtos/index';
 import {
+  removeAuthToken,
   storageAuthTokenGet,
   storageAuthTokenSave,
 } from '@storage/storageAuthToken';
 
 interface AuthProps {
-  user: User;
+  usuario: User;
   token: string;
 }
 
@@ -36,6 +37,8 @@ interface AuthContextData {
   sigInLoading: boolean;
   handleUpdateUser: (user: UserQuery) => Promise<void>;
   updateLoading: boolean;
+
+  handleSignOut(): Promise<void>;
 }
 
 interface AuthProviderProps {
@@ -65,16 +68,12 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const body = { email, senha: password };
       const { data } = await api.post<AuthProps>('usuarios/login', body);
 
-      const mockToken =
-        'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJCdXlpdCIsInN1YiI6InZpdG9yQGdtYWlsLmNvbSIsImV4cCI6MTcxMjg3OTk5MX0.IfyrGKJvOX0L5xZ2H3oD_fL-hVTfAHCIRBaGNMhzfqkc-Ys2rRx0GZm0nXGNQ2QpgmnQ6b18Qw_LnDajTCX3jg';
+      const token = `Bearer ${data.token}`;
+      if (!data.usuario || !token) throw new Error();
 
-      // Descomentar isso quando API ajustar retorno
-      // const token = `Bearer ${data.token}`
-      // if (!data.user || !token) throw new Error();
+      setUser(data.usuario);
 
-      setUser(data.user);
-
-      await storageAuthTokenSave({ token: mockToken });
+      await storageAuthTokenSave({ token });
 
       await registryToken();
 
@@ -152,6 +151,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }, []);
 
+  async function handleSignOut() {
+    await removeAuthToken();
+    navigate('SignIn');
+  }
+
   useEffect(() => {
     async function userIsAuthenticated() {
       const user = await storageUserGet();
@@ -172,6 +176,8 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         sigInLoading,
         handleUpdateUser,
         updateLoading,
+
+        handleSignOut,
       }}
     >
       {children}

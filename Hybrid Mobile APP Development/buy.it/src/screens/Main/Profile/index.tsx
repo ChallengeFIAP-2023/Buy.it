@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { ImageSourcePropType } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import { Checks } from 'phosphor-react-native';
+import { Checks, SignOut } from 'phosphor-react-native';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import Toast from 'react-native-toast-message';
@@ -30,7 +30,7 @@ import {
 } from '@components/index';
 
 // Style import
-import { AvatarWrapper, Fieldset } from './styles';
+import { AvatarWrapper, Fieldset, LogoutButtonWrapper } from './styles';
 import { ScrollableContent } from '@global/styles/index';
 
 interface ProfileForm {
@@ -42,7 +42,7 @@ export function Profile({
   navigation,
 }: NativeStackScreenProps<MainRoutes, 'Profile'>) {
   // Hook
-  const { user, handleUpdateUser } = useAuth();
+  const { user, handleUpdateUser, handleSignOut } = useAuth();
   const {
     control,
     handleSubmit,
@@ -146,12 +146,17 @@ export function Profile({
           </Fieldset>
 
           <Fieldset style={{ paddingBottom: 75 }}>
-            <Button
-              label="Salvar"
-              size="XL"
-              icon={<Checks color={theme.COLORS.WHITE} weight="bold" />}
-              onPress={handleSubmit(onSubmit)}
-            />
+            <Button label="Salvar" size="XL" onPress={handleSubmit(onSubmit)} />
+
+            <LogoutButtonWrapper>
+              <Button
+                label="Sair"
+                size="XL"
+                icon={<SignOut color={theme.COLORS.WHITE} weight="bold" />}
+                onPress={handleSignOut}
+                backgroundColor={theme.COLORS.RED_DARK}
+              />
+            </LogoutButtonWrapper>
           </Fieldset>
         </DecreasingContainer>
       </ScrollableContent>

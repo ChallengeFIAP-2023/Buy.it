@@ -15,35 +15,37 @@ import { Tabs } from './Tabs';
 import { StatusFilterType } from './Tabs/constants';
 
 // Style import
-import { Quotes } from './styles';
+import { QuotesWrapper } from './styles';
 import { QuoteItem } from './QuoteItem';
+import { ScrollableContent } from '@global/styles';
 
 export function Statement({
   navigation,
-}: NativeStackScreenProps<MainRoutes, 'Profile'>) {
+}: NativeStackScreenProps<MainRoutes, 'Statement'>) {
   const [activeStep, setActiveStep] = useState<StatusFilterType>();
 
   return (
     <WrapperPage>
-      <DefaultComponent
-        highlightProps={{
-          title: 'Aqui você encontra suas cotações',
-          highlightedText: 'cotações',
-        }}
-        headerProps={{ goBack: () => navigation.goBack() }}
-        key="default-component-profile"
-      />
-
-      <DecreasingContainer>
-        <Tabs activeStep={activeStep} handleSelectTab={setActiveStep} />
-
-        <Quotes
-          data={[0, 1, 2, 3]}
-          renderItem={() => <QuoteItem />}
-          keyExtractor={(_, index: number) => index.toString()}
-          showsVerticalScrollIndicator={false}
+      <ScrollableContent>
+        <DefaultComponent
+          highlightProps={{
+            title: 'Aqui você encontra suas cotações',
+            highlightedText: 'cotações',
+          }}
+          headerProps={{ goBack: () => navigation.goBack() }}
+          key="default-component-profile"
         />
-      </DecreasingContainer>
+
+        <DecreasingContainer>
+          <Tabs activeStep={activeStep} handleSelectTab={setActiveStep} />
+
+          <QuotesWrapper>
+            {[0, 1, 2, 3].map(item => (
+              <QuoteItem key={item} />
+            ))}
+          </QuotesWrapper>
+        </DecreasingContainer>
+      </ScrollableContent>
     </WrapperPage>
   );
 }
