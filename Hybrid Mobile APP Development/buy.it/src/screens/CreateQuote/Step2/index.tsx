@@ -68,7 +68,7 @@ export const Step2: React.FC<
   } = useForm<Step2Form>({
     resolver: yupResolver(Step2FormSchema),
     defaultValues: {
-      quantidadeProduto: 5
+      quantidadeProduto: 5,
     },
   });
 
@@ -107,7 +107,9 @@ export const Step2: React.FC<
   };
 
   const productsOptions: TFlatList = products.map(item => ({
-    label: `${item.nome} ${item.marca || ""} ${item.cor || ""} ${item.material || ""} ${item.tamanho || ""}`,
+    label: `${item.nome} ${item.marca || ''} ${item.cor || ''} ${
+      item.material || ''
+    } ${item.tamanho || ''}`,
     value: item.id,
   }));
 
@@ -138,15 +140,15 @@ export const Step2: React.FC<
                   onValueChange={onChange}
                   error={errors.idProduto?.message}
                   listFooterComponent={
-                    <Button 
-                      label="Novo produto" 
+                    <Button
+                      label="Novo produto"
                       size="SM"
                       style={{ margin: 15 }}
                       onPress={toggleModal}
                     />
                   }
                 />
-                )}
+              )}
             />
           </Fieldset>
 
@@ -200,9 +202,7 @@ export const Step2: React.FC<
         modalProps={{ isVisible: isModalVisible }}
         onClose={toggleModal}
       >
-        <NewProduct 
-          toggleModal={toggleModal}
-        />
+        <NewProduct toggleModal={toggleModal} />
       </CustomModal>
 
       <Button

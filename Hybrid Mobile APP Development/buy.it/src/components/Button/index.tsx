@@ -29,7 +29,6 @@ export function Button({
       backgroundColor={backgroundColor}
     >
       <ButtonText size={size}>{label}</ButtonText>
-
       {icon && icon}
     </ButtonContainer>
   );

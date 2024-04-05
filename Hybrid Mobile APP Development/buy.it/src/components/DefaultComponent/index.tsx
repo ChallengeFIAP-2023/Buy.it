@@ -19,7 +19,7 @@ export function DefaultComponent({
   statusBarProps,
   headerProps,
   highlightProps,
-  showHeader = true
+  showHeader = true,
 }: Props) {
   return (
     <Container>

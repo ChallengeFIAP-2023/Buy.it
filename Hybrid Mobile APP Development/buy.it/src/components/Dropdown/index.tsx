@@ -14,7 +14,7 @@ import {
   checkboxStyle,
   searchInputStyle,
   errorStyle,
-  dropdownErrorStyle
+  dropdownErrorStyle,
 } from './styles';
 
 export function CustomDropdown({ label, error, ...rest }: DropdownProps) {
@@ -55,7 +55,7 @@ export function CustomDropdown({ label, error, ...rest }: DropdownProps) {
         listControls={{
           selectAllText: 'Selecionar todos',
           unselectAllText: 'Remover todos',
-          emptyListMessage: 'Nenhuma opção encontrada'
+          emptyListMessage: 'Nenhuma opção encontrada',
         }}
         {...rest}
       />

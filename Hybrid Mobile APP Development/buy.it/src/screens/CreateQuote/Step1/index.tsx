@@ -1,5 +1,5 @@
 import { useLayoutEffect, useState } from 'react';
-import { ArrowRight } from 'phosphor-react-native';
+import { ArrowRight, Plus } from 'phosphor-react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import Toast from 'react-native-toast-message';
@@ -47,7 +47,7 @@ export const Step1: React.FC<
 > = ({ navigation }) => {
   // State
   const [isModalVisible, setModalVisible] = useState(false);
-  const [tagName, setTagName] = useState("");
+  const [tagName, setTagName] = useState('');
   const [newTagError, setNewTagError] = useState<string | undefined>();
 
   const {
@@ -58,16 +58,14 @@ export const Step1: React.FC<
     resolver: yupResolver(Step1FormSchema),
   });
 
-  const toggleModal = () => {
-    setModalVisible(!isModalVisible);
-  };
+  const toggleModal = () => setModalVisible(previousState => !previousState);
 
-  const { 
-    setProduct, 
-    tags, 
-    departments, 
+  const {
+    setProduct,
+    tags,
+    departments,
     handleNewTag,
-    fetchDepartmentsAndTags 
+    fetchDepartmentsAndTags,
   } = useCreateQuote();
 
   useLayoutEffect(() => {
@@ -75,11 +73,11 @@ export const Step1: React.FC<
   }, []);
 
   const newTag = () => {
-    if (!tagName) return setNewTagError("Nome da tag é obrigatório!");
-    
+    if (!tagName) return setNewTagError('Nome da tag é obrigatório!');
+
     handleNewTag({ nome: tagName });
-    
-    fetchDepartmentsAndTags();    
+
+    fetchDepartmentsAndTags();
     toggleModal();
 
     return Toast.show({
@@ -130,7 +128,7 @@ export const Step1: React.FC<
                   onValueChange={onChange}
                   error={errors.idDepartamento?.message}
                   listControls={{
-                    emptyListMessage: 'Nenhum departamento encontrado',
+                    emptyListMessage: 'Nenhum departamento encontrado.',
                   }}
                 />
               )}
@@ -142,35 +140,42 @@ export const Step1: React.FC<
               control={control}
               name="idsTags"
               render={({ field: { value, onChange } }) => (
-              <CustomDropdown
-                label="Tags relacionadas"
-                isSearchable
-                isMultiple
-                placeholder="Selecione as tags relacionadas"
-                options={tagsOptions}
-                selectedValue={value}
-                onValueChange={onChange}
-                error={errors.idsTags?.message}
-                listFooterComponent={
-                  <Button 
-                    label="Nova tag" 
-                    size="SM"
-                    style={{ margin: 15 }}
-                    onPress={toggleModal}
-                  />
-                }
-              />
+                <CustomDropdown
+                  label="Tags relacionadas"
+                  isSearchable
+                  isMultiple
+                  placeholder="Selecione as tags relacionadas"
+                  options={tagsOptions}
+                  selectedValue={value}
+                  onValueChange={onChange}
+                  error={errors.idsTags?.message}
+                  listControls={{
+                    emptyListMessage: 'Nenhum tag encontrada.',
+                  }}
+                  listFooterComponent={
+                    <Button
+                      label="Cadastrar tag"
+                      size="MD"
+                      style={{ margin: 20 }}
+                      onPress={toggleModal}
+                      icon={
+                        <Plus
+                          color={theme.COLORS.WHITE}
+                          weight="bold"
+                          size={20}
+                        />
+                      }
+                    />
+                  }
+                />
               )}
             />
           </Fieldset>
-    
         </DecreasingContainer>
       </ScrollableContent>
 
       <CustomModal
-        modalProps={{
-          isVisible: isModalVisible,
-        }}
+        modalProps={{ isVisible: isModalVisible }}
         title="Nova tag"
         subtitle="Tags nos ajudam a selecionar os melhores fornecedores para a cotação"
         onClose={toggleModal}
@@ -178,17 +183,13 @@ export const Step1: React.FC<
         <Fieldset>
           <Input
             value={tagName}
-            onChangeText={(value) => setTagName(value)}
-            placeholder="Papelaria"
+            onChangeText={value => setTagName(value)}
+            placeholder="Ex.: Papelaria"
             error={newTagError}
           />
         </Fieldset>
-        
-        <Button
-          label="Criar"
-          size="LG"
-          onPress={() => newTag()}
-        />
+
+        <Button label="Criar" size="LG" onPress={() => newTag()} />
       </CustomModal>
 
       <Button

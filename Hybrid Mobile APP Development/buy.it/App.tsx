@@ -7,7 +7,6 @@ import {
   Raleway_600SemiBold,
 } from '@expo-google-fonts/raleway';
 import Toast from 'react-native-toast-message';
-import React from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 
 // Route import

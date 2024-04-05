@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import React, { useMemo } from 'react';
 import {
   NativeStackNavigationProp,
   createNativeStackNavigator,
@@ -36,7 +36,7 @@ export default function Routes() {
   const logged = true;
 
   const initialMainRoute = useMemo<keyof MainNavigationRoutes>(() => {
-    if (logged) return 'CreateQuote';
+    if (logged) return 'Main';
 
     return 'SignIn';
   }, [logged]);

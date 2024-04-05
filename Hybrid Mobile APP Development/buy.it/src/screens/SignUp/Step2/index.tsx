@@ -35,6 +35,9 @@ import { toMaskedCNPJ, unMask } from '@utils/masks';
 // Hook import
 import { useSignUpForm } from '@hooks/useSignUpForm';
 
+// Service import
+import GlobalRequestService from '@services/global-request';
+
 // Style import
 import { ScrollableContent, Fieldset } from '@global/styles/index';
 
@@ -86,13 +89,12 @@ export const Step2: React.FC<
 
   const fetchData = async () => {
     try {
-      const { data } = await api.get('/tags');
-      setTags(data.content);
+      setTags(await GlobalRequestService.getTags());
     } catch (error) {
       Toast.show({
         type: 'error',
         text1: 'Erro',
-        text2: 'Não foi possível buscar as tags',
+        text2: String(error),
       });
     } finally {
       setIsLoading(false);
@@ -188,7 +190,7 @@ export const Step2: React.FC<
                 options={tagsOptions}
                 selectedValue={selectedTags}
                 onValueChange={(value: []) => setSelectedTags(value)}
-                listControls={{ emptyListMessage: 'Nenhum tag encontrada' }}
+                listControls={{ emptyListMessage: 'Nenhuma tag encontrada' }}
               />
             </Fieldset>
           )}

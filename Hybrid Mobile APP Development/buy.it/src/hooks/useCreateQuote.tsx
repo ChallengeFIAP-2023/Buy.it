@@ -10,21 +10,34 @@ import React, {
 import GlobalRequestService from '@services/global-request';
 
 // Type import
-import { QuoteQuery, ProductQuery, Department, Tag, TagQuery, Product, ProductPrices } from '@dtos/index';
+import {
+  QuoteQuery,
+  ProductQuery,
+  Department,
+  Tag,
+  TagQuery,
+  Product,
+  ProductPrices,
+} from '@dtos/index';
 import Toast from 'react-native-toast-message';
 import { api } from '@services/api';
 import { CreateQuoteRoutes } from '@screens/CreateQuote';
 import { MainNavigationRoutes } from '@routes/index';
 import { StackNavigationProp } from '@react-navigation/stack';
 
-export type NavigationProp = StackNavigationProp<CreateQuoteRoutes & MainNavigationRoutes>;
+export type NavigationProp = StackNavigationProp<
+  CreateQuoteRoutes & MainNavigationRoutes
+>;
 
 interface CreateQuoteContextData {
   quote: QuoteQuery;
   product: ProductQuery;
   setQuote: Dispatch<React.SetStateAction<QuoteQuery>>;
   setProduct: Dispatch<React.SetStateAction<ProductQuery>>;
-  handleNewQuote: (finalQueryData: QuoteQuery, navigation: NavigationProp) => Promise<void>;
+  handleNewQuote: (
+    finalQueryData: QuoteQuery,
+    navigation: NavigationProp,
+  ) => Promise<void>;
   handleNewProduct: (finalQueryData: ProductQuery) => Promise<void>;
   handleNewTag: (finalQueryData: TagQuery) => Promise<void>;
   loading: boolean;
@@ -33,8 +46,8 @@ interface CreateQuoteContextData {
   products: Product[];
   productPrices: ProductPrices;
   fetchDepartmentsAndTags(): Promise<void>;
-  fetchProducts: () => Promise<void>
-  fetchProductPrices: (productId: number) => Promise<void>
+  fetchProducts: () => Promise<void>;
+  fetchProductPrices: (productId: number) => Promise<void>;
 }
 
 interface CreateQuoteProviderProps {
@@ -53,7 +66,9 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
   const [departments, setDepartments] = useState<Department[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
   const [products, setProducts] = useState<Product[]>([]);
-  const [productPrices, setProductPrices] = useState<ProductPrices>({} as ProductPrices);
+  const [productPrices, setProductPrices] = useState<ProductPrices>(
+    {} as ProductPrices,
+  );
   const [loading, setLoading] = useState(false);
 
   async function fetchDepartmentsAndTags() {
@@ -121,7 +136,6 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
         });
         fetchProducts();
       }
-      
     } catch (error) {
       Toast.show({
         type: 'error',
@@ -135,38 +149,37 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     }
   }, []);
 
-  const handleNewQuote = useCallback(async (
-    quoteData: QuoteQuery, 
-    navigation: NavigationProp
-  ) => {
-    try {
-      setLoading(true);
+  const handleNewQuote = useCallback(
+    async (quoteData: QuoteQuery, navigation: NavigationProp) => {
+      try {
+        setLoading(true);
 
-      const body = quoteData;
-      const { data } = await api.post('/cotacoes', body);
+        const body = quoteData;
+        const { data } = await api.post('/cotacoes', body);
 
-      if (data.id) {
+        if (data.id) {
+          Toast.show({
+            type: 'success',
+            text1: 'Cotação enviada com sucesso!',
+            text2: 'Assim que alguem aceitá-la você será notificado.',
+          });
+
+          return navigation.navigate('Main');
+        }
+      } catch (error) {
         Toast.show({
-          type: 'success',
-          text1: 'Cotação enviada com sucesso!',
-          text2: 'Assim que alguem aceitá-la você será notificado.',
+          type: 'error',
+          text1: 'Erro',
+          text2: 'Não foi possível criar esta cotação.',
         });
 
-        return navigation.navigate("Main");
+        throw error;
+      } finally {
+        setLoading(false);
       }
-
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Erro',
-        text2: 'Não foi possível criar esta cotação.',
-      });
-
-      throw error;
-    } finally {
-      setLoading(false);
-    }
-  }, []);
+    },
+    [],
+  );
 
   const handleNewTag = useCallback(async (tagData: TagQuery) => {
     try {
@@ -205,7 +218,7 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
         fetchProductPrices,
         handleNewProduct,
         handleNewQuote,
-        handleNewTag
+        handleNewTag,
       }}
     >
       {children}

@@ -9,16 +9,21 @@ export interface Props {
   noPadding?: boolean;
 }
 
-export function Highlight({ title, subtitle, highlightedText, noPadding }: Props) {
+export function Highlight({
+  title,
+  subtitle,
+  highlightedText,
+  noPadding,
+}: Props) {
   return (
-    <Container style={{
-      paddingHorizontal: noPadding ? 0 : 30 
-    }}>
+    <Container style={{ paddingHorizontal: noPadding ? 0 : 30 }}>
       <Subtitle>{subtitle}</Subtitle>
 
       <Flex>
-        <Title>{title}</Title>
-        <HighlightedText>{highlightedText}</HighlightedText>
+        <Title>
+          {title.replace(highlightedText ?? '', '')}
+          <HighlightedText>{highlightedText}</HighlightedText>
+        </Title>
       </Flex>
     </Container>
   );

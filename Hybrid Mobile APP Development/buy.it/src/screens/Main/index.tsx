@@ -68,7 +68,7 @@ export const Main: React.FC<
         component={Statement}
         options={{
           tabBarIcon: ({ focused }) => <Article {...iconProps(focused)} />,
-          tabBarLabel: ({ focused }) => focused && <Text label="Extrato" />,
+          tabBarLabel: ({ focused }) => focused && <Text label="Histórico" />,
         }}
       />
 

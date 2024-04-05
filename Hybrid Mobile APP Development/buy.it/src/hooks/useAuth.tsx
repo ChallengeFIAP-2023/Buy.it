@@ -7,6 +7,7 @@ import React, {
 } from 'react';
 import Toast from 'react-native-toast-message';
 import { useNavigation } from '@react-navigation/native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 // Type import
 import { AppNavigatorRoutesProps } from '@routes/index';
@@ -19,10 +20,19 @@ import { api } from '@services/api';
 
 // Type import
 import { User, UserQuery } from '@dtos/index';
+import {
+  storageAuthTokenGet,
+  storageAuthTokenSave,
+} from '@storage/storageAuthToken';
+
+interface AuthProps {
+  user: User;
+  token: string;
+}
 
 interface AuthContextData {
   user: User;
-  handleSignIn: ({ email, password }: SignInProps) => Promise<void>;
+  handleSignIn: (data: SignInProps) => Promise<void>;
   sigInLoading: boolean;
   handleUpdateUser: (user: UserQuery) => Promise<void>;
   updateLoading: boolean;
@@ -53,16 +63,27 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setSignInLoading(true);
 
       const body = { email, senha: password };
-      const { data } = await api.post('/login', body);
+      const { data } = await api.post<AuthProps>('usuarios/login', body);
 
-      setUser(data);
+      const mockToken =
+        'eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJCdXlpdCIsInN1YiI6InZpdG9yQGdtYWlsLmNvbSIsImV4cCI6MTcxMjg3OTk5MX0.IfyrGKJvOX0L5xZ2H3oD_fL-hVTfAHCIRBaGNMhzfqkc-Ys2rRx0GZm0nXGNQ2QpgmnQ6b18Qw_LnDajTCX3jg';
+
+      // Descomentar isso quando API ajustar retorno
+      // const token = `Bearer ${data.token}`
+      // if (!data.user || !token) throw new Error();
+
+      setUser(data.user);
+
+      await storageAuthTokenSave({ token: mockToken });
+
+      await registryToken();
 
       return navigate('Main');
     } catch (error) {
       Toast.show({
         type: 'error',
         text1: 'Erro',
-        text2: 'Não foi possível realizar login.',
+        text2: String(error) ?? 'Não foi possível realizar login.',
       });
 
       throw error;
@@ -70,6 +91,13 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setSignInLoading(false);
     }
   }, []);
+
+  async function registryToken() {
+    const token = await storageAuthTokenGet();
+
+    // Interceptor token
+    api.defaults.headers.Authorization = `Bearer ${token}`;
+  }
 
   const handleUpdateUser = useCallback(async (finalUserData: UserQuery) => {
     try {
