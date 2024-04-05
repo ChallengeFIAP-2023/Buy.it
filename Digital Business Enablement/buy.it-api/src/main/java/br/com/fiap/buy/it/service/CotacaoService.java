@@ -33,14 +33,22 @@ public class CotacaoService {
     @Autowired
     private UsuarioService usuarioService;
 
-    public Page<CotacaoDTO> listAll(Pageable pageRequest) {
+    // Retornando Objeto ao invés de DTO por solicitação do Front, setando a senha como null.
+    public Page<Cotacao> listAll(Pageable pageRequest) {
         Page<Cotacao> list = cotacaoRepository.findAll(pageRequest);
-        return list.map(this::convertToDto);
+        for (Cotacao cotacao : list) {
+            if (cotacao.getComprador() != null) {
+                cotacao.getComprador().setSenha(null);
+            }
+        }
+        return list;
     }
 
-    public CotacaoDTO findById(Long id) {
+    // Retornando Objeto ao invés de DTO por solicitação do Front, setando a senha como null.
+    public Cotacao findById(Long id) {
         Cotacao entity = findEntityById(id);
-        return convertToDto(entity);
+        entity.getComprador().setSenha(null);
+        return entity;
     }
 
     @Transactional
@@ -70,28 +78,46 @@ public class CotacaoService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Cotacao não encontrado(a) por ID: " + id));
     }
 
-    public Page<CotacaoDTO> findByCompradorId(Long userId, Pageable pageable) {
+    // Retornando Objeto ao invés de DTO por solicitação do Front, setando a senha como null.
+    public Page<Cotacao> findByCompradorId(Long userId, Pageable pageable) {
         if (userId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Usuário não pode ser nulo.");
         }
         Page<Cotacao> list = cotacaoRepository.findByCompradorId(userId, pageable);
-        return list.map(this::convertToDto);
+        for (Cotacao cotacao : list) {
+            if (cotacao.getComprador() != null) {
+                cotacao.getComprador().setSenha(null);
+            }
+        }
+        return list;
     }
 
-    public Page<CotacaoDTO> findByProdutoId(Long produtoId, Pageable pageable) {
+    // Retornando Objeto ao invés de DTO por solicitação do Front, setando a senha como null.
+    public Page<Cotacao> findByProdutoId(Long produtoId, Pageable pageable) {
         if (produtoId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Produto não pode ser nulo.");
         }
         Page<Cotacao> list = cotacaoRepository.findByProdutoId(produtoId, pageable);
-        return list.map(this::convertToDto);
+        for (Cotacao cotacao : list) {
+            if (cotacao.getComprador() != null) {
+                cotacao.getComprador().setSenha(null);
+            }
+        }
+        return list;
     }
 
-    public Page<CotacaoDTO> findByStatusId(Long statusId, Pageable pageable) {
+    // Retornando Objeto ao invés de DTO por solicitação do Front, setando a senha como null.
+    public Page<Cotacao> findByStatusId(Long statusId, Pageable pageable) {
         if (statusId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID do Status não pode ser nulo.");
         }
         Page<Cotacao> list = cotacaoRepository.findByStatusId(statusId, pageable);
-        return list.map(this::convertToDto);
+        for (Cotacao cotacao : list) {
+            if (cotacao.getComprador() != null) {
+                cotacao.getComprador().setSenha(null);
+            }
+        }
+        return list;
     }
 
     public InfoCotacaoDTO getInfoByProdutoId(Long idProduto) {
