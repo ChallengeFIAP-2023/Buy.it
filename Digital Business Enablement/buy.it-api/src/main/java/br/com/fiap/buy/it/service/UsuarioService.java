@@ -72,6 +72,12 @@ public class UsuarioService {
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Usuario não encontrado(a) por ID: " + id));
     }
 
+    public UsuarioDTO findByEmail(String email) {
+        Usuario entity = usuarioRepository.findByEmail(email)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "(" + getClass().getSimpleName() + ") - Usuario não encontrado(a) por email: " + email));
+        return convertToDto(entity);
+    }
+
     public Page<UsuarioDTO> findByTagId(Long tagId, Pageable pageable) {
         if (tagId == null) {
             throw new IllegalArgumentException("(" + getClass().getSimpleName() + ") - ID da Tag não pode ser nulo.");
