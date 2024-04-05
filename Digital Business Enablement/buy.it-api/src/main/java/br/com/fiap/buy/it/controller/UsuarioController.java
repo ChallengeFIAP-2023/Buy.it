@@ -2,8 +2,9 @@ package br.com.fiap.buy.it.controller;
 
 import br.com.fiap.buy.it.dto.Credenciais;
 import br.com.fiap.buy.it.dto.Token;
-import br.com.fiap.buy.it.dto.UsuarioDTO;
 import br.com.fiap.buy.it.service.TokenService;
+import br.com.fiap.buy.it.dto.LoginResponse;
+import br.com.fiap.buy.it.dto.UsuarioDTO;
 import br.com.fiap.buy.it.service.UsuarioService;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -79,9 +80,16 @@ public class UsuarioController {
     }
 
     @PostMapping("/login")
-    public ResponseEntity<Token> login(@RequestBody Credenciais credenciais){
+    public ResponseEntity<LoginResponse> login(@RequestBody Credenciais credenciais) {
         log.info("(" + getClass().getSimpleName() + ") - Validando Credenciais: " + credenciais);
         authManager.authenticate(credenciais.toAuthentication());
-        return ResponseEntity.ok(tokenService.generateToken(credenciais.email()));
+        
+        UsuarioDTO usuario = usuarioService.findByEmail(credenciais.email());        
+        Token tokenEntity = tokenService.generateToken(credenciais.email());
+        String tokenString = tokenEntity.token();
+
+        LoginResponse response = new LoginResponse(usuario, tokenString);
+        
+        return ResponseEntity.ok(response);
     }
 }
