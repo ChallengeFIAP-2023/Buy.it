@@ -13,7 +13,7 @@ export const errorStyle: TextStyle = {
   color: theme.COLORS.RED,
   fontSize: theme.FONT_SIZE.SM,
   fontFamily: theme.FONT_FAMILY.RALEWAY.BOLD,
-  margin: 5
+  margin: 5,
 };
 
 export const dropdownStyle: ViewStyle = {
@@ -21,9 +21,16 @@ export const dropdownStyle: ViewStyle = {
   paddingHorizontal: 12,
   borderRadius: 8,
   borderWidth: 0,
+};
+
+export const modalOptions: ViewStyle = {
+  backgroundColor: theme.COLORS.GRAY_500,
   height: 'auto',
+  minHeight: 300,
+
   display: 'flex',
-  margin: 0
+  flexDirection: 'column',
+  justifyContent: 'space-between',
 };
 
 export const dropdownErrorStyle: ViewStyle = {

@@ -33,6 +33,7 @@ import { useCreateQuote } from '@hooks/useCreateQuote';
 // Style import
 import { ScrollableContent, Fieldset } from '@global/styles/index';
 import { CustomModal } from '@components/Modal';
+import { CreateTagContainer } from './styles';
 
 interface Step1Form {
   idsTags: number[];
@@ -122,7 +123,7 @@ export const Step1: React.FC<
                 <CustomDropdown
                   isSearchable
                   label="Departamento"
-                  placeholder="Selecione o departamento relacionado"
+                  placeholder="Selecione um departamento"
                   options={departmentsOptions}
                   selectedValue={value}
                   onValueChange={onChange}
@@ -153,19 +154,13 @@ export const Step1: React.FC<
                     emptyListMessage: 'Nenhum tag encontrada.',
                   }}
                   listFooterComponent={
-                    <Button
-                      label="Cadastrar tag"
-                      size="MD"
-                      style={{ margin: 20 }}
-                      onPress={toggleModal}
-                      icon={
-                        <Plus
-                          color={theme.COLORS.WHITE}
-                          weight="bold"
-                          size={20}
-                        />
-                      }
-                    />
+                    <CreateTagContainer>
+                      <Button
+                        label="Cadastrar tag"
+                        onPress={toggleModal}
+                        icon={<Plus color={theme.COLORS.WHITE} weight="bold" />}
+                      />
+                    </CreateTagContainer>
                   }
                 />
               )}

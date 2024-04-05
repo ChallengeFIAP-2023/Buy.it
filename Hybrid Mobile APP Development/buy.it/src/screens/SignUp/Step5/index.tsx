@@ -79,7 +79,7 @@ export const Step5: React.FC<
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
             subtitle: 'Passo 5 de 5',
-            title: 'Defina uma',
+            title: 'Defina uma senha',
             highlightedText: 'senha',
           }}
           key="default-component-step5"

@@ -15,6 +15,7 @@ import {
   searchInputStyle,
   errorStyle,
   dropdownErrorStyle,
+  modalOptions,
 } from './styles';
 
 export function CustomDropdown({ label, error, ...rest }: DropdownProps) {
@@ -36,7 +37,7 @@ export function CustomDropdown({ label, error, ...rest }: DropdownProps) {
             size={theme.FONT_SIZE.MD}
           />
         }
-        modalOptionsContainerStyle={dropdownStyle}
+        modalOptionsContainerStyle={modalOptions}
         checkboxLabelStyle={textStyle}
         searchControls={{
           textInputStyle: searchInputStyle,
@@ -49,9 +50,7 @@ export function CustomDropdown({ label, error, ...rest }: DropdownProps) {
         }}
         searchInputStyle={searchInputStyle}
         checkboxStyle={checkboxStyle}
-        listComponentStyles={{
-          listEmptyComponentStyle: textStyle,
-        }}
+        listComponentStyles={{ listEmptyComponentStyle: textStyle }}
         listControls={{
           selectAllText: 'Selecionar todos',
           unselectAllText: 'Remover todos',

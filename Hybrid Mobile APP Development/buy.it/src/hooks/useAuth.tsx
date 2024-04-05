@@ -69,6 +69,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       const { data } = await api.post<AuthProps>('usuarios/login', body);
 
       const token = `Bearer ${data.token}`;
+
       if (!data.usuario || !token) throw new Error();
 
       setUser(data.usuario);

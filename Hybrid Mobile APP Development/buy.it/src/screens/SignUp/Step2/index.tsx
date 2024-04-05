@@ -121,7 +121,7 @@ export const Step2: React.FC<
         <DefaultComponent
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
-            title: 'Dados da',
+            title: 'Dados da empresa',
             subtitle: 'Passo 2 de 5',
             highlightedText: 'empresa',
           }}
