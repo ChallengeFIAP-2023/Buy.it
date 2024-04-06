@@ -137,8 +137,9 @@ export function Profile({
                   value={value}
                   onChangeText={onChange}
                   label="Senha"
-                  placeholder="****"
+                  placeholder="********"
                   secureTextEntry
+                  autoCapitalize="none"
                   error={errors.senha?.message}
                 />
               )}

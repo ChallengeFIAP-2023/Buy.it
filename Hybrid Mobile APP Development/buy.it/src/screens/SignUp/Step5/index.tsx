@@ -96,6 +96,7 @@ export const Step5: React.FC<
                 }}
                 label="Senha"
                 placeholder="********"
+                autoCapitalize="none"
                 secureTextEntry
               />
             </Fieldset>

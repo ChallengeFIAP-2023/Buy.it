@@ -9,6 +9,7 @@ import {
   DecreasingContainer,
   DefaultComponent,
   WrapperPage,
+  Highlight
 } from '@components/index';
 import { Tabs } from './Tabs';
 
@@ -22,20 +23,15 @@ import { ScrollableContent } from '@global/styles';
 export function Statement({
   navigation,
 }: NativeStackScreenProps<MainRoutes, 'Statement'>) {
-  const [activeStep, setActiveStep] = useState<StatusFilterType>();
+  const [activeStep, setActiveStep] = useState<StatusFilterType>("abertas");
 
   return (
     <WrapperPage>
       <ScrollableContent>
-        <DefaultComponent
-          highlightProps={{
-            title: 'Aqui você encontra suas cotações',
-            highlightedText: 'cotações',
-          }}
-          headerProps={{ goBack: () => navigation.goBack() }}
-          key="default-component-profile"
+        <Highlight 
+          title="Aqui você encontra suas cotações"  
+          highlightedText="cotações" 
         />
-
         <DecreasingContainer>
           <Tabs activeStep={activeStep} handleSelectTab={setActiveStep} />
 

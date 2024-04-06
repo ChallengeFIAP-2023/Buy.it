@@ -185,9 +185,17 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     try {
       setLoading(true);
       const body = tagData;
-
       const { data } = await api.post('/tags', body);
-      return data.id;
+
+      if (data.id) {
+        Toast.show({
+          type: 'success',
+          text1: 'Tag criada com sucesso!',
+        });
+        fetchDepartmentsAndTags();
+      }
+
+      fetchDepartmentsAndTags();
     } catch (error) {
       Toast.show({
         type: 'error',

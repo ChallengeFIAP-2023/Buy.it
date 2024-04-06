@@ -17,23 +17,23 @@ export const Container = styled.View`
 `;
 
 export const QuoteTag = styled(Chip)`
-  padding: 3px 10px;
+  padding: 2px 10px;
 `;
 
 export const QuoteName = styled.Text`
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
-  font-family: ${({ theme }) => theme.FONT_FAMILY.RALEWAY.REGULAR};
+  font-family: ${({ theme }) => theme.FONT_FAMILY.RALEWAY.BOLD};
   color: ${({ theme }) => theme.COLORS.WHITE};
 `;
 
-export const QuoteQuantity = styled(QuoteName)`
-  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
+export const QuoteDate = styled(QuoteName)`
+  font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.BOLD};
+  font-size: ${({ theme }) => theme.FONT_SIZE.XXS}px;
+  color: ${({ theme }) => theme.COLORS.GRAY_100};
 `;
 
-export const QuoteDate = styled(QuoteName)`
-  font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.REGULAR};
-  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
-  color: ${({ theme }) => theme.COLORS.GRAY_100};
+export const QuoteQuantity = styled(QuoteDate)`
+  font-size: ${({ theme }) => theme.FONT_SIZE.XS}px;
 `;
 
 export const QuotePrice = styled(QuoteName)`

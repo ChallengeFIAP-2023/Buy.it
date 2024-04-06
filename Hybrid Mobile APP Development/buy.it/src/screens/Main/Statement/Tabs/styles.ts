@@ -28,11 +28,11 @@ export const TabText = styled.Text<{ active: boolean }>`
 `;
 
 export const BottomTab = styled.View<{ active: boolean }>`
-  height: 5px;
+  height: 4px;
   width: 30px;
 
   border-radius: 15px;
 
   background-color: ${({ theme, active }) =>
-    active ? theme.COLORS.PRIMARY : theme.COLORS.PRIMARY_LIGHT};
+    active ? theme.COLORS.PRIMARY_LIGHT : theme.COLORS.PRIMARY_DARKER};
 `;

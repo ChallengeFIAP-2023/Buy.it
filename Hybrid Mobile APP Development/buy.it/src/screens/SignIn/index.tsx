@@ -60,7 +60,7 @@ export function SignIn({
       Toast.show({
         type: 'error',
         text1: 'Erro',
-        text2: 'Credenciais inválida.',
+        text2: 'Credenciais inválidas.',
       });
     }
   };
@@ -103,8 +103,9 @@ export function SignIn({
                     value={value}
                     onChangeText={onChange}
                     label="Senha"
-                    placeholder="****"
+                    placeholder="********"
                     secureTextEntry
+                    autoCapitalize="none"
                     error={errors.senha?.message}
                   />
                 )}

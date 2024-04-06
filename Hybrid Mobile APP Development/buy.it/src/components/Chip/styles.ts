@@ -14,7 +14,7 @@ export const ChipContainer = styled.View`
 `;
 
 export const ChipText = styled.Text`
-  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
+  font-size: ${({ theme }) => theme.FONT_SIZE.XS}px;
   color: ${({ theme }) => theme.COLORS.WHITE};
   font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.REGULAR};
   text-align: center;

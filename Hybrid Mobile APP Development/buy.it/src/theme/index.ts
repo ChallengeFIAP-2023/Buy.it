@@ -3,6 +3,7 @@ export default {
     PRIMARY: '#5D48E3',
     PRIMARY_LIGHT: '#8B78FF',
     PRIMARY_DARK: '#5D48E3',
+    PRIMARY_DARKER: '#453E6B',
 
     SECONDARY: '',
 
@@ -37,6 +38,8 @@ export default {
   },
 
   FONT_SIZE: {
+    XXS: 9,
+    XS: 11,
     SM: 14,
     MD: 16,
     LG: 18,

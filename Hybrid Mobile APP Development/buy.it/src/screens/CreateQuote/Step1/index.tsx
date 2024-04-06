@@ -78,7 +78,6 @@ export const Step1: React.FC<
 
     handleNewTag({ nome: tagName });
 
-    fetchDepartmentsAndTags();
     toggleModal();
 
     return Toast.show({
