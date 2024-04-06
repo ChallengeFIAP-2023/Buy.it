@@ -1,7 +1,3 @@
-import React from 'react';
-
-import { Chip } from '@components/Chip';
-
 import {
   Container,
   QuoteDate,
@@ -14,7 +10,14 @@ import {
   QuoteIconContainer,
 } from './styles';
 
-export const QuoteItem: React.FC = () => {
+// Type import
+import { Quote } from '@dtos/quote';
+
+interface Item {
+  quote: Quote
+}
+
+export function QuoteItem ({ quote }: Item) {
   return (
     <Container>
       <Section>
@@ -22,16 +25,18 @@ export const QuoteItem: React.FC = () => {
       </Section>
 
       <Section start>
-        <QuoteName>Teste</QuoteName>
-        <QuoteTag value="papelaria" />
-        <QuoteQuantity>100 unidades</QuoteQuantity>
+        <QuoteName>{quote.produto.nome}</QuoteName>
+        
+        {quote.produto.tags.map(tag => <QuoteTag value={tag.nome} />)}
+        
+        <QuoteQuantity>{quote.quantidadeProduto} unidades</QuoteQuantity>
       </Section>
 
       <Section end>
-        <QuoteDate>12/10/2023</QuoteDate>
+        <QuoteDate>{quote.dataAbertura}</QuoteDate>
         <QuotePrice>
           <QuotePriceSymbol>R$ </QuotePriceSymbol>
-          0,50
+          {quote.valorProduto}
         </QuotePrice>
       </Section>
     </Container>

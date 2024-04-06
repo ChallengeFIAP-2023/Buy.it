@@ -1,2 +1,20 @@
-export const tabs = ['abertas', 'aprovadas', 'finalizadas'] as const;
-export type StatusFilterType = (typeof tabs)[number];
+export type StatusFilterType = { 
+  label: string 
+  key: "concluded" | "closed" | "approved" | "inProgress" | "repproved"
+};
+
+export const tabs: StatusFilterType[] = [
+  { 
+    label: "abertas",
+    key: "inProgress" 
+  },
+  { 
+    label: "aprovadas", 
+    key: "approved"
+  },
+  { 
+    label: "finalizadas",
+    key: "concluded" 
+  }
+];
+

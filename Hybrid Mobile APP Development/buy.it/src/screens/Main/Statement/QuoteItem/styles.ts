@@ -38,23 +38,26 @@ export const QuoteQuantity = styled(QuoteDate)`
 
 export const QuotePrice = styled(QuoteName)`
   font-family: ${({ theme }) => theme.FONT_FAMILY.RALEWAY.SEMIBOLD};
-  font-size: ${({ theme }) => theme.FONT_SIZE.XXL}px;
+  font-size: ${({ theme }) => theme.FONT_SIZE.XL}px;
   color: ${({ theme }) => theme.COLORS.WHITE};
 `;
 
-export const QuotePriceSymbol = styled(QuoteName)``;
+export const QuotePriceSymbol = styled(QuoteName)`
+  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
+`;
 
 export const Section = styled.View<{ start?: boolean; end?: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
+  flex: 1;
 
   align-items: ${props => {
     if (props.end) return 'flex-end';
     if (props.start) return 'flex-start';
-
-    return 'center';
   }};
+
+  ${props => props.start && "flex: 1;" }
 
   gap: 10px;
 `;
@@ -62,7 +65,8 @@ export const Section = styled.View<{ start?: boolean; end?: boolean }>`
 export const QuoteIconContainer = styled.View`
   background-color: ${({ theme }) => theme.COLORS.GRAY_600};
 
-  width: 70px;
+  width: 55px;
+  aspect-ratio: 1;
 
   border-radius: 5px;
 
