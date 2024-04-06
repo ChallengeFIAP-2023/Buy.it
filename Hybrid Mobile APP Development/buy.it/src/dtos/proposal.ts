@@ -29,6 +29,9 @@ export interface Proposal {
   quantidadeProduto: number;
   valorProduto: number;
   prazo: number;
+  prioridadeEntrega: number;
+  prioridadeQualidade: number;
+  prioridadePreco: number;
 
   comprador: User;
   produto: Product;

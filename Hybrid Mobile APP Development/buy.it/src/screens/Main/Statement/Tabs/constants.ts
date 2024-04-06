@@ -1,2 +1,2 @@
-export const tabs = ['em andamento', 'canceladas', 'finalizadas'] as const;
+export const tabs = ['abertas', 'aprovadas', 'finalizadas'] as const;
 export type StatusFilterType = (typeof tabs)[number];

@@ -152,6 +152,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   }, []);
 
   async function handleSignOut() {
+    setUser({} as User);
     await removeAuthToken();
     navigate('SignIn');
   }

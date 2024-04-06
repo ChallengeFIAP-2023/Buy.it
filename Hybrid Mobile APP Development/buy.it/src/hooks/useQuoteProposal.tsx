@@ -12,12 +12,15 @@ import { Proposal } from '@dtos/proposal';
 
 // Service import
 import { MainRoutes } from '@screens/Main';
-import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { AppNavigatorRoutesProps } from '@routes/index';
+import { api } from '@services/api';
+import { useAuth } from './useAuth';
+import Toast from 'react-native-toast-message';
 
 interface QuoteProposalContextData {
   proposal: Proposal | undefined;
-  handleProcessProposal: (type: 'approve' | 'decline') => void;
+  handleProcessProposal: (type: 'approve' | 'decline') => Promise<void>;
+  handleRedirectSuccessProposal: () => void;
 
   approveLoading: boolean;
   declineLoading: boolean;
@@ -38,6 +41,7 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
 }) => {
   // Hook
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();
+  const { user } = useAuth();
 
   const [lastRouteNavigated, setLastRouteNavigated] =
     useState<keyof MainRoutes>('Home');
@@ -49,57 +53,55 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
   useEffect(() => {
     const fetchProposals = async () => {
       try {
-        setProposal({
-          id: 4,
-          dataAbertura: '16-03-2024',
-          comprador: {
-            id: 6,
-            nome: 'vitor',
-            email: 'vitor@gmail.com',
-            urlImagem:
-              'https://media.licdn.com/dms/image/D4D03AQF4qATl2eRnOQ/profile-displayphoto-shrink_200_200/0/1687370806150?e=1717632000&v=beta&t=FfvjQO0ImZNU38FH_mgnEJv0mZG56q2HKguV980JDdw',
-            cnpj: '29883217000175',
-            isFornecedor: false,
-          },
-          produto: {
-            id: 4,
-            nome: 'Calça',
-            marca: 'Hering',
-            cor: 'Vermelho',
-            tamanho: 'P',
-            material: 'Jeans',
-            observacao: 'Modelo XYZ',
-            tags: [
-              {
-                id: 1,
-                nome: 'Roupa',
-              },
-            ],
-          },
-          quantidadeProduto: 100,
-          valorProduto: 2.0,
-          prazo: 2,
-        });
+        const openProposalId = 1;
+        const { data } = await api.get<{ content: Proposal[] }>(
+          `/cotacoes/status/${openProposalId}`,
+        );
+
+        setProposal(data.content[0]);
       } catch (error) {
-        console.error('Erro ao buscar dados do backend:', error);
+        console.log('Erro ao buscar dados do backend:', error);
       }
     };
 
-    if (proposal) return;
+    if (proposal || !user?.id) return;
 
-    const twentyFiveMilliseconds = 2 * 1000;
-    const intervalId = setInterval(fetchProposals, twentyFiveMilliseconds);
+    const oneMinuteInMilliseconds = 60 * 1000;
+    const intervalId = setInterval(fetchProposals, oneMinuteInMilliseconds);
 
     return () => clearInterval(intervalId);
-  }, [proposal]);
+  }, [proposal, user]);
 
   const handleProcessProposal = useCallback(
-    (type: 'approve' | 'decline') => {
+    async (type: 'approve' | 'decline') => {
       if (type === 'approve') {
         try {
-          setApproveLoading(true);
-          console.log('aprovou a proposta');
+          if (proposal) {
+            setApproveLoading(true);
+            const approvedStatusId = 3;
+
+            await api.put(`/cotacoes/${proposal.id}`, {
+              dataAbertura: proposal.dataAbertura,
+              idComprador: proposal.comprador.id,
+              idProduto: proposal.produto.id,
+              quantidadeProduto: proposal.quantidadeProduto,
+              valorProduto: proposal.valorProduto,
+              idStatus: approvedStatusId,
+              prioridadeEntrega: proposal.prioridadeEntrega,
+              prioridadeQualidade: proposal.prioridadeQualidade,
+              prioridadePreco: proposal.prioridadePreco,
+              prazo: proposal.prazo,
+              dataFechamento: new Date(),
+            });
+
+            navigate('QuoteProposal', { screen: 'QuoteProposalSuccess' });
+          }
         } catch (error) {
+          return Toast.show({
+            type: 'error',
+            text1: 'Não foi possível aprovar esta cotação',
+            text2: 'Tente novamente.',
+          });
         } finally {
           setApproveLoading(false);
         }
@@ -113,6 +115,11 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
           navigate('Main', { screen: lastRouteNavigated });
           setProposal(undefined);
         } catch (error) {
+          return Toast.show({
+            type: 'error',
+            text1: 'Não foi possível recusar esta cotação',
+            text2: 'Tente novamente.',
+          });
         } finally {
           setDeclineLoading(false);
         }
@@ -121,11 +128,17 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
     [lastRouteNavigated],
   );
 
+  const handleRedirectSuccessProposal = useCallback(() => {
+    setProposal(undefined);
+    navigate('Main');
+  }, []);
+
   return (
     <QuoteProposalContext.Provider
       value={{
         proposal,
         handleProcessProposal,
+        handleRedirectSuccessProposal,
 
         approveLoading,
         declineLoading,

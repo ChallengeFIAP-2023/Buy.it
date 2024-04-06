@@ -12,7 +12,7 @@ import { QuoteProposalProvider } from '@hooks/useQuoteProposal';
 import { SignIn } from '@screens/SignIn';
 import { SignUp } from '@screens/SignUp';
 import { CreateQuote } from '@screens/CreateQuote';
-import { QuoteProposal } from '@screens/QuoteProposal';
+import { QuoteProposal, QuoteProposalRoutes } from '@screens/QuoteProposal';
 import { Main, MainRoutes } from '@screens/Main';
 import { NavigatorScreenParams } from '@react-navigation/native';
 
@@ -20,7 +20,7 @@ export type MainNavigationRoutes = {
   SignIn: undefined;
   SignUp: undefined;
   CreateQuote: undefined;
-  QuoteProposal: undefined;
+  QuoteProposal: NavigatorScreenParams<QuoteProposalRoutes> | undefined;
   Main: NavigatorScreenParams<MainRoutes> | undefined;
 };
 
@@ -34,15 +34,15 @@ export default function Routes() {
   // Navigator instance
   const Stack = createNativeStackNavigator<MainNavigationRoutes>();
 
-  // const logged = !!user?.cnpj;
-  const logged = true;
+  const logged = !!user?.cnpj;
 
   const initialMainRoute = useMemo<keyof MainNavigationRoutes>(() => {
-    if (logged) return 'Main';
+    if (logged) return 'QuoteProposal';
 
     return 'SignIn';
   }, [logged]);
 
+  // Componente Navigator
   const MainNavigation = useMemo(() => {
     const Navigator: React.FC = () => (
       <Stack.Navigator
@@ -53,8 +53,13 @@ export default function Routes() {
           animation: 'slide_from_right',
         }}
       >
-        <Stack.Screen name="SignIn" component={SignIn} />
-        <Stack.Screen name="SignUp" component={SignUp} />
+        {!logged && (
+          <>
+            <Stack.Screen name="SignIn" component={SignIn} />
+            <Stack.Screen name="SignUp" component={SignUp} />
+          </>
+        )}
+
         <Stack.Screen name="CreateQuote" component={CreateQuote} />
         <Stack.Screen name="QuoteProposal" component={QuoteProposal} />
         <Stack.Screen name="Main" component={Main} />

@@ -10,10 +10,12 @@ import { MainNavigationRoutes } from '@routes/index';
 
 // Pages import
 import { QuoteProposalDetails } from './QuoteProposalDetails';
+import { QuoteProposalSuccess } from './QuoteProposalSuccess';
 
 // Interfaces
 export type QuoteProposalRoutes = {
   QuoteProposalDetails: undefined;
+  QuoteProposalSuccess: undefined;
 };
 
 export const QuoteProposal: React.FC<
@@ -35,6 +37,10 @@ export const QuoteProposal: React.FC<
       <Stack.Screen
         name="QuoteProposalDetails"
         component={QuoteProposalDetails}
+      />
+      <Stack.Screen
+        name="QuoteProposalSuccess"
+        component={QuoteProposalSuccess}
       />
     </Stack.Navigator>
   );

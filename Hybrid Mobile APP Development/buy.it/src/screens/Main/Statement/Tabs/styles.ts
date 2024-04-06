@@ -3,7 +3,9 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   display: flex;
   flex-direction: row;
-  gap: 20px;
+  align-items: center;
+  justify-content: center;
+  gap: 25px;
 
   margin: 16px 0;
 `;
