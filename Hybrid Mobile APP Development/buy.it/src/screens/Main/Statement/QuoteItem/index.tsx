@@ -1,3 +1,4 @@
+import { toMaskedCurrency } from '@utils/masks';
 import {
   Container,
   QuoteDate,
@@ -36,7 +37,7 @@ export function QuoteItem ({ quote }: Item) {
         <QuoteDate>{quote.dataAbertura}</QuoteDate>
         <QuotePrice>
           <QuotePriceSymbol>R$ </QuotePriceSymbol>
-          {quote.valorProduto}
+          {toMaskedCurrency(quote?.valorProduto, false)}
         </QuotePrice>
       </Section>
     </Container>

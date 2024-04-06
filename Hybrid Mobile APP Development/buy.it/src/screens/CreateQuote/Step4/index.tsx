@@ -126,7 +126,7 @@ export const Step4: React.FC<
               render={({ field: { value, onChange } }) => (
                 <Input
                   value={value?.toString()}
-                  onChangeText={text => onChange(toMaskedCurrency(text))}
+                  onChangeText={text => onChange(toMaskedCurrency(Number(text)), true)}
                   label="Valor"
                   placeholder="R$ 0,50"
                   keyboardType="numeric"
@@ -142,7 +142,7 @@ export const Step4: React.FC<
               size="SM"
               onPress={() => 
                 setValue('valorProduto', 
-                toMaskedCurrency(String(productPrices.avgValor?.toFixed(2))))
+                toMaskedCurrency(Number(productPrices.avgValor), true))
               }
             />
           )}
@@ -169,11 +169,11 @@ function Message ({ productPrices }: Message) {
           <LightText>
             O valor médio de cotações para{' '}
             <LightBoldText>{productPrices.produto.nome}</LightBoldText> é {' '}
-            {toMaskedCurrency(productPrices.avgValor.toString())} por unidade.
+            {toMaskedCurrency(productPrices.avgValor, true)} por unidade.
           </LightText>
           <LightText>
             O menor preço já pago em {productPrices.produto.nome}{' '}
-            foi {toMaskedCurrency(productPrices.minValor.toString())}.
+            foi {toMaskedCurrency(productPrices.minValor, true)}.
           </LightText>
         </Fragment>
         ) : (

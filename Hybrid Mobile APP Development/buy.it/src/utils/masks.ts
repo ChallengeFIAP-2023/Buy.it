@@ -28,12 +28,13 @@ export function toMaskedCNPJ(value: string) {
   }
 }
 
-export function toMaskedCurrency(value: string) {
+export function toMaskedCurrency(value: number, showUnit?: boolean) {
+  const formattedNumber = value.toFixed(2).toString();
   try {
-    return MaskService.toMask('money', value, {
+    return MaskService.toMask('money', formattedNumber, {
       precision: 2,
       separator: ',',
-      unit: 'R$',
+      unit: showUnit ? 'R$' : '',
     });
   } catch (error) {
     throw error;

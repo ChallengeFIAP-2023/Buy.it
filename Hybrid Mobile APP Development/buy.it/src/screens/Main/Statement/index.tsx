@@ -33,7 +33,7 @@ import { useAuth } from '@hooks/useAuth';
 export function Statement({
   navigation,
 }: NativeStackScreenProps<MainRoutes, 'Statement'>) {
-  const [activeStep, setActiveStep] = useState<StatusFilterType>();
+  const [activeOption, setActiveOption] = useState<StatusFilterType>();
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [filteredQuotes, setFilteredQuotes] = useState<Quote[]>([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -49,7 +49,7 @@ export function Statement({
       const { data } = await api.get(`/cotacoes/usuario/comprador/${user.id}`);
       setQuotes(data.content);
       setFilteredQuotes(data.content);
-      setActiveStep(tabs[0]);
+      setActiveOption(tabs[0]);
     } catch (error) {
       Toast.show({
         type: 'error',
@@ -66,9 +66,9 @@ export function Statement({
   }, []);
 
   useLayoutEffect(() => {
-    if(!activeStep) return;
-    filterQuotes(STATUS_OPTIONS[activeStep.key]);
-  }, [activeStep]);
+    if(!activeOption) return;
+    filterQuotes(STATUS_OPTIONS[activeOption.key]);
+  }, [activeOption]);
 
   return (
     <WrapperPage>
@@ -82,7 +82,8 @@ export function Statement({
             <TextIndicator>Carregando cotações...</TextIndicator> : 
             (
               <Fragment>
-                <Tabs activeStep={activeStep} handleSelectTab={setActiveStep} /><QuotesWrapper>
+                <Tabs activeOption={activeOption} handleSelectTab={setActiveOption} />
+                <QuotesWrapper>
                   {filteredQuotes && filteredQuotes.length > 0 ? (
                     filteredQuotes.map(item => (
                       <QuoteItem 

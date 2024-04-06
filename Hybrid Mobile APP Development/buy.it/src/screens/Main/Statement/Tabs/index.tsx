@@ -3,7 +3,7 @@ import React from 'react';
 import { StatusFilterType, tabs } from './constants';
 
 interface Props {
-  activeStep: StatusFilterType | undefined;
+  activeOption: StatusFilterType | undefined;
   handleSelectTab: React.Dispatch<
     React.SetStateAction<StatusFilterType | undefined>
   >;
@@ -11,13 +11,13 @@ interface Props {
 
 import { BottomTab, Container, Tab, TabText } from './styles';
 
-export const Tabs: React.FC<Props> = ({ activeStep, handleSelectTab }) => {
+export const Tabs: React.FC<Props> = ({ activeOption, handleSelectTab }) => {
   return (
     <Container>
       {tabs.map(tab => (
         <Tab onPress={() => handleSelectTab(tab)} key={tab.key}>
-          <TabText active={activeStep === tab}>{tab.label}</TabText>
-          <BottomTab active={activeStep === tab} />
+          <TabText active={activeOption === tab}>{tab.label}</TabText>
+          <BottomTab active={activeOption === tab} />
         </Tab>
       ))}
     </Container>

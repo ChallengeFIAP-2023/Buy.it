@@ -131,10 +131,7 @@ export const QuoteProposalDetails: React.FC<
             <ProductPriceContainer>
               <PerText>R$</PerText>
               <Price>
-                {toMaskedCurrency(String(proposal?.valorProduto)).replace(
-                  'R$',
-                  '',
-                )}
+                {toMaskedCurrency(Number(proposal?.valorProduto), false)}
               </Price>
               <PerText>cada</PerText>
             </ProductPriceContainer>
