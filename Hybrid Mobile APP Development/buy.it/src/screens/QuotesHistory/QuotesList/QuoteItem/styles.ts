@@ -1,20 +1,32 @@
 import { Chip } from '@components/Chip';
-import styled from 'styled-components/native';
+import styled, { css } from 'styled-components/native';
 
-export const Container = styled.Pressable`
+type Props = {
+  contained: boolean;
+}
+
+export const Container = styled.Pressable<Props>`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
 
-  background-color: ${({ theme }) => theme.COLORS.GRAY_500};
-
-  padding: 16px;
-  margin-top: 20px;
-
-  border-radius: 10px;
-
-  min-height: 70px;
+  ${props =>
+    props.contained ?
+    css`
+      background-color: ${({ theme }) => theme.COLORS.GRAY_500};
+      padding: 16px;
+      margin-top: 20px;
+      border-radius: 10px;
+      min-height: 70px;
+    `
+    : 
+    css`
+      border-bottom-width: 1px;
+      border-color: ${({ theme }) => theme.COLORS.GRAY_400};
+      padding: 10px 0;
+    `
+  }
 `;
 
 export const QuoteTag = styled(Chip)`
@@ -27,24 +39,22 @@ export const QuoteName = styled.Text`
   color: ${({ theme }) => theme.COLORS.WHITE};
 `;
 
-export const QuoteDate = styled(QuoteName)`
+export const QuoteStatus = styled(QuoteName)`
   font-family: ${({ theme }) => theme.FONT_FAMILY.ROBOTO.BOLD};
   font-size: ${({ theme }) => theme.FONT_SIZE.XXS}px;
   color: ${({ theme }) => theme.COLORS.GRAY_100};
 `;
 
-export const QuoteQuantity = styled(QuoteDate)`
+export const QuoteQuantity = styled(QuoteStatus)`
   font-size: ${({ theme }) => theme.FONT_SIZE.XS}px;
 `;
 
 export const QuotePrice = styled(QuoteName)`
-  font-family: ${({ theme }) => theme.FONT_FAMILY.RALEWAY.SEMIBOLD};
-  font-size: ${({ theme }) => theme.FONT_SIZE.XL}px;
   color: ${({ theme }) => theme.COLORS.WHITE};
 `;
 
 export const QuotePriceSymbol = styled(QuoteName)`
-  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
+  font-size: ${({ theme }) => theme.FONT_SIZE.XS}px;
 `;
 
 export const Section = styled.View<{ start?: boolean; end?: boolean }>`

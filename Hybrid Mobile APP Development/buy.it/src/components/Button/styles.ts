@@ -23,7 +23,7 @@ export const ButtonContainer = styled.TouchableOpacity<Props>`
   border-bottom-right-radius: 8px;
   border-bottom-left-radius: 8px;
 
-  padding: ${({ size }) => (size === 'SM' ? '8px 12px' : '16px')};
+  padding: ${({ size }) => (size === 'SM' ? '8px 12px' : size === 'MD' ? '12px' : '16px')};
 
   opacity: ${({ disabled }) => (disabled ? 0.6 : 1)};
 

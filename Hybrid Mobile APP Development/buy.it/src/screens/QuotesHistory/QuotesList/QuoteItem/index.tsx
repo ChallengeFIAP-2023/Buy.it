@@ -3,7 +3,6 @@ import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 
 import {
   Container,
-  QuoteDate,
   QuoteName,
   QuotePrice,
   QuotePriceSymbol,
@@ -11,20 +10,41 @@ import {
   QuoteTag,
   Section,
   QuoteIconContainer,
+  QuoteStatus,
 } from './styles';
 
 // Type import
 import { Quote } from '@dtos/quote';
+import { PressableProps } from 'react-native';
+
+// Theme import
 import theme from '@theme/index';
 
-interface Item {
+interface Item extends PressableProps {
   quote: Quote;
-  onPress: () => void;
+  showTags?: boolean;
+  contained?: boolean;
 }
 
-export function QuoteItem ({ quote, onPress }: Item) {
+export function QuoteItem ({ 
+  quote, 
+  showTags = true, 
+  contained = true,
+   ...rest 
+  }: Item) {
+
+  const statusColors: { [key: string]: string } = {
+    "Em andamento": theme.COLORS.YELLOW,
+    "Recusado": theme.COLORS.RED,
+    "Fechado": theme.COLORS.RED,
+    "Aprovado": theme.COLORS.GREEN_800,
+    "Concluído": theme.COLORS.GREEN_800,
+  }
+
+  const currentStatusColor = statusColors[quote.status.nome] || theme.COLORS.YELLOW;
+
   return (
-    <Container onPress={onPress}>
+    <Container {...rest} contained={contained}>
       <Section>
         <QuoteIconContainer>
           <Icon 
@@ -36,12 +56,14 @@ export function QuoteItem ({ quote, onPress }: Item) {
 
       <Section start>
         <QuoteName>{quote.produto.nome}</QuoteName>
-        {quote.produto.tags.map(tag => <QuoteTag value={tag.nome} />)}
+        {showTags && (
+          quote.produto.tags.map(tag => <QuoteTag value={tag.nome} />)
+        )}
         <QuoteQuantity>{quote.quantidadeProduto} unidades</QuoteQuantity>
       </Section>
 
       <Section end>
-        <QuoteDate>{quote.dataAbertura}</QuoteDate>
+        <QuoteStatus style={{ color: currentStatusColor }}>{quote.status.nome}</QuoteStatus>
         <QuotePrice>
           <QuotePriceSymbol>R$ </QuotePriceSymbol>
           {toMaskedCurrency(quote?.valorProduto.toFixed(2), false)}

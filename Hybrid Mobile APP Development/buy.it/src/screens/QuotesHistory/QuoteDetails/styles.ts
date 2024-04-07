@@ -1,12 +1,12 @@
 import styled from 'styled-components/native';
 
 export const Container = styled.View`
-    padding: 20px 0;
-    border-bottom-width: 1px;
-    border-color: ${({ theme }) => theme.COLORS.GRAY_400};
-    display: flex;
-    flex-direction: column;
-    gap: 7px;
+  padding: 20px 0;
+  border-bottom-width: 1px;
+  border-color: ${({ theme }) => theme.COLORS.GRAY_400};
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
 `;
 
 export const Label = styled.Text`

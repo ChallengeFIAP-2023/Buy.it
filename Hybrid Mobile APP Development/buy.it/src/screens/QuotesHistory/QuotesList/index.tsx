@@ -109,7 +109,6 @@ export const QuotesList: React.FC<
                       />
                     </Container>
                   )}
-                {}
                 </QuotesWrapper>
               </Fragment>
             )

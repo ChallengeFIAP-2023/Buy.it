@@ -12,7 +12,6 @@ interface NewStatusProps {
 export default function NewStatus({ modalTitle, quote, handleUpdateQuote }: NewStatusProps) {
 
   const handleUpdateStatus = () => {
-
     const idStatus = modalTitle === "Concluir" 
     ? STATUS_OPTIONS.concluded : STATUS_OPTIONS.closed;
 
