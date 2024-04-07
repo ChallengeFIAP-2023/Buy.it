@@ -17,6 +17,7 @@ import {
   Header,
   DefaultComponent,
   Chip,
+  Button,
 } from '@components/index';
 
 // Style import
@@ -51,6 +52,7 @@ export const QuoteDetails: React.FC<
 > = ({ route, navigation }) => {
   const [quote, setQuote] = useState<Quote>({} as Quote);
   const [isLoading, setIsLoading] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
 
   const { id } = route.params;
 
@@ -86,6 +88,9 @@ export const QuoteDetails: React.FC<
     2: 'importância média',
     3: 'importância alta'
   }
+
+  const hasDetails = quote.produto && 
+  (quote.produto.marca || quote.produto.cor || quote.produto.material || quote.produto.tamanho);
 
   return (
     <WrapperPage>
@@ -165,6 +170,52 @@ export const QuoteDetails: React.FC<
                       {quote.prioridadeEntrega}: {priorityLabel[quote.prioridadeEntrega]}
                     </Value>
                   </Container>
+
+                  {showDetails && (
+                    <Fragment>
+                      {quote.produto.marca && (
+                        <Container>
+                          <Label>Marca</Label>
+                          <Value>{quote.produto.marca}</Value>
+                        </Container>
+                      )}
+                      {quote.produto.cor && (
+                        <Container>
+                          <Label>Cor</Label>
+                          <Value>{quote.produto.cor}</Value>
+                        </Container>
+                      )}
+                      {quote.produto.tamanho && (
+                        <Container>
+                          <Label>Tamanho</Label>
+                          <Value>{quote.produto.tamanho}</Value>
+                        </Container>
+                      )}
+                      {quote.produto.material && (
+                        <Container>
+                          <Label>Material</Label>
+                          <Value>{quote.produto.material}</Value>
+                        </Container>
+                      )}
+                    </Fragment>
+                  )}
+
+                  {hasDetails && (
+                    <Button 
+                      label={`${showDetails ? "Mais" : "Menos"} detalhes`}
+                      type="secondary"
+                      size="LG"
+                      onPress={() => setShowDetails(!showDetails)}
+                      iconFirst={!showDetails}
+                      icon={
+                        <Icon 
+                          name={showDetails ? "chevron-down" : "chevron-up"}
+                          size={theme.FONT_SIZE.XXL}
+                          color={theme.COLORS.PRIMARY_LIGHTER}
+                        />
+                      }
+                    />
+                  )}
                 </DecreasingContainer>
               </Fragment>
             )

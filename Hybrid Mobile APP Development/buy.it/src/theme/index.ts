@@ -2,6 +2,7 @@ export default {
   COLORS: {
     PRIMARY: '#5D48E3',
     PRIMARY_LIGHT: '#8B78FF',
+    PRIMARY_LIGHTER: '#8D85C2',
     PRIMARY_DARK: '#5D48E3',
     PRIMARY_DARKER: '#453E6B',
 
