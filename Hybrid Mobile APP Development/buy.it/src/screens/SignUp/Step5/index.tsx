@@ -10,7 +10,7 @@ import { SignUpRoutes } from '..';
 import theme from '@theme/index';
 
 // Type import
-import { UserQuery } from '@dtos/user';
+import { User } from '@dtos/user';
 
 // Hook import
 import { useSignUpForm } from '@hooks/useSignUpForm';
@@ -53,7 +53,7 @@ export const Step5: React.FC<
     const email = user.email;
     const senha = password;
 
-    const finalUserData: UserQuery = Object.assign(user, { senha });
+    const finalUserData: User = Object.assign(user, { senha });
 
     try {
       await handleRegisterUser(finalUserData);

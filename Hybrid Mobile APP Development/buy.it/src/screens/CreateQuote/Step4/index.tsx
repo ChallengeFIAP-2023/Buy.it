@@ -6,7 +6,6 @@ import { yupResolver } from '@hookform/resolvers/yup';
 import React, { Fragment, useLayoutEffect } from 'react';
 import Toast from 'react-native-toast-message';
 
-
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
 import { CreateQuoteRoutes } from '..';
@@ -40,7 +39,7 @@ import { useAuth } from '@hooks/useAuth';
 // Utils import
 import { toMaskedCurrency, unMaskCurrency } from '@utils/masks';
 import { STATUS_OPTIONS } from '@utils/statusOptions';
-import { format } from "date-fns";
+import { format } from 'date-fns';
 
 interface Step4Form {
   valorProduto: string;
@@ -65,33 +64,32 @@ export const Step4: React.FC<
     resolver: yupResolver(Step4FormSchema),
   });
 
-  const { 
-    quote, 
-    handleNewQuote, 
-    fetchProductPrices, 
-    productPrices,
-    loading
-  } = useCreateQuote();
+  const { quote, handleNewQuote, fetchProductPrices, productPrices, loading } =
+    useCreateQuote();
 
   const { user } = useAuth();
 
   const onSubmit: SubmitHandler<Step4Form> = data => {
-    const dataAbertura = format(new Date(), "dd-MM-yyyy");
+    const dataAbertura = format(new Date(), 'dd-MM-yyyy');
     const idStatus = STATUS_OPTIONS.inProgress;
     const idComprador = Number(user.id);
 
     const valorProduto = unMaskCurrency(data.valorProduto);
 
-    if(valorProduto <= 0) 
+    if (valorProduto <= 0)
       return Toast.show({
-        type: "error",
-        text1: "Erro",
-        text2: "Insira um valor válido!"
-      })
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Insira um valor válido!',
+      });
 
-    const finalQuery: QuoteQuery = { 
-      ...quote, dataAbertura, idStatus, idComprador, valorProduto
-    }
+    const finalQuery: QuoteQuery = {
+      ...quote,
+      dataAbertura,
+      idStatus,
+      idComprador,
+      valorProduto,
+    };
 
     handleNewQuote(finalQuery, navigation as NavigationProp);
   };
@@ -100,7 +98,7 @@ export const Step4: React.FC<
     fetchProductPrices(quote.idProduto);
   }, []);
 
-  if (loading || !productPrices.produto) return <Loading />
+  if (loading || !productPrices.produto) return <Loading />;
 
   return (
     <WrapperPage>
@@ -116,7 +114,6 @@ export const Step4: React.FC<
         />
 
         <DecreasingContainer>
-
           <Message productPrices={productPrices} />
 
           <Fieldset>
@@ -126,7 +123,7 @@ export const Step4: React.FC<
               render={({ field: { value, onChange } }) => (
                 <Input
                   value={value?.toString()}
-                  onChangeText={text => onChange(toMaskedCurrency((text), true))}
+                  onChangeText={text => onChange(toMaskedCurrency(text, true))}
                   label="Valor"
                   placeholder="R$ 0,50"
                   keyboardType="numeric"
@@ -137,16 +134,20 @@ export const Step4: React.FC<
           </Fieldset>
 
           {productPrices.avgValor && (
-            <Button 
-              label="Utilizar preço sugerido" 
+            <Button
+              label="Utilizar preço sugerido"
               size="SM"
-              onPress={() => 
-                setValue('valorProduto', 
-                toMaskedCurrency(Number(productPrices.avgValor).toFixed(2), true))
+              onPress={() =>
+                setValue(
+                  'valorProduto',
+                  toMaskedCurrency(
+                    Number(productPrices.avgValor).toFixed(2),
+                    true,
+                  ),
+                )
               }
             />
           )}
-          
         </DecreasingContainer>
       </ScrollableContent>
 
@@ -161,31 +162,34 @@ export const Step4: React.FC<
   );
 };
 
-function Message ({ productPrices }: Message) {
-    return (
-      <Fragment>
+function Message({ productPrices }: Message) {
+  return (
+    <Fragment>
       {productPrices.avgValor && productPrices.minValor ? (
         <Fragment>
           <LightText>
             O valor médio de cotações para{' '}
-            <LightBoldText>{productPrices.produto.nome}</LightBoldText> é {' '}
-            {toMaskedCurrency(productPrices.avgValor.toFixed(2), true)} por unidade.
+            <LightBoldText>{productPrices.produto.nome}</LightBoldText> é{' '}
+            {toMaskedCurrency(productPrices.avgValor.toFixed(2), true)} por
+            unidade.
           </LightText>
           <LightText>
-            O menor preço já pago em {productPrices.produto.nome}{' '}
-            foi {toMaskedCurrency(productPrices.minValor.toFixed(2), true)}.
+            O menor preço já pago em {productPrices.produto.nome} foi{' '}
+            {toMaskedCurrency(productPrices.minValor.toFixed(2), true)}.
           </LightText>
         </Fragment>
-        ) : (
-          <LightText>
-            Infelizmente ainda não possuímos uma média de valores para
-            <LightBoldText> {productPrices.produto && productPrices.produto.nome}</LightBoldText>. 
-            Quando tivermos você a receberá como sugestão.
-          </LightText>
-        )
-      }
+      ) : (
+        <LightText>
+          Infelizmente ainda não possuímos uma média de valores para
+          <LightBoldText>
+            {' '}
+            {productPrices.produto && productPrices.produto.nome}
+          </LightBoldText>
+          . Quando tivermos você a receberá como sugestão.
+        </LightText>
+      )}
 
-      <LightText>Quanto você quer pagar?</LightText>
+      <LightText>Por quanto R$ você gostaria de comprar?</LightText>
     </Fragment>
-  )
+  );
 }

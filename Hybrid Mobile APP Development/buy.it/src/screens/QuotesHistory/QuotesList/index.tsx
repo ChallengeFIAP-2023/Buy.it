@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
+import { CompositeScreenProps } from '@react-navigation/native';
 
 // Type import
 import { Quote } from '@dtos/quote';
@@ -30,8 +31,8 @@ import { STATUS_OPTIONS } from '@utils/statusOptions';
 // Hook import
 import { useAuth } from '@hooks/useAuth';
 import { QuotesHistoryRoutes } from '..';
-import { CompositeScreenProps } from '@react-navigation/native';
 import { MainNavigationRoutes } from '@routes/index';
+import { RefreshControl } from 'react-native';
 
 export const QuotesList: React.FC<
   CompositeScreenProps<
@@ -47,15 +48,20 @@ export const QuotesList: React.FC<
   const { user } = useAuth();
 
   const filterQuotes = (filterBy: number) => {
-    setFilteredQuotes(quotes.filter(quote => quote.status.id === filterBy))
-  }
+    setFilteredQuotes(quotes.filter(quote => quote.status.id === filterBy));
+  };
 
   const fetchData = async () => {
     try {
-      const { data } = await api.get(`/cotacoes/usuario/comprador/${user.id}`);
-      setQuotes(data.content);
-      setFilteredQuotes(data.content);
-      setActiveOption(tabs[0]);
+      if (user.id) {
+        const { data } = await api.get(
+          `/cotacoes/usuario/comprador/${user.id}`,
+        );
+
+        setQuotes(data.content);
+        setFilteredQuotes(data.content);
+        setActiveOption(tabs[0]);
+      }
     } catch (error) {
       Toast.show({
         type: 'error',
@@ -72,49 +78,61 @@ export const QuotesList: React.FC<
   }, []);
 
   useEffect(() => {
-    if(!activeOption) return;
+    console.log('Caiu aqui');
+  }, []);
+
+  useEffect(() => {
+    if (!activeOption) return;
     filterQuotes(STATUS_OPTIONS[activeOption.key]);
   }, [activeOption]);
 
   return (
     <WrapperPage>
-      <ScrollableContent>
-        <Highlight 
-          title="Aqui você encontra suas cotações"  
-          highlightedText="cotações" 
+      <ScrollableContent
+        refreshControl={
+          <RefreshControl refreshing={isLoading} onRefresh={fetchData} />
+        }
+      >
+        <Highlight
+          title="Aqui você encontra suas cotações"
+          highlightedText="cotações"
         />
         <DecreasingContainer>
-          {isLoading ? 
-            <TextIndicator>Carregando cotações...</TextIndicator> : 
-            (
-              <Fragment>
-                <Tabs activeOption={activeOption} handleSelectTab={setActiveOption} />
-                <QuotesWrapper>
-                  {filteredQuotes && filteredQuotes.length > 0 ? (
-                    filteredQuotes.map(item => (
-                      <QuoteItem
-                        onPress={() => navigation.navigate("QuoteDetails", { id: item.id })}
-                        key={item.id} 
-                        quote={item}
-                      />
-                    ))
-                  ) : (
-                    <Container>
-                      <TextIndicator>Nenhuma cotação encontrada.</TextIndicator>
-                      <Button 
-                        size="SM" 
-                        label="Nova cotação" 
-                        style={{ alignSelf: 'center' }}
-                        onPress={() => navigation.navigate("CreateQuote")} 
-                      />
-                    </Container>
-                  )}
-                </QuotesWrapper>
-              </Fragment>
-            )
-          }
+          {isLoading ? (
+            <TextIndicator>Carregando cotações...</TextIndicator>
+          ) : (
+            <Fragment>
+              <Tabs
+                activeOption={activeOption}
+                handleSelectTab={setActiveOption}
+              />
+              <QuotesWrapper>
+                {filteredQuotes && filteredQuotes.length > 0 ? (
+                  filteredQuotes.map(item => (
+                    <QuoteItem
+                      onPress={() =>
+                        navigation.navigate('QuoteDetails', { id: item.id })
+                      }
+                      key={item.id}
+                      quote={item}
+                    />
+                  ))
+                ) : (
+                  <Container>
+                    <TextIndicator>Nenhuma cotação encontrada.</TextIndicator>
+                    <Button
+                      size="SM"
+                      label="Nova cotação"
+                      style={{ alignSelf: 'center' }}
+                      onPress={() => navigation.navigate('CreateQuote')}
+                    />
+                  </Container>
+                )}
+              </QuotesWrapper>
+            </Fragment>
+          )}
         </DecreasingContainer>
       </ScrollableContent>
     </WrapperPage>
   );
-}
+};

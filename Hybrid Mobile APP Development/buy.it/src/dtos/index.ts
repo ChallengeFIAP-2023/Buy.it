@@ -1,4 +1,4 @@
-export { UserQuery, User } from './user';
+export { User } from './user';
 export { QuoteQuery, Quote } from './quote';
 export { Product, ProductQuery, ProductPrices } from './product';
 export { Tag, TagQuery } from './tag';

@@ -39,10 +39,10 @@ export default function Routes() {
   const logged = !!user?.cnpj;
 
   const initialMainRoute = useMemo<keyof MainNavigationRoutes>(() => {
-    if (logged) return 'QuoteProposal';
+    if (logged) return 'Main';
 
     return 'SignIn';
-  }, [logged]);
+  }, []);
 
   // Componente Navigator
   const MainNavigation = useMemo(() => {

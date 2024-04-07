@@ -12,13 +12,13 @@ import { useNavigation } from '@react-navigation/native';
 import { AppNavigatorRoutesProps } from '@routes/index';
 
 // Storage import
-import { storageUserGet } from '@storage/storageUser';
+import { storageUserGet, storageUserSave } from '@storage/storageUser';
 
 // Service import
 import { api } from '@services/api';
 
 // Type import
-import { User, UserQuery } from '@dtos/index';
+import { User } from '@dtos/index';
 import {
   removeAuthToken,
   storageAuthTokenGet,
@@ -34,7 +34,7 @@ interface AuthContextData {
   user: User;
   handleSignIn: (data: SignInProps) => Promise<void>;
   sigInLoading: boolean;
-  handleUpdateUser: (user: UserQuery) => Promise<void>;
+  handleUpdateUser: (user: User) => Promise<void>;
   updateLoading: boolean;
 
   handleSignOut(): Promise<void>;
@@ -74,6 +74,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
       setUser(data.usuario);
 
       await storageAuthTokenSave({ token });
+      await storageUserSave(data.usuario);
 
       await registryToken();
 
@@ -98,7 +99,7 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     api.defaults.headers.Authorization = `Bearer ${token}`;
   }
 
-  const handleUpdateUser = useCallback(async (finalUserData: UserQuery) => {
+  const handleUpdateUser = useCallback(async (finalUserData: User) => {
     try {
       setUpdateLoading(true);
 
@@ -111,22 +112,21 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
           typeof value === null,
       );
 
-      const parsedUser: UserQuery = {
-        cnpj: finalUserData.cnpj,
-        email: finalUserData.email,
-        idsTags: finalUserData.idsTags,
-        isFornecedor: finalUserData.isFornecedor,
-        nome: finalUserData.nome,
-        senha: finalUserData.senha,
-        urlImagem: finalUserData.urlImagem,
-      };
-
       if (insufficientInformation)
         throw new Error('Um ou mais atributos estão vazios.');
 
       if (!userId) throw new Error('É necessário o id do usuário');
 
-      const body = parsedUser;
+      const body = {
+        nome: finalUserData.nome,
+        email: finalUserData.email,
+        senha: finalUserData.senha,
+        urlImagem: finalUserData.urlImagem,
+        cnpj: finalUserData.cnpj,
+        isFornecedor: finalUserData.isFornecedor,
+      };
+
+      console.log(body);
 
       const { data } = await api.put(`/usuarios/${userId}`, body);
 
@@ -138,7 +138,6 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
         text2: 'Sua conta foi atualizada.',
       });
     } catch (error: any) {
-      console.log('error: ', error.message);
       Toast.show({
         type: 'error',
         text1: 'Erro',
@@ -160,8 +159,11 @@ const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
   useEffect(() => {
     async function userIsAuthenticated() {
       const user = await storageUserGet();
+      const token = await storageAuthTokenGet();
 
-      if (user) {
+      if (user && token) {
+        navigate('Main');
+        await registryToken();
         return setUser(user);
       }
     }
