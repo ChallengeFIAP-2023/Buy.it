@@ -11,12 +11,12 @@ import Toast from 'react-native-toast-message';
 import { api } from '@services/api';
 
 // Type import
-import { UserQuery } from '@dtos/index';
+import { User } from '@dtos/index';
 
 interface SignUpFormContextData {
-  user: UserQuery;
-  setUser: Dispatch<React.SetStateAction<UserQuery>>;
-  handleRegisterUser: (finalUserData: UserQuery) => Promise<void>;
+  user: User;
+  setUser: Dispatch<React.SetStateAction<User>>;
+  handleRegisterUser: (finalUserData: User) => Promise<void>;
   registerLoading: boolean;
 }
 
@@ -31,10 +31,10 @@ const SignUpFormContext = createContext<SignUpFormContextData>(
 const SignUpFormProvider: React.FC<SignUpFormProviderProps> = ({
   children,
 }) => {
-  const [user, setUser] = useState<UserQuery>({} as UserQuery);
+  const [user, setUser] = useState<User>({} as User);
   const [registerLoading, setRegisterLoading] = useState(false);
 
-  const handleRegisterUser = useCallback(async (finalUserData: UserQuery) => {
+  const handleRegisterUser = useCallback(async (finalUserData: User) => {
     try {
       setRegisterLoading(true);
 

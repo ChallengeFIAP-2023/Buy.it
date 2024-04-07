@@ -8,7 +8,7 @@ import Toast from 'react-native-toast-message';
 
 // Type import
 import { MainRoutes } from '..';
-import { UserQuery } from '@dtos/user';
+import { User } from '@dtos/user';
 
 // Hook import
 import { useAuth } from '@hooks/useAuth';
@@ -60,16 +60,17 @@ export function Profile({
 
   const onSubmit: SubmitHandler<ProfileForm> = async data => {
     try {
-      if (!avatar)
+      if (!avatar) {
         return Toast.show({
           type: 'error',
           text1: 'Adicione uma imagem',
           text2: 'Sua identidade visual é importante.',
         });
+      }
 
-      const idsTags = user.tags.map(item => item.id);
+      const idsTags = user.tags ? user.tags.map(item => item.id) : [];
 
-      const userUpdated: UserQuery = Object.assign(user, {
+      const userUpdated: User = Object.assign(user, {
         idsTags,
         urlImagem: avatar,
         ...data,
