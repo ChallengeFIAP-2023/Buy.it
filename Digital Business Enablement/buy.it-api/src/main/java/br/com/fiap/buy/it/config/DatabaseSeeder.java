@@ -138,23 +138,23 @@ public class DatabaseSeeder implements CommandLineRunner {
         // Instanciando Objetos - Departamento
         Departamento departamento1 = new Departamento();
         departamento1.setNome("Informatica");
-        departamento1.setIcone("icone-informatica");
+        departamento1.setIcone("monitor");
 
         Departamento departamento2 = new Departamento();
         departamento2.setNome("Eletronicos");
-        departamento2.setIcone("icone-eletronicos");
+        departamento2.setIcone("gamepad-variant");
 
         Departamento departamento3 = new Departamento();
         departamento3.setNome("Vestuario");
-        departamento3.setIcone("icone-vestuario");
+        departamento3.setIcone("tshirt-crew");
 
         Departamento departamento4 = new Departamento();
         departamento4.setNome("Bebidas");
-        departamento4.setIcone("icone-bebidas");
+        departamento4.setIcone("food-fork-drink");
 
         Departamento departamento5 = new Departamento();
         departamento5.setNome("Cozinha");
-        departamento5.setIcone(null);
+        departamento5.setIcone("silverware-fork-knife");
 
         // Instanciando Objetos - Produto
         Produto produto1 = new Produto();
@@ -204,7 +204,7 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         // Instanciando Objetos - Status
         Status status1 = new Status();
-        status1.setNome("Em Andamento");
+        status1.setNome("Em andamento");
 
         Status status2 = new Status();
         status2.setNome("Recusado");
