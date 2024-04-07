@@ -15,21 +15,20 @@ import {
 import { Quote } from '@dtos/quote';
 
 interface Item {
-  quote: Quote
+  quote: Quote;
+  onPress: () => void;
 }
 
-export function QuoteItem ({ quote }: Item) {
+export function QuoteItem ({ quote, onPress }: Item) {
   return (
-    <Container>
+    <Container onPress={onPress}>
       <Section>
         <QuoteIconContainer></QuoteIconContainer>
       </Section>
 
       <Section start>
         <QuoteName>{quote.produto.nome}</QuoteName>
-        
         {quote.produto.tags.map(tag => <QuoteTag value={tag.nome} />)}
-        
         <QuoteQuantity>{quote.quantidadeProduto} unidades</QuoteQuantity>
       </Section>
 

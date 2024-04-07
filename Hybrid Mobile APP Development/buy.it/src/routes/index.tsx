@@ -15,11 +15,13 @@ import { CreateQuote } from '@screens/CreateQuote';
 import { QuoteProposal, QuoteProposalRoutes } from '@screens/QuoteProposal';
 import { Main, MainRoutes } from '@screens/Main';
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { QuotesHistoryRoutes, History } from '@screens/QuotesHistory';
 
 export type MainNavigationRoutes = {
   SignIn: undefined;
   SignUp: undefined;
   CreateQuote: undefined;
+  History: NavigatorScreenParams<QuotesHistoryRoutes> | undefined;
   QuoteProposal: NavigatorScreenParams<QuoteProposalRoutes> | undefined;
   Main: NavigatorScreenParams<MainRoutes> | undefined;
 };
@@ -62,6 +64,7 @@ export default function Routes() {
 
         <Stack.Screen name="CreateQuote" component={CreateQuote} />
         <Stack.Screen name="QuoteProposal" component={QuoteProposal} />
+        <Stack.Screen name="History" component={History} />
         <Stack.Screen name="Main" component={Main} />
       </Stack.Navigator>
     );

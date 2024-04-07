@@ -3,7 +3,6 @@ import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
 
 // Type import
-import { MainRoutes } from '..';
 import { Quote } from '@dtos/quote';
 
 // Component import
@@ -29,10 +28,16 @@ import { STATUS_OPTIONS } from '@utils/statusOptions';
 
 // Hook import
 import { useAuth } from '@hooks/useAuth';
+import { QuotesHistoryRoutes } from '..';
+import { CompositeScreenProps } from '@react-navigation/native';
+import { MainNavigationRoutes } from '@routes/index';
 
-export function Statement({
-  navigation,
-}: NativeStackScreenProps<MainRoutes, 'Statement'>) {
+export const QuotesList: React.FC<
+  CompositeScreenProps<
+    NativeStackScreenProps<QuotesHistoryRoutes, 'QuotesHistory'>,
+    NativeStackScreenProps<MainNavigationRoutes>
+  >
+> = ({ navigation }) => {
   const [activeOption, setActiveOption] = useState<StatusFilterType>();
   const [quotes, setQuotes] = useState<Quote[]>([]);
   const [filteredQuotes, setFilteredQuotes] = useState<Quote[]>([]);
@@ -86,7 +91,8 @@ export function Statement({
                 <QuotesWrapper>
                   {filteredQuotes && filteredQuotes.length > 0 ? (
                     filteredQuotes.map(item => (
-                      <QuoteItem 
+                      <QuoteItem
+                        onPress={() => navigation.navigate("QuoteDetails", { id: item.id })}
                         key={item.id} 
                         quote={item}
                       />

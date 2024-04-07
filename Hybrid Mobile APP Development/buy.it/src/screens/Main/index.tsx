@@ -20,13 +20,14 @@ import { MainNavigationRoutes } from '@routes/index';
 
 // Pages import
 import { Home } from './Home';
-import { Statement } from './Statement';
+import { History, QuotesHistoryRoutes } from '@screens/QuotesHistory';
 import { Profile } from './Profile';
+import { NavigatorScreenParams } from '@react-navigation/native';
 
 // Interfaces
 export type MainRoutes = {
   Home: undefined;
-  Statement: undefined;
+  History: NavigatorScreenParams<QuotesHistoryRoutes> | undefined;
   Profile: undefined;
 };
 
@@ -93,8 +94,8 @@ export const Main: React.FC<
       />
 
       <Tab.Screen
-        name="Statement"
-        component={Statement}
+        name="History"
+        component={History}
         options={{
           tabBarIcon: ({ focused }) => <Article {...iconProps(focused)} />,
           tabBarLabel: ({ focused }) => focused && <Text label="Histórico" />,
