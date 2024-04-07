@@ -12,7 +12,7 @@ import { Container, Image, IconPic } from './styles';
 interface Props {
   handleSetAvatar?: (uri: string) => void;
   imageSource: ImageSourcePropType;
-  size: 'MD' | 'XXL';
+  size: 'SM' | 'MD' | 'XXL';
 }
 
 export function UserAvatar({

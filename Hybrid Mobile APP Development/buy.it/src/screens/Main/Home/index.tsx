@@ -6,13 +6,24 @@ import { CompositeScreenProps } from '@react-navigation/native';
 import { 
   WrapperPage, 
   DecreasingContainer, 
-  Button
+  Button,
+  UserAvatar
 } from '@components/index';
 import { QuoteItem } from '@screens/QuotesHistory/QuotesList/QuoteItem';
 
 // Style import
-import { Flex, ScrollableContent } from '@global/styles';
-import { Actions, Indicator, QuotesWrapper, Title } from './styles';
+import { ScrollableContent } from '@global/styles';
+import { 
+  Actions, 
+  Indicator, 
+  QuotesWrapper, 
+  Title,
+  Header,
+  UserName,
+  UserCNPJ,
+  UserInfo,
+  AvatarWrapper
+} from './styles';
 
 // Hook import
 import { useAuth } from '@hooks/useAuth';
@@ -28,6 +39,9 @@ import { MainRoutes } from '..';
 // Theme import
 import theme from '@theme/index';
 import { MainNavigationRoutes } from '@routes/index';
+import { ImageSourcePropType, TouchableOpacity } from 'react-native';
+import { Bell } from 'phosphor-react-native';
+import { toMaskedCNPJ } from '@utils/masks';
 
 export function Home({
   navigation,
@@ -55,10 +69,38 @@ export function Home({
     fetchData();
   }, []);
 
+  const imageSource: ImageSourcePropType = user.urlImagem
+    ? { uri: user.urlImagem }
+    : require('../../../assets/default_avatar.png');
+
   return (
     <WrapperPage>
       <ScrollableContent>
-        <DecreasingContainer>
+
+        {user && user.cnpj && (
+          <Header>
+            <AvatarWrapper>
+              <UserAvatar
+                imageSource={imageSource}
+                size="SM"
+              />
+            </AvatarWrapper>
+            <UserInfo>
+              <UserName numberOfLines={1}>{user.nome}</UserName>
+              <UserCNPJ>{toMaskedCNPJ(user.cnpj)}</UserCNPJ>
+            </UserInfo>
+
+            <TouchableOpacity>
+              <Bell 
+                color={theme.COLORS.GRAY_200} 
+                size={theme.FONT_SIZE.XXL}
+                weight="fill"
+              />
+            </TouchableOpacity>
+          </Header>
+        )}
+        
+        <DecreasingContainer scrollable>
           <Fragment>
             <Title>Suas cotações</Title>
             
@@ -79,7 +121,7 @@ export function Home({
               </Fragment>
             )}
             <Actions>
-              {quotes.length > 0 && (
+              {quotes && quotes.length > 0 && (
                 <Button 
                   size='MD' 
                   label='Gerenciar' 
