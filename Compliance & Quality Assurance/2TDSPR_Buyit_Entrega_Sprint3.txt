@@ -1,3 +1,7 @@
+Link da Azure:
+https://dev.azure.com/RM970920458/buy-it
+
+Integrantes:
 Gustavo Sanches - RM 97068
 Kaue Caponero - RM 96466
 Mariana Santos - RM 97503
