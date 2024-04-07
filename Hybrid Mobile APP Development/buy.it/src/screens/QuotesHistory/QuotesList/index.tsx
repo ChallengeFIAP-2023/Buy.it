@@ -10,13 +10,14 @@ import {
   DecreasingContainer,
   WrapperPage,
   Highlight,
+  Button,
 } from '@components/index';
 import { Tabs } from './Tabs';
 
 import { StatusFilterType, tabs } from './Tabs/constants';
 
 // Style import
-import { TextIndicator, QuotesWrapper } from './styles';
+import { TextIndicator, QuotesWrapper, Container } from './styles';
 import { QuoteItem } from './QuoteItem';
 import { ScrollableContent } from '@global/styles';
 
@@ -98,7 +99,10 @@ export const QuotesList: React.FC<
                       />
                     ))
                   ) : (
-                    <TextIndicator>Nenhuma cotação encontrada.</TextIndicator>
+                    <Container>
+                      <TextIndicator>Nenhuma cotação encontrada.</TextIndicator>
+                      <Button size="SM" label="Nova cotação" style={{ alignSelf: 'center' }} />
+                    </Container>
                   )}
                 {}
                 </QuotesWrapper>

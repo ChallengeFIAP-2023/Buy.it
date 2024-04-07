@@ -56,8 +56,11 @@ export const Tags = styled.View`
   gap: 5px;
 `;
 
-export const PriceSymbol = styled(Price)`
-  font-size: ${({ theme }) => theme.FONT_SIZE.XS}px;
+export const Actions = styled(Tags)`
+  gap: 20px;
+  justify-content: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
 `;
 
 export const TextIndicator = styled.Text`

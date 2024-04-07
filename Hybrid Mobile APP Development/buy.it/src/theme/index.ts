@@ -8,6 +8,7 @@ export default {
 
     SECONDARY: '',
 
+    GREEN_800: '#4F9543',
     GREEN_700: '#00B37E',
     GREEN_500: '#6cb760',
 

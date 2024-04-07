@@ -8,7 +8,7 @@ import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 
 // Type import
 import { QuotesHistoryRoutes } from '..';
-import { Quote } from '@dtos/quote';
+import { Quote, QuoteQuery } from '@dtos/quote';
 
 // Component import
 import {
@@ -31,7 +31,8 @@ import {
   Price,
   Subtitle,
   Tags,
-  ValueBigger
+  ValueBigger,
+  Actions
 } from './styles';
 import { Flex, ScrollableContent } from '@global/styles';
 
@@ -39,10 +40,10 @@ import { Flex, ScrollableContent } from '@global/styles';
 import { api } from '@services/api';
 
 // Utils import
-import { STATUS_OPTIONS } from '@utils/statusOptions';
 import theme from '@theme/index';
 import { toMaskedCurrency } from '@utils/masks';
-
+import { CustomModal } from '@components/Modal';
+import NewStatus from './NewStatus/NewStatus';
 
 export const QuoteDetails: React.FC<
   CompositeScreenProps<
@@ -53,13 +54,17 @@ export const QuoteDetails: React.FC<
   const [quote, setQuote] = useState<Quote>({} as Quote);
   const [isLoading, setIsLoading] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
+  const [isModalVisible, setModalVisible] = useState(false);
+  const [modalTitle, setModalTitle] = useState("");
+  const [modalSubtitle, setModalSubtitle] = useState("");
+
+  const toggleModal = () => setModalVisible(previousState => !previousState);
 
   const { id } = route.params;
 
   const fetchData = async () => {
     try {
       const { data } = await api.get(`/cotacoes/${id}`);
-      console.log(data);
       setQuote(data);
     } catch (error) {
       Toast.show({
@@ -69,6 +74,27 @@ export const QuoteDetails: React.FC<
       });
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleUpdateQuote = async (body: QuoteQuery, id: number, goBack?: boolean) => {
+    try {
+      const { data } = await api.put(`/cotacoes/${id}`, body);
+      
+      if (data.id) {
+        Toast.show({
+          type: 'success',
+          text1: 'Cotação atualizada com sucesso',
+        });
+        
+        if (goBack) navigation.navigate("History");
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível atualizar a cotação',
+      });
     }
   };
 
@@ -91,6 +117,18 @@ export const QuoteDetails: React.FC<
 
   const hasDetails = quote.produto && 
   (quote.produto.marca || quote.produto.cor || quote.produto.material || quote.produto.tamanho);
+
+  const handleCancel = () => {
+    setModalTitle("Cancelar");
+    setModalSubtitle("Tem certeza que deseja cancelar a cotação? Pode ser que em alguns dias um fornecedor te atenda.");
+    toggleModal();
+  }
+
+  const handleConfirm = () => {
+    setModalTitle("Concluir");
+    setModalSubtitle("A venda já foi finalizada com o vendedor?");
+    toggleModal();
+  }
 
   return (
     <WrapperPage>
@@ -216,11 +254,40 @@ export const QuoteDetails: React.FC<
                       }
                     />
                   )}
+
+                  <Actions>
+                    <Button 
+                      label="Cancelar"
+                      size="SM"
+                      backgroundColor={theme.COLORS.RED_DARK}
+                      onPress={() => handleCancel()}
+                    />
+
+                    <Button 
+                      label="Concluir"
+                      size="SM"
+                      backgroundColor={theme.COLORS.GREEN_800}
+                      onPress={() => handleConfirm()}
+                    />
+                  </Actions>
                 </DecreasingContainer>
               </Fragment>
             )
         }
       </ScrollableContent>
+
+      <CustomModal
+        modalProps={{ isVisible: isModalVisible }}
+        title={`${modalTitle} cotação`}
+        subtitle={modalSubtitle}
+        onClose={toggleModal}
+      >
+        <NewStatus 
+          modalTitle={modalTitle} 
+          quote={quote}
+          handleUpdateQuote={handleUpdateQuote}
+        />
+      </CustomModal>
     </WrapperPage>
   );
 }
