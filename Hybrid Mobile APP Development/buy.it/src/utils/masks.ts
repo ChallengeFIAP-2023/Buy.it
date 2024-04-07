@@ -28,10 +28,9 @@ export function toMaskedCNPJ(value: string) {
   }
 }
 
-export function toMaskedCurrency(value: number, showUnit?: boolean) {
-  const formattedNumber = value.toFixed(2).toString();
+export function toMaskedCurrency(value: string, showUnit?: boolean) {
   try {
-    return MaskService.toMask('money', formattedNumber, {
+    return MaskService.toMask('money', value.toString(), {
       precision: 2,
       separator: ',',
       unit: showUnit ? 'R$' : '',

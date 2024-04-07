@@ -1,4 +1,6 @@
 import { toMaskedCurrency } from '@utils/masks';
+import Icon from '@expo/vector-icons/MaterialCommunityIcons';
+
 import {
   Container,
   QuoteDate,
@@ -13,6 +15,7 @@ import {
 
 // Type import
 import { Quote } from '@dtos/quote';
+import theme from '@theme/index';
 
 interface Item {
   quote: Quote;
@@ -23,7 +26,12 @@ export function QuoteItem ({ quote, onPress }: Item) {
   return (
     <Container onPress={onPress}>
       <Section>
-        <QuoteIconContainer></QuoteIconContainer>
+        <QuoteIconContainer>
+          <Icon 
+            name={quote.produto.departamento.icone || "paperclip"} 
+            size={theme.FONT_SIZE.XXL} color={theme.COLORS.PRIMARY} 
+          />
+        </QuoteIconContainer>
       </Section>
 
       <Section start>
@@ -36,7 +44,7 @@ export function QuoteItem ({ quote, onPress }: Item) {
         <QuoteDate>{quote.dataAbertura}</QuoteDate>
         <QuotePrice>
           <QuotePriceSymbol>R$ </QuotePriceSymbol>
-          {toMaskedCurrency(quote?.valorProduto, false)}
+          {toMaskedCurrency(quote?.valorProduto.toFixed(2), false)}
         </QuotePrice>
       </Section>
     </Container>

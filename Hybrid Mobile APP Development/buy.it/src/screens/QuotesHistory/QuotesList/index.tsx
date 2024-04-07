@@ -1,4 +1,4 @@
-import { Fragment, useLayoutEffect, useState } from 'react';
+import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import Toast from 'react-native-toast-message';
 
@@ -67,11 +67,11 @@ export const QuotesList: React.FC<
     }
   };
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     fetchData();
   }, []);
 
-  useLayoutEffect(() => {
+  useEffect(() => {
     if(!activeOption) return;
     filterQuotes(STATUS_OPTIONS[activeOption.key]);
   }, [activeOption]);
@@ -101,7 +101,12 @@ export const QuotesList: React.FC<
                   ) : (
                     <Container>
                       <TextIndicator>Nenhuma cotação encontrada.</TextIndicator>
-                      <Button size="SM" label="Nova cotação" style={{ alignSelf: 'center' }} />
+                      <Button 
+                        size="SM" 
+                        label="Nova cotação" 
+                        style={{ alignSelf: 'center' }}
+                        onPress={() => navigation.navigate("CreateQuote")} 
+                      />
                     </Container>
                   )}
                 {}

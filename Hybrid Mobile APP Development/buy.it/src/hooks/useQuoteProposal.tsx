@@ -64,6 +64,8 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
       }
     };
 
+    return;
+
     if (proposal || !user?.id) return;
 
     const oneMinuteInMilliseconds = 60 * 1000;

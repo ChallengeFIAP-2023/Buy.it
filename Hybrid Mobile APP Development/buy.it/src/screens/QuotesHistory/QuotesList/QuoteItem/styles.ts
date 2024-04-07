@@ -5,6 +5,7 @@ export const Container = styled.Pressable`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  gap: 10px;
 
   background-color: ${({ theme }) => theme.COLORS.GRAY_500};
 
@@ -50,14 +51,13 @@ export const Section = styled.View<{ start?: boolean; end?: boolean }>`
   display: flex;
   flex-direction: column;
   justify-content: center;
-  flex: 1;
 
   align-items: ${props => {
     if (props.end) return 'flex-end';
-    if (props.start) return 'flex-start';
+    return 'flex-start';
   }};
 
-  ${props => props.start && "flex: 1;" }
+  ${props => props.start && "flex: 2;" }
 
   gap: 10px;
 `;
@@ -65,10 +65,11 @@ export const Section = styled.View<{ start?: boolean; end?: boolean }>`
 export const QuoteIconContainer = styled.View`
   background-color: ${({ theme }) => theme.COLORS.GRAY_600};
 
-  width: 55px;
+  width: 45px;
   aspect-ratio: 1;
 
   border-radius: 5px;
-
-  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 `;

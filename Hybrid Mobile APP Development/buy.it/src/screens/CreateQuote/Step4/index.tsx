@@ -4,7 +4,8 @@ import { CompositeScreenProps } from '@react-navigation/native';
 import { useForm, SubmitHandler, Controller } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import React, { Fragment, useLayoutEffect } from 'react';
-import { format } from "date-fns";
+import Toast from 'react-native-toast-message';
+
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -38,7 +39,8 @@ import { useAuth } from '@hooks/useAuth';
 
 // Utils import
 import { toMaskedCurrency, unMaskCurrency } from '@utils/masks';
-import Toast from 'react-native-toast-message';
+import { STATUS_OPTIONS } from '@utils/statusOptions';
+import { format } from "date-fns";
 
 interface Step4Form {
   valorProduto: string;
@@ -47,8 +49,6 @@ interface Step4Form {
 interface Message {
   productPrices: ProductPrices;
 }
-
-const EM_ANDAMENTO = 1;
 
 export const Step4: React.FC<
   CompositeScreenProps<
@@ -77,9 +77,8 @@ export const Step4: React.FC<
 
   const onSubmit: SubmitHandler<Step4Form> = data => {
     const dataAbertura = format(new Date(), "dd-MM-yyyy");
-    const idStatus = EM_ANDAMENTO;
-    // const idComprador = user.id as unknown as number;
-    const idComprador = 1;
+    const idStatus = STATUS_OPTIONS.inProgress;
+    const idComprador = Number(user.id);
 
     const valorProduto = unMaskCurrency(data.valorProduto);
 
@@ -110,6 +109,7 @@ export const Step4: React.FC<
           headerProps={{ goBack: () => navigation.goBack() }}
           highlightProps={{
             title: `Quanto você quer pagar em cada ${productPrices.produto.nome}?`,
+            highlightedText: `${productPrices.produto.nome}?`,
             subtitle: 'Passo 4 de 4',
           }}
           key="default-component-quote-details"
@@ -126,7 +126,7 @@ export const Step4: React.FC<
               render={({ field: { value, onChange } }) => (
                 <Input
                   value={value?.toString()}
-                  onChangeText={text => onChange(toMaskedCurrency(Number(text)), true)}
+                  onChangeText={text => onChange(toMaskedCurrency((text), true))}
                   label="Valor"
                   placeholder="R$ 0,50"
                   keyboardType="numeric"
@@ -142,7 +142,7 @@ export const Step4: React.FC<
               size="SM"
               onPress={() => 
                 setValue('valorProduto', 
-                toMaskedCurrency(Number(productPrices.avgValor), true))
+                toMaskedCurrency(Number(productPrices.avgValor).toFixed(2), true))
               }
             />
           )}
@@ -169,11 +169,11 @@ function Message ({ productPrices }: Message) {
           <LightText>
             O valor médio de cotações para{' '}
             <LightBoldText>{productPrices.produto.nome}</LightBoldText> é {' '}
-            {toMaskedCurrency(productPrices.avgValor, true)} por unidade.
+            {toMaskedCurrency(productPrices.avgValor.toFixed(2), true)} por unidade.
           </LightText>
           <LightText>
             O menor preço já pago em {productPrices.produto.nome}{' '}
-            foi {toMaskedCurrency(productPrices.minValor, true)}.
+            foi {toMaskedCurrency(productPrices.minValor.toFixed(2), true)}.
           </LightText>
         </Fragment>
         ) : (

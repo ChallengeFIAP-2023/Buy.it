@@ -86,8 +86,8 @@ export const QuoteDetails: React.FC<
           type: 'success',
           text1: 'Cotação atualizada com sucesso',
         });
-        
-        if (goBack) navigation.navigate("History");
+        console.log(goBack);
+        if (goBack) navigation.navigate("QuotesHistory");
       }
     } catch (error) {
       Toast.show({
@@ -96,14 +96,16 @@ export const QuoteDetails: React.FC<
         text2: 'Não foi possível atualizar a cotação',
       });
     }
+    finally {
+      toggleModal();
+    }
   };
 
   useLayoutEffect(() => {
     fetchData();
-    console.log(quote);
   }, []);
 
-  const total = quote.valorProduto * quote.quantidadeProduto;
+  const total = (quote.valorProduto * quote.quantidadeProduto).toFixed(2);
 
   type PriorityLabel = {
     [key: number]: string;
@@ -166,7 +168,7 @@ export const QuoteDetails: React.FC<
                     <Flex>
                       <Flex>
                         <Value>Unidade: </Value>
-                        <Price>{toMaskedCurrency(quote.valorProduto, true)}</Price>
+                        <Price>{toMaskedCurrency(quote.valorProduto.toFixed(2), true)}</Price>
                       </Flex>
                       <Flex>
                         <Value>Total: </Value>
@@ -178,7 +180,10 @@ export const QuoteDetails: React.FC<
                   <Container>
                     <Label>Departamento</Label>
                     <TextIcon>
-                      <Icon name={quote.produto.departamento.icone || "paperclip"} size={theme.FONT_SIZE.SM} color={theme.COLORS.PRIMARY} />
+                      <Icon 
+                        name={quote.produto.departamento.icone} 
+                        size={theme.FONT_SIZE.SM} color={theme.COLORS.PRIMARY} 
+                      />
                       <Value>{quote.produto.departamento.nome}</Value>
                     </TextIcon>
                   </Container>
@@ -187,7 +192,7 @@ export const QuoteDetails: React.FC<
                     <Container>
                       <Label>Tags</Label>
                       <Tags>
-                        {quote.produto.tags.map(tag => <Chip value={tag.nome} />)}
+                        {quote.produto.tags.map(tag => <Chip key={tag.id} value={tag.nome} />)}
                       </Tags>
                     </Container>
                   )}
