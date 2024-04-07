@@ -1,3 +1,10 @@
+-- INTEGRANTES
+-- RM 97068	Gustavo Sorrilha Sanches
+-- RM 97324	Natan Cruz
+-- RM 97092	Vitor Rubim Passos
+-- RM 97503	Mariana Santos Fernandes de Sousa
+-- RM 96466	Kaue Caponero Figueiredo
+
 -- SELECTS CASO NECESS�RIO:
 SELECT * FROM usuario;
 SELECT * FROM contato;
@@ -1525,25 +1532,42 @@ END;
 --------------------------------------------------------------------------------
 
 -- SPRINT 03:
+SET SERVEROUTPUT ON;
+
 -- 03.01. PROCEDIMENTO 01
 CREATE OR REPLACE PROCEDURE listar_cotacoes_pendentes(
     p_id_usuario IN cotacao.id_usuario%TYPE
 ) AS
+    v_count INTEGER;
 BEGIN
-    FOR r IN (
-        SELECT c.id_cotacao, c.data_abertura_cotacao, c.quantidade_produto, c.valor_produto, s.nome_status
-        FROM cotacao c
-        JOIN status s ON c.id_status = s.id_status
-        WHERE c.id_usuario = p_id_usuario AND s.nome_status IN ('Em Andamento', 'Recusado')
-        ORDER BY c.data_abertura_cotacao DESC
-    ) LOOP
-        DBMS_OUTPUT.PUT_LINE('ID da Cota��o: ' || r.id_cotacao || 
-                             ', Data de Abertura: ' || r.data_abertura_cotacao || 
-                             ', Quantidade: ' || r.quantidade_produto || 
-                             ', Valor: ' || r.valor_produto ||
-                             ', Status: ' || r.nome_status);
-    END LOOP;
+    SELECT COUNT(*)
+    INTO v_count
+    FROM cotacao c
+    JOIN status s ON c.id_status = s.id_status
+    WHERE c.id_usuario = p_id_usuario AND s.nome_status IN ('Em Andamento', 'Recusado');
+
+    IF v_count = 0 THEN
+        DBMS_OUTPUT.PUT_LINE('Nenhuma cota��o pendente encontrada para o usu�rio especificado.');
+    ELSE
+        FOR r IN (
+            SELECT c.id_cotacao, c.data_abertura_cotacao, c.quantidade_produto, c.valor_produto, s.nome_status
+            FROM cotacao c
+            JOIN status s ON c.id_status = s.id_status
+            WHERE c.id_usuario = p_id_usuario AND s.nome_status IN ('Em Andamento', 'Recusado')
+            ORDER BY c.data_abertura_cotacao DESC
+        ) LOOP
+            DBMS_OUTPUT.PUT_LINE('ID da Cota��o: ' || r.id_cotacao || 
+                                 ', Data de Abertura: ' || r.data_abertura_cotacao || 
+                                 ', Quantidade: ' || r.quantidade_produto || 
+                                 ', Valor: ' || r.valor_produto ||
+                                 ', Status: ' || r.nome_status);
+        END LOOP;
+    END IF;
 EXCEPTION
+    WHEN no_data_found THEN
+        DBMS_OUTPUT.PUT_LINE('Nenhuma cota��o pendente encontrada para o usu�rio especificado.');
+    WHEN value_error THEN
+        DBMS_OUTPUT.PUT_LINE('Ocorreu um erro ao recuperar o valor de uma cota��o.');
     WHEN OTHERS THEN
         DBMS_OUTPUT.PUT_LINE('Erro ao listar cota��es pendentes.');
 END;
@@ -1565,13 +1589,13 @@ BEGIN
     WHERE id_cotacao = p_id_cotacao;
     
     IF SQL%ROWCOUNT = 0 THEN
-        RAISE_APPLICATION_ERROR(-20002, 'Cota��o n�o encontrada ou j� est� conclu�da.');
+        RAISE_APPLICATION_ERROR(-20002, 'Cotacao nao encontrada ou ja esta concluida.');
     END IF;
     
-    DBMS_OUTPUT.PUT_LINE('Cota��o conclu�da com sucesso.');
+    DBMS_OUTPUT.PUT_LINE('Cotacao concluida com sucesso.');
 EXCEPTION
     WHEN NO_DATA_FOUND THEN
-        RAISE_APPLICATION_ERROR(-20003, 'Status "Conclu�do" n�o encontrado.');
+        RAISE_APPLICATION_ERROR(-20003, 'Status "Conclu�do" nao encontrado.');
     WHEN OTHERS THEN
         RAISE_APPLICATION_ERROR(-20004, SQLERRM);
 END;
@@ -1580,7 +1604,7 @@ BEGIN
     concluir_cotacao(1); 
 END;
 
--- 03.03. FUN��O 01
+-- 03.03. FUNCAO 01
 CREATE OR REPLACE FUNCTION valor_total_cotacoes_usuario(p_id_usuario IN cotacao.id_usuario%TYPE)
 RETURN NUMBER IS
     v_total NUMBER(10,2) := 0;
@@ -1590,15 +1614,27 @@ BEGIN
     FROM cotacao
     WHERE id_usuario = p_id_usuario;
 
-    RETURN NVL(v_total, 0);
+    IF v_total IS NULL THEN
+        RAISE no_data_found;
+    END IF;
+
+    IF v_total < 0 THEN
+        RAISE value_error;
+    END IF;
+
+    RETURN v_total;
 EXCEPTION
+    WHEN no_data_found THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Nenhuma cota��o encontrada para o usu�rio especificado.');
+    WHEN value_error THEN
+        RAISE_APPLICATION_ERROR(-20002, 'O valor total das cota��es � negativo.');
     WHEN OTHERS THEN
-        RETURN NULL;
+        RAISE_APPLICATION_ERROR(-20003, 'Erro ao calcular o valor total das cota��es.');
 END;
 
 SELECT valor_total_cotacoes_usuario(1) FROM dual;
 
--- 03.04. FUN��O 02
+-- 03.04. FUNCAO 02
 CREATE OR REPLACE FUNCTION verificar_existencia_email(p_email_usuario IN usuario.email_usuario%TYPE)
 RETURN BOOLEAN IS
     v_contagem NUMBER;
@@ -1614,8 +1650,10 @@ BEGIN
         RETURN FALSE;
     END IF;
 EXCEPTION
+    WHEN no_data_found THEN
+        RAISE_APPLICATION_ERROR(-20001, 'Nenhum usu�rio encontrado com o e-mail especificado.');
     WHEN OTHERS THEN
-        RETURN FALSE;
+        RAISE_APPLICATION_ERROR(-20002, 'Erro ao verificar a exist�ncia do e-mail do usu�rio.');
 END;
 
 DECLARE
@@ -1623,13 +1661,13 @@ DECLARE
 BEGIN
     v_existe := verificar_existencia_email('email@exemplo.com');
     IF v_existe THEN
-        DBMS_OUTPUT.PUT_LINE('Usu�rio existe.');
+        DBMS_OUTPUT.PUT_LINE('Usuario existe.');
     ELSE
-        DBMS_OUTPUT.PUT_LINE('Usu�rio n�o existe.');
+        DBMS_OUTPUT.PUT_LINE('Usuario nao existe.');
     END IF;
 END;
 
--- 03.05. CRIA��O DE TABELAS PARA FUNCIONAMENTO DO GATILHO
+-- 03.05. CRIACAO DE TABELAS PARA FUNCIONAMENTO DO GATILHO
 DROP TABLE monitoramento_atualizacoes CASCADE CONSTRAINTS;
 DROP TABLE log_erros CASCADE CONSTRAINTS;
 
@@ -1674,7 +1712,7 @@ EXCEPTION
 END;
 
 -- 03.05.02. TESTANDO O GATILHO
-UPDATE cotacao SET valor_produto = 150 WHERE id_cotacao = 1;
+UPDATE cotacao SET valor_produto = 1500 WHERE id_cotacao = 1;
 
 -- 03.05.03. VALIDANDO O GATILHO
 SELECT * FROM monitoramento_atualizacoes;
