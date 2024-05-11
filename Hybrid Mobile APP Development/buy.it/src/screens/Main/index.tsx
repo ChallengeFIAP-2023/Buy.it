@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Article, House, IconProps, User } from 'phosphor-react-native';
+import { Article, House, IconProps, User, Folders } from 'phosphor-react-native';
 import {
   createBottomTabNavigator,
   BottomTabNavigationOptions,
@@ -22,11 +22,14 @@ import { MainNavigationRoutes } from '@routes/index';
 import { Home } from './Home';
 import { History, QuotesHistoryRoutes } from '@screens/QuotesHistory';
 import { Profile } from './Profile';
+import { QuoteProposal, QuoteProposalRoutes } from '@screens/QuoteProposal';
 import { NavigatorScreenParams } from '@react-navigation/native';
+import { useAuth } from '@hooks/useAuth';
 
 // Interfaces
 export type MainRoutes = {
   Home: undefined;
+  QuoteProposal: NavigatorScreenParams<QuoteProposalRoutes> | undefined;
   History: NavigatorScreenParams<QuotesHistoryRoutes> | undefined;
   Profile: undefined;
 };
@@ -35,25 +38,42 @@ export const Main: React.FC<
   BottomTabScreenProps<MainNavigationRoutes, 'Main'>
 > = ({ navigation, route }) => {
   const { proposal, setLastRouteNavigated } = useQuoteProposal();
+  const { user } = useAuth();
+
   const Tab = createBottomTabNavigator<MainRoutes>();
 
   const { GRAY_100, GRAY_300 } = theme.COLORS;
 
   const screenOptions: BottomTabNavigationOptions = {
     headerShown: false,
-    tabBarActiveBackgroundColor: theme.COLORS.GRAY_500,
-    tabBarInactiveBackgroundColor: theme.COLORS.GRAY_500,
+    tabBarActiveBackgroundColor: theme.COLORS.PRIMARY_LOW_OPACITY,
+    tabBarLabelPosition: "beside-icon",
     tabBarStyle: {
       borderTopWidth: 0,
       height: 70,
+      backgroundColor: theme.COLORS.GRAY_800,
+    },
+    tabBarItemStyle: { 
+      marginVertical: 15,
+      display: "flex",
+      alignItems: "center",
+      justifyContent: "center",
+      borderRadius: 20,
+      width: "auto",
+      flexGrow: 1
+    },
+    tabBarLabelStyle: {
+      fontSize: theme.FONT_SIZE.MD,
+      fontFamily: theme.FONT_FAMILY.RALEWAY.SEMIBOLD,
+      color: theme.COLORS.WHITE
     },
   };
 
   function iconProps(focused: boolean): IconProps {
     return {
       color: focused ? GRAY_100 : GRAY_300,
-      size: theme.FONT_SIZE.XXL,
-      weight: focused ? 'fill' : 'regular',
+      size: theme.FONT_SIZE.XL,
+      weight: 'fill',
     };
   }
 
@@ -93,12 +113,23 @@ export const Main: React.FC<
         }}
       />
 
+      {user.isFornecedor && (
+        <Tab.Screen
+          name="QuoteProposal"
+          component={QuoteProposal}
+          options={{
+            tabBarIcon: ({ focused }) => <Folders {...iconProps(focused)} />,
+            tabBarLabel: ({ focused }) => focused && <Text label="Props." />,
+          }}
+        />
+      )}
+
       <Tab.Screen
         name="History"
         component={History}
         options={{
           tabBarIcon: ({ focused }) => <Article {...iconProps(focused)} />,
-          tabBarLabel: ({ focused }) => focused && <Text label="Histórico" />,
+          tabBarLabel: ({ focused }) => focused && <Text label="Hist." />,
         }}
       />
 

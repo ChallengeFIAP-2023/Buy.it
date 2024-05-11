@@ -5,6 +5,7 @@ export default {
     PRIMARY_LIGHTER: '#8D85C2',
     PRIMARY_DARK: '#5D48E3',
     PRIMARY_DARKER: '#453E6B',
+    PRIMARY_LOW_OPACITY: '#38334C',
 
     SECONDARY: '',
 
@@ -17,6 +18,7 @@ export default {
     RED: '#F75A68',
     RED_DARK: '#AA2834',
 
+    GRAY_800: '#312D3D',
     GRAY_700: '#222125',
     GRAY_600: '#2A292F',
     GRAY_500: '#34333A',
