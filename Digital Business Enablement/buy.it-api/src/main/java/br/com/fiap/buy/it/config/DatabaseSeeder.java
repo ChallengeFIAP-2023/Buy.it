@@ -236,7 +236,7 @@ public class DatabaseSeeder implements CommandLineRunner {
         cotacao2.setDataAbertura(new SimpleDateFormat("yyyy-MM-dd").parse("2024-03-18"));
         cotacao2.setComprador(usuario1);
         cotacao2.setProduto(produto1);
-        cotacao2.setQuantidadeProduto(new BigDecimal("69.90"));
+        cotacao2.setQuantidadeProduto(new BigDecimal("69"));
         cotacao2.setValorProduto(new BigDecimal("50.99"));
         cotacao2.setStatus(status5);
         cotacao2.setPrioridadeEntrega(2L);

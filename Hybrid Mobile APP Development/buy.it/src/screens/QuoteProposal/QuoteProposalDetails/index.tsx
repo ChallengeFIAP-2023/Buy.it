@@ -75,7 +75,7 @@ export const QuoteProposalDetails: React.FC<
   }
 
   const buttonIsDisabled = approveLoading || declineLoading;
-
+  
   return (
     <WrapperPage>
       <ScrollableContent>
@@ -125,13 +125,13 @@ export const QuoteProposalDetails: React.FC<
             <ProductQuantity>
               {proposal?.quantidadeProduto} unidades de
             </ProductQuantity>
-            <ProductName>Caneta Esferográfica</ProductName>
+            <ProductName>{proposal?.produto.nome}</ProductName>
             <PerText>por</PerText>
 
             <ProductPriceContainer>
               <PerText>R$</PerText>
               <Price>
-                {toMaskedCurrency(Number(proposal?.valorProduto), false)}
+                {toMaskedCurrency(String(proposal?.valorProduto.toFixed(2)), false)}
               </Price>
               <PerText>cada</PerText>
             </ProductPriceContainer>
