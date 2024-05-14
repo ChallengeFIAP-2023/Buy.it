@@ -1,14 +1,14 @@
 import { ActivityIndicator, ImageSourcePropType } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
-import { Check, DotsThree, Truck, X } from 'phosphor-react-native';
+import { Check, DotsThree, X } from 'phosphor-react-native';
+import Icon from '@expo/vector-icons/FontAwesome6';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
 import { QuoteProposalRoutes } from '..';
 
 //Hooks import
-import { useAuth } from '@hooks/useAuth';
 import { useQuoteProposal } from '@hooks/useQuoteProposal';
 
 // Theme import
@@ -47,6 +47,7 @@ import {
 import { toMaskedCNPJ, toMaskedCurrency } from '@utils/masks';
 import { Fragment } from 'react';
 
+
 const maximumTags = 8;
 
 export const QuoteProposalDetails: React.FC<
@@ -56,8 +57,12 @@ export const QuoteProposalDetails: React.FC<
   >
 > = ({ navigation }) => {
   // Hook
-  const { handleProcessProposal, proposal, approveLoading, declineLoading } =
-    useQuoteProposal();
+  const { 
+    handleProcessProposal, 
+    proposal, 
+    approveLoading, 
+    declineLoading 
+  } = useQuoteProposal();
 
   const imageSource: ImageSourcePropType = proposal?.comprador.urlImagem
     ? { uri: proposal?.comprador.urlImagem }
@@ -137,7 +142,10 @@ export const QuoteProposalDetails: React.FC<
             </ProductPriceContainer>
 
             <DeliveryContainer>
-              <Truck size={32} color={theme.COLORS.WHITE} />
+              <Icon 
+                name={"truck"} 
+                size={theme.FONT_SIZE.XL} color={theme.COLORS.WHITE} 
+              />
               <DeliveryText>
                 Para entrega em{' '}
                 <DeliveryText style={{ fontWeight: '800' }}>

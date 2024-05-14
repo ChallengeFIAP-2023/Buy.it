@@ -82,7 +82,7 @@ export const Main: React.FC<
 
   // Verifico se há propostas pro usuário autenticado
   useEffect(() => {
-    if (proposal) return navigation.navigate('QuoteProposal');
+    if (proposal && user.isFornecedor) return navigation.navigate('QuoteProposal');
   }, [proposal]);
 
   // Verifica qual a última rota que o usuário estava, pra quando ele recusar ou aceitar a proposta continuar na mesma tela

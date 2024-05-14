@@ -5,9 +5,8 @@ import { CompositeScreenProps } from '@react-navigation/native';
 import {
   CheckCircle,
   DotsThree,
-  EnvelopeSimple,
-  WhatsappLogo,
 } from 'phosphor-react-native';
+import Icon from '@expo/vector-icons/FontAwesome';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -56,8 +55,11 @@ export const QuoteProposalSuccess: React.FC<
   >
 > = ({ navigation }) => {
   // Hook
-  const { handleProcessProposal, proposal, handleRedirectSuccessProposal } =
-    useQuoteProposal();
+  const { 
+    handleProcessProposal, 
+    proposal, 
+    handleRedirectSuccessProposal 
+  } = useQuoteProposal();
 
   const imageSource: ImageSourcePropType = proposal?.comprador.urlImagem
     ? { uri: proposal?.comprador.urlImagem }
@@ -157,11 +159,11 @@ export const QuoteProposalSuccess: React.FC<
 
       <ActionsButton>
         <ActionButton onPress={() => handleProcessProposal('decline')}>
-          <EnvelopeSimple size={30} color={theme.COLORS.WHITE} />
+          <Icon name="envelope" size={theme.FONT_SIZE.XL} color={theme.COLORS.WHITE} />
         </ActionButton>
 
         <ActionButton onPress={() => handleProcessProposal('decline')}>
-          <WhatsappLogo size={30} color={theme.COLORS.WHITE} />
+          <Icon name="whatsapp" size={theme.FONT_SIZE.XXL} color={theme.COLORS.WHITE} />
         </ActionButton>
       </ActionsButton>
     </WrapperPage>
