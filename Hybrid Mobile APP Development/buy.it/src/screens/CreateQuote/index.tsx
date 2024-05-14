@@ -6,7 +6,7 @@ import {
 } from '@react-navigation/native-stack';
 
 // Hook import
-import { CreateQuoteProvider } from '../../hooks/useCreateQuote';
+import { QuoteProvider } from '../../hooks/useQuote'
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -37,13 +37,13 @@ export const CreateQuote: React.FC<
   };
 
   return (
-    <CreateQuoteProvider>
+    <QuoteProvider>
       <Stack.Navigator initialRouteName="Step1" screenOptions={screenOptions}>
         <Stack.Screen name="Step1" component={Step1} />
         <Stack.Screen name="Step2" component={Step2} />
         <Stack.Screen name="Step3" component={Step3} />
         <Stack.Screen name="Step4" component={Step4} />
       </Stack.Navigator>
-    </CreateQuoteProvider>
+    </QuoteProvider>
   );
 };

@@ -33,7 +33,7 @@ import { LightText, LightBoldText } from './styles';
 import { ScrollableContent, Fieldset } from '@global/styles/index';
 
 // Hook import
-import { NavigationProp, useCreateQuote } from '@hooks/useCreateQuote';
+import { NavigationProp, useQuote } from '@hooks/useQuote';
 import { useAuth } from '@hooks/useAuth';
 
 // Utils import
@@ -64,8 +64,14 @@ export const Step4: React.FC<
     resolver: yupResolver(Step4FormSchema),
   });
 
-  const { quote, handleNewQuote, fetchProductPrices, productPrices, loading } =
-    useCreateQuote();
+  const { 
+    quote, 
+    handleNewQuote, 
+    fetchProductPrices, 
+    productPrices,
+    fetchQuotesByBuyer,
+    loading 
+  } = useQuote();
 
   const { user } = useAuth();
 
@@ -92,6 +98,7 @@ export const Step4: React.FC<
     };
 
     handleNewQuote(finalQuery, navigation as NavigationProp);
+    fetchQuotesByBuyer(user.id);
   };
 
   useLayoutEffect(() => {

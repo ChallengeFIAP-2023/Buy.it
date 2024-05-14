@@ -11,6 +11,8 @@ import theme from '@theme/index';
 
 // Hook import
 import { useQuoteProposal } from '@hooks/useQuoteProposal';
+import { useAuth } from '@hooks/useAuth';
+import { QuoteProvider } from '@hooks/useQuote';
 
 // Component import
 import { Text } from '@components/Tab';
@@ -24,7 +26,8 @@ import { History, QuotesHistoryRoutes } from '@screens/QuotesHistory';
 import { Profile } from './Profile';
 import { QuoteProposal, QuoteProposalRoutes } from '@screens/QuoteProposal';
 import { NavigatorScreenParams } from '@react-navigation/native';
-import { useAuth } from '@hooks/useAuth';
+
+
 
 // Interfaces
 export type MainRoutes = {
@@ -103,44 +106,46 @@ export const Main: React.FC<
   }, [navigation, route]);
 
   return (
-    <Tab.Navigator initialRouteName="Home" screenOptions={screenOptions}>
-      <Tab.Screen
-        name="Home"
-        component={Home}
-        options={{
-          tabBarIcon: ({ focused }) => <House {...iconProps(focused)} />,
-          tabBarLabel: ({ focused }) => focused && <Text label="Início" />,
-        }}
-      />
-
-      {user.isFornecedor && (
+    <QuoteProvider>
+      <Tab.Navigator initialRouteName="Home" screenOptions={screenOptions}>
         <Tab.Screen
-          name="QuoteProposal"
-          component={QuoteProposal}
+          name="Home"
+          component={Home}
           options={{
-            tabBarIcon: ({ focused }) => <Folders {...iconProps(focused)} />,
-            tabBarLabel: ({ focused }) => focused && <Text label="Props." />,
+            tabBarIcon: ({ focused }) => <House {...iconProps(focused)} />,
+            tabBarLabel: ({ focused }) => focused && <Text label="Início" />,
           }}
         />
-      )}
 
-      <Tab.Screen
-        name="History"
-        component={History}
-        options={{
-          tabBarIcon: ({ focused }) => <Article {...iconProps(focused)} />,
-          tabBarLabel: ({ focused }) => focused && <Text label="Hist." />,
-        }}
-      />
+        {user.isFornecedor && (
+          <Tab.Screen
+            name="QuoteProposal"
+            component={QuoteProposal}
+            options={{
+              tabBarIcon: ({ focused }) => <Folders {...iconProps(focused)} />,
+              tabBarLabel: ({ focused }) => focused && <Text label="Props." />,
+            }}
+          />
+        )}
 
-      <Tab.Screen
-        name="Profile"
-        component={Profile}
-        options={{
-          tabBarIcon: ({ focused }) => <User {...iconProps(focused)} />,
-          tabBarLabel: ({ focused }) => focused && <Text label="Perfil" />,
-        }}
-      />
-    </Tab.Navigator>
+        <Tab.Screen
+          name="History"
+          component={History}
+          options={{
+            tabBarIcon: ({ focused }) => <Article {...iconProps(focused)} />,
+            tabBarLabel: ({ focused }) => focused && <Text label="Hist." />,
+          }}
+        />
+
+        <Tab.Screen
+          name="Profile"
+          component={Profile}
+          options={{
+            tabBarIcon: ({ focused }) => <User {...iconProps(focused)} />,
+            tabBarLabel: ({ focused }) => focused && <Text label="Perfil" />,
+          }}
+        />
+      </Tab.Navigator>
+    </QuoteProvider>
   );
 };

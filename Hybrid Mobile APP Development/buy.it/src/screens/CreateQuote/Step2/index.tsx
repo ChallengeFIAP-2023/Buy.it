@@ -38,7 +38,7 @@ import { CustomModal } from '@components/Modal';
 import { NewProduct } from './NewProduct';
 
 //Hook import
-import { useCreateQuote } from '@hooks/useCreateQuote';
+import { useQuote } from '@hooks/useQuote';
 
 interface Step2Form {
   idProduto: number;
@@ -72,7 +72,7 @@ export const Step2: React.FC<
     },
   });
 
-  const { setQuote, products, fetchProducts } = useCreateQuote();
+  const { setQuote, products, fetchProducts } = useQuote();
 
   useLayoutEffect(() => {
     fetchProducts();

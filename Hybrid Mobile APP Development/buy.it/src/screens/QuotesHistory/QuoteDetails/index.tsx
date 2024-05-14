@@ -1,20 +1,19 @@
 import { Fragment, useLayoutEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import Toast from 'react-native-toast-message';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { MainNavigationRoutes } from '@routes/index';
 import { Clock } from 'phosphor-react-native';
+import { format, parse } from 'date-fns';
 import Icon from '@expo/vector-icons/MaterialCommunityIcons';
 
 // Type import
 import { QuotesHistoryRoutes } from '..';
-import { Quote, QuoteQuery } from '@dtos/quote';
+import { QuoteQuery } from '@dtos/quote';
 
 // Component import
 import {
   DecreasingContainer,
   WrapperPage,
-  Header,
   DefaultComponent,
   Chip,
   Button,
@@ -36,14 +35,22 @@ import {
 } from './styles';
 import { Flex, ScrollableContent } from '@global/styles';
 
-// Services import
-import { api } from '@services/api';
-
 // Utils import
 import theme from '@theme/index';
 import { toMaskedCurrency } from '@utils/masks';
 import { CustomModal } from '@components/Modal';
-import NewStatus from './NewStatus/NewStatus';
+
+import UpdateStatus from './UpdateStatus';
+
+// Hooks import
+import { useQuote } from '@hooks/useQuote';
+import { useAuth } from '@hooks/useAuth';
+import { STATUS_OPTIONS } from '@utils/statusOptions';
+
+// Type
+type PriorityLabel = {
+  [key: number]: string;
+}
 
 export const QuoteDetails: React.FC<
   CompositeScreenProps<
@@ -51,8 +58,16 @@ export const QuoteDetails: React.FC<
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ route, navigation }) => {
-  const [quote, setQuote] = useState<Quote>({} as Quote);
-  const [isLoading, setIsLoading] = useState(false);
+
+  const { 
+    handleUpdateQuote,
+    fetchQuotesByBuyer,
+    fetchQuoteById, 
+    retrievedQuote, 
+    loading
+  } = useQuote();
+  const { user } = useAuth();
+
   const [showDetails, setShowDetails] = useState(false);
   const [isModalVisible, setModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
@@ -62,54 +77,18 @@ export const QuoteDetails: React.FC<
 
   const { id } = route.params;
 
-  const fetchData = async () => {
-    try {
-      const { data } = await api.get(`/cotacoes/${id}`);
-      setQuote(data);
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Erro',
-        text2: 'Não foi possível carregar a cotação',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const handleUpdateQuote = async (body: QuoteQuery, id: number, goBack?: boolean) => {
-    try {
-      const { data } = await api.put(`/cotacoes/${id}`, body);
-      
-      if (data.id) {
-        Toast.show({
-          type: 'success',
-          text1: 'Cotação atualizada com sucesso',
-        });
-        console.log(goBack);
-        if (goBack) navigation.navigate("QuotesHistory");
-      }
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Erro',
-        text2: 'Não foi possível atualizar a cotação',
-      });
-    }
-    finally {
-      toggleModal();
-    }
+  const updateQuote = async (body: QuoteQuery, id: number, goBack?: boolean) => {
+    handleUpdateQuote(body, id);
+    fetchQuotesByBuyer(user.id);
+    if (goBack) navigation.navigate("QuotesHistory");
+    toggleModal();
   };
 
   useLayoutEffect(() => {
-    fetchData();
+    fetchQuoteById(id);
   }, []);
 
-  const total = (quote.valorProduto * quote.quantidadeProduto).toFixed(2);
-
-  type PriorityLabel = {
-    [key: number]: string;
-  }
+  const total = (retrievedQuote.valorProduto * retrievedQuote.quantidadeProduto).toFixed(2);
 
   const priorityLabel: PriorityLabel = {
     1: 'importância baixa',
@@ -117,12 +96,13 @@ export const QuoteDetails: React.FC<
     3: 'importância alta'
   }
 
-  const hasDetails = quote.produto && 
-  (quote.produto.marca || quote.produto.cor || quote.produto.material || quote.produto.tamanho);
+  const hasDetails = retrievedQuote.produto && 
+  (retrievedQuote.produto.marca || retrievedQuote.produto.cor || 
+   retrievedQuote.produto.material || retrievedQuote.produto.tamanho);
 
   const handleCancel = () => {
     setModalTitle("Cancelar");
-    setModalSubtitle("Tem certeza que deseja cancelar a cotação? Pode ser que em alguns dias um fornecedor te atenda.");
+    setModalSubtitle("Tem certeza que deseja cancelar a cotação? Pode ser que em alguns dias algum fornecedor te atenda.");
     toggleModal();
   }
 
@@ -132,16 +112,27 @@ export const QuoteDetails: React.FC<
     toggleModal();
   }
 
+  const today = new Date();
+
+  const differenceInDays = (date: Date) => { 
+    const diffInMilliseconds = Math.abs(date.getTime() - today.getTime());
+    return Math.ceil(diffInMilliseconds / (1000 * 60 * 60 * 24));
+  }
+
+  const openingDate = parse(retrievedQuote.dataAbertura || format(today, 'dd-MM-yyyy'), 'dd-MM-yyyy', new Date());
+  const daysAgo = differenceInDays(openingDate);
+  const daysAgoLabel = daysAgo === 0 ? "Hoje" : `Há ${daysAgo} dias`;
+
   return (
     <WrapperPage>
       <ScrollableContent style={{ paddingTop: 10 }}>
-        {isLoading || !quote.id ?
+        {loading || !retrievedQuote.id ?
             <TextIndicator>Carregando cotação...</TextIndicator> : 
             (
               <Fragment>
                 <DefaultComponent
                   highlightProps={{
-                    title: quote.produto.nome,
+                    title: retrievedQuote.produto.nome,
                     subtitle: "Detalhes da cotação de ",
                   }}
                   headerProps={{ goBack: () => navigation.goBack() }}
@@ -149,18 +140,18 @@ export const QuoteDetails: React.FC<
                 />
                 <TimeAgo>
                   <Clock size={theme.FONT_SIZE.SM} color={theme.COLORS.GRAY_300} />
-                  <Subtitle>Há 2 dias</Subtitle>
+                  <Subtitle>{daysAgoLabel}</Subtitle>
                 </TimeAgo>
 
                 <DecreasingContainer>
                   <Container>
                     <Label>Status</Label>
-                    <Value>{quote.status.nome}</Value>
+                    <Value>{retrievedQuote.status.nome}</Value>
                   </Container>
 
                   <Container>
                     <Label>Quantidade</Label>
-                    <Value>{quote.quantidadeProduto} unidades</Value>
+                    <Value>{retrievedQuote.quantidadeProduto} unidades</Value>
                   </Container>
 
                   <Container>
@@ -168,7 +159,7 @@ export const QuoteDetails: React.FC<
                     <Flex>
                       <Flex>
                         <Value>Unidade: </Value>
-                        <Price>{toMaskedCurrency(quote.valorProduto.toFixed(2), true)}</Price>
+                        <Price>{toMaskedCurrency(retrievedQuote.valorProduto.toFixed(2), true)}</Price>
                       </Flex>
                       <Flex>
                         <Value>Total: </Value>
@@ -181,18 +172,19 @@ export const QuoteDetails: React.FC<
                     <Label>Departamento</Label>
                     <TextIcon>
                       <Icon 
-                        name={quote.produto.departamento.icone} 
-                        size={theme.FONT_SIZE.SM} color={theme.COLORS.PRIMARY} 
+                        name={retrievedQuote.produto.departamento.icone} 
+                        size={theme.FONT_SIZE.SM} 
+                        color={theme.COLORS.PRIMARY} 
                       />
-                      <Value>{quote.produto.departamento.nome}</Value>
+                      <Value>{retrievedQuote.produto.departamento.nome}</Value>
                     </TextIcon>
                   </Container>
 
-                  {quote.produto.tags.length > 0 && (
+                  {retrievedQuote.produto.tags.length > 0 && (
                     <Container>
                       <Label>Tags</Label>
                       <Tags>
-                        {quote.produto.tags.map(tag => <Chip key={tag.id} value={tag.nome} />)}
+                        {retrievedQuote.produto.tags.map(tag => <Chip key={tag.id} value={tag.nome} />)}
                       </Tags>
                     </Container>
                   )}
@@ -202,42 +194,42 @@ export const QuoteDetails: React.FC<
 
                     <Value>
                       <ValueBigger>Preço baixo</ValueBigger>{'\n'}
-                      {quote.prioridadePreco}: {priorityLabel[quote.prioridadePreco]}
+                      {retrievedQuote.prioridadePreco}: {priorityLabel[retrievedQuote.prioridadePreco]}
                     </Value>
                     <Value>
                       <ValueBigger>Qualidade</ValueBigger>{'\n'}
-                      {quote.prioridadeQualidade}: {priorityLabel[quote.prioridadeQualidade]}
+                      {retrievedQuote.prioridadeQualidade}: {priorityLabel[retrievedQuote.prioridadeQualidade]}
                     </Value>
                     <Value>
                       <ValueBigger>Entrega</ValueBigger>{'\n'}
-                      {quote.prioridadeEntrega}: {priorityLabel[quote.prioridadeEntrega]}
+                      {retrievedQuote.prioridadeEntrega}: {priorityLabel[retrievedQuote.prioridadeEntrega]}
                     </Value>
                   </Container>
 
                   {showDetails && (
                     <Fragment>
-                      {quote.produto.marca && (
+                      {retrievedQuote.produto.marca && (
                         <Container>
                           <Label>Marca</Label>
-                          <Value>{quote.produto.marca}</Value>
+                          <Value>{retrievedQuote.produto.marca}</Value>
                         </Container>
                       )}
-                      {quote.produto.cor && (
+                      {retrievedQuote.produto.cor && (
                         <Container>
                           <Label>Cor</Label>
-                          <Value>{quote.produto.cor}</Value>
+                          <Value>{retrievedQuote.produto.cor}</Value>
                         </Container>
                       )}
-                      {quote.produto.tamanho && (
+                      {retrievedQuote.produto.tamanho && (
                         <Container>
                           <Label>Tamanho</Label>
-                          <Value>{quote.produto.tamanho}</Value>
+                          <Value>{retrievedQuote.produto.tamanho}</Value>
                         </Container>
                       )}
-                      {quote.produto.material && (
+                      {retrievedQuote.produto.material && (
                         <Container>
                           <Label>Material</Label>
-                          <Value>{quote.produto.material}</Value>
+                          <Value>{retrievedQuote.produto.material}</Value>
                         </Container>
                       )}
                     </Fragment>
@@ -261,20 +253,26 @@ export const QuoteDetails: React.FC<
                   )}
 
                   <Actions>
-                    <Button 
-                      label="Cancelar"
-                      size="SM"
-                      backgroundColor={theme.COLORS.RED_DARK}
-                      onPress={() => handleCancel()}
-                    />
 
-                    <Button 
-                      label="Concluir"
-                      size="SM"
-                      backgroundColor={theme.COLORS.GREEN_800}
-                      onPress={() => handleConfirm()}
-                    />
+                    {retrievedQuote.status.id !== STATUS_OPTIONS.closed && STATUS_OPTIONS.concluded && (
+                      <Button 
+                        label="Cancelar"
+                        size="SM"
+                        backgroundColor={theme.COLORS.RED_DARK}
+                        onPress={() => handleCancel()}
+                      />
+                    )}
+                    
+                    {retrievedQuote.status.id !== STATUS_OPTIONS.concluded && (
+                      <Button 
+                        label="Concluir"
+                        size="SM"
+                        backgroundColor={theme.COLORS.GREEN_800}
+                        onPress={() => handleConfirm()}
+                      />
+                    )}
                   </Actions>
+
                 </DecreasingContainer>
               </Fragment>
             )
@@ -287,10 +285,10 @@ export const QuoteDetails: React.FC<
         subtitle={modalSubtitle}
         onClose={toggleModal}
       >
-        <NewStatus 
+        <UpdateStatus 
           modalTitle={modalTitle} 
-          quote={quote}
-          handleUpdateQuote={handleUpdateQuote}
+          quote={retrievedQuote}
+          handleUpdateQuote={updateQuote}
         />
       </CustomModal>
     </WrapperPage>

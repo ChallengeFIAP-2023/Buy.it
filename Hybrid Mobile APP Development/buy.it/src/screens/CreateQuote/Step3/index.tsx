@@ -24,7 +24,7 @@ import { LightText, LightBoldText, Label } from './styles';
 import { ScrollableContent } from '@global/styles/index';
 
 //Hook import 
-import { useCreateQuote } from '@hooks/useCreateQuote';
+import { useQuote } from '@hooks/useQuote';
 
 type Priority = {
   label: string;
@@ -49,7 +49,7 @@ export const Step3: React.FC<
   >
 > = ({ navigation }) => {
 
-  const { setQuote } = useCreateQuote();
+  const { setQuote } = useQuote();
 
   const onSubmit = () => {
     const prioridadeEntrega = priorities.delivery.value;

@@ -12,6 +12,9 @@ import { MainNavigationRoutes } from '@routes/index';
 import { QuotesList } from '@screens/QuotesHistory/QuotesList';
 import { QuoteDetails } from '@screens/QuotesHistory/QuoteDetails';
 
+// Hook import
+import { QuoteProvider } from '@hooks/useQuote';
+
 // Interfaces
 export type QuotesHistoryRoutes = {
   QuotesHistory: undefined;
@@ -30,9 +33,11 @@ export const History: React.FC<
   };
 
   return (
-    <Stack.Navigator initialRouteName="QuotesHistory" screenOptions={screenOptions}>
-      <Stack.Screen name="QuotesHistory" component={QuotesList} />
-      <Stack.Screen name="QuoteDetails" component={QuoteDetails} />
-    </Stack.Navigator>
+    <QuoteProvider>
+      <Stack.Navigator initialRouteName="QuotesHistory" screenOptions={screenOptions}>
+        <Stack.Screen name="QuotesHistory" component={QuotesList} />
+        <Stack.Screen name="QuoteDetails" component={QuoteDetails} />
+      </Stack.Navigator>
+    </QuoteProvider>
   );
 };

@@ -1,5 +1,4 @@
 import React, { Fragment, useLayoutEffect, useState } from 'react';
-import Toast from 'react-native-toast-message';
 import { CompositeScreenProps } from '@react-navigation/native';
 
 // Component import
@@ -28,11 +27,7 @@ import {
 // Hook import
 import { useAuth } from '@hooks/useAuth';
 
-// Service import
-import { api } from '@services/api';
-
 // Type import
-import { Quote } from '@dtos/quote';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { MainRoutes } from '..';
 
@@ -42,31 +37,18 @@ import { MainNavigationRoutes } from '@routes/index';
 import { ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { Bell } from 'phosphor-react-native';
 import { toMaskedCNPJ } from '@utils/masks';
+import { useQuote } from '@hooks/useQuote';
 
 export function Home({
   navigation,
 }: CompositeScreenProps<NativeStackScreenProps<MainRoutes, 'Home'>,
   NativeStackScreenProps<MainNavigationRoutes>>) {
 
-  const [quotes, setQuotes] = useState<Quote[]>([]);
-
   const { user } = useAuth();
-
-  const fetchData = async () => {
-    try {
-      const { data } = await api.get(`/cotacoes/usuario/comprador/${user.id}`);
-      setQuotes(data.content);
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Erro',
-        text2: 'Não foi possível carregar as cotações',
-      });
-    }
-  };
+  const { quotes, fetchQuotesByBuyer } = useQuote();
 
   useLayoutEffect(() => {
-    fetchData();
+    fetchQuotesByBuyer(user.id);
   }, []);
 
   const imageSource: ImageSourcePropType = user.urlImagem

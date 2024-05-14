@@ -3,13 +3,13 @@ import { Quote, QuoteQuery } from "@dtos/quote";
 import { Fragment } from "react";
 import { STATUS_OPTIONS } from "@utils/statusOptions";
 
-interface NewStatusProps {
+interface UpdateStatusProps {
   modalTitle: string;
   quote: Quote;
   handleUpdateQuote: (body: QuoteQuery, id: number, goBack?: boolean) => Promise<void>;
 }
 
-export default function NewStatus({ modalTitle, quote, handleUpdateQuote }: NewStatusProps) {
+export default function UpdateStatus({ modalTitle, quote, handleUpdateQuote }: UpdateStatusProps) {
 
   const handleUpdateStatus = () => {
     const idStatus = modalTitle === "Concluir" 
@@ -30,6 +30,8 @@ export default function NewStatus({ modalTitle, quote, handleUpdateQuote }: NewS
     }
 
     handleUpdateQuote(finalBodyData, quote.id, true);
+
+    
   };
 
   return(

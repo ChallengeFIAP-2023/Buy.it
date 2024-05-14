@@ -12,7 +12,7 @@ import { Button, DefaultComponent, Input } from '@components/index';
 import { Fieldset } from '@global/styles/index';
 
 // Hook import
-import { useCreateQuote } from '@hooks/useCreateQuote';
+import { useQuote } from '@hooks/useQuote';
 
 // Theme import
 import theme from '@theme/index';
@@ -52,7 +52,7 @@ export function NewProduct({ toggleModal }: NewProduct) {
     product, 
     fetchProducts,
     setQuote
-  } = useCreateQuote();
+  } = useQuote();
 
   const proceed = () => {
     setStep(2);

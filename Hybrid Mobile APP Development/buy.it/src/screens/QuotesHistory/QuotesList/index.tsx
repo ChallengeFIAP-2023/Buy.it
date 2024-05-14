@@ -1,6 +1,5 @@
-import { Fragment, useEffect, useLayoutEffect, useState } from 'react';
+import { Fragment, useLayoutEffect, useState } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
-import Toast from 'react-native-toast-message';
 import { CompositeScreenProps } from '@react-navigation/native';
 
 // Type import
@@ -22,17 +21,16 @@ import { TextIndicator, QuotesWrapper, Container } from './styles';
 import { QuoteItem } from './QuoteItem';
 import { ScrollableContent } from '@global/styles';
 
-// Services import
-import { api } from '@services/api';
-
 // Utils import
 import { STATUS_OPTIONS } from '@utils/statusOptions';
 
 // Hook import
 import { useAuth } from '@hooks/useAuth';
+import { useQuote } from '@hooks/useQuote';
+
+// Route import
 import { QuotesHistoryRoutes } from '..';
 import { MainNavigationRoutes } from '@routes/index';
-import { RefreshControl } from 'react-native';
 
 export const QuotesList: React.FC<
   CompositeScreenProps<
@@ -40,65 +38,36 @@ export const QuotesList: React.FC<
     NativeStackScreenProps<MainNavigationRoutes>
   >
 > = ({ navigation }) => {
-  const [activeOption, setActiveOption] = useState<StatusFilterType>();
-  const [quotes, setQuotes] = useState<Quote[]>([]);
+  const [activeOption, setActiveOption] = useState<StatusFilterType>(tabs[0]);
   const [filteredQuotes, setFilteredQuotes] = useState<Quote[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
 
   const { user } = useAuth();
+  const { fetchQuotesByBuyer, quotes, loading } = useQuote();
 
-  const filterQuotes = (filterBy: number) => {
+  const filterQuotes = () => {
+    const filterBy = STATUS_OPTIONS[activeOption.key];
     setFilteredQuotes(quotes.filter(quote => quote.status.id === filterBy));
   };
 
-  const fetchData = async () => {
-    try {
-      if (user.id) {
-        const { data } = await api.get(
-          `/cotacoes/usuario/comprador/${user.id}`,
-        );
 
-        setQuotes(data.content);
-        setFilteredQuotes(data.content);
-        setActiveOption(tabs[0]);
-      }
-    } catch (error) {
-      Toast.show({
-        type: 'error',
-        text1: 'Erro',
-        text2: 'Não foi possível carregar as cotações',
-      });
-    } finally {
-      setIsLoading(false);
-    }
-  };
+  useLayoutEffect(() => {
+    fetchQuotesByBuyer(user.id);
+    filterQuotes();
+  }, [quotes]);
 
-  useEffect(() => {
-    fetchData();
-  }, []);
-
-  useEffect(() => {
-    console.log('Caiu aqui');
-  }, []);
-
-  useEffect(() => {
-    if (!activeOption) return;
-    filterQuotes(STATUS_OPTIONS[activeOption.key]);
+  useLayoutEffect(() => {
+    filterQuotes();
   }, [activeOption]);
 
   return (
     <WrapperPage>
-      <ScrollableContent
-        refreshControl={
-          <RefreshControl refreshing={isLoading} onRefresh={fetchData} />
-        }
-      >
+      <ScrollableContent>
         <Highlight
           title="Aqui você encontra suas cotações"
           highlightedText="cotações"
         />
         <DecreasingContainer>
-          {isLoading ? (
+          {loading ? (
             <TextIndicator>Carregando cotações...</TextIndicator>
           ) : (
             <Fragment>

@@ -18,6 +18,7 @@ import {
   TagQuery,
   Product,
   ProductPrices,
+  Quote,
 } from '@dtos/index';
 import Toast from 'react-native-toast-message';
 import { api } from '@services/api';
@@ -29,7 +30,7 @@ export type NavigationProp = StackNavigationProp<
   CreateQuoteRoutes & MainNavigationRoutes
 >;
 
-interface CreateQuoteContextData {
+interface QuoteContextData {
   quote: QuoteQuery;
   product: ProductQuery;
   setQuote: Dispatch<React.SetStateAction<QuoteQuery>>;
@@ -38,6 +39,7 @@ interface CreateQuoteContextData {
     finalQueryData: QuoteQuery,
     navigation: NavigationProp,
   ) => Promise<void>;
+  handleUpdateQuote: (body: QuoteQuery, id: number) => Promise<void>;
   handleNewProduct: (finalQueryData: ProductQuery) => Promise<void>;
   handleNewTag: (finalQueryData: TagQuery) => Promise<void>;
   loading: boolean;
@@ -45,23 +47,29 @@ interface CreateQuoteContextData {
   tags: Tag[];
   products: Product[];
   productPrices: ProductPrices;
+  retrievedQuote: Quote;
+  quotes: Quote[];
   fetchDepartmentsAndTags(): Promise<void>;
   fetchProducts: () => Promise<void>;
+  fetchQuoteById: (id: number) => Promise<void>;
+  fetchQuotesByBuyer: (id: string) => Promise<void>;
   fetchProductPrices: (productId: number) => Promise<void>;
 }
 
-interface CreateQuoteProviderProps {
+interface QuoteProviderProps {
   children: React.ReactNode;
 }
 
-const CreateQuoteContext = createContext<CreateQuoteContextData>(
-  {} as CreateQuoteContextData,
+const QuoteContext = createContext<QuoteContextData>(
+  {} as QuoteContextData,
 );
 
-const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
+const QuoteProvider: React.FC<QuoteProviderProps> = ({
   children,
 }) => {
   const [quote, setQuote] = useState<QuoteQuery>({} as QuoteQuery);
+  const [retrievedQuote, setRetrievedQuote] = useState<Quote>({} as Quote);
+  const [quotes, setQuotes] = useState<Quote[]>([]);
   const [product, setProduct] = useState<ProductQuery>({} as ProductQuery);
   const [departments, setDepartments] = useState<Department[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
@@ -149,6 +157,38 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     }
   }, []);
 
+  const fetchQuoteById = async (id: number) => {
+    try {
+      const { data } = await api.get(`/cotacoes/${id}`);
+      setRetrievedQuote(data);
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível carregar a cotação',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchQuotesByBuyer = async (id: string) => {
+    try {
+      const { data } = await api.get(
+        `/cotacoes/usuario/comprador/${id}`,
+      );
+      setQuotes(data.content);
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível buscar as cotações',
+      });
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const handleNewQuote = useCallback(
     async (quoteData: QuoteQuery, navigation: NavigationProp) => {
       try {
@@ -209,8 +249,27 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
     }
   }, []);
 
+  const handleUpdateQuote = async (body: QuoteQuery, id: number) => {
+    try {
+      const { data } = await api.put(`/cotacoes/${id}`, body);
+      
+      if (data.id) {
+        Toast.show({
+          type: 'success',
+          text1: 'Cotação atualizada com sucesso',
+        });
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível atualizar a cotação',
+      });
+    }
+  };
+
   return (
-    <CreateQuoteContext.Provider
+    <QuoteContext.Provider
       value={{
         quote,
         setQuote,
@@ -220,27 +279,32 @@ const CreateQuoteProvider: React.FC<CreateQuoteProviderProps> = ({
         tags,
         products,
         productPrices,
+        retrievedQuote,
+        quotes,
         loading,
         fetchDepartmentsAndTags,
         fetchProducts,
         fetchProductPrices,
+        fetchQuoteById,
+        fetchQuotesByBuyer,
         handleNewProduct,
         handleNewQuote,
         handleNewTag,
+        handleUpdateQuote
       }}
     >
       {children}
-    </CreateQuoteContext.Provider>
+    </QuoteContext.Provider>
   );
 };
 
-function useCreateQuote(): CreateQuoteContextData {
-  const context = useContext(CreateQuoteContext);
+function useQuote(): QuoteContextData {
+  const context = useContext(QuoteContext);
 
   if (!context)
-    throw new Error('useCreateQuote must be used within a CreateQuoteProvider');
+    throw new Error('useQuote must be used within a QuoteProvider');
 
   return context;
 }
 
-export { CreateQuoteProvider, useCreateQuote };
+export { QuoteProvider, useQuote };

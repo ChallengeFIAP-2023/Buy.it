@@ -27,8 +27,8 @@ import {
   WrapperPage,
 } from '@components/index';
 
-//Hooks import
-import { useCreateQuote } from '@hooks/useCreateQuote';
+// Hooks import
+import { useQuote } from '@hooks/useQuote';
 
 // Style import
 import { ScrollableContent, Fieldset } from '@global/styles/index';
@@ -67,7 +67,7 @@ export const Step1: React.FC<
     departments,
     handleNewTag,
     fetchDepartmentsAndTags,
-  } = useCreateQuote();
+  } = useQuote();
 
   useLayoutEffect(() => {
     fetchDepartmentsAndTags();

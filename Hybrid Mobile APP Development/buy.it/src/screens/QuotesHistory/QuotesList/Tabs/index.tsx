@@ -5,7 +5,7 @@ import { StatusFilterType, tabs } from './constants';
 interface Props {
   activeOption: StatusFilterType | undefined;
   handleSelectTab: React.Dispatch<
-    React.SetStateAction<StatusFilterType | undefined>
+    React.SetStateAction<StatusFilterType>
   >;
 }
 
