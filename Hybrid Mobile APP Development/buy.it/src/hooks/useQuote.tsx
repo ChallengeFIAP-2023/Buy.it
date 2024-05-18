@@ -19,7 +19,9 @@ import {
   Product,
   ProductPrices,
   Quote,
+  ReviewQuery
 } from '@dtos/index';
+
 import Toast from 'react-native-toast-message';
 import { api } from '@services/api';
 import { CreateQuoteRoutes } from '@screens/CreateQuote';
@@ -42,6 +44,7 @@ interface QuoteContextData {
   handleUpdateQuote: (body: QuoteQuery, id: number) => Promise<void>;
   handleNewProduct: (finalQueryData: ProductQuery) => Promise<void>;
   handleNewTag: (finalQueryData: TagQuery) => Promise<void>;
+  handleNewReview: (finalQueryData: ReviewQuery) => Promise<void>;
   loading: boolean;
   departments: Department[];
   tags: Tag[];
@@ -249,6 +252,31 @@ const QuoteProvider: React.FC<QuoteProviderProps> = ({
     }
   }, []);
 
+  const handleNewReview = useCallback(async (reviewData: ReviewQuery) => {
+    try {
+      setLoading(true);
+      const body = reviewData;
+      const { data } = await api.post('/avaliacoes', body);
+
+      if (data.id) {
+        Toast.show({
+          type: 'success',
+          text1: 'Avaliação registrada com sucesso!',
+        });
+      }
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível registrar sua avaliação.',
+      });
+
+      throw error;
+    } finally {
+      setLoading(false);
+    }
+  }, []);
+
   const handleUpdateQuote = async (body: QuoteQuery, id: number) => {
     try {
       const { data } = await api.put(`/cotacoes/${id}`, body);
@@ -290,6 +318,7 @@ const QuoteProvider: React.FC<QuoteProviderProps> = ({
         handleNewProduct,
         handleNewQuote,
         handleNewTag,
+        handleNewReview,
         handleUpdateQuote
       }}
     >

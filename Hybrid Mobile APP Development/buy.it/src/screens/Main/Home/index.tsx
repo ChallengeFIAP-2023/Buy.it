@@ -48,8 +48,8 @@ export function Home({
   const { quotes, fetchQuotesByBuyer } = useQuote();
 
   useLayoutEffect(() => {
-    fetchQuotesByBuyer(user.id);
-  }, []);
+    if(!quotes || quotes.length === 0) fetchQuotesByBuyer(user.id);
+  }, [quotes]);
 
   const imageSource: ImageSourcePropType = user.urlImagem
     ? { uri: user.urlImagem }
@@ -98,9 +98,7 @@ export function Home({
                 />
               ))
             ) : (
-              <Fragment>
-                <Indicator>Nenhuma cotação encontrada.</Indicator>
-              </Fragment>
+              <Indicator>Nenhuma cotação encontrada.</Indicator>
             )}
             <Actions>
               {quotes && quotes.length > 0 && (

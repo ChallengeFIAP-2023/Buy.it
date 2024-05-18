@@ -30,7 +30,7 @@ import {
   Price,
   Subtitle,
   Tags,
-  ValueBigger,
+  BiggerValue,
   Actions
 } from './styles';
 import { Flex, ScrollableContent } from '@global/styles';
@@ -46,6 +46,7 @@ import UpdateStatus from './UpdateStatus';
 import { useQuote } from '@hooks/useQuote';
 import { useAuth } from '@hooks/useAuth';
 import { STATUS_OPTIONS } from '@utils/statusOptions';
+import Review from './Review';
 
 // Type
 type PriorityLabel = {
@@ -69,11 +70,13 @@ export const QuoteDetails: React.FC<
   const { user } = useAuth();
 
   const [showDetails, setShowDetails] = useState(false);
-  const [isModalVisible, setModalVisible] = useState(false);
+  const [isUpdateModalVisible, setUpdateModalVisible] = useState(false);
+  const [isReviewModalVisible, setReviewModalVisible] = useState(false);
   const [modalTitle, setModalTitle] = useState("");
   const [modalSubtitle, setModalSubtitle] = useState("");
 
-  const toggleModal = () => setModalVisible(previousState => !previousState);
+  const toggleUpdateModal = () => setUpdateModalVisible(modal => !modal);
+  const toggleReviewModal = () => setReviewModalVisible(modal => !modal);
 
   const { id } = route.params;
 
@@ -81,7 +84,7 @@ export const QuoteDetails: React.FC<
     handleUpdateQuote(body, id);
     fetchQuotesByBuyer(user.id);
     if (goBack) navigation.navigate("QuotesHistory");
-    toggleModal();
+    toggleUpdateModal();
   };
 
   useLayoutEffect(() => {
@@ -103,13 +106,13 @@ export const QuoteDetails: React.FC<
   const handleCancel = () => {
     setModalTitle("Cancelar");
     setModalSubtitle("Tem certeza que deseja cancelar a cotação? Pode ser que em alguns dias algum fornecedor te atenda.");
-    toggleModal();
+    toggleUpdateModal();
   }
 
   const handleConfirm = () => {
     setModalTitle("Concluir");
     setModalSubtitle("A venda já foi finalizada com o vendedor?");
-    toggleModal();
+    toggleUpdateModal();
   }
 
   const today = new Date();
@@ -193,15 +196,15 @@ export const QuoteDetails: React.FC<
                     <Label>Prioridade</Label>
 
                     <Value>
-                      <ValueBigger>Preço baixo</ValueBigger>{'\n'}
+                      <BiggerValue>Preço baixo</BiggerValue>{'\n'}
                       {retrievedQuote.prioridadePreco}: {priorityLabel[retrievedQuote.prioridadePreco]}
                     </Value>
                     <Value>
-                      <ValueBigger>Qualidade</ValueBigger>{'\n'}
+                      <BiggerValue>Qualidade</BiggerValue>{'\n'}
                       {retrievedQuote.prioridadeQualidade}: {priorityLabel[retrievedQuote.prioridadeQualidade]}
                     </Value>
                     <Value>
-                      <ValueBigger>Entrega</ValueBigger>{'\n'}
+                      <BiggerValue>Entrega</BiggerValue>{'\n'}
                       {retrievedQuote.prioridadeEntrega}: {priorityLabel[retrievedQuote.prioridadeEntrega]}
                     </Value>
                   </Container>
@@ -253,8 +256,8 @@ export const QuoteDetails: React.FC<
                   )}
 
                   <Actions>
-
-                    {retrievedQuote.status.id !== STATUS_OPTIONS.closed && STATUS_OPTIONS.concluded && (
+                    {retrievedQuote.status.id !== STATUS_OPTIONS.closed && 
+                    retrievedQuote.status.id !== STATUS_OPTIONS.concluded && (
                       <Button 
                         label="Cancelar"
                         size="SM"
@@ -273,22 +276,52 @@ export const QuoteDetails: React.FC<
                     )}
                   </Actions>
 
+                  {retrievedQuote.status.id === STATUS_OPTIONS.concluded && (
+                    <Button 
+                      size='MD' 
+                      label='Avaliar fornecedor'
+                      icon={
+                        <Icon 
+                          name="star-shooting" 
+                          size={theme.FONT_SIZE.XL} 
+                          color={theme.COLORS.WHITE} 
+                        />
+                      }
+                      style={{
+                        marginBottom: 40
+                      }}
+                      onPress={() => toggleReviewModal()}
+                    />
+                  )}
                 </DecreasingContainer>
               </Fragment>
             )
         }
+
       </ScrollableContent>
 
       <CustomModal
-        modalProps={{ isVisible: isModalVisible }}
+        modalProps={{ isVisible: isUpdateModalVisible }}
         title={`${modalTitle} cotação`}
         subtitle={modalSubtitle}
-        onClose={toggleModal}
+        onClose={toggleUpdateModal}
       >
         <UpdateStatus 
           modalTitle={modalTitle} 
           quote={retrievedQuote}
           handleUpdateQuote={updateQuote}
+        />
+      </CustomModal>
+
+      <CustomModal
+        modalProps={{ isVisible: isReviewModalVisible }}
+        title={`O que você achou do fornecedor?`}
+        subtitle="Isso ajuda nosso sistema a escolher sempre os melhores fornecedores aos nossos usuários"
+        onClose={toggleReviewModal}
+      >
+        <Review 
+          quote={retrievedQuote}
+          toggleReviewModal={toggleReviewModal} 
         />
       </CustomModal>
     </WrapperPage>

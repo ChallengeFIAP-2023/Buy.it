@@ -22,7 +22,7 @@ export const Value = styled.Text`
   color: ${({ theme }) => theme.COLORS.GRAY_300};
 `;
 
-export const ValueBigger = styled(Value)`
+export const BiggerValue = styled(Value)`
   font-size: ${({ theme }) => theme.FONT_SIZE.MD}px;
 `;
 
@@ -60,7 +60,7 @@ export const Actions = styled(Tags)`
   gap: 20px;
   justify-content: center;
   margin-top: 20px;
-  margin-bottom: 40px;
+  margin-bottom: 60px;
 `;
 
 export const TextIndicator = styled.Text`

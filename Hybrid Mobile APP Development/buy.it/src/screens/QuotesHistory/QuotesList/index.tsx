@@ -51,7 +51,7 @@ export const QuotesList: React.FC<
 
 
   useLayoutEffect(() => {
-    fetchQuotesByBuyer(user.id);
+    if(!quotes || quotes.length === 0) fetchQuotesByBuyer(user.id);
     filterQuotes();
   }, [quotes]);
 
