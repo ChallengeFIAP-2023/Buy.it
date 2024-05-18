@@ -7,6 +7,7 @@ export { DecreasingContainer } from './DecreasingContainer';
 export { Highlight } from './Highlight';
 export { Input } from './Input';
 export { Button } from './Button';
+export { CustomCheckBox } from './CheckBox';
 export { CustomDropdown } from './Dropdown';
 export { CustomSlider } from './RangeSlider';
 export { Display } from './Display';

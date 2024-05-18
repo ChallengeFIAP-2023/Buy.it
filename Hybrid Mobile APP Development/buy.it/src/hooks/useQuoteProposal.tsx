@@ -16,14 +16,17 @@ import { AppNavigatorRoutesProps } from '@routes/index';
 import { api } from '@services/api';
 import { useAuth } from './useAuth';
 import Toast from 'react-native-toast-message';
+import { LogQuery } from '@dtos/index';
 
 interface QuoteProposalContextData {
   proposal: Proposal | undefined;
   handleProcessProposal: (type: 'approve' | 'decline') => Promise<void>;
   handleRedirectSuccessProposal: () => void;
-
+  handleNewLog: (logData: LogQuery) => Promise<void>;
+  fetchProposals: () => Promise<void>;
   approveLoading: boolean;
   declineLoading: boolean;
+  logLoading: boolean;
 
   setLastRouteNavigated: React.Dispatch<React.SetStateAction<keyof MainRoutes>>;
 }
@@ -41,7 +44,6 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
 }) => {
   // Hook
   const { navigate } = useNavigation<AppNavigatorRoutesProps>();
-  const { user } = useAuth();
 
   const [lastRouteNavigated, setLastRouteNavigated] =
     useState<keyof MainRoutes>('Home');
@@ -49,28 +51,47 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
   const [proposal, setProposal] = useState<Proposal | undefined>(undefined);
   const [approveLoading, setApproveLoading] = useState(false);
   const [declineLoading, setDeclineLoading] = useState(false);
+  const [logLoading, setLogLoading] = useState(false);
 
-  useEffect(() => {
-    const fetchProposals = async () => {
-      try {
-        const openProposalId = 1;
-        const { data } = await api.get<{ content: Proposal[] }>(
-          `/cotacoes/status/${openProposalId}`,
-        );
+  
+  const fetchProposals = async () => {
+    try {
+      const openProposalId = 1;
+      const { data } = await api.get<{ content: Proposal[] }>(
+        `/cotacoes/status/${openProposalId}`,
+      );
 
-        setProposal(data.content[0]);
-      } catch (error) {
-        console.log('Erro ao buscar dados do backend:', error);
+      setProposal(data.content[0]);
+    } catch (error) {
+      console.log('Erro ao buscar dados do backend:', error);
+    }
+  };
+  
+  const handleNewLog = useCallback(async (logData: LogQuery) => {
+    try {
+      setLogLoading(true);
+
+      const body = logData;
+      const { data } = await api.post('/historicos', body);
+
+      if (data.id) {
+        Toast.show({
+          type: 'success',
+          text1: 'Respostas registradas com sucesso!',
+        });
       }
-    };
+    } catch (error) {
+      Toast.show({
+        type: 'error',
+        text1: 'Erro',
+        text2: 'Não foi possível registrar sua resposta.',
+      });
 
-    if (proposal || !user?.id) return;
-
-    const oneMinuteInMilliseconds = 60 * 1000;
-    const intervalId = setInterval(fetchProposals, oneMinuteInMilliseconds);
-
-    return () => clearInterval(intervalId);
-  }, [proposal, user]);
+      throw error;
+    } finally {
+      setLogLoading(false);
+    }
+  }, []);
 
   const handleProcessProposal = useCallback(
     async (type: 'approve' | 'decline') => {
@@ -137,11 +158,14 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
     <QuoteProposalContext.Provider
       value={{
         proposal,
+        fetchProposals,
         handleProcessProposal,
         handleRedirectSuccessProposal,
+        handleNewLog,
 
         approveLoading,
         declineLoading,
+        logLoading,
 
         setLastRouteNavigated,
       }}

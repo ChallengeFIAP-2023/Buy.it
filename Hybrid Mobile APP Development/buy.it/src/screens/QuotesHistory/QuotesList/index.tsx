@@ -49,9 +49,8 @@ export const QuotesList: React.FC<
     setFilteredQuotes(quotes.filter(quote => quote.status.id === filterBy));
   };
 
-
   useLayoutEffect(() => {
-    if(!quotes || quotes.length === 0) fetchQuotesByBuyer(user.id);
+    // if(!quotes || quotes.length === 0) fetchQuotesByBuyer(user.id);
     filterQuotes();
   }, [quotes]);
 

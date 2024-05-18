@@ -297,7 +297,6 @@ export const QuoteDetails: React.FC<
               </Fragment>
             )
         }
-
       </ScrollableContent>
 
       <CustomModal

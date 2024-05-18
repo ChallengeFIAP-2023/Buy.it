@@ -1,4 +1,3 @@
-import React from 'react';
 import {
   createNativeStackNavigator,
   NativeStackNavigationOptions,
@@ -11,11 +10,13 @@ import { MainNavigationRoutes } from '@routes/index';
 // Pages import
 import { QuoteProposalDetails } from './QuoteProposalDetails';
 import { QuoteProposalSuccess } from './QuoteProposalSuccess';
+import { QuoteProposalRefused } from './QuoteProposalRefused';
 
 // Interfaces
 export type QuoteProposalRoutes = {
   QuoteProposalDetails: undefined;
   QuoteProposalSuccess: undefined;
+  QuoteProposalRefused: { id: number };
 };
 
 export const QuoteProposal: React.FC<
@@ -38,10 +39,17 @@ export const QuoteProposal: React.FC<
         name="QuoteProposalDetails"
         component={QuoteProposalDetails}
       />
+
       <Stack.Screen
         name="QuoteProposalSuccess"
         component={QuoteProposalSuccess}
       />
+
+      <Stack.Screen
+        name="QuoteProposalRefused"
+        component={QuoteProposalRefused}
+      />
+      
     </Stack.Navigator>
   );
 };

@@ -80,10 +80,15 @@ export const Main: React.FC<
     };
   }
 
-  // Verifico se há propostas pro usuário autenticado
+  // Navegar até a tela de propostas a cada 2min
   useEffect(() => {
-    if (proposal && user.isFornecedor) return navigation.navigate('QuoteProposal');
-  }, [proposal]);
+    const twoMinuteInMilliseconds = 120 * 1000;
+    const intervalId = setInterval(() => navigation.navigate('QuoteProposal'), twoMinuteInMilliseconds);
+
+    return () => {
+      clearInterval(intervalId)
+    };
+  }, [proposal, user]);
 
   // Verifica qual a última rota que o usuário estava, pra quando ele recusar ou aceitar a proposta continuar na mesma tela
   useEffect(() => {

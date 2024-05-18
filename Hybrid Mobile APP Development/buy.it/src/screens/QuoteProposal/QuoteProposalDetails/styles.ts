@@ -128,3 +128,15 @@ export const Refuse = styled(ActionButton)`
 export const Accept = styled(ActionButton)`
   background-color: ${({ theme }) => theme.COLORS.GREEN_500};
 `;
+
+export const SmallText = styled(SimpleText)`
+  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
+  margin-bottom: 15px;
+`;
+
+export const TouchableText = styled(SmallText)`
+  font-size: ${({ theme }) => theme.FONT_SIZE.XS}px;
+  text-decoration: underline;
+  margin-top: 20px;
+  text-align: center;
+`;

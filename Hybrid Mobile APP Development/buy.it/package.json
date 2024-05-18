@@ -12,7 +12,6 @@
   "dependencies": {
     "@expo-google-fonts/raleway": "^0.2.3",
     "@expo-google-fonts/roboto": "^0.2.3",
-    "@expo/webpack-config": "~19.0.1",
     "@hookform/resolvers": "^3.3.2",
     "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/slider": "4.5.2",
@@ -20,6 +19,7 @@
     "@react-navigation/native": "^6.1.9",
     "@react-navigation/native-stack": "^6.9.17",
     "@react-navigation/stack": "^6.3.20",
+    "@rneui/themed": "^4.0.0-rc.8",
     "axios": "^1.6.2",
     "date-fns": "^3.6.0",
     "expo": "^51.0.5",

@@ -1,4 +1,4 @@
-import { ActivityIndicator, ImageSourcePropType } from 'react-native';
+import { ActivityIndicator, ImageSourcePropType, Touchable, TouchableOpacity } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { Check, DotsThree, X } from 'phosphor-react-native';
@@ -20,6 +20,7 @@ import {
   WrapperPage,
   UserAvatar as CompanyImage,
   Chip,
+  Button,
 } from '@components/index';
 
 // Style import
@@ -43,10 +44,12 @@ import {
   ActionsButton,
   Refuse,
   Accept,
+  SmallText,
+  TouchableText,
 } from './styles';
 import { toMaskedCNPJ, toMaskedCurrency } from '@utils/masks';
-import { Fragment } from 'react';
-
+import { Fragment, useLayoutEffect, useState } from 'react';
+import { CustomModal } from '@components/Modal';
 
 const maximumTags = 8;
 
@@ -58,11 +61,15 @@ export const QuoteProposalDetails: React.FC<
 > = ({ navigation }) => {
   // Hook
   const { 
-    handleProcessProposal, 
+    handleProcessProposal,
+    fetchProposals, 
     proposal, 
     approveLoading, 
     declineLoading 
   } = useQuoteProposal();
+
+  const [isModalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => setModalVisible(modal => !modal);
 
   const imageSource: ImageSourcePropType = proposal?.comprador.urlImagem
     ? { uri: proposal?.comprador.urlImagem }
@@ -78,6 +85,10 @@ export const QuoteProposalDetails: React.FC<
 
     return `${proposal?.prazo} dia`;
   }
+
+  useLayoutEffect(() => {
+    if(!proposal) fetchProposals();
+  }, [proposal]);
 
   const buttonIsDisabled = approveLoading || declineLoading;
   
@@ -159,14 +170,10 @@ export const QuoteProposalDetails: React.FC<
 
       <ActionsButton>
         <Refuse
-          onPress={() => handleProcessProposal('decline')}
+          onPress={() => toggleModal()}
           disabled={buttonIsDisabled}
         >
-          {declineLoading ? (
-            <ActivityIndicator color={theme.COLORS.WHITE} size={40} />
-          ) : (
-            <X size={40} color={theme.COLORS.GRAY_600} weight="bold" />
-          )}
+          <X size={40} color={theme.COLORS.GRAY_600} weight="bold" />
         </Refuse>
 
         <Accept
@@ -180,6 +187,28 @@ export const QuoteProposalDetails: React.FC<
           )}
         </Accept>
       </ActionsButton>
+
+      <CustomModal
+        modalProps={{ isVisible: isModalVisible }}
+        title="Nos ajude a melhorar"
+        subtitle="Respondendo nossas perguntas você aumenta as chances de conseguir novas vendas!"
+        onClose={toggleModal}
+      >
+        <SmallText>Fornecedor, que tal nos ajudar respondendo algumas perguntas sobre os motivos de ter recusado esta proposta?</SmallText>
+        <SmallText>Desta forma, conseguimos te enviar somente propostas alinhadas com a sua empresa, aumentando suas chances de venda!</SmallText>
+
+        <Button
+          size='MD'
+          label='Responder perguntas'
+          onPress={() => navigation.navigate("QuoteProposalRefused", { id: Number(proposal?.id) })} 
+          style={{
+            marginTop: 15
+          }}
+        />
+        <TouchableOpacity onPress={() => handleProcessProposal('decline')}>
+          <TouchableText>Pular por enquanto</TouchableText>
+        </TouchableOpacity>
+      </CustomModal>
     </WrapperPage>
   );
 };
