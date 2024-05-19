@@ -2020,9 +2020,7 @@ UPDATE usuario
 SET email_usuario = 'novoemail@exemplo.com'
 WHERE id_usuario = 1;
 
--- Verifique os registros na tabela de auditoria de cotacao
 SELECT * FROM auditoria_cotacao;
 
--- Verifique os registros na tabela de auditoria de usuario
 SELECT * FROM auditoria_usuario;
 
