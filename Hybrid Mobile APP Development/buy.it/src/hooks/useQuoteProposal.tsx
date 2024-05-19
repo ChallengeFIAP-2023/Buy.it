@@ -3,9 +3,8 @@ import React, {
   useCallback,
   useContext,
   useState,
-  useEffect,
 } from 'react';
-import { useNavigation } from '@react-navigation/native';
+import { StackActions, useNavigation } from '@react-navigation/native';
 
 // Type import
 import { Proposal } from '@dtos/proposal';
@@ -44,7 +43,7 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
   children,
 }) => {
   // Hook
-  const { navigate } = useNavigation<AppNavigatorRoutesProps>();
+  const { dispatch } = useNavigation<AppNavigatorRoutesProps>();
 
   const [lastRouteNavigated, setLastRouteNavigated] =
     useState<keyof MainRoutes>('Home');
@@ -127,7 +126,9 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
             dataFechamento: new Date(),
           });
 
-          navigate('QuoteProposal', { screen: 'QuoteProposalSuccess' });
+          dispatch(
+            StackActions.replace('QuoteProposal', { screen: "QuoteProposalSuccess" }),
+          );
         }
       } catch (error) {
         return Toast.show({
@@ -145,7 +146,9 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
         setDeclineLoading(true);
         console.log('recusou a proposta', lastRouteNavigated);
 
-        navigate('Main', { screen: lastRouteNavigated });
+        dispatch(
+          StackActions.replace('Main', { screen: lastRouteNavigated }),
+        );
         setProposal(undefined);
       } catch (error) {
         return Toast.show({
@@ -161,7 +164,9 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
 
   const handleRedirectSuccessProposal = useCallback(() => {
     setProposal(undefined);
-    navigate('Main');
+    dispatch(
+      StackActions.replace('Main', { screen: "Home" }),
+    );
   }, []);
 
   return (

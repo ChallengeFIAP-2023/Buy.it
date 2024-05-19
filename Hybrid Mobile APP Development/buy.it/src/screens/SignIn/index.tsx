@@ -47,6 +47,7 @@ export function SignIn({
   const {
     control,
     handleSubmit,
+    resetField,
     formState: { errors },
   } = useForm<SignInForm>({
     resolver: yupResolver(SignInFormSchema),
@@ -56,6 +57,8 @@ export function SignIn({
     try {
       const { email, senha } = data;
       await handleSignIn({ email, password: senha });
+      resetField("email");
+      resetField("senha");
     } catch (error) {
       Toast.show({
         type: 'error',

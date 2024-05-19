@@ -5,6 +5,7 @@ import {
   BottomTabNavigationOptions,
   BottomTabScreenProps,
 } from '@react-navigation/bottom-tabs';
+import { useRoute } from '@react-navigation/native';
 
 // Theme import
 import theme from '@theme/index';
@@ -28,7 +29,6 @@ import { QuoteProposal, QuoteProposalRoutes } from '@screens/QuoteProposal';
 import { NavigatorScreenParams } from '@react-navigation/native';
 
 
-
 // Interfaces
 export type MainRoutes = {
   Home: undefined;
@@ -39,7 +39,7 @@ export type MainRoutes = {
 
 export const Main: React.FC<
   BottomTabScreenProps<MainNavigationRoutes, 'Main'>
-> = ({ navigation, route }) => {
+> = ({ navigation }) => {
   const { proposal, setLastRouteNavigated } = useQuoteProposal();
   const { user } = useAuth();
 
@@ -80,19 +80,28 @@ export const Main: React.FC<
     };
   }
 
+  const getActiveRouteName = (state: any): string => {
+    const route = state.routes[state.index];
+    if (route.state) return getActiveRouteName(route.state);
+    return route.name;
+  };
+
+  const route = getActiveRouteName(navigation.getState());
+
   // Navega até a tela de propostas a cada 2min
-  useEffect(() => {
-    if (user.isFornecedor) {
-      const twoMinuteInMilliseconds = 120 * 1000;
-      const intervalId = setInterval(() => {
-        proposal && navigation.navigate('QuoteProposal'), twoMinuteInMilliseconds
-      });
+  // useEffect(() => {
+  //   if (user.isFornecedor) {
+  //     const twoMinuteInMilliseconds = 120 * 1000;
+  //     const intervalId = setInterval(() => {
+  //       if (proposal && route !== "QuoteProposal")  
+  //         navigation.navigate('QuoteProposal'), twoMinuteInMilliseconds
+  //     });
   
-      return () => {
-        clearInterval(intervalId)
-      };
-    }
-  }, [proposal, user]);
+  //     return () => {
+  //       clearInterval(intervalId)
+  //     };
+  //   }
+  // }, [proposal, user]);
 
   // Verifica qual a última rota que o usuário estava, pra quando ele recusar ou aceitar a proposta continuar na mesma tela
   useEffect(() => {

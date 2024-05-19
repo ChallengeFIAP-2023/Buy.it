@@ -233,7 +233,7 @@ export const QuoteDetails: React.FC<
 
                   <Actions>
                     {retrievedQuote.status.id !== STATUS_OPTIONS.closed && 
-                    retrievedQuote.status.id !== STATUS_OPTIONS.concluded && (
+                     retrievedQuote.status.id !== STATUS_OPTIONS.concluded && (
                       <Button 
                         label="Cancelar"
                         size="SM"
@@ -242,7 +242,7 @@ export const QuoteDetails: React.FC<
                       />
                     )}
                     
-                    {retrievedQuote.status.id !== STATUS_OPTIONS.concluded && (
+                    {retrievedQuote.status.id === STATUS_OPTIONS.approved && (
                       <Button 
                         label="Concluir"
                         size="SM"

@@ -57,7 +57,7 @@ export function QuoteItem ({
       <Section start>
         <QuoteName>{quote.produto.nome}</QuoteName>
         {showTags && (
-          quote.produto.tags.map(tag => <QuoteTag value={tag.nome} />)
+          quote.produto.tags.map(tag => <QuoteTag key={`${tag.nome}-${Math.random()}`} value={tag.nome} />)
         )}
         <QuoteQuantity>{quote.quantidadeProduto} unidades</QuoteQuantity>
       </Section>

@@ -95,7 +95,7 @@ export const QuoteProposalRefused: React.FC<
           />
 
           <CustomCheckBox
-            title="Não possuo suprir a quantidade"
+            title="Não posso suprir essa quantidade"
             checked={reasonIsQuantity}
             onPress={() => setReasonIsQuantity(!reasonIsQuantity)}
           />

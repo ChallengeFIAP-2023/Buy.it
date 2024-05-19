@@ -149,9 +149,6 @@ export const Step1: React.FC<
                   selectedValue={value}
                   onValueChange={onChange}
                   error={errors.idsTags?.message}
-                  listControls={{
-                    emptyListMessage: 'Nenhum tag encontrada.',
-                  }}
                   listFooterComponent={
                     <CreateTagContainer>
                       <Button

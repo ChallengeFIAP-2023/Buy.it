@@ -148,12 +148,12 @@ export function Profile({
           </Fieldset>
 
           <Fieldset style={{ paddingBottom: 75 }}>
-            <Button label="Salvar" size="XL" onPress={handleSubmit(onSubmit)} />
+            <Button label="Salvar" size="MD" onPress={handleSubmit(onSubmit)} />
 
             <LogoutButtonWrapper>
               <Button
                 label="Sair"
-                size="XL"
+                size="MD"
                 icon={<SignOut color={theme.COLORS.WHITE} weight="bold" />}
                 onPress={handleSignOut}
                 backgroundColor={theme.COLORS.RED_DARK}

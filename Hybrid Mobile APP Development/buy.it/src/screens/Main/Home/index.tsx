@@ -1,5 +1,5 @@
 import React, { Fragment, useLayoutEffect, useState } from 'react';
-import { CompositeScreenProps } from '@react-navigation/native';
+import { CompositeScreenProps, StackActions } from '@react-navigation/native';
 
 // Component import
 import { 
@@ -31,7 +31,6 @@ import { MainRoutes } from '..';
 // Theme import
 import theme from '@theme/index';
 import { MainNavigationRoutes } from '@routes/index';
-import { ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { Bell } from 'phosphor-react-native';
 import { useQuote } from '@hooks/useQuote';
 
@@ -72,7 +71,7 @@ export function Home({
             {quotes && quotes.length > 0 ? (
               quotes.slice(0, 2).map(item => (
                 <QuoteItem
-                  onPress={() => navigation.navigate("History")}
+                  onPress={() => navigation.navigate('History')}
                   key={item.id} 
                   quote={item}
                   showTags={false}
@@ -89,14 +88,14 @@ export function Home({
                   label='Gerenciar' 
                   style={{ flex: 1 }} 
                   backgroundColor={theme.COLORS.GRAY_400}
-                  onPress={() => navigation.navigate("History")}
+                  onPress={() => navigation.navigate('History')}
                 />
               )}
               <Button 
                 size='MD' 
                 label='Nova cotação' 
                 style={{ flex: 1 }} 
-                onPress={() => navigation.navigate("CreateQuote")}
+                onPress={() => navigation.navigate('CreateQuote')}
               />
             </Actions>
             </QuotesWrapper>

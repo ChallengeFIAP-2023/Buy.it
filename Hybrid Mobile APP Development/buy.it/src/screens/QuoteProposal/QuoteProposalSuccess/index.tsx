@@ -105,10 +105,9 @@ export const QuoteProposalSuccess: React.FC<
           </DescriptionContainer>
 
           <SectionProductDetail>
-            <SectionLabel>Tags</SectionLabel>
-
             {tags[0] && (
               <Fragment>
+                <SectionLabel>Tags</SectionLabel>
                 <TagWrapper>
                   {tags.map(item => (
                     <Chip
@@ -130,8 +129,8 @@ export const QuoteProposalSuccess: React.FC<
             )}
           </SectionProductDetail>
 
-          {contacts?.map(contact =>  (
-            <SectionProductDetail>
+          {contacts?.map((contact, index) =>  (
+            <SectionProductDetail key={`${contact.valor}-${index}-${Math.random()}`}>
               <SectionLabel>{contact.tipo}</SectionLabel>
               <SectionValueText>{contact.valor}</SectionValueText>
             </SectionProductDetail>
