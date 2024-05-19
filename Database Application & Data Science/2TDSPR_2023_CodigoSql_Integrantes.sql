@@ -1719,3 +1719,310 @@ SELECT * FROM monitoramento_atualizacoes;
 SELECT * FROM log_erros;
 
 --------------------------------------------------------------------------------
+
+-- SPRINT 04:
+SET SERVEROUTPUT ON;
+
+-- 04.01. Especificação do Pacote
+
+CREATE OR REPLACE PACKAGE cotacoes_pkg AS
+    PROCEDURE listar_cotacoes_pendentes(p_id_usuario IN cotacao.id_usuario%TYPE);
+    PROCEDURE concluir_cotacao(p_id_cotacao IN cotacao.id_cotacao%TYPE);
+    FUNCTION valor_total_cotacoes_usuario(p_id_usuario IN cotacao.id_usuario%TYPE) RETURN NUMBER;
+    FUNCTION verificar_existencia_email(p_email_usuario IN usuario.email_usuario%TYPE) RETURN BOOLEAN;
+END cotacoes_pkg;
+
+-- 04.01.02 Corpo do Pacote
+CREATE OR REPLACE PACKAGE BODY cotacoes_pkg AS
+
+    PROCEDURE listar_cotacoes_pendentes(p_id_usuario IN cotacao.id_usuario%TYPE) AS
+        v_count INTEGER;
+    BEGIN
+        SELECT COUNT(*)
+        INTO v_count
+        FROM cotacao c
+        JOIN status s ON c.id_status = s.id_status
+        WHERE c.id_usuario = p_id_usuario AND s.nome_status IN ('Em Andamento', 'Recusado');
+    
+        IF v_count = 0 THEN
+            DBMS_OUTPUT.PUT_LINE('Nenhuma cotação pendente encontrada para o usuário especificado.');
+        ELSE
+            FOR r IN (
+                SELECT c.id_cotacao, c.data_abertura_cotacao, c.quantidade_produto, c.valor_produto, s.nome_status
+                FROM cotacao c
+                JOIN status s ON c.id_status = s.id_status
+                WHERE c.id_usuario = p_id_usuario AND s.nome_status IN ('Em Andamento', 'Recusado')
+                ORDER BY c.data_abertura_cotacao DESC
+            ) LOOP
+                DBMS_OUTPUT.PUT_LINE('ID da Cotação: ' || r.id_cotacao || 
+                                     ', Data de Abertura: ' || r.data_abertura_cotacao || 
+                                     ', Quantidade: ' || r.quantidade_produto || 
+                                     ', Valor: ' || r.valor_produto ||
+                                     ', Status: ' || r.nome_status);
+            END LOOP;
+        END IF;
+    EXCEPTION
+        WHEN no_data_found THEN
+            DBMS_OUTPUT.PUT_LINE('Nenhuma cotação pendente encontrada para o usuário especificado.');
+        WHEN value_error THEN
+            DBMS_OUTPUT.PUT_LINE('Ocorreu um erro ao recuperar o valor de uma cotação.');
+        WHEN OTHERS THEN
+            DBMS_OUTPUT.PUT_LINE('Erro ao listar cotações pendentes.');
+    END listar_cotacoes_pendentes;
+
+    PROCEDURE concluir_cotacao(p_id_cotacao IN cotacao.id_cotacao%TYPE) AS
+        v_status_concluido NUMBER;
+    BEGIN
+        SELECT id_status INTO v_status_concluido FROM status WHERE nome_status = 'Concluído';
+        
+        UPDATE cotacao
+        SET id_status = v_status_concluido, data_fechamento_cotacao = SYSDATE
+        WHERE id_cotacao = p_id_cotacao;
+        
+        IF SQL%ROWCOUNT = 0 THEN
+            RAISE_APPLICATION_ERROR(-20002, 'Cotacao nao encontrada ou ja esta concluida.');
+        END IF;
+        
+        DBMS_OUTPUT.PUT_LINE('Cotacao concluida com sucesso.');
+    EXCEPTION
+        WHEN NO_DATA_FOUND THEN
+            RAISE_APPLICATION_ERROR(-20003, 'Status "Concluído" nao encontrado.');
+        WHEN OTHERS THEN
+            RAISE_APPLICATION_ERROR(-20004, SQLERRM);
+    END concluir_cotacao;
+
+    FUNCTION valor_total_cotacoes_usuario(p_id_usuario IN cotacao.id_usuario%TYPE)
+    RETURN NUMBER IS
+        v_total NUMBER(10,2) := 0;
+    BEGIN
+        SELECT SUM(valor_produto * quantidade_produto)
+        INTO v_total
+        FROM cotacao
+        WHERE id_usuario = p_id_usuario;
+    
+        IF v_total IS NULL THEN
+            RAISE no_data_found;
+        END IF;
+    
+        IF v_total < 0 THEN
+            RAISE value_error;
+        END IF;
+    
+        RETURN v_total;
+    EXCEPTION
+        WHEN no_data_found THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Nenhuma cotação encontrada para o usuário especificado.');
+        WHEN value_error THEN
+            RAISE_APPLICATION_ERROR(-20002, 'O valor total das cotações é negativo.');
+        WHEN OTHERS THEN
+            RAISE_APPLICATION_ERROR(-20003, 'Erro ao calcular o valor total das cotações.');
+    END valor_total_cotacoes_usuario;
+
+    FUNCTION verificar_existencia_email(p_email_usuario IN usuario.email_usuario%TYPE)
+    RETURN BOOLEAN IS
+        v_contagem NUMBER;
+    BEGIN
+        SELECT COUNT(*)
+        INTO v_contagem
+        FROM usuario
+        WHERE email_usuario = p_email_usuario;
+    
+        IF v_contagem > 0 THEN
+            RETURN TRUE;
+        ELSE
+            RETURN FALSE;
+        END IF;
+    EXCEPTION
+        WHEN no_data_found THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Nenhum usuário encontrado com o e-mail especificado.');
+        WHEN OTHERS THEN
+            RAISE_APPLICATION_ERROR(-20002, 'Erro ao verificar a existência do e-mail do usuário.');
+    END verificar_existencia_email;
+
+END cotacoes_pkg;
+
+-- 04.01.03 Execução dos procedimentos e funções
+
+BEGIN
+    cotacoes_pkg.listar_cotacoes_pendentes(1);
+END;
+
+BEGIN
+    cotacoes_pkg.concluir_cotacao(1);
+END;
+
+SELECT cotacoes_pkg.valor_total_cotacoes_usuario(1) FROM dual;
+
+DECLARE
+    v_existe BOOLEAN;
+BEGIN
+    v_existe := cotacoes_pkg.verificar_existencia_email('email@exemplo.com');
+    IF v_existe THEN
+        DBMS_OUTPUT.PUT_LINE('Usuario existe.');
+    ELSE
+        DBMS_OUTPUT.PUT_LINE('Usuario nao existe.');
+    END IF;
+END;
+
+-- 04.02.01 Gatilhos - Criando a tabela de auditoria
+
+DROP TABLE auditoria_cotacao CASCADE CONSTRAINTS;
+
+CREATE TABLE auditoria_cotacao (
+    id_auditoria NUMBER(9) PRIMARY KEY,
+    id_cotacao NUMBER(9),
+    data_abertura_cotacao DATE,
+    id_usuario NUMBER(9),
+    id_produto NUMBER(9),
+    quantidade_produto NUMBER(8,2),
+    valor_produto NUMBER(8,2),
+    id_status NUMBER(9),
+    prioridade_entrega NUMBER(1),
+    prioridade_qualidade NUMBER(1),
+    prioridade_preco NUMBER(1),
+    prazo_cotacao NUMBER(3),
+    data_fechamento_cotacao DATE,
+    data_auditoria DATE DEFAULT SYSDATE
+);
+
+CREATE SEQUENCE auditoria_cotacao_seq
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+
+-- 04.02.02 Criando o gatilho de auditoria
+
+CREATE OR REPLACE TRIGGER trg_auditoria_insert_cotacao
+AFTER INSERT ON cotacao
+FOR EACH ROW
+BEGIN
+    INSERT INTO auditoria_cotacao (
+        id_auditoria,
+        id_cotacao,
+        data_abertura_cotacao,
+        id_usuario,
+        id_produto,
+        quantidade_produto,
+        valor_produto,
+        id_status,
+        prioridade_entrega,
+        prioridade_qualidade,
+        prioridade_preco,
+        prazo_cotacao,
+        data_fechamento_cotacao
+    ) VALUES (
+        auditoria_cotacao_seq.NEXTVAL,
+        :NEW.id_cotacao,
+        :NEW.data_abertura_cotacao,
+        :NEW.id_usuario,
+        :NEW.id_produto,
+        :NEW.quantidade_produto,
+        :NEW.valor_produto,
+        :NEW.id_status,
+        :NEW.prioridade_entrega,
+        :NEW.prioridade_qualidade,
+        :NEW.prioridade_preco,
+        :NEW.prazo_cotacao,
+        :NEW.data_fechamento_cotacao
+    );
+END;
+
+-- 04.02.03 Criando a tabela de auditoria para usuários
+
+DROP TABLE auditoria_usuario CASCADE CONSTRAINTS;
+
+CREATE TABLE auditoria_usuario (
+    id_auditoria NUMBER(9) PRIMARY KEY,
+    id_usuario NUMBER(9),
+    old_email_usuario VARCHAR2(255),
+    new_email_usuario VARCHAR2(255),
+    data_auditoria DATE DEFAULT SYSDATE
+);
+
+-- 04.02.04 Gatilho de auditoria para atualizações de email
+
+CREATE SEQUENCE auditoria_usuario_seq
+START WITH 1
+INCREMENT BY 1
+NOCACHE
+NOCYCLE;
+
+CREATE OR REPLACE TRIGGER trg_auditoria_update_usuario_email
+BEFORE UPDATE OF email_usuario ON usuario
+FOR EACH ROW
+BEGIN
+    INSERT INTO auditoria_usuario (
+        id_auditoria,
+        id_usuario,
+        old_email_usuario,
+        new_email_usuario
+    ) VALUES (
+        auditoria_usuario_seq.NEXTVAL,
+        :OLD.id_usuario,
+        :OLD.email_usuario,
+        :NEW.email_usuario
+    );
+END;
+
+-- 04.03 Testando os gatilhos novos
+
+-- Inserindo registro na tabela cotacao para testar o gatilho de auditoria de INSERT
+INSERT INTO cotacao (
+    id_cotacao,
+    data_abertura_cotacao,
+    id_usuario,
+    id_produto,
+    quantidade_produto,
+    valor_produto,
+    id_status,
+    prioridade_entrega,
+    prioridade_qualidade,
+    prioridade_preco,
+    prazo_cotacao,
+    data_fechamento_cotacao
+) VALUES (
+    10,
+    SYSDATE,
+    1,
+    1,
+    10,
+    100.00,
+    1,
+    1,
+    1,
+    1,
+    30,
+    NULL
+);
+
+-- Inserindo registro na tabela usuario para testar o gatilho de auditoria de UPDATE
+INSERT INTO usuario (
+    id_usuario,
+    nome_usuario,
+    email_usuario,
+    senha_usuario,
+    cnpj_usuario,
+    is_fornecedor,
+    imagem_usuario
+) VALUES (
+    8,
+    'Teste Usuario',
+    'teste@exemplo.com',
+    'senha123',
+    '12345678901234',
+    0,
+    NULL
+);
+
+-- Atualizando o email do usuário para testar o gatilho de auditoria de UPDATE
+UPDATE usuario
+SET email_usuario = 'novoemail@exemplo.com'
+WHERE id_usuario = 1;
+
+-- Verifique os registros na tabela de auditoria de cotacao
+SELECT * FROM auditoria_cotacao;
+
+-- Verifique os registros na tabela de auditoria de usuario
+SELECT * FROM auditoria_usuario;
+
