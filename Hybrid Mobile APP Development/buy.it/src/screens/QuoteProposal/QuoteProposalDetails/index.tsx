@@ -64,6 +64,7 @@ export const QuoteProposalDetails: React.FC<
   const { 
     handleProcessProposal,
     fetchProposals, 
+    fetchContacts,
     proposal, 
     approveLoading, 
     declineLoading 
@@ -89,6 +90,7 @@ export const QuoteProposalDetails: React.FC<
 
   useLayoutEffect(() => {
     if(!proposal) fetchProposals();
+    if(proposal) fetchContacts();
   }, [proposal]);
 
   const buttonIsDisabled = approveLoading || declineLoading;

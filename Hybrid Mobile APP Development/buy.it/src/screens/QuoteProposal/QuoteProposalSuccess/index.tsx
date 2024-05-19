@@ -1,7 +1,8 @@
-import { Fragment, useLayoutEffect } from 'react';
-import { ImageSourcePropType } from 'react-native';
+import { Fragment } from 'react';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
+import { Linking } from 'react-native'
+
 import {
   CheckCircle,
   DotsThree,
@@ -50,15 +51,33 @@ export const QuoteProposalSuccess: React.FC<
   >
 > = ({ navigation }) => {
   // Hook
-  const { 
-    handleProcessProposal, 
+  const {
+    contacts,
     proposal, 
     handleRedirectSuccessProposal 
   } = useQuoteProposal();
 
+  const email = contacts?.find(contact => contact.tipo === "Email")
+  const telephone = contacts?.find(contact => contact.tipo === "Telefone")
+  const whatsapp = contacts?.find(contact => contact.tipo === "Whatsapp")
+
   const tags = Array.isArray(proposal?.produto.tags)
     ? proposal?.produto.tags
     : [];
+
+  const sendEmail = () => {
+    const subject = `Cotação de ${proposal?.produto.nome} aceita! Vamos combinar os detalhes?`;
+    Linking.openURL(`mailto:${email?.valor}?subject=${subject}`);
+  }
+
+  const call = () => {
+    Linking.openURL(`tel:${telephone?.valor}`);
+  }
+
+  const sendMessage = () => {
+    const message = `Cotação de ${proposal?.produto.nome} aceita! Vamos combinar os detalhes?`;
+    Linking.openURL(`whatsapp://send?phone=${whatsapp?.valor}&text=${message}`);
+  }
 
   return (
     <WrapperPage>
@@ -111,26 +130,34 @@ export const QuoteProposalSuccess: React.FC<
             )}
           </SectionProductDetail>
 
-          <SectionProductDetail>
-            <SectionLabel>Email</SectionLabel>
-            <SectionValueText>scranton@dundermifflin.com</SectionValueText>
-          </SectionProductDetail>
+          {contacts?.map(contact =>  (
+            <SectionProductDetail>
+              <SectionLabel>{contact.tipo}</SectionLabel>
+              <SectionValueText>{contact.valor}</SectionValueText>
+            </SectionProductDetail>
+          ))}
 
-          <SectionProductDetail>
-            <SectionLabel>Telefone</SectionLabel>
-            <SectionValueText>11 99999-9999</SectionValueText>
-          </SectionProductDetail>
         </Container>
       </ScrollableContent>
 
       <ActionsButton>
-        <ActionButton onPress={() => handleProcessProposal('decline')}>
-          <Icon name="envelope" size={theme.FONT_SIZE.XL} color={theme.COLORS.WHITE} />
-        </ActionButton>
+        {email && (
+          <ActionButton onPress={sendEmail}>
+            <Icon name="envelope" size={theme.FONT_SIZE.XL} color={theme.COLORS.WHITE} />
+          </ActionButton>
+        )}
 
-        <ActionButton onPress={() => handleProcessProposal('decline')}>
-          <Icon name="whatsapp" size={theme.FONT_SIZE.XXL} color={theme.COLORS.WHITE} />
-        </ActionButton>
+        {whatsapp && (
+          <ActionButton onPress={sendMessage}>
+            <Icon name="whatsapp" size={theme.FONT_SIZE.XXL} color={theme.COLORS.WHITE} />
+          </ActionButton>
+        )}
+
+        {telephone && (
+          <ActionButton onPress={call}>
+            <Icon name="phone" size={theme.FONT_SIZE.XXL} color={theme.COLORS.WHITE} />
+          </ActionButton>
+        )}
       </ActionsButton>
     </WrapperPage>
   );

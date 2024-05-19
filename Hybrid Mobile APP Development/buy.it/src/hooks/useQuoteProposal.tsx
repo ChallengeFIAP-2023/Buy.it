@@ -55,7 +55,6 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
   const [declineLoading, setDeclineLoading] = useState(false);
   const [logLoading, setLogLoading] = useState(false);
 
-  
   const fetchProposals = async () => {
     try {
       const openProposalId = 1;

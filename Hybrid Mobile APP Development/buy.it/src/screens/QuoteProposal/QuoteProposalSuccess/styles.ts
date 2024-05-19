@@ -22,8 +22,8 @@ export const SectionProductDetail = styled.View`
 
 export const SectionLabel = styled.Text`
   color: ${({ theme }) => theme.COLORS.WHITE};
-  font-size: ${({ theme }) => theme.FONT_SIZE.XL}px;
-  font-family: ${({ theme }) => theme.FONT_FAMILY.RALEWAY.REGULAR};
+  font-size: ${({ theme }) => theme.FONT_SIZE.LG}px;
+  font-family: ${({ theme }) => theme.FONT_FAMILY.RALEWAY.SEMIBOLD};
   letter-spacing: -0.5px;
 `;
 
@@ -71,7 +71,6 @@ export const ActionsButton = styled.View`
   justify-content: space-evenly;
   align-items: center;
 
-  background-color: ${({ theme }) => theme.COLORS.GRAY_600};
 `;
 
 export const ActionButton = styled.TouchableOpacity.attrs({
