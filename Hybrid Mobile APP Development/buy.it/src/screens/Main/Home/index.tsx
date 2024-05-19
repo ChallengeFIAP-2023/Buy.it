@@ -44,8 +44,8 @@ export function Home({
   const { quotes, fetchQuotesByBuyer } = useQuote();
 
   useLayoutEffect(() => {
-    // if(!quotes || quotes.length === 0) fetchQuotesByBuyer(user.id);
-  }, [quotes]);
+    fetchQuotesByBuyer(user.id);
+  }, []);
 
   return (
     <WrapperPage>

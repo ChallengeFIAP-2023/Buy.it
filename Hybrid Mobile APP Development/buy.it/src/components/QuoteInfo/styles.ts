@@ -9,7 +9,7 @@ export const Container = styled.View<Props>`
   border-top-width: ${({ contained }) => contained ? "0" : "1px"};
   border-color: ${({ theme }) => theme.COLORS.GRAY_400};
   display: flex;
-  align-items: center;
+  align-items: ${({ contained }) => contained ? "center" : "flex-start"};
   flex-direction: ${({ contained }) => contained ? "row" : "column"};
   gap: ${({ contained }) => contained ? "5px" : "7px"};
 `;

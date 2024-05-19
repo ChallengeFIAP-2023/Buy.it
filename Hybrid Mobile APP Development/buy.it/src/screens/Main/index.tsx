@@ -80,14 +80,18 @@ export const Main: React.FC<
     };
   }
 
-  // Navegar até a tela de propostas a cada 2min
+  // Navega até a tela de propostas a cada 2min
   useEffect(() => {
-    const twoMinuteInMilliseconds = 120 * 1000;
-    const intervalId = setInterval(() => navigation.navigate('QuoteProposal'), twoMinuteInMilliseconds);
-
-    return () => {
-      clearInterval(intervalId)
-    };
+    if (user.isFornecedor) {
+      const twoMinuteInMilliseconds = 120 * 1000;
+      const intervalId = setInterval(() => {
+        proposal && navigation.navigate('QuoteProposal'), twoMinuteInMilliseconds
+      });
+  
+      return () => {
+        clearInterval(intervalId)
+      };
+    }
   }, [proposal, user]);
 
   // Verifica qual a última rota que o usuário estava, pra quando ele recusar ou aceitar a proposta continuar na mesma tela
