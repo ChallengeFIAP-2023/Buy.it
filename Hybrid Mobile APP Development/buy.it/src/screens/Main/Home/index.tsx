@@ -6,7 +6,7 @@ import {
   WrapperPage, 
   DecreasingContainer, 
   Button,
-  UserAvatar
+  UserInfo
 } from '@components/index';
 import { QuoteItem } from '@screens/QuotesHistory/QuotesList/QuoteItem';
 
@@ -18,10 +18,7 @@ import {
   QuotesWrapper, 
   Title,
   Header,
-  UserName,
-  UserCNPJ,
-  UserInfo,
-  AvatarWrapper
+  NotificationButton
 } from './styles';
 
 // Hook import
@@ -36,7 +33,6 @@ import theme from '@theme/index';
 import { MainNavigationRoutes } from '@routes/index';
 import { ImageSourcePropType, TouchableOpacity } from 'react-native';
 import { Bell } from 'phosphor-react-native';
-import { toMaskedCNPJ } from '@utils/masks';
 import { useQuote } from '@hooks/useQuote';
 
 export function Home({
@@ -51,34 +47,20 @@ export function Home({
     // if(!quotes || quotes.length === 0) fetchQuotesByBuyer(user.id);
   }, [quotes]);
 
-  const imageSource: ImageSourcePropType = user.urlImagem
-    ? { uri: user.urlImagem }
-    : require('../../../assets/default_avatar.png');
-
   return (
     <WrapperPage>
       <ScrollableContent>
 
         {user && user.cnpj && (
           <Header>
-            <AvatarWrapper>
-              <UserAvatar
-                imageSource={imageSource}
-                size="SM"
-              />
-            </AvatarWrapper>
-            <UserInfo>
-              <UserName numberOfLines={1}>{user.nome}</UserName>
-              <UserCNPJ>{toMaskedCNPJ(user.cnpj)}</UserCNPJ>
-            </UserInfo>
-
-            <TouchableOpacity>
+            <UserInfo user={user}/>
+            <NotificationButton>
               <Bell 
                 color={theme.COLORS.GRAY_200} 
                 size={theme.FONT_SIZE.XXL}
                 weight="fill"
               />
-            </TouchableOpacity>
+            </NotificationButton>
           </Header>
         )}
         

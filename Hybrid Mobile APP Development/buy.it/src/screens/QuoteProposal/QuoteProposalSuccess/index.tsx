@@ -1,4 +1,4 @@
-import { Fragment } from 'react';
+import { Fragment, useLayoutEffect } from 'react';
 import { ImageSourcePropType } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
@@ -21,18 +21,14 @@ import theme from '@theme/index';
 // Component import
 import {
   WrapperPage,
-  UserAvatar as CompanyImage,
   Chip,
   DefaultComponent,
+  UserInfo,
 } from '@components/index';
 
 // Style import
 import { Flex, ScrollableContent } from '@global/styles/index';
 import {
-  CompanyWrapper,
-  CompanyData,
-  CompanyName,
-  CompanyDocument,
   SectionProductDetail,
   DescriptionContainer,
   Description,
@@ -44,7 +40,6 @@ import {
   SectionValueText,
   ActionButton,
 } from './styles';
-import { toMaskedCNPJ } from '@utils/masks';
 
 const maximumTags = 8;
 
@@ -61,20 +56,9 @@ export const QuoteProposalSuccess: React.FC<
     handleRedirectSuccessProposal 
   } = useQuoteProposal();
 
-  const imageSource: ImageSourcePropType = proposal?.comprador.urlImagem
-    ? { uri: proposal?.comprador.urlImagem }
-    : require('../../../assets/default_avatar.png');
-
   const tags = Array.isArray(proposal?.produto.tags)
     ? proposal?.produto.tags
     : [];
-
-  function deadlineLabel() {
-    if (proposal?.prazo && proposal?.prazo > 1)
-      return `${proposal?.prazo} dias`;
-
-    return `${proposal?.prazo} dia`;
-  }
 
   return (
     <WrapperPage>
@@ -89,13 +73,9 @@ export const QuoteProposalSuccess: React.FC<
         />
 
         <Container>
-          <DescriptionContainer>
-            <CheckCircle
-              size={50}
-              color={theme.COLORS.GREEN_700}
-              weight="fill"
-            />
+          <UserInfo user={proposal?.comprador}/>
 
+          <DescriptionContainer>
             <CongratulationText>
               Parabéns por aceitar a cotação!
             </CongratulationText>
@@ -104,20 +84,6 @@ export const QuoteProposalSuccess: React.FC<
               Agora só falta entrar em contato com a empresa e finalizar a venda
             </Description>
           </DescriptionContainer>
-
-          <CompanyWrapper>
-            <CompanyImage imageSource={imageSource} size="MD" />
-
-            <CompanyData>
-              <CompanyName numberOfLines={1}>
-                {proposal?.comprador.nome ?? 'Empresa não identificada'}
-              </CompanyName>
-
-              <CompanyDocument>
-                {toMaskedCNPJ(proposal?.comprador.cnpj ?? '546545645456465456')}
-              </CompanyDocument>
-            </CompanyData>
-          </CompanyWrapper>
 
           <SectionProductDetail>
             <SectionLabel>Tags</SectionLabel>

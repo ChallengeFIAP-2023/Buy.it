@@ -1,4 +1,4 @@
-import { ActivityIndicator, ImageSourcePropType, TouchableOpacity, } from 'react-native';
+import { ActivityIndicator, TouchableOpacity, } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { Check, DotsThree, X } from 'phosphor-react-native';
@@ -19,7 +19,6 @@ import theme from '@theme/index';
 import {
   DecreasingContainer,
   WrapperPage,
-  UserAvatar as CompanyImage,
   Chip,
   Button,
   QuoteInfo,
@@ -28,10 +27,6 @@ import {
 // Style import
 import { Flex, ScrollableContent } from '@global/styles/index';
 import {
-  CompanyWrapper,
-  CompanyData,
-  CompanyName,
-  CompanyDocument,
   ProductDetails,
   DescriptionContainer,
   Description,
@@ -51,10 +46,11 @@ import {
 } from './styles';
 
 // Util import
-import { toMaskedCNPJ, toMaskedCurrency } from '@utils/masks';
+import { toMaskedCurrency } from '@utils/masks';
 
 // Component import
 import { CustomModal } from '@components/Modal';
+import { UserInfo } from '@components/UserInfo';
 
 const maximumTags = 8;
 
@@ -80,10 +76,6 @@ export const QuoteProposalDetails: React.FC<
   const toggleDeclineModal = () => setDeclineModalVisible(modal => !modal);
   const toggleAcceptModal = () => setAcceptModalVisible(modal => !modal);
 
-  const imageSource: ImageSourcePropType = proposal?.comprador.urlImagem
-    ? { uri: proposal?.comprador.urlImagem }
-    : require('../../../assets/default_avatar.png');
-
   const tags = Array.isArray(proposal?.produto.tags)
     ? proposal?.produto.tags
     : [];
@@ -107,18 +99,7 @@ export const QuoteProposalDetails: React.FC<
   return (
     <WrapperPage>
       <ScrollableContent>
-        <CompanyWrapper>
-          <CompanyImage imageSource={imageSource} size="MD" />
-
-          <CompanyData>
-            <CompanyName numberOfLines={1}>
-              {proposal?.comprador.nome ?? 'Empresa não identificada'}
-            </CompanyName>
-            <CompanyDocument>
-              {toMaskedCNPJ(proposal?.comprador.cnpj ?? '')}
-            </CompanyDocument>
-          </CompanyData>
-        </CompanyWrapper>
+        <UserInfo user={proposal?.comprador}/>
 
         <DescriptionContainer>
           <Description>

@@ -14,16 +14,17 @@ import { Proposal } from '@dtos/proposal';
 import { MainRoutes } from '@screens/Main';
 import { AppNavigatorRoutesProps } from '@routes/index';
 import { api } from '@services/api';
-import { useAuth } from './useAuth';
 import Toast from 'react-native-toast-message';
-import { LogQuery } from '@dtos/index';
+import { Contact, LogQuery } from '@dtos/index';
 
 interface QuoteProposalContextData {
   proposal: Proposal | undefined;
+  contacts: Contact[] | undefined;
   handleProcessProposal: (type: 'approve' | 'decline') => Promise<void>;
   handleRedirectSuccessProposal: () => void;
   handleNewLog: (logData: LogQuery) => Promise<void>;
   fetchProposals: () => Promise<void>;
+  fetchContacts: () => Promise<void>;
   approveLoading: boolean;
   declineLoading: boolean;
   logLoading: boolean;
@@ -48,7 +49,8 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
   const [lastRouteNavigated, setLastRouteNavigated] =
     useState<keyof MainRoutes>('Home');
 
-  const [proposal, setProposal] = useState<Proposal | undefined>(undefined);
+  const [proposal, setProposal] = useState<Proposal | undefined>();
+  const [contacts, setContacts] = useState<Contact[] | undefined>();
   const [approveLoading, setApproveLoading] = useState(false);
   const [declineLoading, setDeclineLoading] = useState(false);
   const [logLoading, setLogLoading] = useState(false);
@@ -62,6 +64,18 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
       );
 
       setProposal(data.content[0]);
+    } catch (error) {
+      console.log('Erro ao buscar dados do backend:', error);
+    }
+  };
+
+  const fetchContacts = async () => {
+    try {
+      const { data } = await api.get<{ content: Contact[] }>(
+        `/contatos/usuario/${proposal?.comprador.id}`,
+      );
+
+      setContacts(data.content);
     } catch (error) {
       console.log('Erro ao buscar dados do backend:', error);
     }
@@ -93,61 +107,58 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
     }
   }, []);
 
-  const handleProcessProposal = useCallback(
-    async (type: 'approve' | 'decline') => {
-      if (type === 'approve') {
-        try {
-          if (proposal) {
-            setApproveLoading(true);
-            const approvedStatusId = 3;
+  const handleProcessProposal = async (type: 'approve' | 'decline') => {
+    if (type === 'approve') {
+      try {
+        if (proposal) {
+          setApproveLoading(true);
+          const approvedStatusId = 3;
 
-            await api.put(`/cotacoes/${proposal.id}`, {
-              dataAbertura: proposal.dataAbertura,
-              idComprador: proposal.comprador.id,
-              idProduto: proposal.produto.id,
-              quantidadeProduto: proposal.quantidadeProduto,
-              valorProduto: proposal.valorProduto,
-              idStatus: approvedStatusId,
-              prioridadeEntrega: proposal.prioridadeEntrega,
-              prioridadeQualidade: proposal.prioridadeQualidade,
-              prioridadePreco: proposal.prioridadePreco,
-              prazo: proposal.prazo,
-              dataFechamento: new Date(),
-            });
-
-            navigate('QuoteProposal', { screen: 'QuoteProposalSuccess' });
-          }
-        } catch (error) {
-          return Toast.show({
-            type: 'error',
-            text1: 'Não foi possível aprovar esta cotação',
-            text2: 'Tente novamente.',
+          await api.put(`/cotacoes/${proposal.id}`, {
+            dataAbertura: proposal.dataAbertura,
+            idComprador: proposal.comprador.id,
+            idProduto: proposal.produto.id,
+            quantidadeProduto: proposal.quantidadeProduto,
+            valorProduto: proposal.valorProduto,
+            idStatus: approvedStatusId,
+            prioridadeEntrega: proposal.prioridadeEntrega,
+            prioridadeQualidade: proposal.prioridadeQualidade,
+            prioridadePreco: proposal.prioridadePreco,
+            prazo: proposal.prazo,
+            dataFechamento: new Date(),
           });
-        } finally {
-          setApproveLoading(false);
-        }
-      }
 
-      if (type === 'decline') {
-        try {
-          setDeclineLoading(true);
-          console.log('recusou a proposta', lastRouteNavigated);
-
-          navigate('Main', { screen: lastRouteNavigated });
-          setProposal(undefined);
-        } catch (error) {
-          return Toast.show({
-            type: 'error',
-            text1: 'Não foi possível recusar esta cotação',
-            text2: 'Tente novamente.',
-          });
-        } finally {
-          setDeclineLoading(false);
+          navigate('QuoteProposal', { screen: 'QuoteProposalSuccess' });
         }
+      } catch (error) {
+        return Toast.show({
+          type: 'error',
+          text1: 'Não foi possível aprovar esta cotação',
+          text2: 'Tente novamente.',
+        });
+      } finally {
+        setApproveLoading(false);
       }
-    },
-    [],
-  );
+    }
+
+    if (type === 'decline') {
+      try {
+        setDeclineLoading(true);
+        console.log('recusou a proposta', lastRouteNavigated);
+
+        navigate('Main', { screen: lastRouteNavigated });
+        setProposal(undefined);
+      } catch (error) {
+        return Toast.show({
+          type: 'error',
+          text1: 'Não foi possível recusar esta cotação',
+          text2: 'Tente novamente.',
+        });
+      } finally {
+        setDeclineLoading(false);
+      }
+    }
+  }
 
   const handleRedirectSuccessProposal = useCallback(() => {
     setProposal(undefined);
@@ -158,7 +169,9 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
     <QuoteProposalContext.Provider
       value={{
         proposal,
+        contacts,
         fetchProposals,
+        fetchContacts,
         handleProcessProposal,
         handleRedirectSuccessProposal,
         handleNewLog,

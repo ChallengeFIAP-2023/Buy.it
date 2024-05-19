@@ -1,36 +1,5 @@
 import styled from 'styled-components/native';
 
-export const CompanyWrapper = styled.View`
-  flex-direction: row;
-  align-items: center;
-  gap: 16px;
-
-  padding: 50px 30px 20px;
-`;
-
-export const CompanyData = styled.View`
-  flex-direction: column;
-  align-items: start;
-`;
-
-export const CompanyName = styled.Text`
-  color: ${({ theme }) => theme.COLORS.WHITE};
-  font-size: ${({ theme }) => theme.FONT_SIZE.XL}px;
-  font-family: ${({ theme }) => theme.FONT_FAMILY.RALEWAY.BOLD};
-
-  margin-bottom: 12px;
-
-  max-width: 240px;
-  overflow: hidden;
-
-  text-transform: capitalize;
-`;
-
-export const CompanyDocument = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_300};
-  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
-`;
-
 export const ProductDetails = styled.View`
   justify-content: center;
   align-items: center;

@@ -9,40 +9,7 @@ export const DescriptionContainer = styled.View`
   justify-content: center;
   align-items: center;
   gap: 16px;
-`;
-
-export const CompanyWrapper = styled.View`
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-
-  margin-top: 40px;
-`;
-
-export const CompanyData = styled.View`
-  flex-direction: column;
-  align-items: start;
-  gap: 5px;
-
-  padding-bottom: 15px;
-
-  border-bottom-width: 3px;
-  border-bottom-color: ${({ theme }) => theme.COLORS.GRAY_600};
-`;
-
-export const CompanyName = styled.Text`
-  color: ${({ theme }) => theme.COLORS.WHITE};
-  font-size: ${({ theme }) => theme.FONT_SIZE.LG}px;
-  font-family: ${({ theme }) => theme.FONT_FAMILY.RALEWAY.BOLD};
-
-  text-transform: capitalize;
-`;
-
-export const CompanyDocument = styled.Text`
-  color: ${({ theme }) => theme.COLORS.GRAY_300};
-  font-size: ${({ theme }) => theme.FONT_SIZE.SM}px;
-
-  text-align: center;
+  margin-top: 20px;
 `;
 
 export const SectionProductDetail = styled.View`
@@ -69,6 +36,9 @@ export const SectionValueText = styled(SimpleText)``;
 
 export const Description = styled(SimpleText)`
   text-align: center;
+  border-bottom-width: 1px;
+  border-bottom-color: ${({ theme }) => theme.COLORS.GRAY_400};
+  padding-bottom: 25px;
 `;
 
 export const CongratulationText = styled.Text`
