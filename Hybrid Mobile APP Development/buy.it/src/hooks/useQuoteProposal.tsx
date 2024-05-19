@@ -146,7 +146,7 @@ const QuoteProposalProvider: React.FC<QuoteProposalProviderProps> = ({
         }
       }
     },
-    [lastRouteNavigated],
+    [],
   );
 
   const handleRedirectSuccessProposal = useCallback(() => {

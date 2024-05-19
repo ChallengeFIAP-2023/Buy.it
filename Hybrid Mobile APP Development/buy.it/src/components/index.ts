@@ -16,6 +16,7 @@ export { UserAvatar } from './UserAvatar';
 export { WrapperPage } from './WrapperPage';
 export { Requirement } from './Requirement';
 export { Text } from './Tab';
+export { QuoteInfo } from './QuoteInfo'
 
 // Type export
 export type { Props as HeaderProps } from './Header';

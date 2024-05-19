@@ -1,8 +1,9 @@
-import { ActivityIndicator, ImageSourcePropType, Touchable, TouchableOpacity } from 'react-native';
+import { ActivityIndicator, ImageSourcePropType, TouchableOpacity, } from 'react-native';
 import { NativeStackScreenProps } from '@react-navigation/native-stack';
 import { CompositeScreenProps } from '@react-navigation/native';
 import { Check, DotsThree, X } from 'phosphor-react-native';
 import Icon from '@expo/vector-icons/FontAwesome6';
+import { Fragment, useLayoutEffect, useState } from 'react';
 
 // Type import
 import { MainNavigationRoutes } from '@routes/index';
@@ -21,6 +22,7 @@ import {
   UserAvatar as CompanyImage,
   Chip,
   Button,
+  QuoteInfo,
 } from '@components/index';
 
 // Style import
@@ -45,10 +47,13 @@ import {
   Refuse,
   Accept,
   SmallText,
-  TouchableText,
+  TouchableText
 } from './styles';
+
+// Util import
 import { toMaskedCNPJ, toMaskedCurrency } from '@utils/masks';
-import { Fragment, useLayoutEffect, useState } from 'react';
+
+// Component import
 import { CustomModal } from '@components/Modal';
 
 const maximumTags = 8;
@@ -68,8 +73,12 @@ export const QuoteProposalDetails: React.FC<
     declineLoading 
   } = useQuoteProposal();
 
-  const [isModalVisible, setModalVisible] = useState(false);
-  const toggleModal = () => setModalVisible(modal => !modal);
+  const [isDeclineModalVisible, setDeclineModalVisible] = useState(false);
+  const [isAcceptModalVisible, setAcceptModalVisible] = useState(false);
+  const [showDetails, setShowDetails] = useState(false);
+
+  const toggleDeclineModal = () => setDeclineModalVisible(modal => !modal);
+  const toggleAcceptModal = () => setAcceptModalVisible(modal => !modal);
 
   const imageSource: ImageSourcePropType = proposal?.comprador.urlImagem
     ? { uri: proposal?.comprador.urlImagem }
@@ -91,6 +100,9 @@ export const QuoteProposalDetails: React.FC<
   }, [proposal]);
 
   const buttonIsDisabled = approveLoading || declineLoading;
+  const hasDetails = proposal && (proposal.produto) && 
+  (proposal.produto.marca || proposal.produto.cor || 
+    proposal.produto.material || proposal.produto.tamanho);
   
   return (
     <WrapperPage>
@@ -165,19 +177,43 @@ export const QuoteProposalDetails: React.FC<
               </DeliveryText>
             </DeliveryContainer>
           </ProductDetails>
+
+          {showDetails && proposal && (
+            <QuoteInfo quote={proposal} />
+          )}
+
+          {hasDetails && (
+            <Button 
+              style={{
+                marginBottom: 200,
+              }}
+              label={`${showDetails ? "menos" : "mais"} detalhes`}
+              type="secondary"
+              size="LG"
+              onPress={() => setShowDetails(!showDetails)}
+              iconFirst={showDetails}
+              icon={
+                <Icon 
+                  name={showDetails ? "chevron-up" : "chevron-down"}
+                  size={theme.FONT_SIZE.LG}
+                  color={theme.COLORS.PRIMARY_LIGHTER}
+                />
+              }
+            />
+          )}
         </DecreasingContainer>
       </ScrollableContent>
 
       <ActionsButton>
         <Refuse
-          onPress={() => toggleModal()}
+          onPress={() => toggleDeclineModal()}
           disabled={buttonIsDisabled}
         >
           <X size={40} color={theme.COLORS.GRAY_600} weight="bold" />
         </Refuse>
 
         <Accept
-          onPress={() => handleProcessProposal('approve')}
+          onPress={() => toggleAcceptModal()}
           disabled={buttonIsDisabled}
         >
           {approveLoading ? (
@@ -189,10 +225,10 @@ export const QuoteProposalDetails: React.FC<
       </ActionsButton>
 
       <CustomModal
-        modalProps={{ isVisible: isModalVisible }}
+        modalProps={{ isVisible: isDeclineModalVisible }}
         title="Nos ajude a melhorar"
         subtitle="Respondendo nossas perguntas você aumenta as chances de conseguir novas vendas!"
-        onClose={toggleModal}
+        onClose={toggleDeclineModal}
       >
         <SmallText>Fornecedor, que tal nos ajudar respondendo algumas perguntas sobre os motivos de ter recusado esta proposta?</SmallText>
         <SmallText>Desta forma, conseguimos te enviar somente propostas alinhadas com a sua empresa, aumentando suas chances de venda!</SmallText>
@@ -208,6 +244,37 @@ export const QuoteProposalDetails: React.FC<
         <TouchableOpacity onPress={() => handleProcessProposal('decline')}>
           <TouchableText>Pular por enquanto</TouchableText>
         </TouchableOpacity>
+      </CustomModal>
+
+      <CustomModal
+        modalProps={{ isVisible: isAcceptModalVisible }}
+        title="Revise os dados"
+        subtitle="É importante revisar as informações antes de aceitar"
+        onClose={toggleAcceptModal}
+      >
+        {proposal && 
+          <QuoteInfo 
+            quote={proposal} 
+            contained 
+            showMainInformation 
+          /> 
+        }
+        <Flex style={{ marginTop: 20 }}>
+          <Button 
+            size='MD' 
+            label='Cancelar' 
+            style={{ flex: 1 }} 
+            backgroundColor={theme.COLORS.GRAY_400}
+            onPress={() => toggleAcceptModal()}
+          />
+          <Button 
+            size='MD' 
+            label='Aceitar' 
+            style={{ flex: 1 }}             
+            backgroundColor={theme.COLORS.GREEN_800}
+            onPress={() => handleProcessProposal("approve")}
+          />
+        </Flex>
       </CustomModal>
     </WrapperPage>
   );

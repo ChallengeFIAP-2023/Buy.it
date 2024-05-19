@@ -88,6 +88,7 @@ export const DeliveryContainer = styled.View`
   flex-direction: row;
   gap: 10px;
   margin-top: 16px;
+  margin-bottom: 30px;
 `;
 
 export const DeliveryText = styled(SimpleText)`

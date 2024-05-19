@@ -17,6 +17,7 @@ import {
   DefaultComponent,
   Chip,
   Button,
+  QuoteInfo,
 } from '@components/index';
 
 // Style import
@@ -210,44 +211,19 @@ export const QuoteDetails: React.FC<
                   </Container>
 
                   {showDetails && (
-                    <Fragment>
-                      {retrievedQuote.produto.marca && (
-                        <Container>
-                          <Label>Marca</Label>
-                          <Value>{retrievedQuote.produto.marca}</Value>
-                        </Container>
-                      )}
-                      {retrievedQuote.produto.cor && (
-                        <Container>
-                          <Label>Cor</Label>
-                          <Value>{retrievedQuote.produto.cor}</Value>
-                        </Container>
-                      )}
-                      {retrievedQuote.produto.tamanho && (
-                        <Container>
-                          <Label>Tamanho</Label>
-                          <Value>{retrievedQuote.produto.tamanho}</Value>
-                        </Container>
-                      )}
-                      {retrievedQuote.produto.material && (
-                        <Container>
-                          <Label>Material</Label>
-                          <Value>{retrievedQuote.produto.material}</Value>
-                        </Container>
-                      )}
-                    </Fragment>
+                    <QuoteInfo quote={retrievedQuote} />
                   )}
 
                   {hasDetails && (
                     <Button 
-                      label={`${showDetails ? "Mais" : "Menos"} detalhes`}
+                      label={`${showDetails ? "Menos" : "Mais"} detalhes`}
                       type="secondary"
                       size="LG"
                       onPress={() => setShowDetails(!showDetails)}
-                      iconFirst={!showDetails}
+                      iconFirst={showDetails}
                       icon={
                         <Icon 
-                          name={showDetails ? "chevron-down" : "chevron-up"}
+                          name={showDetails ? "chevron-up" : "chevron-down"}
                           size={theme.FONT_SIZE.XXL}
                           color={theme.COLORS.PRIMARY_LIGHTER}
                         />
