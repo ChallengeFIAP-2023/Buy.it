@@ -1,12 +1,16 @@
 variables:
 - name: BuildParameters.mavenPOMFile
   value: pom.xml
+trigger:
+  branches:
+    include:
+    - main
 name: $(date:yyyyMMdd)$(rev:.r)
 resources:
   repositories:
   - repository: self
     type: git
-    ref: main
+    ref: refs/heads/main
 jobs:
 - job: Job_1
   displayName: Agent job 1
@@ -17,20 +21,19 @@ jobs:
     clean: true
     fetchTags: false
   - task: Maven@3
-    displayName: Maven pom.xml
+    displayName: Maven
     inputs:
       mavenPOMFile: $(BuildParameters.mavenPOMFile)
+      testRunTitle: Testes de código
       jdkVersion: 1.17
   - task: CopyFiles@2
     displayName: 'Copy Files to: $(build.artifactstagingdirectory)'
-    condition: succeededOrFailed()
     inputs:
       SourceFolder: $(system.defaultworkingdirectory)
-      Contents: '**/*.jar'
+      Contents: '**/target/*.war'
       TargetFolder: $(build.artifactstagingdirectory)
   - task: PublishBuildArtifacts@1
     displayName: 'Publish Artifact: drop'
-    condition: succeededOrFailed()
     inputs:
       PathtoPublish: $(build.artifactstagingdirectory)
 ...
