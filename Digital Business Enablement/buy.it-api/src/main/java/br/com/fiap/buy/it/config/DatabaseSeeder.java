@@ -121,35 +121,35 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         // Instanciando Objetos - Tag
         Tag tag1 = new Tag();
-        tag1.setNome("Perifericos");
+        tag1.setNome("Periféricos");
 
         Tag tag2 = new Tag();
-        tag2.setNome("Calcas");
+        tag2.setNome("Vestuário");
 
         Tag tag3 = new Tag();
-        tag3.setNome("Eletrodomesticos");
+        tag3.setNome("Eletrodomésticos");
 
         Tag tag4 = new Tag();
         tag4.setNome("Celulares");
 
         Tag tag5 = new Tag();
-        tag5.setNome("Água");
+        tag5.setNome("Alimentação");
 
         // Instanciando Objetos - Departamento
         Departamento departamento1 = new Departamento();
-        departamento1.setNome("Informatica");
+        departamento1.setNome("Informática");
         departamento1.setIcone("monitor");
 
         Departamento departamento2 = new Departamento();
-        departamento2.setNome("Eletronicos");
+        departamento2.setNome("Eletrônicos");
         departamento2.setIcone("gamepad-variant");
 
         Departamento departamento3 = new Departamento();
-        departamento3.setNome("Vestuario");
+        departamento3.setNome("Têxtil");
         departamento3.setIcone("tshirt-crew");
 
         Departamento departamento4 = new Departamento();
-        departamento4.setNome("Bebidas");
+        departamento4.setNome("Alimentação");
         departamento4.setIcone("food-fork-drink");
 
         Departamento departamento5 = new Departamento();
@@ -168,10 +168,10 @@ public class DatabaseSeeder implements CommandLineRunner {
 
         Produto produto2 = new Produto();
         produto2.setDepartamento(departamento4);
-        produto2.setNome("Agua");
+        produto2.setNome("Água");
         produto2.setMarca("Lindoia");
         produto2.setCor(null);
-        produto2.setTamanho("1 Litro");
+        produto2.setTamanho("1L");
         produto2.setMaterial(null);
         produto2.setObservacao(null);
 
